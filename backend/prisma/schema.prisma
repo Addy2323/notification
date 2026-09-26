@@ -1,0 +1,146 @@
+// Prisma Schema for LUMO — Delivery Notification & Consumer Portal
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Merchant {
+  id              String         @id @default(uuid())
+  business_name   String
+  business_phone  String
+  email           String?
+  location        String?
+  logo_url        String?
+  brand_color     String?        @default("#1E40AF") // LUMO Deep Indigo default
+  whatsapp_number String?
+  status          String         @default("ACTIVE") // ACTIVE, SUSPENDED
+  created_at      DateTime       @default(now())
+
+  users           MerchantUser[]
+  deliveries      Delivery[]
+  audit_logs      AuditLog[]
+
+  @@map("merchants")
+}
+
+model MerchantUser {
+  id              String    @id @default(uuid())
+  merchant_id     String
+  name            String
+  phone           String    @unique
+  email           String?   @unique
+  avatar_url      String?
+  role            String    @default("MERCHANT") // MERCHANT, STAFF, ADMIN
+  password_hash   String?
+  pin_hash        String?
+  otp_code        String?
+  otp_expires_at  DateTime?
+  status          String    @default("ACTIVE")
+  created_at      DateTime  @default(now())
+
+  merchant        Merchant  @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  audit_logs    AuditLog[]
+
+  @@map("merchant_users")
+}
+
+model Delivery {
+  id                  String          @id @default(uuid())
+  merchant_id         String
+  customer_phone      String
+  delivery_address    String
+  product_description String
+  driver_name         String
+  driver_phone        String
+  status              String          @default("CREATED") // CREATED, ON_THE_WAY, ARRIVED, DELIVERED, CANCELLED, FAILED
+  tracking_token      String          @unique
+  driver_token        String          @unique
+  created_at          DateTime        @default(now())
+  started_at          DateTime?
+  arrived_at          DateTime?
+  delivered_at        DateTime?
+
+  merchant            Merchant        @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  events              DeliveryEvent[]
+  notifications       Notification[]
+
+  @@index([merchant_id])
+  @@index([status])
+  @@index([customer_phone])
+  @@map("deliveries")
+}
+
+model DeliveryEvent {
+  id                 String         @id @default(uuid())
+  delivery_id        String
+  event_type         String         // DELIVERY_CREATED, ON_THE_WAY, ARRIVED, DELIVERED, DELIVERY_CANCELLED, DELIVERY_FAILED
+  actor_type         String         // MERCHANT, DRIVER, SYSTEM, ADMIN
+  actor_reference    String?
+  timestamp          DateTime       @default(now())
+  metadata           String?        // JSON payload string
+  ip_address         String?
+  device_information String?
+
+  delivery           Delivery       @relation(fields: [delivery_id], references: [id], onDelete: Cascade)
+  notifications      Notification[]
+
+  @@index([delivery_id])
+  @@map("delivery_events")
+}
+
+model Notification {
+  id                  String         @id @default(uuid())
+  delivery_id         String
+  event_id            String?
+  channel             String         @default("SMS") // SMS, WHATSAPP, EMAIL
+  recipient           String
+  template_id         String?
+  provider_message_id String?
+  status              String         @default("QUEUED") // QUEUED, SENT, DELIVERED, READ, FAILED
+  sent_at             DateTime?
+  delivered_at        DateTime?
+  read_at             DateTime?
+  failed_at           DateTime?
+  failure_reason      String?
+
+  delivery            Delivery       @relation(fields: [delivery_id], references: [id], onDelete: Cascade)
+  event               DeliveryEvent? @relation(fields: [event_id], references: [id], onDelete: SetNull)
+
+  @@index([delivery_id])
+  @@index([status])
+  @@map("notifications")
+}
+
+model NotificationTemplate {
+  id             String   @id @default(uuid())
+  event_type     String
+  channel        String   @default("SMS")
+  language       String   @default("en") // en, sw
+  body           String
+  active_version Int      @default(1)
+  created_at     DateTime @default(now())
+
+  @@map("notification_templates")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  merchant_id String?
+  user_id     String?
+  admin_id    String?
+  action      String
+  object_type String
+  object_id   String?
+  timestamp   DateTime @default(now())
+  metadata    String?
+
+  merchant    Merchant?     @relation(fields: [merchant_id], references: [id], onDelete: SetNull)
+  user        MerchantUser? @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}

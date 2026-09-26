@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-color: #F8FAFC;
+  --surface-color: #FFFFFF;
+  --primary-color: #1E40AF;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --border-color: #E2E8F0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism Surface */
+.glass-surface {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+/* Interactive Touch Keypad Button */
+.keypad-btn {
+  @apply flex items-center justify-center text-xl font-bold rounded-2xl h-14 bg-slate-50 hover:bg-lumo-50 active:bg-lumo-100 text-slate-800 transition-all duration-150 border border-slate-200 shadow-sm active:scale-95 touch-manipulation select-none;
+}
+
+/* Status Badges */
+.badge-created {
+  @apply bg-blue-50 text-blue-700 border border-blue-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5;
+}
+
+.badge-on_the_way {
+  @apply bg-amber-50 text-amber-700 border border-amber-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5 animate-pulse;
+}
+
+.badge-arrived {
+  @apply bg-purple-50 text-purple-700 border border-purple-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5;
+}
+
+.badge-delivered {
+  @apply bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5;
+}
+
+.badge-cancelled {
+  @apply bg-rose-50 text-rose-700 border border-rose-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5;
+}
