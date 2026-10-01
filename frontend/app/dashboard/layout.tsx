@@ -7,6 +7,7 @@ import { LayoutDashboard, Truck, Palette, Settings, LogOut, Plus, Shield, Menu, 
 import { fetchApi } from '@/lib/api';
 import { LumoLogo } from '@/components/landing/LumoLogo';
 import { MobileBottomNav } from '@/app/components/MobileBottomNav';
+import { PWAInstallButton } from '@/app/components/pwa/PWAInstallButton';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -105,6 +106,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           )}
         </nav>
 
+        {/* PWA App Installation CTA */}
+        <div className="mb-4">
+          <PWAInstallButton variant="sidebar" />
+        </div>
+
         {/* Merchant Workspace Info & Sign Out Footer */}
         <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2.5 overflow-hidden">
@@ -147,6 +153,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
           {/* Right Action Icons (Search, Refresh, User Profile) */}
           <div className="flex items-center gap-2">
+            <PWAInstallButton variant="header" />
             <button
               onClick={() => {
                 const searchInput = document.getElementById('mobile-search-input');
@@ -210,6 +217,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </Link>
             );
           })}
+          <div className="pt-2 border-t border-slate-100">
+            <PWAInstallButton variant="menu" />
+          </div>
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-3.5 py-2.5 text-left text-xs font-extrabold text-rose-600 hover:bg-rose-50 rounded-xl active:scale-95 transition-transform"

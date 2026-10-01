@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+    <rect width="512" height="512" fill="#0B192C" rx="113" />
+    <!-- Outer Orange Glow Ring -->
+    <circle cx="256" cy="256" r="194.56" fill="none" stroke="#FF5500" stroke-width="20.48" opacity="0.9" />
+    <circle cx="256" cy="256" r="174.08" fill="#0B192C" />
+    
+    <!-- Bold Stylized LUMO 'L' & Fast Arrow / Lightning Bolt -->
+    <g transform="translate(143.36, 133.12) scale(3.2)">
+      <!-- Lightning Bolt / Fast Dispatch Arrow -->
+      <path d="M 35 10 L 10 50 L 32 50 L 20 85 L 60 40 L 38 40 Z" fill="#FF5500" />
+      <path d="M 45 25 L 25 58 L 40 58 L 30 85 L 65 48 L 48 48 Z" fill="#FFAA00" opacity="0.6" />
+    </g>
+    
+    <!-- LUMO Text Branding -->
+    <text x="256" y="399.36" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="71.68" fill="#FFFFFF" text-anchor="middle" letter-spacing="2">LUMO</text>
+    <text x="256" y="450.56" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="30.72" fill="#FF5500" text-anchor="middle" letter-spacing="4">MERCHANT</text>
+  </svg>

@@ -21,8 +21,8 @@ export default function RegisterPage() {
     location: '',
   });
 
-  // Flow Step: 'INFO' | 'OTP'
-  const [step, setStep] = useState<'INFO' | 'OTP'>('INFO');
+  // Flow Step: 'INFO' | 'OTP' | 'ONBOARDING'
+  const [step, setStep] = useState<'INFO' | 'OTP' | 'ONBOARDING'>('INFO');
   
   // OTP Verification State
   const [otpCode, setOtpCode] = useState<string>('');
@@ -171,7 +171,8 @@ export default function RegisterPage() {
         }),
       });
 
-      router.push('/dashboard');
+      // Show PWA Onboarding step before navigating to dashboard
+      setStep('ONBOARDING');
     } catch (err: any) {
       setErrorMessage(err.message || 'Registration verification failed.');
     } finally {
@@ -234,12 +235,18 @@ export default function RegisterPage() {
             </div>
 
             <h1 className="text-2xl font-black text-slate-900 font-serif tracking-tight">
-              {step === 'INFO' ? 'Register Operator Business' : 'Phone Number OTP Verification'}
+              {step === 'INFO'
+                ? 'Register Operator Business'
+                : step === 'OTP'
+                ? 'Phone Number OTP Verification'
+                : 'Your LUMO Merchant account is ready.'}
             </h1>
             <p className="text-xs font-medium text-slate-500 mt-1">
               {step === 'INFO'
                 ? 'Set up your merchant profile, 4-digit PIN, and workspace access.'
-                : `Enter the 6-digit SMS code sent to ${form.business_phone} to verify business ownership.`}
+                : step === 'OTP'
+                ? `Enter the 6-digit SMS code sent to ${form.business_phone} to verify business ownership.`
+                : 'Install LUMO Merchant for faster access to your delivery dashboard.'}
             </p>
           </div>
 
@@ -459,6 +466,53 @@ export default function RegisterPage() {
                 <ShieldCheck className="w-4 h-4" />
               </button>
             </form>
+          )}
+
+          {/* STEP 3: POST-REGISTRATION ONBOARDING PWA INSTALL */}
+          {step === 'ONBOARDING' && (
+            <div className="space-y-4 animate-in fade-in duration-200">
+              <div className="p-4 rounded-2xl bg-[#0B192C] text-white border border-[#1F3654] space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#FF5500] text-white flex items-center justify-center font-black text-lg">
+                    ⚡
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-white">LUMO Merchant App</h3>
+                    <p className="text-[11px] text-slate-300">Fast home screen access to dashboard</p>
+                  </div>
+                </div>
+                <div className="space-y-1.5 pt-2 border-t border-white/10 text-xs text-slate-300">
+                  <p className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Instant dispatch & order tracking</span>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Receive real-time driver updates</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-2.5">
+                <button
+                  type="button"
+                  onClick={() => router.push('/dashboard')}
+                  className="w-full py-3.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-extrabold text-xs shadow-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
+                >
+                  <span>Install App</span>
+                  <Sparkles className="w-4 h-4" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => router.push('/dashboard')}
+                  className="w-full py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-2"
+                >
+                  <span>Continue to Dashboard</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
           )}
 
           <div className="mt-5 pt-4 border-t border-slate-200/60 text-center text-xs font-medium text-slate-500">

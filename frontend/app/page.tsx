@@ -15,6 +15,8 @@ import {
 } from '@/components/landing/Sections';
 import { LumoStartupLoader } from '@/components/common/LumoStartupLoader';
 
+import { PWAInstallBanner } from '@/app/components/pwa/PWAInstallBanner';
+
 export default function LandingPage() {
   const [showSplash, setShowSplash] = useState(true);
 
@@ -49,6 +51,11 @@ export default function LandingPage() {
 
         {/* 5. Section 4: Dual Feature Highlight Cards */}
         <DualFeatureCards />
+
+        {/* PWA App Install Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <PWAInstallBanner />
+        </div>
 
         {/* 6. Section 5: Everything you need to keep customers informed */}
         <FeatureGridSection />

@@ -102,22 +102,22 @@ export default function AnalyticsPage() {
       : '';
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-12">
+    <div className="space-y-6 max-w-7xl mx-auto pb-12 overflow-x-hidden">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 text-white p-6 rounded-2xl shadow-xl border border-slate-800">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 bg-slate-900 text-white p-4 sm:p-6 rounded-2xl shadow-xl border border-slate-800 overflow-hidden">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF5500] to-amber-500 flex items-center justify-center text-white shadow-lg shadow-orange-500/20">
-            <BarChart3 className="w-6 h-6" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF5500] to-amber-500 flex items-center justify-center text-white shadow-lg shadow-orange-500/20 shrink-0">
+            <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Interactive Business Analytics</h1>
-            <p className="text-sm text-slate-400">Sales performance, profit margins, fulfillment velocity & growth metrics</p>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Interactive Business Analytics</h1>
+            <p className="text-xs sm:text-sm text-slate-400">Sales performance, profit margins, fulfillment velocity & growth metrics</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* Period Selector */}
-          <div className="flex items-center gap-1 bg-slate-800 p-1 rounded-xl border border-slate-700">
+        <div className="flex items-center justify-between sm:justify-start gap-2 w-full lg:w-auto">
+          {/* Period Selector (Horizontal Scrollable on Mobile) */}
+          <div className="flex items-center gap-1 bg-slate-800/90 p-1 rounded-xl border border-slate-700/80 overflow-x-auto max-w-full no-scrollbar">
             {[
               { id: 'TODAY', label: 'Today' },
               { id: 'YESTERDAY', label: 'Yesterday' },
@@ -128,10 +128,10 @@ export default function AnalyticsPage() {
               <button
                 key={p.id}
                 onClick={() => setRange(p.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition shrink-0 ${
                   range === p.id
-                    ? 'bg-[#FF5500] text-white shadow'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-700'
+                    ? 'bg-[#FF5500] text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-700/60'
                 }`}
               >
                 {p.label}
@@ -141,7 +141,8 @@ export default function AnalyticsPage() {
 
           <button
             onClick={loadData}
-            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl transition border border-slate-700"
+            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl transition border border-slate-700 shrink-0"
+            title="Refresh Data"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>

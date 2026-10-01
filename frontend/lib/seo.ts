@@ -112,6 +112,9 @@ export function constructMetadata({
         },
     authors: [{ name: 'LotusRise Technologies' }],
     publisher: 'LUMO Track',
+    verification: {
+      google: 'google6422a9cd98c76333',
+    },
   };
 
   return metadata;
