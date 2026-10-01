@@ -1,54 +1,429 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg-color: #F8FAFC;
-  --surface-color: #FFFFFF;
-  --primary-color: #1E40AF;
-  --text-main: #0F172A;
-  --text-muted: #64748B;
-  --border-color: #E2E8F0;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
 }
 
-body {
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  -webkit-font-smoothing: antialiased;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
-/* Glassmorphism Surface */
-.glass-surface {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
+/* Glassmorphism utility classes */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
   border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-/* Interactive Touch Keypad Button */
-.keypad-btn {
-  @apply flex items-center justify-center text-xl font-bold rounded-2xl h-14 bg-slate-50 hover:bg-lumo-50 active:bg-lumo-100 text-slate-800 transition-all duration-150 border border-slate-200 shadow-sm active:scale-95 touch-manipulation select-none;
+/* Liquid Water Glassmorphism Card */
+.water-glass-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 
+    0 20px 50px -10px rgba(15, 23, 42, 0.08),
+    0 10px 30px -15px rgba(14, 116, 144, 0.12),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Liquid Ambient Background Animation */
+@keyframes float-liquid-1 {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+@keyframes float-liquid-2 {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(-35px, 25px) scale(1.08); }
+  66% { transform: translate(25px, -30px) scale(0.92); }
+}
+
+.animate-liquid-1 {
+  animation: float-liquid-1 14s ease-in-out infinite;
+}
+
+.animate-liquid-2 {
+  animation: float-liquid-2 18s ease-in-out infinite;
+}
+
+/* Mobile-First Water Touch Keypad Button */
+.water-keypad-btn {
+  @apply flex items-center justify-center text-lg font-serif text-slate-900 rounded-xl h-10 bg-white/95 hover:bg-white active:bg-slate-100/90 transition-all duration-150 border border-slate-200/80 shadow-sm active:scale-95 touch-manipulation select-none cursor-pointer font-semibold;
+}
+
+/* Dark Red Floating Alert Banner */
+.water-alert-banner {
+  background: rgba(58, 12, 16, 0.96);
+  border: 1px solid rgba(136, 19, 26, 0.5);
+  backdrop-filter: blur(12px);
+  color: #fecdd3;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
 }
 
 /* Status Badges */
-.badge-created {
-  @apply bg-blue-50 text-blue-700 border border-blue-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5;
-}
-
-.badge-on_the_way {
-  @apply bg-amber-50 text-amber-700 border border-amber-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5 animate-pulse;
-}
-
-.badge-arrived {
-  @apply bg-purple-50 text-purple-700 border border-purple-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5;
-}
-
 .badge-delivered {
   @apply bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5;
 }
 
+.badge-pending {
+  @apply bg-amber-50 text-amber-700 border border-amber-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5;
+}
+
+.badge-in-transit {
+  @apply bg-sky-50 text-sky-700 border border-sky-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5;
+}
+
 .badge-cancelled {
   @apply bg-rose-50 text-rose-700 border border-rose-200 font-semibold px-2.5 py-1 rounded-full text-xs inline-flex items-center gap-1.5;
+}
+
+/* Water Droplets on Glass Cards */
+.water-droplet {
+  position: absolute;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.3) 50%, rgba(186, 230, 253, 0.2) 80%);
+  box-shadow: 
+    inset 1px 1px 2px rgba(255, 255, 255, 0.95),
+    inset -1px -1px 2px rgba(14, 116, 144, 0.25),
+    1px 2px 4px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(1px);
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+@keyframes drop-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.08); opacity: 0.95; }
+}
+
+.animate-drop-pulse {
+  animation: drop-pulse 4s ease-in-out infinite;
+}
+
+/* Background Flowing Water Drops */
+.bg-water-droplet {
+  position: absolute;
+  border-radius: 50% 50% 70% 70% / 80% 80% 30% 30%;
+  background: radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.95), rgba(186, 230, 253, 0.5) 45%, rgba(14, 116, 144, 0.25) 85%);
+  box-shadow: 
+    inset 1px 1.5px 2px rgba(255, 255, 255, 0.95),
+    inset -1px -2px 3px rgba(14, 116, 144, 0.3),
+    0 4px 12px rgba(14, 116, 144, 0.18);
+  pointer-events: none;
+}
+
+@keyframes drop-flow {
+  0% {
+    transform: translateY(-80px) scale(0.8);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateY(105vh) scale(1.1);
+    opacity: 0;
+  }
+}
+
+.animate-drop-flow-1 {
+  animation: drop-flow 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-drop-flow-2 {
+  animation: drop-flow 14s cubic-bezier(0.4, 0, 0.6, 1) infinite 3.5s;
+}
+
+.animate-drop-flow-3 {
+  animation: drop-flow 11s cubic-bezier(0.4, 0, 0.6, 1) infinite 7s;
+}
+
+.animate-drop-flow-4 {
+  animation: drop-flow 16s cubic-bezier(0.4, 0, 0.6, 1) infinite 1.8s;
+}
+
+.animate-drop-flow-5 {
+  animation: drop-flow 13s cubic-bezier(0.4, 0, 0.6, 1) infinite 5.2s;
+}
+
+/* Smooth Up-and-Down Bounce/Float Animation */
+@keyframes float-bounce {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+.animate-float-bounce {
+  animation: float-bounce 3.5s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   LUMO Admin Light Mode & Dark Mode Styling Rules
+   ========================================================================== */
+.theme-light {
+  color-scheme: light;
+}
+
+.theme-light main {
+  background-color: #f8fafc !important;
+  color: #0f172a;
+}
+
+.theme-light main .bg-slate-900,
+.theme-light main .bg-slate-900\/90,
+.theme-light main .bg-slate-900\/80,
+.theme-light main .bg-slate-900\/40 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+.theme-light main .bg-slate-950,
+.theme-light main .bg-slate-950\/60,
+.theme-light main .bg-slate-950\/80 {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light main .text-white {
+  color: #0f172a !important;
+}
+
+.theme-light main .text-slate-100 {
+  color: #0f172a !important;
+}
+
+.theme-light main .text-slate-200 {
+  color: #1e293b !important;
+}
+
+.theme-light main .text-slate-300 {
+  color: #334155 !important;
+}
+
+.theme-light main .text-slate-400 {
+  color: #475569 !important;
+}
+
+.theme-light main .text-slate-500 {
+  color: #64748b !important;
+}
+
+.theme-light main .border-slate-800,
+.theme-light main .border-slate-800\/80,
+.theme-light main .border-slate-800\/60,
+.theme-light main .border-slate-700 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Ensure Navy Blue Sidebar remains Dark in Light Mode */
+.theme-light aside {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+}
+
+.theme-light aside .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+.theme-light aside .text-white {
+  color: #ffffff !important;
+}
+
+.theme-light aside .bg-slate-900 {
+  background-color: #0f172a !important;
+}
+
+.theme-light aside .border-slate-800,
+.theme-light aside .border-slate-800\/60 {
+  border-color: #1e293b !important;
+}
+
+/* ==========================================================================
+   LUMO Deep Navy Blue & Brand Orange Design System Utilities
+   ========================================================================== */
+.bg-lumo-navy {
+  background-color: #0B192C;
+}
+
+.bg-lumo-card {
+  background-color: #112239;
+}
+
+.bg-lumo-card-dark {
+  background-color: #081220;
+}
+
+.bg-lumo-orange {
+  background-color: #FF5500;
+}
+
+.text-lumo-orange {
+  color: #FF5500;
+}
+
+.border-lumo-navy {
+  border-color: rgba(27, 46, 75, 0.8);
+}
+
+.border-lumo-orange {
+  border-color: rgba(255, 85, 0, 0.4);
+}
+
+/* LUMO Mesh Grid Background Pattern (Deep Navy Blue) */
+.bg-briq-grid,
+.bg-lumo-grid {
+  background-color: #0B192C;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+.bg-lumo-grid-glow {
+  position: relative;
+}
+
+.bg-lumo-grid-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(15, 42, 74, 0.5) 0%, rgba(255, 85, 0, 0.08) 35%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Dark Navy Glass Card */
+.briq-glass-card,
+.lumo-glass-card {
+  background: rgba(17, 34, 57, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.briq-glass-card:hover,
+.lumo-glass-card:hover {
+  border-color: rgba(255, 85, 0, 0.4);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6), 0 0 20px 0 rgba(255, 85, 0, 0.1);
+}
+
+.briq-glass-pill,
+.lumo-glass-pill {
+  background: rgba(17, 34, 57, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 85, 0, 0.3);
+}
+
+/* Vibrant Brand Orange Button */
+.btn-briq-yellow,
+.btn-lumo-orange {
+  background-color: #FF5500;
+  color: #FFFFFF;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-briq-yellow:hover,
+.btn-lumo-orange:hover {
+  background-color: #E04B00;
+  box-shadow: 0 4px 20px rgba(255, 85, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-briq-yellow:active,
+.btn-lumo-orange:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+/* ==========================================================================
+   Infinite Horizontal Marquee Ticker & Mobile App Micro-Interactions
+   ========================================================================== */
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* App-like Hover Lift & Tactile Micro-Interactions */
+.hover-app-card {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-app-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 40px -15px rgba(255, 85, 0, 0.2);
+  border-color: rgba(255, 85, 0, 0.5);
+}
+
+.hover-app-card:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* Shimmer Sheen Light Effect on Hover */
+.shimmer-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 70%
+  );
+  transform: rotate(30deg) translateX(-100%);
+  transition: transform 0.8s ease-in-out;
+}
+
+.shimmer-card:hover::after {
+  transform: rotate(30deg) translateX(100%);
 }

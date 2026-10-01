@@ -1,18 +1,19 @@
 import { z } from 'zod';
 import { isValidPhone, normalizePhone } from '../utils/phone';
 
-export const phoneSchema = z.string().refine(isValidPhone, {
-  message: 'Invalid phone number format. Must be valid Tanzanian phone (e.g., 0712345678, +255712345678).',
-}).transform(normalizePhone);
+export const phoneSchema = z
+  .string()
+  .min(3, 'Phone number is required')
+  .transform(normalizePhone);
 
 export const registerSchema = z.object({
   business_name: z.string().min(2, 'Business name must be at least 2 characters'),
   business_phone: phoneSchema,
   name: z.string().min(2, 'Full name is required'),
-  email: z.string().email('Invalid email address').optional().or(z.literal('')),
-  location: z.string().optional(),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  pin: z.string().length(4, 'PIN must be exactly 4 digits').regex(/^\d{4}$/, 'PIN must be digits only').optional(),
+  email: z.string().email('Invalid email address').optional().or(z.literal('')).nullable(),
+  location: z.string().optional().nullable(),
+  password: z.string().min(4, 'Password must be at least 4 characters'),
+  pin: z.string().optional().or(z.literal('')).nullable(),
 });
 
 export const requestOtpSchema = z.object({
@@ -21,7 +22,34 @@ export const requestOtpSchema = z.object({
 
 export const verifyOtpSchema = z.object({
   phone: phoneSchema,
-  otp: z.string().length(6, 'OTP must be exactly 6 digits').regex(/^\d{6}$/, 'OTP must be digits only'),
+  otp: z.string().min(4, 'OTP must be at least 4 digits'),
+});
+
+export const verifyPinSchema = z.object({
+  phone: phoneSchema,
+  pin: z.string().min(4, 'PIN must be at least 4 digits'),
+});
+
+export const resetPinSchema = z.object({
+  phone: phoneSchema,
+  otp: z.string().min(4, 'OTP must be at least 4 digits'),
+  new_pin: z.string().min(4, 'New PIN must be at least 4 digits'),
+});
+
+export const checkPhoneSchema = z.object({
+  phone: phoneSchema,
+});
+
+export const resetPasswordSchema = z.object({
+  phone: phoneSchema,
+  otp: z.string().min(4, 'OTP code must be at least 4 digits'),
+  new_password: z.string().min(4, 'Password must be at least 4 characters'),
+  new_pin: z.string().optional().nullable(),
+});
+
+export const verifyPasswordSchema = z.object({
+  identifier: z.string().min(2, 'Phone or email is required'),
+  password: z.string().min(1, 'Password is required'),
 });
 
 export const createDeliverySchema = z.object({
@@ -34,9 +62,12 @@ export const createDeliverySchema = z.object({
 
 export const updateBrandingSchema = z.object({
   business_name: z.string().min(2).optional(),
-  logo_url: z.string().url().optional().or(z.literal('')),
+  logo_url: z.string().optional().nullable(),
   brand_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a valid hex color code').optional(),
-  whatsapp_number: z.string().optional(),
+  whatsapp_number: z.string().optional().nullable(),
+  business_phone: z.string().optional(),
+  email: z.string().optional().nullable(),
+  location: z.string().optional().nullable(),
 });
 
 export const replaceDriverSchema = z.object({

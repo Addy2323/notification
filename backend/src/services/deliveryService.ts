@@ -29,7 +29,7 @@ export async function createDelivery(data: CreateDeliveryDTO) {
   const driverUrl = `${config.frontendUrl}/driver/${driverToken}`;
 
   // Execute in transaction
-  const delivery = await prisma.$transaction(async (tx) => {
+  const delivery = await prisma.$transaction(async (tx: any) => {
     const newDelivery = await tx.delivery.create({
       data: {
         merchant_id: data.merchantId,
@@ -211,7 +211,7 @@ export async function updateDriverState(driverToken: string, targetState: 'ON_TH
   if (targetState === 'DELIVERED') updateData.delivered_at = now;
 
   // Execute transactionally
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: any) => {
     const updated = await tx.delivery.update({
       where: { id: delivery.id },
       data: updateData,
@@ -265,7 +265,7 @@ export async function cancelDelivery(merchantId: string, userId: string, deliver
     throw new Error('Completed deliveries cannot be cancelled.');
   }
 
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: any) => {
     const updated = await tx.delivery.update({
       where: { id: delivery.id },
       data: { status: 'CANCELLED' },

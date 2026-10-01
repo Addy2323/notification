@@ -49,30 +49,43 @@ export class MesejiSMSAdapter implements INotificationAdapter {
 
       console.log(`[MesejiSMS] Sending SMS to ${formattedRecipient} via Meseji API...`);
 
-      const response = await fetch(this.apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': this.apiKey,
-        },
-        body: JSON.stringify(payload),
-      });
+      // 10-second timeout to prevent infinite hangs when Meseji API is unreachable
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
 
-      const responseData = await response.json().catch(() => ({}));
+      try {
+        const response = await fetch(this.apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': this.apiKey,
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
 
-      if (response.ok && (responseData.status === 'success' || responseData.code === 200 || responseData.batch_id)) {
-        console.log(`[MesejiSMS Success] Sent to ${formattedRecipient}: batch_id=${responseData.batch_id || 'ok'}`);
-        return { success: true, messageId: responseData.batch_id || 'sent' };
-      } else {
-        const errorMsg = responseData.error || responseData.message || `Failed with status ${response.status}`;
-        console.warn(`[MesejiSMS Fallback] ${errorMsg}. Falling back to Simulated SMS Mode for testing.`);
-        console.log(`[SIMULATED SMS] To: ${formattedRecipient} | Content: "${message}"`);
-        return { success: true, messageId: `simulated_${Date.now()}` };
+        clearTimeout(timeout);
+        const responseData = await response.json().catch(() => ({}));
+
+        if (response.ok && (responseData.status === 'success' || responseData.code === 200 || responseData.batch_id)) {
+          console.log(`[MesejiSMS Success] Sent to ${formattedRecipient}: batch_id=${responseData.batch_id || 'ok'}`);
+          return { success: true, messageId: responseData.batch_id || 'sent' };
+        } else {
+          const errorMsg = responseData.error || responseData.message || `Failed with status ${response.status}`;
+          console.warn(`[MesejiSMS Failed] ${errorMsg}`);
+          return { success: false, error: `SMS gateway error: ${errorMsg}` };
+        }
+      } catch (fetchErr: any) {
+        clearTimeout(timeout);
+        throw fetchErr;
       }
     } catch (err: any) {
-      console.warn(`[MesejiSMS Exception] ${err.message}. Falling back to Simulated SMS Mode.`);
-      console.log(`[SIMULATED SMS] To: ${recipient} | Content: "${message}"`);
-      return { success: true, messageId: `simulated_${Date.now()}` };
+      const isTimeout = err.name === 'AbortError';
+      const errorMsg = isTimeout
+        ? 'SMS gateway timed out (Meseji API unreachable). Please try again later.'
+        : `SMS delivery failed: ${err.message}`;
+      console.error(`[MesejiSMS Error] ${errorMsg}`);
+      return { success: false, error: errorMsg };
     }
   }
 }
