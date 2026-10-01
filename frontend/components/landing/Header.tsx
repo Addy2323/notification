@@ -18,16 +18,10 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-6 xl:gap-8 font-semibold text-xs text-[#A0B8D0]">
+        <nav className="hidden lg:flex items-center gap-6 xl:gap-8 font-semibold text-[#A0B8D0]">
           <Link href="/features" className="hover:text-white transition-colors py-2">Features</Link>
-          <Link href="/delivery-tracking" className="hover:text-white transition-colors py-2">Tracking</Link>
-          <Link href="/sms-notifications" className="hover:text-white transition-colors py-2">SMS Alerts</Link>
-          <Link href="/how-it-works" className="hover:text-white transition-colors py-2">How It Works</Link>
-          <Link href="/pricing" className="hover:text-white transition-colors py-2">Pricing</Link>
+          <Link href="/contact" className="hover:text-white transition-colors py-2">Contact Us</Link>
           <Link href="/about" className="hover:text-white transition-colors py-2">About Us</Link>
-          <Link href="/contact" className="hover:text-white transition-colors py-2">Contact</Link>
-          <Link href="/faq" className="hover:text-white transition-colors py-2">FAQ</Link>
-          <Link href="/sw" className="px-2 py-0.5 rounded bg-slate-800 text-amber-400 font-bold hover:bg-slate-700">SW</Link>
         </nav>
 
         {/* Right Desktop Action Buttons */}
