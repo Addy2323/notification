@@ -2,7 +2,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/@prisma/client"
 }
 
 datasource db {
@@ -121,6 +120,7 @@ model Order {
   customer_phone      String
   delivery_address    String
   product_name        String
+  image_url           String?
   amount              Decimal?        @db.Decimal(12, 2)
   total_revenue       Decimal?        @db.Decimal(12, 2)
   total_cost          Decimal?        @db.Decimal(12, 2)

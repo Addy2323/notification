@@ -240,9 +240,17 @@ export default function PublicCustomerTrackingPortal() {
         {/* Product & Address Box */}
         <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-3">
           <div className="flex items-start gap-3">
-            <div className="p-2 rounded-xl bg-teal-50 text-teal-700 shrink-0">
-              <Package className="w-5 h-5" />
-            </div>
+            {delivery?.image_url ? (
+              <img
+                src={delivery.image_url}
+                alt={delivery.product_description}
+                className="w-14 h-14 rounded-2xl object-cover border border-slate-200 shadow-sm shrink-0"
+              />
+            ) : (
+              <div className="p-2.5 rounded-xl bg-teal-50 text-teal-700 shrink-0">
+                <Package className="w-5 h-5" />
+              </div>
+            )}
             <div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Item Purchased</p>
               <h3 className="font-extrabold text-base text-slate-900">{delivery?.product_description}</h3>

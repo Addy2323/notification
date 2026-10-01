@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { fetchApi } from '@/lib/api';
 import {
   Search, Plus, Filter, ChevronDown, Package, Clock, CheckCircle2, Truck, MapPin, XCircle,
-  ArrowRight, RefreshCw, ShoppingBag, User, Phone, AlertCircle, X, Users, Check
+  ArrowRight, RefreshCw, ShoppingBag, User, Phone, AlertCircle, X, Users, Check, Camera, Image as ImageIcon, Trash2, Upload
 } from 'lucide-react';
 
 interface Order {
@@ -14,6 +14,7 @@ interface Order {
   customer_name: string;
   customer_phone: string;
   product_name: string;
+  image_url?: string | null;
   amount: string | null;
   status: string;
   driver_name: string | null;
@@ -56,11 +57,45 @@ export default function OrdersPage() {
   const [showNewDriver, setShowNewDriver] = useState(false);
   const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', delivery_address: '' });
   const [newDriver, setNewDriver] = useState({ name: '', phone: '' });
-  const [orderForm, setOrderForm] = useState({ productName: '', amount: '', deliveryAddress: '' });
+  const [orderForm, setOrderForm] = useState({ productName: '', imageUrl: '', amount: '', deliveryAddress: '' });
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [modalError, setModalError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const maxDim = 800;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height && width > maxDim) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else if (height > maxDim) {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+        setOrderForm(f => ({ ...f, imageUrl: dataUrl }));
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
 
   const loadOrders = useCallback(async () => {
     setLoading(true);
@@ -164,6 +199,7 @@ export default function OrdersPage() {
           customerPhone: cust.phone,
           deliveryAddress: orderForm.deliveryAddress,
           productName: orderForm.productName,
+          imageUrl: orderForm.imageUrl || undefined,
           amount: orderForm.amount || undefined,
           driverId: drv?.id,
           driverName: drv?.name,
@@ -186,7 +222,7 @@ export default function OrdersPage() {
   const resetCreateForm = () => {
     setSelectedCustomer(null);
     setSelectedDriver(null);
-    setOrderForm({ productName: '', amount: '', deliveryAddress: '' });
+    setOrderForm({ productName: '', imageUrl: '', amount: '', deliveryAddress: '' });
     setCustomerSearch('');
     setNewCustomer({ name: '', phone: '', delivery_address: '' });
     setNewDriver({ name: '', phone: '' });
@@ -303,7 +339,25 @@ export default function OrdersPage() {
                         <p className="font-bold text-slate-800">{order.customer_name}</p>
                         <p className="text-slate-400 font-medium">{order.customer_phone}</p>
                       </td>
-                      <td className="px-4 py-3 font-semibold text-slate-700">{order.product_name}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2.5">
+                          {order.image_url ? (
+                            <img
+                              src={order.image_url}
+                              alt={order.product_name}
+                              className="w-9 h-9 rounded-lg object-cover border border-slate-200 shrink-0 shadow-sm"
+                            />
+                          ) : (
+                            <div className="w-9 h-9 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 text-slate-400">
+                              <Package className="w-4 h-4" />
+                            </div>
+                          )}
+                          <div>
+                            <p className="font-semibold text-slate-800 leading-tight">{order.product_name}</p>
+                            {order.amount && <p className="text-[10px] font-mono text-slate-500 font-semibold">TSh {order.amount}</p>}
+                          </div>
+                        </div>
+                      </td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg border text-[10px] font-bold ${statusCfg.bg} ${statusCfg.color}`}>
                           <StatusIcon className="w-3 h-3" />
@@ -430,6 +484,60 @@ export default function OrdersPage() {
                   onChange={e => setOrderForm(f => ({ ...f, productName: e.target.value }))}
                   className="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/20"
                 />
+              </div>
+
+              {/* PRODUCT PHOTO UPLOAD SECTION */}
+              <div className="space-y-1.5">
+                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                  Product / Parcel Photo (Optional)
+                </label>
+
+                {orderForm.imageUrl ? (
+                  <div className="relative rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 overflow-hidden">
+                      <img
+                        src={orderForm.imageUrl}
+                        alt="Product preview"
+                        className="w-14 h-14 rounded-lg object-cover border border-emerald-300 shadow-sm shrink-0"
+                      />
+                      <div>
+                        <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                          <Check className="w-3 h-3" /> Photo Attached
+                        </span>
+                        <p className="text-[11px] font-semibold text-slate-600 mt-0.5 truncate">Ready for dispatch tracking</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setOrderForm(f => ({ ...f, imageUrl: '' }))}
+                      className="p-2 rounded-lg bg-white hover:bg-rose-50 border border-slate-200 text-slate-400 hover:text-rose-600 transition-colors shrink-0"
+                      title="Remove image"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <label className="flex flex-col items-center justify-center gap-1.5 p-4 rounded-xl border-2 border-dashed border-slate-200 hover:border-teal-500 bg-slate-50/50 hover:bg-teal-50/30 transition-all cursor-pointer group text-center">
+                    <div className="w-9 h-9 rounded-full bg-white border border-slate-200 text-slate-400 group-hover:text-teal-600 group-hover:border-teal-300 flex items-center justify-center transition-colors shadow-sm">
+                      <Camera className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-700 group-hover:text-teal-700">
+                        Upload Product Photo
+                      </p>
+                      <p className="text-[10px] text-slate-400 font-medium">
+                        Take a photo or choose from device
+                      </p>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={handleImageSelect}
+                      className="hidden"
+                    />
+                  </label>
+                )}
               </div>
 
               {/* AMOUNT */}

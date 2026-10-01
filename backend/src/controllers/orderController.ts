@@ -4,7 +4,7 @@ import { sendSuccess, sendError } from '../utils/response';
 
 export async function createOrder(req: Request, res: Response) {
   try {
-    const { customerName, customerPhone, deliveryAddress, productName, amount, customerId, driverId, driverName, driverPhone } = req.body;
+    const { customerName, customerPhone, deliveryAddress, productName, imageUrl, amount, customerId, driverId, driverName, driverPhone } = req.body;
 
     if (!customerName || !customerPhone || !deliveryAddress || !productName) {
       return sendError(res, 'VALIDATION_ERROR', 'Customer name, phone, delivery address, and product name are required', 400);
@@ -18,6 +18,7 @@ export async function createOrder(req: Request, res: Response) {
       customerPhone,
       deliveryAddress,
       productName,
+      imageUrl,
       amount: amount ? parseFloat(amount) : undefined,
       driverId,
       driverName,

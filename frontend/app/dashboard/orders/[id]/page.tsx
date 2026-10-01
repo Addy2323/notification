@@ -15,6 +15,7 @@ interface OrderDetail {
   customer_phone: string;
   delivery_address: string;
   product_name: string;
+  image_url?: string | null;
   amount: string | null;
   status: string;
   driver_name: string | null;
@@ -261,12 +262,20 @@ export default function OrderDetailPage() {
           </div>
 
           {/* Product Info */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Product</h3>
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3">
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Product</h3>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center">
-                <Package className="w-4 h-4 text-indigo-700" />
-              </div>
+              {order.image_url ? (
+                <img
+                  src={order.image_url}
+                  alt={order.product_name}
+                  className="w-14 h-14 rounded-xl object-cover border border-slate-200 shadow-sm shrink-0"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center shrink-0">
+                  <Package className="w-4 h-4 text-indigo-700" />
+                </div>
+              )}
               <div>
                 <p className="text-sm font-bold text-slate-900">{order.product_name}</p>
                 {order.amount && <p className="text-xs font-semibold text-slate-500">TZS {Number(order.amount).toLocaleString()}</p>}

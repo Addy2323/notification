@@ -30,6 +30,7 @@ export interface CreateOrderDTO {
   customerPhone: string;
   deliveryAddress: string;
   productName: string;
+  imageUrl?: string;
   amount?: number;
   driverId?: string;
   driverName?: string;
@@ -127,6 +128,7 @@ export async function createOrder(data: CreateOrderDTO) {
         customer_phone: data.customerPhone,
         delivery_address: data.deliveryAddress,
         product_name: data.productName,
+        image_url: data.imageUrl || null,
         amount: finalAmount,
         total_revenue: totalRevenue,
         total_cost: totalCost > 0 ? totalCost : null,

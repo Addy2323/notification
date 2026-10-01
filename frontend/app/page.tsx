@@ -16,6 +16,7 @@ import {
 import { LumoStartupLoader } from '@/components/common/LumoStartupLoader';
 
 import { PWAInstallBanner } from '@/app/components/pwa/PWAInstallBanner';
+import { PWAAutoPrompt } from '@/app/components/pwa/PWAAutoPrompt';
 
 export default function LandingPage() {
   const [showSplash, setShowSplash] = useState(true);
@@ -69,6 +70,9 @@ export default function LandingPage() {
 
       {/* 9. Footer */}
       <Footer />
+
+      {/* Automatic Floating Visitor PWA Download Prompt */}
+      <PWAAutoPrompt />
     </div>
   );
 }
