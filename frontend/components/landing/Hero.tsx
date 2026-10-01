@@ -8,40 +8,40 @@ const SLIDES = [
   {
     id: 1,
     image: '/IMAGES/1.png',
-    eyebrow: 'AUTOMATED DELIVERY NOTIFICATIONS',
-    tagline: 'INSTANT SMS DISPATCH & WEB PORTAL',
-    headline: 'Delivery Notifications & Real-Time Web Tracking',
-    subheadline: 'Automated Customer Dispatch Platform',
-    description: 'Automated SMS and WhatsApp notifications with branded tracking web links for your customers from order creation to doorstep handover — no app download required.',
-    features: ['Instant SMS Updates', 'WhatsApp Integration', 'No Customer App Required']
+    eyebrow: 'DELIVERY TRACKING & NOTIFICATIONS IN TANZANIA',
+    tagline: 'AUTOMATED DISPATCH & APP-FREE CONSUMER PORTAL',
+    headline: 'Delivery Tracking & Notifications for Tanzanian Businesses',
+    subheadline: 'Keep Customers Informed From Dispatch to Doorstep',
+    description: 'Keep customers informed from dispatch to delivery with automated SMS, WhatsApp updates and a simple web tracking portal — no customer app required.',
+    features: ['Instant SMS Delivery Updates', 'WhatsApp Notifications', 'No App Download Required']
   },
   {
     id: 2,
     image: '/IMAGES/3.png',
-    eyebrow: 'REAL-TIME DISPATCH UPDATES',
-    tagline: 'ACCURATE STATUS & DIRECT DRIVER CALLS',
-    headline: 'Automated SMS Alerts & Real-Time Web Tracking',
-    subheadline: 'Zero-Install Delivery Status Sharing',
-    description: 'Keep customers updated effortlessly. Drivers update delivery progress right from their mobile browser, triggering instant customer SMS notifications and direct phone connectivity.',
-    features: ['Instant SMS Alerts', 'Direct Phone Call Link', 'Instant Web Tracking']
+    eyebrow: 'REAL-TIME DISPATCH UPDATES IN TANZANIA',
+    tagline: 'ACCURATE STATUS & DIRECT DRIVER CONNECTIVITY',
+    headline: 'SMS Delivery Notifications & Live Web Tracking',
+    subheadline: 'Zero-Install Delivery Tracking Software',
+    description: 'Keep customers updated effortlessly. Drivers update delivery progress right from their mobile browser, triggering instant SMS notifications and direct phone connectivity.',
+    features: ['Instant SMS Alerts', 'Direct Driver Call Link', 'Instant Web Tracking']
   },
   {
     id: 3,
     image: '/IMAGES/4.png',
-    eyebrow: 'WHATSAPP BUSINESS AUTOMATION',
-    tagline: 'INTERACTIVE MESSAGING & BRANDING',
-    headline: 'Branded WhatsApp Dispatch & Media Alerts',
-    subheadline: 'Direct Customer Engagement Channel',
-    description: 'Send rich WhatsApp notification cards with your shop logo, order summary, and dynamic "Track Package" buttons for maximum trust.',
-    features: ['Verified WhatsApp Bot', 'Custom Shop Branding', 'One-Click Live Web Tracking']
+    eyebrow: 'WHATSAPP DISPATCH AUTOMATION',
+    tagline: 'INTERACTIVE MESSAGING & MERCHANT BRANDING',
+    headline: 'Branded WhatsApp Notifications & Tracking',
+    subheadline: 'Direct Customer Delivery Communication',
+    description: 'Send rich WhatsApp notification cards with your merchant shop logo, order summary, and dynamic "Track Package" buttons for maximum trust.',
+    features: ['Verified WhatsApp Alerts', 'Custom Merchant Branding', 'One-Click Web Tracking']
   },
   {
     id: 4,
     image: '/IMAGES/5.png',
-    eyebrow: 'SECURE OTP DELIVERY PROOF',
-    tagline: 'FRAUD PREVENTION & CONFIRMATION',
+    eyebrow: 'SECURE OTP HANDOVER PROOF',
+    tagline: 'FRAUD PREVENTION & DELIVERY VERIFICATION',
     headline: 'OTP Delivery Verification & Order Handover',
-    subheadline: 'Foolproof Package Receipt Protocol',
+    subheadline: 'Secure Package Receipt Protocol for Tanzania',
     description: 'Ensure 100% successful handovers. Drivers confirm delivery completion on-site using secure customer 4-digit PIN verification codes.',
     features: ['4-Digit PIN Code', 'Instant Receipt SMS', 'Automated Ledger Sync']
   }

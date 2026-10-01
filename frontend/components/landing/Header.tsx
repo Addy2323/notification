@@ -17,26 +17,17 @@ export function Header() {
           <LumoLogo size={36} textColor="text-white" />
         </Link>
 
-        {/* Desktop Navigation Links (Features, About Us, Contact) */}
-        <nav className="hidden md:flex items-center gap-8 lg:gap-10 font-semibold text-sm text-[#A0B8D0]">
-          <Link 
-            href="/#features" 
-            className="hover:text-white transition-colors py-2 relative after:absolute after:bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-[#FF5500] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left"
-          >
-            Features
-          </Link>
-          <Link 
-            href="/about" 
-            className="hover:text-white transition-colors py-2 relative after:absolute after:bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-[#FF5500] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left"
-          >
-            About Us
-          </Link>
-          <Link 
-            href="/contact" 
-            className="hover:text-white transition-colors py-2 relative after:absolute after:bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-[#FF5500] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left"
-          >
-            Contact
-          </Link>
+        {/* Desktop Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-6 xl:gap-8 font-semibold text-xs text-[#A0B8D0]">
+          <Link href="/features" className="hover:text-white transition-colors py-2">Features</Link>
+          <Link href="/delivery-tracking" className="hover:text-white transition-colors py-2">Tracking</Link>
+          <Link href="/sms-notifications" className="hover:text-white transition-colors py-2">SMS Alerts</Link>
+          <Link href="/how-it-works" className="hover:text-white transition-colors py-2">How It Works</Link>
+          <Link href="/pricing" className="hover:text-white transition-colors py-2">Pricing</Link>
+          <Link href="/about" className="hover:text-white transition-colors py-2">About Us</Link>
+          <Link href="/contact" className="hover:text-white transition-colors py-2">Contact</Link>
+          <Link href="/faq" className="hover:text-white transition-colors py-2">FAQ</Link>
+          <Link href="/sw" className="px-2 py-0.5 rounded bg-slate-800 text-amber-400 font-bold hover:bg-slate-700">SW</Link>
         </nav>
 
         {/* Right Desktop Action Buttons */}

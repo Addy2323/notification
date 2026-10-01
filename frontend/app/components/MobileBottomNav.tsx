@@ -21,11 +21,11 @@ export function MobileBottomNav({ type = 'merchant', unreadCount = 0 }: MobileBo
   const pathname = usePathname();
 
   const merchantItems: NavItem[] = [
-    { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Orders', href: '/dashboard/orders', icon: ShoppingBag },
     { name: 'Deliveries', href: '/dashboard/deliveries', icon: Truck },
-    { name: 'Alerts', href: '/dashboard/notifications', icon: Bell, badge: unreadCount },
-    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+    { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+    { name: 'More', href: '/dashboard/settings', icon: Settings },
   ];
 
   const adminItems: NavItem[] = [
