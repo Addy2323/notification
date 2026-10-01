@@ -43,8 +43,7 @@ export function usePWAInstall(): PWAInstallState {
     // 2. Detect Standalone / Already Installed Mode
     const isStandalone =
       window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as any).standalone === true ||
-      document.referrer.includes('android-app://');
+      (window.navigator as any).standalone === true;
 
     setIsInstalled(isStandalone);
 
@@ -52,14 +51,15 @@ export function usePWAInstall(): PWAInstallState {
       trackAnalytics('launch_standalone');
     }
 
-    // 3. Detect iOS / Safari
-    const ua = window.navigator.userAgent;
-    const iosDevice = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream;
+    // 3. Detect iOS / Safari (iPhone, iPad, iPod)
+    const ua = window.navigator.userAgent || '';
+    const platform = window.navigator.platform || '';
+    const iosDevice = /iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(platform) && navigator.maxTouchPoints > 1);
     setIsIOS(iosDevice);
 
-    // 4. Check localStorage for dismissal
-    const dismissed = localStorage.getItem('lumo_pwa_dismissed') === 'true';
-    setIsDismissed(dismissed);
+    // 4. Dismissal tracking (Session-based, not permanent block)
+    const sessionDismissed = sessionStorage.getItem('lumo_pwa_dismissed') === 'true';
+    setIsDismissed(sessionDismissed);
 
     // 5. Catch beforeinstallprompt Event (Chrome / Edge / Android)
     const handleBeforeInstallPrompt = (e: Event) => {
@@ -90,9 +90,6 @@ export function usePWAInstall(): PWAInstallState {
     trackAnalytics('install_cta_clicked');
 
     if (!deferredPrompt) {
-      if (isIOS) {
-        return false;
-      }
       return false;
     }
 
@@ -113,13 +110,13 @@ export function usePWAInstall(): PWAInstallState {
       console.error('[PWA Install Prompt Error]', err);
       return false;
     }
-  }, [deferredPrompt, isIOS, trackAnalytics]);
+  }, [deferredPrompt, trackAnalytics]);
 
-  // Dismiss Install Prompt
+  // Dismiss Install Prompt (session based)
   const dismissInstall = useCallback(() => {
     setIsDismissed(true);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('lumo_pwa_dismissed', 'true');
+      sessionStorage.setItem('lumo_pwa_dismissed', 'true');
     }
     trackAnalytics('install_dismissed');
   }, [trackAnalytics]);

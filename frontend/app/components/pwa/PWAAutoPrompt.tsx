@@ -11,15 +11,13 @@ export function PWAAutoPrompt() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // Check if user dismissed prompt in this session
     if (typeof window === 'undefined') return;
-    const sessionDismissed = sessionStorage.getItem('lumo_pwa_prompt_dismissed') === 'true';
 
-    // Show prompt automatically after 800ms on first load if not installed & not dismissed in session
-    if (!isInstalled && !sessionDismissed) {
+    // Show prompt automatically after 300ms on first load if not installed
+    if (!isInstalled) {
       const timer = setTimeout(() => {
         setIsVisible(true);
-      }, 800);
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [isInstalled]);
@@ -27,53 +25,54 @@ export function PWAAutoPrompt() {
   if (!isVisible || isInstalled) return null;
 
   const handleInstall = async () => {
-    const outcome = await promptInstall();
-    if (!outcome) {
-      // If native prompt is not supported (or on iOS), open guidance modal
+    try {
+      const outcome = await promptInstall();
+      if (!outcome) {
+        // Open visual installation modal if native dialog is unavailable (or on iOS)
+        setShowModal(true);
+      }
+    } catch {
       setShowModal(true);
     }
   };
 
   const handleClose = () => {
     setIsVisible(false);
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('lumo_pwa_prompt_dismissed', 'true');
-    }
     dismissInstall();
   };
 
   return (
     <>
-      {/* Floating Bottom Auto Prompt Bar */}
-      <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md z-[120] animate-in slide-in-from-bottom-6 duration-500">
-        <div className="relative overflow-hidden rounded-2xl bg-[#0B192C]/95 backdrop-blur-xl border border-[#FF5500]/40 p-4 sm:p-5 shadow-2xl text-white">
-          {/* Subtle Orange Glow */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF5500]/20 rounded-full blur-2xl pointer-events-none" />
+      {/* Floating Bottom Auto Prompt Bar for Mobile & Desktop */}
+      <div className="fixed bottom-3 left-3 right-3 md:left-auto md:right-6 md:bottom-6 md:max-w-md z-[99999] animate-in slide-in-from-bottom-8 duration-500">
+        <div className="relative overflow-hidden rounded-2xl bg-[#0B192C] border-2 border-[#FF5500] p-4 shadow-2xl text-white">
+          {/* Ambient Glow */}
+          <div className="absolute top-0 right-0 w-36 h-36 bg-[#FF5500]/25 rounded-full blur-2xl pointer-events-none" />
 
-          <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start justify-between gap-3 relative z-10">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#FF5500] to-[#E04B00] text-white flex items-center justify-center font-black text-xl shadow-lg shrink-0 animate-bounce-subtle">
-                <Zap className="w-6 h-6 fill-white stroke-none" />
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FF5500] to-[#E04B00] text-white flex items-center justify-center font-black text-xl shadow-xl shrink-0">
+                ⚡
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-black tracking-wider uppercase text-[#FF5500]">LUMO APP</span>
-                  <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">
-                    <Sparkles className="w-3 h-3" /> FREE
+                  <span className="text-[10px] font-black tracking-widest uppercase text-[#FF5500]">LUMO MERCHANT APP</span>
+                  <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-extrabold">
+                    <Sparkles className="w-2.5 h-2.5" /> FREE
                   </span>
                 </div>
-                <h3 className="text-sm sm:text-base font-extrabold text-white leading-tight">
+                <h3 className="text-base font-black text-white leading-tight">
                   Download LUMO App
                 </h3>
                 <p className="text-xs text-slate-300 font-medium mt-0.5">
-                  Instant 1-tap access on your device screen
+                  Install for 1-tap fast access on your phone
                 </p>
               </div>
             </div>
 
             <button
               onClick={handleClose}
-              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-400 hover:text-white transition-colors shrink-0"
+              className="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-400 hover:text-white transition-colors shrink-0"
               aria-label="Close app install banner"
             >
               <X className="w-4 h-4" />
@@ -81,20 +80,20 @@ export function PWAAutoPrompt() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2 mt-4 pt-3 border-t border-slate-800">
+          <div className="flex items-center gap-2 mt-3.5 pt-3 border-t border-white/10 relative z-10">
             <button
               onClick={handleInstall}
-              className="flex-1 py-2.5 px-4 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
+              className="flex-1 py-3 px-4 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-black text-xs shadow-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
             >
               <Download className="w-4 h-4" />
-              <span>{isIOS ? 'Install on iOS' : 'Install / Download App'}</span>
+              <span>{isIOS ? 'Install on iPhone / iOS' : 'Install / Download App'}</span>
             </button>
 
             <button
               onClick={handleClose}
-              className="py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 font-bold text-xs transition-all shrink-0"
+              className="py-3 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 font-bold text-xs transition-all shrink-0"
             >
-              Later
+              Close
             </button>
           </div>
         </div>
