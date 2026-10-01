@@ -6,35 +6,39 @@ import { usePWAInstall } from '@/hooks/usePWAInstall';
 import { PWAInstallModal } from '@/app/components/pwa/PWAInstallModal';
 
 export function PWAAutoPrompt() {
-  const { isInstalled, canInstall, isIOS, isDismissed, promptInstall, dismissInstall } = usePWAInstall();
+  const { isInstalled, isIOS, promptInstall, dismissInstall } = usePWAInstall();
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // Show automatically after 1.5 seconds if app is not installed and not dismissed
-    if (!isInstalled && !isDismissed) {
+    // Check if user dismissed prompt in this session
+    if (typeof window === 'undefined') return;
+    const sessionDismissed = sessionStorage.getItem('lumo_pwa_prompt_dismissed') === 'true';
+
+    // Show prompt automatically after 800ms on first load if not installed & not dismissed in session
+    if (!isInstalled && !sessionDismissed) {
       const timer = setTimeout(() => {
         setIsVisible(true);
-      }, 1500);
+      }, 800);
       return () => clearTimeout(timer);
     }
-  }, [isInstalled, isDismissed]);
+  }, [isInstalled]);
 
-  if (!isVisible || isInstalled || isDismissed) return null;
+  if (!isVisible || isInstalled) return null;
 
   const handleInstall = async () => {
-    if (canInstall) {
-      const outcome = await promptInstall();
-      if (!outcome && isIOS) {
-        setShowModal(true);
-      }
-    } else {
+    const outcome = await promptInstall();
+    if (!outcome) {
+      // If native prompt is not supported (or on iOS), open guidance modal
       setShowModal(true);
     }
   };
 
   const handleClose = () => {
     setIsVisible(false);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('lumo_pwa_prompt_dismissed', 'true');
+    }
     dismissInstall();
   };
 
