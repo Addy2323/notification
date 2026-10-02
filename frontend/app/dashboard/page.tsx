@@ -204,49 +204,57 @@ export default function DashboardOverviewPage() {
         </Link>
       </div>
 
-      {/* HERO BANNER MATCHING USER IMAGE (Dark Navy Card + Slogan + Status Pills) */}
-      <div className="relative rounded-3xl bg-[#0B192C] text-white shadow-xl overflow-hidden border border-[#1F3654] p-6 sm:p-8 space-y-6">
-        {/* Top Section: Orange Pill + Title + Right Calligraphic Slogan */}
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div className="space-y-3 max-w-xl">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF5500] text-white text-[10px] font-black uppercase tracking-wider shadow-sm">
-              <span className="text-xs">▶</span> LUMO DISPATCH ENGINE
-            </span>
+      {/* HERO BANNER MATCHING USER IMAGE (Dark Navy Card + Background Image + Slogan + Status Pills) */}
+      <div
+        className="relative rounded-3xl bg-[#0B192C] text-white shadow-xl overflow-hidden border border-[#1F3654] p-6 sm:p-8 space-y-6 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url('/tanzania_skyline.png')` }}
+      >
+        {/* Dark overlay for contrast & readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B192C]/95 via-[#0B192C]/85 to-[#0B192C]/65 backdrop-blur-[1px] pointer-events-none" />
 
-            <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-              All Dispatches & Operations
-            </h1>
+        <div className="relative z-10 space-y-6">
+          {/* Top Section: Orange Pill + Title + Right Calligraphic Slogan */}
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div className="space-y-3 max-w-xl">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF5500] text-white text-[10px] font-black uppercase tracking-wider shadow-sm">
+                <span className="text-xs">▶</span> LUMO DISPATCH ENGINE
+              </span>
 
-            <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
-              Browse every verified delivery, driver assignment, and real-time SMS tracking update across Tanzania in one place.
-            </p>
+              <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
+                All Dispatches & Operations
+              </h1>
+
+              <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
+                Browse every verified delivery, driver assignment, and real-time SMS tracking update across Tanzania in one place.
+              </p>
+            </div>
+
+            {/* Right Calligraphic Slogan (Matching Screenshot Signature) */}
+            <div className="hidden sm:flex flex-col items-end text-right shrink-0 pt-2">
+              <span className="text-xl sm:text-2xl font-serif italic text-white/90 font-bold drop-shadow-xs">
+                Deliveries Build
+              </span>
+              <span className="text-2xl sm:text-3xl font-serif italic text-[#FF5500] font-black drop-shadow-xs">
+                a Brighter Tanzania
+              </span>
+            </div>
           </div>
 
-          {/* Right Calligraphic Slogan (Matching Screenshot Signature) */}
-          <div className="hidden sm:flex flex-col items-end text-right shrink-0 pt-2">
-            <span className="text-xl sm:text-2xl font-serif italic text-white/90 font-bold drop-shadow-xs">
-              Deliveries Build
+          {/* Status Pills Row (Matching Image Style) */}
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/10">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              {deliveredCount} verified deliveries
             </span>
-            <span className="text-2xl sm:text-3xl font-serif italic text-[#FF5500] font-black drop-shadow-xs">
-              a Brighter Tanzania
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/30 text-xs font-semibold">
+              <MapPin className="w-3.5 h-3.5 text-[#FF5500]" />
+              All Tanzania regions
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/30 text-xs font-semibold">
+              <User className="w-3.5 h-3.5 text-blue-400" />
+              Real-time SMS dispatches
             </span>
           </div>
-        </div>
-
-        {/* Status Pills Row (Matching Image Style) */}
-        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/10">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            {deliveredCount} verified deliveries
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/30 text-xs font-semibold">
-            <MapPin className="w-3.5 h-3.5 text-[#FF5500]" />
-            All Tanzania regions
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/30 text-xs font-semibold">
-            <User className="w-3.5 h-3.5 text-blue-400" />
-            Real-time SMS dispatches
-          </span>
         </div>
       </div>
 
