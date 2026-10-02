@@ -11,6 +11,7 @@ import productRoutes from './productRoutes';
 import salesRoutes from './salesRoutes';
 import analyticsRoutes from './analyticsRoutes';
 import reportRoutes from './reportRoutes';
+import trackingAnalyticsRoutes from './trackingAnalyticsRoutes';
 
 const router = Router();
 
@@ -26,5 +27,6 @@ router.use('/products', productRoutes);
 router.use('/sales', salesRoutes);
 router.use('/analytics', analyticsRoutes);
 router.use('/reports', reportRoutes);
+router.use('/track', trackingAnalyticsRoutes);
 
 export default router;

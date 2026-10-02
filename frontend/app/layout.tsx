@@ -5,6 +5,7 @@ import {
   generateOrganizationSchema,
   generateSoftwareApplicationSchema,
 } from '@/lib/seo';
+import PageTracker from '@/components/PageTracker';
 
 export const metadata: Metadata = constructMetadata({
   title: 'LUMO Track | Delivery Tracking & SMS Notifications in Tanzania',
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="h-full bg-surface font-body-md text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+        <PageTracker />
         {children}
       </body>
     </html>
