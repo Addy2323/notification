@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Store, XCircle, Phone, ArrowRight, CheckCircle2, KeyRound, ShieldCheck, RefreshCw, X, UserCheck, Plus } from 'lucide-react';
+import { Store, XCircle, Phone, ArrowRight, CheckCircle2, KeyRound, ShieldCheck, RefreshCw, X, UserCheck, Plus, Eye, EyeOff } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
 
 interface SavedMerchant {
@@ -35,6 +35,7 @@ export default function LoginPage() {
   
   // Password State
   const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   // Status & Feedback State
   const [loading, setLoading] = useState<boolean>(false);
@@ -502,14 +503,22 @@ export default function LoginPage() {
                       </label>
                       <div className="relative">
                         <input
-                          type="password"
+                          type={showPassword ? 'text' : 'password'}
                           required
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="w-full bg-white/90 border border-slate-200/90 rounded-lg px-9 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-600/20 shadow-sm"
+                          className="w-full bg-white/90 border border-slate-200/90 rounded-lg pl-9 pr-9 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-600/20 shadow-sm"
                           placeholder="••••••••"
                         />
                         <KeyRound className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors p-1"
+                          title={showPassword ? 'Hide Password' : 'Show Password'}
+                        >
+                          {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        </button>
                       </div>
                     </div>
 
