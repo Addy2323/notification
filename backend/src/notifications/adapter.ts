@@ -27,52 +27,87 @@ export function normalizePhone(phone: string): string {
 }
 
 export class MesejiSMSAdapter implements INotificationAdapter {
-  private apiUrl = 'https://meseji.co.tz/api/v1/sms/send';
-  private apiKey = process.env.MESEJI_API_KEY || ''; // Must be configured in .env
+  private getApiUrl(): string {
+    return process.env.MESEJI_API_URL || 'https://meseji.co.tz/api/v1/sms/send';
+  }
+
+  private getApiKey(): string {
+    return process.env.MESEJI_API_KEY || process.env.SMS_PROVIDER_API_KEY || '';
+  }
+
+  private isMockMode(): boolean {
+    const mode = (process.env.SMS_MODE || '').toLowerCase();
+    if (mode === 'mock' || mode === 'test' || process.env.ENABLE_SMS_MOCK === 'true') {
+      return true;
+    }
+    const key = this.getApiKey().trim();
+    if (!key || key === 'your_meseji_api_key' || key === 'mock_sms_key' || key === 'your_api_key_here') {
+      return true;
+    }
+    return false;
+  }
 
   async sendSMS(recipient: string, message: string): Promise<{ success: boolean; messageId?: string; error?: string }> {
     try {
       const formattedRecipient = normalizePhone(recipient);
+      const apiKey = this.getApiKey().trim();
 
-      if (!this.apiKey) {
-        console.warn('MESEJI_API_KEY is not defined. Simulating SMS send.');
+      if (this.isMockMode()) {
         const messageId = `msg_mock_${Date.now()}`;
-        console.log(`[MOCK SMS] To: ${formattedRecipient} | Content: "${message}"`);
+        console.log(`[SMS MOCK MODE] To: ${formattedRecipient} (${recipient}) | Content: "${message}" | Mock ID: ${messageId}`);
         return { success: true, messageId };
       }
 
+      const apiUrl = this.getApiUrl();
+      const senderId = process.env.MESEJI_SENDER_ID || 'MESEJI';
       const payload = {
         contacts: formattedRecipient,
         message: message,
-        sender_id: process.env.MESEJI_SENDER_ID || 'MESEJI',
+        sender_id: senderId,
       };
 
-      console.log(`[MesejiSMS] Sending SMS to ${formattedRecipient} via Meseji API...`);
+      console.log(`[MesejiSMS Dispatch] Sending to ${formattedRecipient} via ${apiUrl} (SenderID: ${senderId})...`);
 
       // 10-second timeout to prevent infinite hangs when Meseji API is unreachable
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 10000);
 
       try {
-        const response = await fetch(this.apiUrl, {
+        const headers: Record<string, string> = {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+        };
+
+        if (process.env.MESEJI_AUTH_TYPE === 'bearer') {
+          headers['Authorization'] = `Bearer ${apiKey}`;
+        }
+
+        const response = await fetch(apiUrl, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': this.apiKey,
-          },
+          headers,
           body: JSON.stringify(payload),
           signal: controller.signal,
         });
 
         clearTimeout(timeout);
-        const responseData = await response.json().catch(() => ({}));
+        const responseText = await response.text();
+        let responseData: any = {};
+        try {
+          responseData = JSON.parse(responseText);
+        } catch {
+          responseData = { raw: responseText };
+        }
 
-        if (response.ok && (responseData.status === 'success' || responseData.code === 200 || responseData.batch_id)) {
-          console.log(`[MesejiSMS Success] Sent to ${formattedRecipient}: batch_id=${responseData.batch_id || 'ok'}`);
-          return { success: true, messageId: responseData.batch_id || 'sent' };
+        console.log(`[MesejiSMS HTTP ${response.status}] Raw Body: ${responseText.substring(0, 300)}`);
+
+        if (response.ok && (responseData.status === 'success' || responseData.code === 200 || responseData.batch_id || responseData.success === true)) {
+          const batchId = responseData.batch_id || responseData.message_id || responseData.id || 'sent';
+          console.log(`[MesejiSMS Success] Sent to ${formattedRecipient}: batch_id=${batchId}`);
+          return { success: true, messageId: String(batchId) };
         } else {
-          const errorMsg = responseData.error || responseData.message || `Failed with status ${response.status}`;
-          console.warn(`[MesejiSMS Failed] ${errorMsg}`);
+          const rawError = responseData.error || responseData.message || responseData.description || `HTTP Status ${response.status}`;
+          const errorMsg = typeof rawError === 'object' ? JSON.stringify(rawError) : String(rawError);
+          console.warn(`[MesejiSMS Failed] Gateway response: ${errorMsg}`);
           return { success: false, error: `SMS gateway error: ${errorMsg}` };
         }
       } catch (fetchErr: any) {
@@ -82,7 +117,7 @@ export class MesejiSMSAdapter implements INotificationAdapter {
     } catch (err: any) {
       const isTimeout = err.name === 'AbortError';
       const errorMsg = isTimeout
-        ? 'SMS gateway timed out (Meseji API unreachable). Please try again later.'
+        ? 'SMS gateway timed out (Meseji API unreachable). Please check server network connection.'
         : `SMS delivery failed: ${err.message}`;
       console.error(`[MesejiSMS Error] ${errorMsg}`);
       return { success: false, error: errorMsg };
