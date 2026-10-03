@@ -8,6 +8,7 @@ import { errorHandler } from './middleware/rateLimiter';
 import { prisma } from './database/prisma';
 
 export const app = express();
+app.set("trust proxy", 2);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -42,7 +43,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`====================================================`);
     console.log(`🚀 LUMO API Server running on port ${config.port}`);
     console.log(`   Environment: ${config.nodeEnv}`);
-    console.log(`   Database: ${config.databaseUrl}`);
+    console.log("   Database: configured");
     console.log(`====================================================`);
   });
 }

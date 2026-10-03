@@ -1,0 +1,61 @@
+[1mdiff --git a/backend/prisma/schema.prisma b/backend/prisma/schema.prisma[m
+[1mindex 822721f..08e1af2 100644[m
+[1m--- a/backend/prisma/schema.prisma[m
+[1m+++ b/backend/prisma/schema.prisma[m
+[36m@@ -32,6 +32,7 @@[m [mmodel Merchant {[m
+   scores          MerchantScore[][m
+   achievements    MerchantAchievement[][m
+   analytics_events AnalyticsEvent[][m
+[32m+[m[32m  ratings          CustomerRating[][m
+ [m
+   @@map("merchants")[m
+ }[m
+[36m@@ -105,6 +106,7 @@[m [mmodel Driver {[m
+ [m
+   merchant     Merchant   @relation(fields: [merchant_id], references: [id], onDelete: Cascade)[m
+   orders       Order[][m
+[32m+[m[32m  ratings      CustomerRating[][m
+ [m
+   @@unique([merchant_id, phone])[m
+   @@index([merchant_id])[m
+[36m@@ -133,6 +135,7 @@[m [mmodel Order {[m
+   delivery_id         String?         @unique[m
+   tracking_token      String?         @unique[m
+   driver_token        String?         @unique[m
+[32m+[m[32m  rating_token        String?         @unique[m
+   created_at          DateTime        @default(now())[m
+   updated_at          DateTime        @updatedAt[m
+   confirmed_at        DateTime?[m
+[36m@@ -149,6 +152,7 @@[m [mmodel Order {[m
+   items               OrderItem[][m
+   events              OrderEvent[][m
+   notifications       OrderNotification[][m
+[32m+[m[32m  rating              CustomerRating?[m
+ [m
+   @@index([merchant_id])[m
+   @@index([status])[m
+[36m@@ -426,3 +430,24 @@[m [mmodel AlertThreshold {[m
+   @@map("alert_thresholds")[m
+ }[m
+ [m
+[32m+[m[32mmodel CustomerRating {[m
+[32m+[m[32m  id           String   @id @default(uuid())[m
+[32m+[m[32m  order_id     String   @unique[m
+[32m+[m[32m  merchant_id  String[m
+[32m+[m[32m  driver_id    String?[m
+[32m+[m[32m  rating_token String   @unique @default(uuid())[m
+[32m+[m[32m  rating       Int      // 1 to 5[m
+[32m+[m[32m  comment      String?[m
+[32m+[m[32m  created_at   DateTime @default(now())[m
+[32m+[m
+[32m+[m[32m  order        Order    @relation(fields: [order_id], references: [id], onDelete: Cascade)[m
+[32m+[m[32m  merchant     Merchant @relation(fields: [merchant_id], references: [id], onDelete: Cascade)[m
+[32m+[m[32m  driver       Driver?  @relation(fields: [driver_id], references: [id], onDelete: SetNull)[m
+[32m+[m
+[32m+[m[32m  @@index([merchant_id])[m
+[32m+[m[32m  @@index([driver_id])[m
+[32m+[m[32m  @@index([rating])[m
+[32m+[m[32m  @@map("customer_ratings")[m
+[32m+[m[32m}[m
+[41m+[m
+[41m+[m
