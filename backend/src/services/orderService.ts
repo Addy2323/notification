@@ -289,11 +289,18 @@ export async function updateOrderStatus(
 
   const now = new Date();
   const updateData: any = { status: newStatus };
+  let ratingToken = (order as any).rating_token;
 
   if (newStatus === 'CONFIRMED') updateData.confirmed_at = now;
   if (newStatus === 'OUT_FOR_DELIVERY') updateData.out_for_delivery_at = now;
   if (newStatus === 'ARRIVED') updateData.arrived_at = now;
-  if (newStatus === 'DELIVERED') updateData.delivered_at = now;
+  if (newStatus === 'DELIVERED') {
+    updateData.delivered_at = now;
+    if (!ratingToken) {
+      ratingToken = crypto.randomBytes(16).toString('hex');
+      updateData.rating_token = ratingToken;
+    }
+  }
   if (newStatus === 'CANCELLED') updateData.cancelled_at = now;
 
   // Map status to event type
@@ -338,6 +345,7 @@ export async function updateOrderStatus(
   const merchantName = order.merchant.business_name || 'LUMO';
   const trackingUrl = order.tracking_token ? `${config.frontendUrl}/track/${order.tracking_token}` : '';
   const driverUrl = order.driver_token ? `${config.frontendUrl}/driver/${order.driver_token}` : '';
+  const ratingUrl = ratingToken ? `${config.frontendUrl}/rate/${ratingToken}` : '';
 
   await dispatchOrderEvent({
     orderId: order.id,
@@ -355,6 +363,7 @@ export async function updateOrderStatus(
       deliveryAddress: order.delivery_address,
       trackingUrl,
       driverUrl,
+      ratingUrl,
     },
   });
 

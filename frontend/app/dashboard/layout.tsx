@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Truck, Palette, Settings, LogOut, Plus, Shield, Menu, X, Bell, ShoppingBag, Users, DollarSign, Contact, BarChart3, FileText, Search, RefreshCw, Store } from 'lucide-react';
+import { LayoutDashboard, Truck, Palette, Settings, LogOut, Plus, Shield, Menu, X, Bell, ShoppingBag, Users, DollarSign, Contact, BarChart3, FileText, Search, RefreshCw, Store, Star } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
 import { LumoLogo } from '@/components/landing/LumoLogo';
 import { MobileBottomNav } from '@/app/components/MobileBottomNav';
@@ -45,6 +45,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { name: 'Customers', href: '/dashboard/customers', icon: Contact },
     { name: 'Deliveries', href: '/dashboard/deliveries', icon: Truck },
     { name: 'Drivers', href: '/dashboard/drivers', icon: Users },
+    { name: 'Customer Ratings', href: '/dashboard/ratings', icon: Star },
     { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
     { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
     { name: 'Reports', href: '/dashboard/reports', icon: FileText },

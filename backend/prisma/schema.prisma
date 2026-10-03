@@ -32,6 +32,7 @@ model Merchant {
   scores          MerchantScore[]
   achievements    MerchantAchievement[]
   analytics_events AnalyticsEvent[]
+  ratings          CustomerRating[]
 
   @@map("merchants")
 }
@@ -105,6 +106,7 @@ model Driver {
 
   merchant     Merchant   @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
   orders       Order[]
+  ratings      CustomerRating[]
 
   @@unique([merchant_id, phone])
   @@index([merchant_id])
@@ -133,6 +135,7 @@ model Order {
   delivery_id         String?         @unique
   tracking_token      String?         @unique
   driver_token        String?         @unique
+  rating_token        String?         @unique
   created_at          DateTime        @default(now())
   updated_at          DateTime        @updatedAt
   confirmed_at        DateTime?
@@ -149,6 +152,7 @@ model Order {
   items               OrderItem[]
   events              OrderEvent[]
   notifications       OrderNotification[]
+  rating              CustomerRating?
 
   @@index([merchant_id])
   @@index([status])
@@ -425,4 +429,25 @@ model AlertThreshold {
 
   @@map("alert_thresholds")
 }
+
+model CustomerRating {
+  id           String   @id @default(uuid())
+  order_id     String   @unique
+  merchant_id  String
+  driver_id    String?
+  rating_token String   @unique @default(uuid())
+  rating       Int      // 1 to 5
+  comment      String?
+  created_at   DateTime @default(now())
+
+  order        Order    @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  merchant     Merchant @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  driver       Driver?  @relation(fields: [driver_id], references: [id], onDelete: SetNull)
+
+  @@index([merchant_id])
+  @@index([driver_id])
+  @@index([rating])
+  @@map("customer_ratings")
+}
+
 

@@ -23,7 +23,7 @@ const CUSTOMER_TEMPLATES: Record<string, string> = {
   DRIVER_NEARBY:
     '🚚 Your delivery is almost here! Your driver {{driverName}} is nearby. Please be ready to receive your order for {{merchantName}} (Order #{{orderNumber}}).',
   ORDER_DELIVERED:
-    'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} has been delivered successfully. Thank you for shopping with {{merchantName}}!',
+    '📦 Your order {{orderNumber}} has been successfully delivered. Thank you for shopping with {{merchantName}}. ⭐ Please rate your delivery experience: {{ratingUrl}}',
   ORDER_CANCELLED:
     'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} has been cancelled. Please contact us for more details.',
 };
@@ -51,6 +51,7 @@ interface TemplateVars {
   deliveryAddress: string;
   trackingUrl: string;
   driverUrl: string;
+  ratingUrl?: string;
 }
 
 function replaceVariables(template: string, vars: TemplateVars): string {
@@ -65,6 +66,7 @@ function replaceVariables(template: string, vars: TemplateVars): string {
   result = result.replace(/\{\{deliveryAddress\}\}/g, vars.deliveryAddress || '');
   result = result.replace(/\{\{trackingUrl\}\}/g, vars.trackingUrl || '');
   result = result.replace(/\{\{driverUrl\}\}/g, vars.driverUrl || '');
+  result = result.replace(/\{\{ratingUrl\}\}/g, vars.ratingUrl || '');
   return result;
 }
 

@@ -3,6 +3,7 @@ import { sendSuccess, sendError } from '../utils/response';
 import { prisma } from '../database/prisma';
 import { dispatchOrderEvent } from '../notifications/orderNotificationEngine';
 import { config } from '../config';
+import crypto from 'crypto';
 
 export async function getDriverDelivery(req: Request, res: Response) {
   try {
@@ -107,10 +108,18 @@ async function handleOrderDriverAction(token: string, action: 'accept' | 'start'
   const now = new Date();
 
   const updateData: any = { status: newStatus };
+  let ratingToken = (order as any).rating_token;
+
   if (action === 'accept') updateData.confirmed_at = now;
   if (action === 'start') updateData.out_for_delivery_at = now;
   if (action === 'nearby') updateData.arrived_at = now;
-  if (action === 'delivered') updateData.delivered_at = now;
+  if (action === 'delivered') {
+    updateData.delivered_at = now;
+    if (!ratingToken) {
+      ratingToken = crypto.randomBytes(16).toString('hex');
+      updateData.rating_token = ratingToken;
+    }
+  }
   if (action === 'failed') updateData.cancelled_at = now;
 
   const updatedOrder = await prisma.$transaction(async (tx: any) => {
@@ -142,6 +151,7 @@ async function handleOrderDriverAction(token: string, action: 'accept' | 'start'
   const merchantName = order.merchant.business_name || 'LUMO';
   const trackingUrl = order.tracking_token ? `${config.frontendUrl}/track/${order.tracking_token}` : '';
   const driverUrl = order.driver_token ? `${config.frontendUrl}/driver/${order.driver_token}` : '';
+  const ratingUrl = ratingToken ? `${config.frontendUrl}/rate/${ratingToken}` : '';
 
   await dispatchOrderEvent({
     orderId: order.id,
@@ -158,6 +168,7 @@ async function handleOrderDriverAction(token: string, action: 'accept' | 'start'
       deliveryAddress: order.delivery_address,
       trackingUrl,
       driverUrl,
+      ratingUrl,
     },
   });
 

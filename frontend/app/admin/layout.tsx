@@ -34,6 +34,7 @@ import {
   Sparkles,
   Sun,
   Moon,
+  Star,
 } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
 import { MobileBottomNav } from '@/app/components/MobileBottomNav';
@@ -52,6 +53,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Sales', href: '/admin/sales', icon: DollarSign },
   { label: 'Drivers', href: '/admin/drivers', icon: Truck },
   { label: 'Deliveries', href: '/admin/deliveries', icon: Package },
+  { label: 'Customer Ratings', href: '/admin/ratings', icon: Star },
   { label: 'Customers', href: '/admin/customers', icon: UserCheck },
   { label: 'Notifications', href: '/admin/notifications', icon: Bell },
   { label: 'Traffic & Growth', href: '/admin/traffic', icon: BarChart3 },
