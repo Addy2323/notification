@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
@@ -37,25 +37,30 @@ export default function Merchant360ProfilePage() {
   const router = useRouter();
   const merchantId = params.id as string;
 
+  const [period, setPeriod] = useState('ALL');
+  const [error, setError] = useState('');
+  const requestId = useRef(0);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('Overview');
 
   const loadProfile = async () => {
-    setLoading(true);
+    const request = ++requestId.current;
+    setLoading(true); setError('');
     try {
-      const data = await fetchApi(`/admin/merchants/${merchantId}/profile`);
-      setProfile(data);
-    } catch (err) {
-      console.error('Failed to load merchant profile:', err);
+      const data = await fetchApi(`/admin/merchants/${merchantId}/profile?period=${period}`);
+      if (request === requestId.current) setProfile(data);
+    } catch (err: any) {
+      if (request === requestId.current) { setError(err.message || 'Failed to load profile'); setProfile(null); }
     } finally {
-      setLoading(false);
+      if (request === requestId.current) setLoading(false);
     }
   };
 
   useEffect(() => {
     if (merchantId) loadProfile();
-  }, [merchantId]);
+    return () => { requestId.current++; };
+  }, [merchantId, period]);
 
   const handleStatusToggle = async (targetStatus: 'ACTIVE' | 'SUSPENDED' | 'ARCHIVED') => {
     const actionText = targetStatus === 'SUSPENDED' ? 'suspend' : targetStatus === 'ARCHIVED' ? 'archive' : 'reactivate';
@@ -102,6 +107,7 @@ export default function Merchant360ProfilePage() {
     }
   };
 
+  if (!loading && error) return <div className="space-y-4 text-rose-300"><p role="alert">{error}</p><button onClick={loadProfile} className="text-amber-400">Retry</button></div>;
   if (loading || !profile) {
     return (
       <div className="space-y-6 animate-pulse">
@@ -121,11 +127,11 @@ export default function Merchant360ProfilePage() {
     { label: 'Products', icon: Package, count: summary?.productsCount },
     { label: 'Customers', icon: UserCheck, count: summary?.customersCount },
     { label: 'Drivers', icon: Truck, count: summary?.driversCount },
-    { label: 'Deliveries', icon: Package, count: deliveries?.length },
-    { label: 'Notifications', icon: Bell, count: notifications?.length },
+    { label: 'Deliveries', icon: Package, count: summary?.deliveryCount },
+    { label: 'Notifications', icon: Bell, count: summary?.notificationCount },
     { label: 'Analytics', icon: Activity },
     { label: 'Reports', icon: FileText },
-    { label: 'Activity', icon: Clock, count: auditLogs?.length },
+    { label: 'Activity', icon: Clock, count: summary?.activityCount },
     { label: 'Branding', icon: Palette },
   ];
 
@@ -142,6 +148,14 @@ export default function Merchant360ProfilePage() {
         </Link>
       </div>
 
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+        <p className="text-xs font-bold text-slate-300">Activity period</p>
+        <div className="flex flex-wrap gap-2">
+          {[['ALL', 'All Time'], ['TODAY', 'Today'], ['THIS_WEEK', 'This Week'], ['THIS_MONTH', 'This Month'], ['SEMI_ANNUAL', 'Semiannual']].map(([value, label]) => <button key={value} onClick={() => setPeriod(value)} aria-pressed={period === value} className={`px-4 py-2 rounded-xl text-xs font-bold ${period === value ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300'}`}>{label}</button>)}
+        </div>
+        <p className="text-xs text-slate-400">Filters orders, sales, deliveries, notifications and activity by creation date. Weeks start Monday; semiannual means January?June or July?December to date. Directory records, engagement score and streak remain all-time.</p>
+        {!!summary?.missingCostCount && <p className="text-xs text-amber-400">{summary.missingCostCount} orders have no buying cost recorded; their profit is excluded.</p>}
+      </div>
       {/* Header Banner & Merchant Profile Summary */}
       <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 relative overflow-hidden shadow-2xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
@@ -331,7 +345,7 @@ export default function Merchant360ProfilePage() {
 
         {activeTab === 'Orders' && (
           <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white">Recent Merchant Orders ({orders.length})</h3>
+            <h3 className="text-sm font-bold text-white">Merchant Orders (showing {orders.length} of {summary.totalOrders})</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs text-slate-300">
                 <thead className="bg-slate-950 text-slate-400 font-bold uppercase text-[10px]">

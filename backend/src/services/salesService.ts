@@ -11,10 +11,21 @@ export interface SalesFilterOptions {
   page?: number;
 }
 
+export function ledgerFinancials(order: any) {
+  const revenue = Number(order.total_revenue ?? order.amount ?? 0);
+  const refunded = order.payment_status === 'REFUNDED';
+  const event = order.events?.find((e: any) => e.event_type === 'ORDER_REFUNDED');
+  let restocked = false;
+  try { restocked = JSON.parse(event?.metadata || '{}').restocked === true; } catch {}
+  const costKnown = order.total_cost !== null && order.total_cost !== undefined;
+  const cost = refunded && restocked ? 0 : Number(order.total_cost ?? 0);
+  return { net_revenue: refunded ? 0 : revenue, net_cost: costKnown ? cost : null, net_profit: costKnown ? (refunded ? 0 : revenue) - cost : null, refund_amount: refunded ? revenue : 0 };
+}
+
 export class SalesService {
   static async getSalesLedger(merchantId: string, options: SalesFilterOptions = {}) {
-    const limit = options.limit || 50;
-    const page = options.page || 1;
+    const limit = Math.min(100, Math.max(1, Math.floor(options.limit || 50)));
+    const page = Math.max(1, Math.floor(options.page || 1));
     const skip = (page - 1) * limit;
 
     const where: any = {
@@ -62,7 +73,8 @@ export class SalesService {
     }
 
     if (options.status) {
-      where.status = options.status;
+      if (options.status === 'REFUNDED') where.payment_status = 'REFUNDED';
+      else where.status = options.status;
     }
 
     if (options.query) {
@@ -85,6 +97,7 @@ export class SalesService {
         skip,
         include: {
           items: true,
+          events: { where: { event_type: 'ORDER_REFUNDED' } },
           customer: true,
           driver: true,
         },
@@ -95,6 +108,8 @@ export class SalesService {
     const allFilteredOrders = await prisma.order.findMany({
       where,
       select: {
+        payment_status: true,
+        events: { where: { event_type: 'ORDER_REFUNDED' } },
         amount: true,
         total_revenue: true,
         total_cost: true,
@@ -109,19 +124,22 @@ export class SalesService {
     let deliveredCount = 0;
     let pendingCount = 0;
     let failedCount = 0;
+    let refundedCount = 0;
+    let totalRefunds = 0;
+    let missingCostCount = 0;
 
     for (const ord of allFilteredOrders) {
       if (ord.status === 'DELIVERED') deliveredCount++;
       else if (ord.status === 'FAILED' || ord.status === 'CANCELLED') failedCount++;
       else pendingCount++;
 
-      const rev = Number(ord.total_revenue || ord.amount || 0);
-      const cost = Number(ord.total_cost || 0);
-      const profit = ord.gross_profit !== null && ord.gross_profit !== undefined ? Number(ord.gross_profit) : (cost > 0 ? rev - cost : 0);
-
-      totalRevenue += rev;
-      totalCost += cost;
-      totalProfit += profit;
+      const financials = ledgerFinancials(ord);
+      totalRevenue += financials.net_revenue;
+      totalCost += financials.net_cost ?? 0;
+      totalProfit += financials.net_profit ?? 0;
+      totalRefunds += financials.refund_amount;
+      if (ord.payment_status === 'REFUNDED') refundedCount++;
+      if (financials.net_cost === null) missingCostCount++;
     }
 
     return {
@@ -133,6 +151,9 @@ export class SalesService {
         deliveredCount,
         pendingCount,
         failedCount,
+        refundedCount,
+        totalRefunds,
+        missingCostCount,
       },
       pagination: {
         total: totalOrders,
@@ -140,7 +161,7 @@ export class SalesService {
         limit,
         totalPages: Math.ceil(totalOrders / limit),
       },
-      orders,
+      orders: orders.map(order => ({ ...order, ...ledgerFinancials(order) })),
     };
   }
 }

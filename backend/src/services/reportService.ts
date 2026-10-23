@@ -1,5 +1,6 @@
 import PDFDocument from 'pdfkit';
 import ExcelJS from 'exceljs';
+import { ledgerFinancials } from './salesService';
 import { prisma } from '../database/prisma';
 
 export interface ReportOptions {
@@ -52,7 +53,7 @@ export class ReportService {
         merchant_id: merchantId,
         created_at: { gte: start, lte: end },
       },
-      include: { items: true },
+      include: { items: true, events: { where: { event_type: 'ORDER_REFUNDED' } } },
       orderBy: { created_at: 'desc' },
     });
 
@@ -75,14 +76,10 @@ export class ReportService {
     let pendingSales = 0;
 
     for (const ord of orders) {
-      const rev = Number(ord.total_revenue || ord.amount || 0);
-      const cost = Number(ord.total_cost || 0);
-      const profit =
-        ord.gross_profit !== null && ord.gross_profit !== undefined
-          ? Number(ord.gross_profit)
-          : cost > 0
-          ? rev - cost
-          : 0;
+      const financials = ledgerFinancials(ord);
+      const rev = financials.net_revenue;
+      const cost = financials.net_cost ?? 0;
+      const profit = financials.net_profit ?? 0;
 
       totalSales += rev;
       totalCost += cost;
@@ -128,7 +125,7 @@ export class ReportService {
       doc.font('Helvetica').fillColor('#64748B');
       doc.text(`Generated: ${nowStr}`, 360, 52, { align: 'right', width: 200 });
       doc.font('Helvetica-Bold').fillColor('#059669');
-      doc.text(`Status: AUDITED & CLOSED`, 360, 66, { align: 'right', width: 200 });
+      doc.text(`Status: GENERATED REPORT`, 360, 66, { align: 'right', width: 200 });
 
       // Header Rule Line
       doc.moveTo(36, 84).lineTo(559, 84).strokeColor('#CBD5E1').lineWidth(1).stroke();
@@ -170,7 +167,7 @@ export class ReportService {
       doc.font('Helvetica').fillColor('#334155').text(`Product Cost:`, 317, cardY + 42);
       doc.font('Helvetica-Bold').fillColor('#DC2626').text(`-TZS ${totalCost.toLocaleString()}`, 425, cardY + 42, { align: 'right', width: 120 });
 
-      doc.font('Helvetica').fillColor('#334155').text(`Cash / Margin:`, 317, cardY + 56);
+      doc.font('Helvetica').fillColor('#334155').text(`Gross Profit:`, 317, cardY + 56);
       doc.font('Helvetica-Bold').fillColor('#0F172A').text(`TZS ${grossProfit.toLocaleString()}`, 425, cardY + 56, { align: 'right', width: 120 });
 
       doc.font('Helvetica').fillColor('#64748B').text(`Automated SMS:`, 317, cardY + 70);
@@ -185,7 +182,7 @@ export class ReportService {
 
       doc.rect(36, bannerY, 523, 34).fillAndStroke(bgHex, borderHex);
 
-      doc.fillColor('#334155').fontSize(10).font('Helvetica-Bold').text('Net Profit (Sales Revenue - Product Cost)', 52, bannerY + 11);
+      doc.fillColor('#334155').fontSize(10).font('Helvetica-Bold').text('Gross Profit After Refunds', 52, bannerY + 11);
       doc.fillColor(textHex).fontSize(14).font('Helvetica-Bold').text(
         `${isPositive ? '+TZS' : '-TZS'} ${Math.abs(grossProfit).toLocaleString()}`,
         350,
@@ -193,113 +190,51 @@ export class ReportService {
         { align: 'right', width: 195 }
       );
 
-      // ==================== TRANSACTIONS LEDGER TABLE ====================
       let y = 266;
-      doc.fillColor('#0F172A').fontSize(11).font('Helvetica-Bold').text('TRANSACTIONS LEDGER', 36, y);
+      const money = (value: number | null) => value === null ? 'Not recorded' : value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const refunds = orders.reduce((sum, order) => sum + ledgerFinancials(order).refund_amount, 0);
+      const missing = orders.filter(order => ledgerFinancials(order).net_cost === null).length;
+      doc.font('Helvetica').fontSize(9).fillColor('#475569');
+      doc.text(`Period: ${start.toLocaleDateString()} - ${end.toLocaleDateString()}`, 36, y, { width: 523 }); y = doc.y + 6;
+      doc.text(`Refunds: TZS ${money(refunds)} | Orders missing buying cost: ${missing}`, 36, y, { width: 523 }); y = doc.y + 6;
+      doc.text('Figures include all delivery stages for orders created in this period, using their current refund state. Profit excludes orders without buying costs. Costs are recovered only when refunded goods return to stock.', 36, y, { width: 523 }); y = doc.y + 14;
 
-      y += 16;
-      // Header Bar
-      doc.rect(36, y, 523, 20).fill('#F1F5F9');
-      doc.fillColor('#334155').fontSize(8).font('Helvetica-Bold');
-      doc.text('Ref', 42, y + 6);
-      doc.text('Date', 105, y + 6);
-      doc.text('Customer', 170, y + 6);
-      doc.text('Product / Items', 260, y + 6);
-      doc.text('Amount (TZS)', 380, y + 6, { align: 'right', width: 80 });
-      doc.text('Profit (TZS)', 470, y + 6, { align: 'right', width: 80 });
-
-      y += 20;
-      doc.font('Helvetica').fontSize(8);
-
-      for (const ord of orders.slice(0, 20)) {
-        if (y > 740) {
-          doc.addPage();
-          y = 40;
+      // Fixed column widths and measured row heights keep long values and page breaks readable.
+      const table = (title: string, headers: string[], widths: number[], rows: string[][]) => {
+        if (y > 690) { doc.addPage(); y = 40; }
+        doc.font('Helvetica-Bold').fontSize(11).fillColor('#0F172A').text(title, 36, y, { width: 523 }); y = doc.y + 8;
+        const drawRow = (cells: string[], header = false) => {
+          doc.font(header ? 'Helvetica-Bold' : 'Helvetica').fontSize(8);
+          const height = Math.max(24, ...cells.map((cell, i) => doc.heightOfString(cell, { width: widths[i] - 10 }) + 12));
+          if (header) doc.rect(36, y, 523, height).fill('#F1F5F9');
+          let x = 36;
+          cells.forEach((cell, i) => { doc.fillColor('#334155').text(cell, x + 5, y + 6, { width: widths[i] - 10 }); x += widths[i]; });
+          y += height;
+          doc.moveTo(36, y).lineTo(559, y).strokeColor('#E2E8F0').lineWidth(0.5).stroke();
+        };
+        drawRow(headers, true);
+        for (const row of rows) {
+          doc.font('Helvetica').fontSize(8);
+          const height = Math.max(24, ...row.map((cell, i) => doc.heightOfString(cell, { width: widths[i] - 10 }) + 12));
+          if (y + height > 750) { doc.addPage(); y = 40; drawRow(headers, true); }
+          drawRow(row);
         }
-
-        const dateStr = ord.created_at.toLocaleDateString();
-        const custStr = (ord.customer_name || 'Walk-in').substring(0, 15);
-        const prodStr = (ord.product_name || 'Item snapshot').substring(0, 20);
-        const rev = Number(ord.total_revenue || ord.amount || 0);
-        const profit =
-          ord.gross_profit !== null && ord.gross_profit !== undefined ? Number(ord.gross_profit) : 0;
-
-        doc.fillColor('#334155');
-        doc.text(ord.order_number, 42, y + 4);
-        doc.text(dateStr, 105, y + 4);
-        doc.text(custStr, 170, y + 4);
-        doc.text(prodStr, 260, y + 4);
-
-        doc.fillColor('#0F172A').font('Helvetica-Bold');
-        doc.text(`TZS ${rev.toLocaleString()}`, 380, y + 4, { align: 'right', width: 80 });
-
-        doc.fillColor(profit >= 0 ? '#16A34A' : '#DC2626');
-        doc.text(profit !== 0 ? `TZS ${profit.toLocaleString()}` : '-', 470, y + 4, { align: 'right', width: 80 });
-
-        doc.font('Helvetica');
-        y += 17;
-        doc.moveTo(36, y).lineTo(559, y).strokeColor('#F1F5F9').lineWidth(0.5).stroke();
-      }
-
-      // ==================== EXPENSES / PRODUCT COST LEDGER ====================
-      if (y > 660) {
-        doc.addPage();
-        y = 40;
-      } else {
+        if (!rows.length) { doc.font('Helvetica').fontSize(9).text('No records for this period.', 42, y + 8); y += 28; }
         y += 20;
-      }
-
-      doc.fillColor('#0F172A').fontSize(11).font('Helvetica-Bold').text('EXPENSES & PRODUCT COST LEDGER', 36, y);
-
-      y += 16;
-      doc.rect(36, y, 523, 20).fill('#F1F5F9');
-      doc.fillColor('#334155').fontSize(8).font('Helvetica-Bold');
-      doc.text('Date', 42, y + 6);
-      doc.text('Description / Product Snapshot', 110, y + 6);
-      doc.text('Qty', 350, y + 6, { align: 'center', width: 40 });
-      doc.text('Cost Amount (TZS)', 430, y + 6, { align: 'right', width: 120 });
-
-      y += 20;
-      doc.font('Helvetica').fontSize(8);
-
-      let costRowsCount = 0;
-      for (const ord of orders) {
-        for (const item of ord.items) {
-          if (costRowsCount >= 15) break;
-          if (y > 750) {
-            doc.addPage();
-            y = 40;
-          }
-
-          const dateStr = ord.created_at.toLocaleDateString();
-          const itemCost = Number(item.unit_cost_price || 0) * item.quantity;
-
-          doc.fillColor('#334155');
-          doc.text(dateStr, 42, y + 4);
-          doc.text(item.product_name_snapshot, 110, y + 4);
-          doc.text(`${item.quantity}`, 350, y + 4, { align: 'center', width: 40 });
-
-          doc.fillColor('#DC2626').font('Helvetica-Bold');
-          doc.text(`-TZS ${itemCost.toLocaleString()}`, 430, y + 4, { align: 'right', width: 120 });
-
-          doc.font('Helvetica');
-          y += 17;
-          doc.moveTo(36, y).lineTo(559, y).strokeColor('#F1F5F9').lineWidth(0.5).stroke();
-          costRowsCount++;
-        }
-      }
-
-      if (costRowsCount === 0) {
-        doc.fillColor('#94A3B8').font('Helvetica').text('No individual line item costs recorded for this period.', 42, y + 6);
-      }
-
-      // ==================== FOOTER ====================
-      doc.fillColor('#94A3B8').fontSize(7.5).font('Helvetica').text(
-        `LUMO Operations Manager v1.0 • Digital Verification Seal: SEC-AUD-0099`,
-        36,
-        780,
-        { align: 'center' }
-      );
+      };
+      table('SALES LEDGER (TZS)', ['Order / Date', 'Customer / Product', 'Net sales', 'Net buying cost', 'Gross profit', 'Status'], [87, 128, 77, 77, 77, 77], orders.map(order => {
+        const f = ledgerFinancials(order);
+        return [`${order.order_number}\n${order.created_at.toLocaleDateString()}`, `${order.customer_name}\n${order.product_name}`, money(f.net_revenue), money(f.net_cost), money(f.net_profit), order.payment_status === 'REFUNDED' ? 'REFUNDED' : order.status];
+      }));
+      table('PRODUCT PRICES AT SALE (TZS)', ['Order / Product', 'Qty', 'Buying / unit', 'Selling / unit', 'Discount', 'Sale profit'], [163, 35, 85, 85, 70, 85], orders.flatMap(order => order.items.map(item => [
+        `${order.order_number}\n${item.product_name_snapshot}`, String(item.quantity), money(item.unit_cost_price === null ? null : Number(item.unit_cost_price)), money(Number(item.unit_selling_price)), money(Number(item.discount ?? 0)), money(item.profit_amount === null ? null : Number(item.profit_amount))
+      ])));
+      const refundRows = orders.flatMap(order => order.events.map(event => {
+        let detail: any = {};
+        try { detail = JSON.parse(event.metadata || '{}'); } catch {}
+        return [order.order_number, event.timestamp.toLocaleDateString(), money(Number(detail.amount ?? 0)), String(detail.reason || ''), detail.restocked ? 'Returned to stock' : 'Cost retained'];
+      }));
+      table('REFUND RECORDS (TZS)', ['Order', 'Refund date', 'Amount', 'Reason', 'Goods'], [87, 80, 85, 171, 100], refundRows);
 
       doc.end();
     });
@@ -373,14 +308,10 @@ export class ReportService {
       else if (ord.status === 'FAILED' || ord.status === 'CANCELLED') failedCount++;
       else pendingCount++;
 
-      const rev = Number(ord.total_revenue || ord.amount || 0);
-      const cost = Number(ord.total_cost || 0);
-      const profit =
-        ord.gross_profit !== null && ord.gross_profit !== undefined
-          ? Number(ord.gross_profit)
-          : cost > 0
-          ? rev - cost
-          : 0;
+      const financials = ledgerFinancials(ord);
+      const rev = financials.net_revenue;
+      const cost = financials.net_cost ?? 0;
+      const profit = financials.net_profit ?? 0;
 
       totalSales += rev;
       totalCost += cost;
@@ -399,6 +330,8 @@ export class ReportService {
     summarySheet.addRow({ metric: 'Total Sales Revenue (TZS)', value: totalSales });
     summarySheet.addRow({ metric: 'Total Product Cost (TZS)', value: totalCost });
     summarySheet.addRow({ metric: 'Gross Profit (TZS)', value: grossProfit });
+    summarySheet.addRow({ metric: 'Refunds (TZS)', value: orders.reduce((sum, order) => sum + ledgerFinancials(order).refund_amount, 0) });
+    summarySheet.addRow({ metric: 'Orders Missing Buying Cost', value: orders.filter(order => ledgerFinancials(order).net_cost === null).length });
     summarySheet.addRow({ metric: 'Total Products Sold', value: productsSold });
     summarySheet.addRow({ metric: 'Delivered Orders', value: deliveredCount });
     summarySheet.addRow({ metric: 'Pending Deliveries', value: pendingCount });
@@ -438,12 +371,12 @@ export class ReportService {
             category: item.product_category_snapshot || '-',
             quantity: item.quantity,
             price: Number(item.unit_selling_price),
-            cost: Number(item.unit_cost_price || 0),
-            revenue: Number(item.subtotal),
-            totalCost: Number(item.unit_cost_price || 0) * item.quantity,
-            profit: Number(item.profit_amount || 0),
+            cost: item.unit_cost_price === null ? null : Number(item.unit_cost_price),
+            revenue: ord.payment_status === 'REFUNDED' ? 0 : Number(item.subtotal),
+            totalCost: item.unit_cost_price === null ? null : ledgerFinancials(ord).net_cost === 0 ? 0 : Number(item.unit_cost_price) * item.quantity,
+            profit: item.unit_cost_price === null ? null : (ord.payment_status === 'REFUNDED' ? 0 : Number(item.subtotal)) - (ledgerFinancials(ord).net_cost === 0 ? 0 : Number(item.unit_cost_price) * item.quantity),
             driverName: ord.driver_name || 'Unassigned',
-            status: ord.status,
+            status: ord.payment_status === 'REFUNDED' ? 'REFUNDED' : ord.status,
           });
         }
       } else {
@@ -458,11 +391,11 @@ export class ReportService {
           quantity: 1,
           price: Number(ord.amount || 0),
           cost: Number(ord.total_cost || 0),
-          revenue: Number(ord.total_revenue || ord.amount || 0),
-          totalCost: Number(ord.total_cost || 0),
-          profit: Number(ord.gross_profit || 0),
+          revenue: ledgerFinancials(ord).net_revenue,
+          totalCost: ledgerFinancials(ord).net_cost,
+          profit: ledgerFinancials(ord).net_profit,
           driverName: ord.driver_name || 'Unassigned',
-          status: ord.status,
+          status: ord.payment_status === 'REFUNDED' ? 'REFUNDED' : ord.status,
         });
       }
     }

@@ -57,44 +57,50 @@ export default function OrdersPage() {
   const [showNewDriver, setShowNewDriver] = useState(false);
   const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', delivery_address: '' });
   const [newDriver, setNewDriver] = useState({ name: '', phone: '' });
-  const [orderForm, setOrderForm] = useState({ productName: '', imageUrl: '', amount: '', deliveryAddress: '' });
+  const [orderForm, setOrderForm] = useState({ productName: '', imageUrl: '', amount: '', buyingPrice: '', deliveryAddress: '' });
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [modalError, setModalError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [imageProcessing, setImageProcessing] = useState(false);
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = ''; // Allow retrying the same photo after an error.
     if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const maxDim = 800;
-        let width = img.width;
-        let height = img.height;
-
-        if (width > height && width > maxDim) {
-          height = Math.round((height * maxDim) / width);
-          width = maxDim;
-        } else if (height > maxDim) {
-          width = Math.round((width * maxDim) / height);
-          height = maxDim;
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0, width, height);
-
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-        setOrderForm(f => ({ ...f, imageUrl: dataUrl }));
-      };
-      img.src = event.target?.result as string;
-    };
-    reader.readAsDataURL(file);
+    setModalError(null);
+    if (file.size > 5 * 1024 * 1024) {
+      setModalError('Photo must be 5 MB or smaller. Please choose a smaller image.');
+      return;
+    }
+    if (file.type && !file.type.startsWith('image/')) {
+      setModalError('Please choose an image from your photo library.');
+      return;
+    }
+    setImageProcessing(true);
+    const previewUrl = URL.createObjectURL(file);
+    try {
+      const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error('This photo could not be opened. Please choose a JPEG or PNG image.'));
+        image.src = previewUrl;
+      });
+      const scale = Math.min(1, 800 / Math.max(img.naturalWidth, img.naturalHeight));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('Unable to prepare your photo. Please try again.');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const imageUrl = canvas.toDataURL('image/jpeg', 0.8);
+      setOrderForm(f => ({ ...f, imageUrl }));
+    } catch (err: any) {
+      setModalError(err.message || 'Unable to read your photo. Please try another image.');
+    } finally {
+      URL.revokeObjectURL(previewUrl);
+      setImageProcessing(false);
+    }
   };
 
   const loadOrders = useCallback(async () => {
@@ -143,6 +149,7 @@ export default function OrdersPage() {
     setCreating(true);
 
     try {
+      if (orderForm.amount === '' || orderForm.buyingPrice === '' || !Number.isFinite(Number(orderForm.amount)) || !Number.isFinite(Number(orderForm.buyingPrice)) || Number(orderForm.amount) < 0 || Number(orderForm.buyingPrice) < 0) throw new Error('Enter valid buying and selling prices.');
       let cust = selectedCustomer;
       let drv = selectedDriver;
 
@@ -200,7 +207,7 @@ export default function OrdersPage() {
           deliveryAddress: orderForm.deliveryAddress,
           productName: orderForm.productName,
           imageUrl: orderForm.imageUrl || undefined,
-          amount: orderForm.amount || undefined,
+          items: [{ productName: orderForm.productName, unitSellingPrice: Number(orderForm.amount), unitCostPrice: Number(orderForm.buyingPrice), quantity: 1 }],
           driverId: drv?.id,
           driverName: drv?.name,
           driverPhone: drv?.phone,
@@ -222,7 +229,7 @@ export default function OrdersPage() {
   const resetCreateForm = () => {
     setSelectedCustomer(null);
     setSelectedDriver(null);
-    setOrderForm({ productName: '', imageUrl: '', amount: '', deliveryAddress: '' });
+    setOrderForm({ productName: '', imageUrl: '', amount: '', buyingPrice: '', deliveryAddress: '' });
     setCustomerSearch('');
     setNewCustomer({ name: '', phone: '', delivery_address: '' });
     setNewDriver({ name: '', phone: '' });
@@ -523,16 +530,16 @@ export default function OrdersPage() {
                     </div>
                     <div>
                       <p className="text-xs font-bold text-slate-700 group-hover:text-teal-700">
-                        Upload Product Photo
+                        {imageProcessing ? 'Preparing photo...' : 'Choose Product Photo'}
                       </p>
                       <p className="text-[10px] text-slate-400 font-medium">
-                        Take a photo or choose from device
+                        Choose from photo library or device (up to 5 MB)
                       </p>
                     </div>
                     <input
                       type="file"
                       accept="image/*"
-                      capture="environment"
+                      disabled={imageProcessing}
                       onChange={handleImageSelect}
                       className="hidden"
                     />
@@ -542,16 +549,21 @@ export default function OrdersPage() {
 
               {/* AMOUNT */}
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Amount (Optional)</label>
+                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Selling Price (TZS) *</label>
                 <input
-                  type="text"
-                  placeholder="e.g. 2,400,000"
-                  value={orderForm.amount}
+                  type="number"
+                  placeholder="e.g. 2400000"
+                  min="0" step="0.01" value={orderForm.amount}
                   onChange={e => setOrderForm(f => ({ ...f, amount: e.target.value }))}
                   className="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/20"
                 />
               </div>
 
+              <div>
+                <label className="block text-xs font-bold mb-1">Buying Price (TZS) *</label>
+                <input type="number" min="0" step="0.01" value={orderForm.buyingPrice} onChange={e => setOrderForm(f => ({ ...f, buyingPrice: e.target.value }))} className="w-full px-3 py-2.5 rounded-xl border border-slate-200" />
+                <p className="text-sm font-bold mt-2">Expected gross profit: {orderForm.amount !== '' && orderForm.buyingPrice !== '' ? `TZS ${(Number(orderForm.amount) - Number(orderForm.buyingPrice)).toLocaleString()}` : 'Enter both prices'}</p>
+              </div>
               {/* DELIVERY ADDRESS */}
               <div>
                 <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Delivery Address *</label>
@@ -617,10 +629,10 @@ export default function OrdersPage() {
             <div className="p-4 sm:p-5 border-t border-slate-100 bg-white shrink-0 shadow-lg pb-[max(1.25rem,env(safe-area-inset-bottom))]">
               <button
                 onClick={handleCreateOrder}
-                disabled={creating}
+                disabled={creating || imageProcessing}
                 className="w-full py-3.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-extrabold text-sm shadow-md transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-wide"
               >
-                {creating ? 'Creating Order...' : 'Create Order'}
+                {imageProcessing ? 'Preparing photo...' : creating ? 'Creating Order...' : 'Create Order'}
                 <ArrowRight className="w-4 h-4 stroke-[3]" />
               </button>
             </div>

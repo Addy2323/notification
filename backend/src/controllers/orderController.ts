@@ -1,4 +1,8 @@
 import { Request, Response } from 'express';
+import { z } from 'zod';
+
+const money = z.number().finite().min(0).max(9999999999.99);
+const itemSchema = z.object({ productName: z.string().trim().min(1), unitSellingPrice: money, unitCostPrice: money.optional(), quantity: z.number().int().min(1).max(100000).optional(), discount: money.optional() }).refine(it => (it.discount || 0) <= it.unitSellingPrice * (it.quantity || 1), 'Discount exceeds selling total');
 import * as orderService from '../services/orderService';
 import { sendSuccess, sendError } from '../utils/response';
 
@@ -10,6 +14,8 @@ export async function createOrder(req: Request, res: Response) {
       return sendError(res, 'VALIDATION_ERROR', 'Customer name, phone, delivery address, and product name are required', 400);
     }
 
+    const parsed = z.object({ items: z.array(itemSchema).min(1).max(100).optional(), amount: z.preprocess(v => v === undefined || v === '' ? undefined : Number(v), money.optional()) }).safeParse(req.body);
+    if (!parsed.success) return sendError(res, 'VALIDATION_ERROR', parsed.error.issues[0].message, 400);
     const result = await orderService.createOrder({
       merchantId: req.user!.merchant_id,
       userId: req.user!.id,
@@ -19,7 +25,8 @@ export async function createOrder(req: Request, res: Response) {
       deliveryAddress,
       productName,
       imageUrl,
-      amount: amount ? parseFloat(amount) : undefined,
+      amount: parsed.data.amount,
+      items: parsed.data.items,
       driverId,
       driverName,
       driverPhone,
@@ -108,5 +115,15 @@ export async function getOrderMetrics(req: Request, res: Response) {
     return sendSuccess(res, result);
   } catch (err: any) {
     return sendError(res, 'METRICS_ERROR', err.message, 500);
+  }
+}
+
+export async function refundOrder(req: Request, res: Response) {
+  const input = z.object({ reason: z.string().trim().min(1).max(500), restocked: z.boolean() }).safeParse(req.body);
+  if (!input.success) return sendError(res, 'VALIDATION_ERROR', 'Provide a refund reason and whether goods were returned to stock', 400);
+  try {
+    return sendSuccess(res, await orderService.refundOrder(req.user!.merchant_id, req.user!.id, req.params.id, input.data));
+  } catch (err: any) {
+    return sendError(res, 'REFUND_ERROR', err.message, err.message === 'Order not found' ? 404 : 400);
   }
 }

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/branding/fimipay-favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/branding/fimipay-favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0A1FB8" />
+    <!-- PWA manifest + install meta are injected only on fimipay.com (see configure-platform-pwa). -->
+    <link rel="dns-prefetch" href="https://images.fimipay.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://images.fimipay.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Documentation</title>
+    <meta name="description" content="Integrate FimiPay APIs, webhooks, and SDKs. Guides for payment links, subscriptions, payouts, and mobile money across Africa." />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://fimipay.com/docs" />
+    <meta property="og:title" content="Documentation" />
+    <meta property="og:description" content="Integrate FimiPay APIs, webhooks, and SDKs. Guides for payment links, subscriptions, payouts, and mobile money across Africa." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fimipay.com/docs" />
+    <meta property="og:image" content="https://fimipay.com/og-banner.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Documentation" />
+    <meta name="twitter:description" content="Integrate FimiPay APIs, webhooks, and SDKs. Guides for payment links, subscriptions, payouts, and mobile money across Africa." />
+    <meta name="twitter:image" content="https://fimipay.com/og-banner.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "FimiPay",
+        "url": "https://fimipay.com",
+        "logo": "https://fimipay.com/branding/fimipay-logo.png",
+        "image": "https://fimipay.com/og-banner.png",
+        "description": "FimiPay provides payment infrastructure for African businesses — online payments, mobile money, payment links, subscriptions, and payouts.",
+        "email": "support@fimipay.com",
+        "sameAs": [
+          "https://www.instagram.com/fimipay",
+          "https://www.facebook.com/fimipay"
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "FimiPay",
+        "url": "https://fimipay.com",
+        "description": "Payment infrastructure for African businesses — accept payments, send payouts, and integrate via API.",
+        "inLanguage": "en",
+        "publisher": {
+          "@type": "Organization",
+          "name": "FimiPay",
+          "url": "https://fimipay.com",
+          "logo": "https://fimipay.com/branding/fimipay-logo.png"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://fimipay.com/blog?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "FimiPay",
+        "url": "https://fimipay.com",
+        "image": "https://fimipay.com/og-banner.png",
+        "description": "Accept online payments, mobile money, payment links, subscriptions, APIs, and automated payouts with FimiPay. Built for businesses, startups, creators, and developers across Africa.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web",
+        "operatingArea": {
+          "@type": "Place",
+          "name": "Africa"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "Free to create an account; transaction fees apply."
+        },
+        "provider": {
+          "@type": "Organization",
+          "name": "FimiPay",
+          "url": "https://fimipay.com"
+        }
+      }
+    </script>
+    <script type="module" crossorigin src="/assets/index-D-bnLcW3.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime-W-g5d7YK.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-icons-N_wRbkjU.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-misc-DTxtYQRx.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-motion-BUDBihMN.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-radix-Cwp850A8.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-react-DTXmWQh0.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-dates-ZUQ6biCD.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-router-DpHsO3zq.js">
+    <link rel="modulepreload" crossorigin href="/assets/stale-chunk-hO2KYAJy.js">
+    <link rel="modulepreload" crossorigin href="/assets/store-host-DPxec2VT.js">
+    <link rel="modulepreload" crossorigin href="/assets/site-hosts-B0xNpAZg.js">
+    <link rel="modulepreload" crossorigin href="/assets/dashboard-paths-D5r90Zo0.js">
+    <link rel="modulepreload" crossorigin href="/assets/dashboard-prefetch-BMqlzz2O.js">
+    <link rel="modulepreload" crossorigin href="/assets/api-base-CJY6Rfkh.js">
+    <link rel="modulepreload" crossorigin href="/assets/merchant-branding-C_Kroip6.js">
+    <link rel="modulepreload" crossorigin href="/assets/client-error-reporter-kL5r-UZu.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-query-BHMMrWTY.js">
+    <link rel="modulepreload" crossorigin href="/assets/config-CxF08ZyK.js">
+    <link rel="modulepreload" crossorigin href="/assets/LanguageContext-DQ-GvBW_.js">
+    <link rel="modulepreload" crossorigin href="/assets/persist--9ViwAtH.js">
+    <link rel="modulepreload" crossorigin href="/assets/auth-activity-sync-DCfw1gXp.js">
+    <link rel="modulepreload" crossorigin href="/assets/AuthContext-YjVgA7qL.js">
+    <link rel="modulepreload" crossorigin href="/assets/logo-urls-lm6jCoWJ.js">
+    <link rel="modulepreload" crossorigin href="/assets/defaults-CWAsHYOE.js">
+    <link rel="modulepreload" crossorigin href="/assets/detect-Dt_yna7O.js">
+    <link rel="modulepreload" crossorigin href="/assets/MarketContext-gp9uZjjM.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-cn-BCICgXE2.js">
+    <link rel="modulepreload" crossorigin href="/assets/utils-DIroJHZO.js">
+    <link rel="modulepreload" crossorigin href="/assets/next-navigation-Dxqi5xsx.js">
+    <link rel="modulepreload" crossorigin href="/assets/domain-urls-CwCPbLjX.js">
+    <link rel="modulepreload" crossorigin href="/assets/next-link-CmFGAIzo.js">
+    <link rel="modulepreload" crossorigin href="/assets/fetch-7JzkNBOM.js">
+    <link rel="modulepreload" crossorigin href="/assets/resolve-image-src-C8UZLOIU.js">
+    <link rel="modulepreload" crossorigin href="/assets/responsive-static-images-_zg11MBo.js">
+    <link rel="modulepreload" crossorigin href="/assets/BrandLogo-PAau6AOh.js">
+    <link rel="modulepreload" crossorigin href="/assets/url-B4zZ8MpU.js">
+    <link rel="modulepreload" crossorigin href="/assets/MerchantIdentityAvatar-BGtzcuJ9.js">
+    <link rel="modulepreload" crossorigin href="/assets/brand-colors-CDMHtO7g.js">
+    <link rel="modulepreload" crossorigin href="/assets/product-slug-2tJ-4fOZ.js">
+    <link rel="modulepreload" crossorigin href="/assets/product-short-code-C1MhGnzq.js">
+    <link rel="modulepreload" crossorigin href="/assets/product-urls-bhuGXPXc.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-toast--Cc9KxIS.js">
+    <link rel="modulepreload" crossorigin href="/assets/sonner-BsvO0GAM.js">
+    <link rel="modulepreload" crossorigin href="/assets/should-track-marketing-D6lL6Kb3.js">
+    <link rel="modulepreload" crossorigin href="/assets/sheet-D9RrSk-7.js">
+    <link rel="modulepreload" crossorigin href="/assets/whatsapp-url-DyXwuBBo.js">
+    <link rel="modulepreload" crossorigin href="/assets/types-KsYNCqWG.js">
+    <link rel="modulepreload" crossorigin href="/assets/phone-dial-BslsjM8i.js">
+    <link rel="modulepreload" crossorigin href="/assets/useBuyerCheckoutLocale-Dn7LvNJd.js">
+    <link rel="modulepreload" crossorigin href="/assets/meta-pixel-id-0eXmTtGh.js">
+    <link rel="modulepreload" crossorigin href="/assets/product-listings-D_0smNuR.js">
+    <link rel="modulepreload" crossorigin href="/assets/sanitize-payment-message-CRBbZx-0.js">
+    <link rel="modulepreload" crossorigin href="/assets/selcom-checkout-flow-ClHc3N3h.js">
+    <link rel="modulepreload" crossorigin href="/assets/description-html-DtKLVUcm.js">
+    <link rel="modulepreload" crossorigin href="/assets/course-curriculum-Dxzvv1m1.js">
+    <link rel="modulepreload" crossorigin href="/assets/LanguageSwitcher-B5rZnRGf.js">
+    <link rel="modulepreload" crossorigin href="/assets/input-masking-D0ywGhI8.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-qrcode-BgA18oK4.js">
+    <link rel="modulepreload" crossorigin href="/assets/useLiveFxRates-DTplXCVv.js">
+    <link rel="modulepreload" crossorigin href="/assets/categories-CpSs_Ilw.js">
+    <link rel="modulepreload" crossorigin href="/assets/CheckoutPaymentBottomSheet-CQ8IdpDG.js">
+    <link rel="modulepreload" crossorigin href="/assets/SingleProductPaymentPanel-DZwiMHYR.js">
+    <link rel="modulepreload" crossorigin href="/assets/detect-payment-method-BcWmu_Df.js">
+    <link rel="modulepreload" crossorigin href="/assets/input-DEJDgSfD.js">
+    <link rel="modulepreload" crossorigin href="/assets/label-oYIHM60O.js">
+    <link rel="modulepreload" crossorigin href="/assets/CheckoutPaymentSection-CPGEANqi.js">
+    <link rel="modulepreload" crossorigin href="/assets/flutterwave-inline-Ddt984dU.js">
+    <link rel="modulepreload" crossorigin href="/assets/link-currency-D7EKrFdD.js">
+    <link rel="modulepreload" crossorigin href="/assets/useStoreCheckout-hstmk3LD.js">
+    <link rel="modulepreload" crossorigin href="/assets/PaymentLinkDescription-BHoP72AQ.js">
+    <link rel="modulepreload" crossorigin href="/assets/social-links-WlByHCTt.js">
+    <link rel="modulepreload" crossorigin href="/assets/commerce-CE9Iakab.js">
+    <link rel="modulepreload" crossorigin href="/assets/button-CgYu1Mwv.js">
+    <link rel="modulepreload" crossorigin href="/assets/nav-links-B6Dva142.js">
+    <link rel="modulepreload" crossorigin href="/assets/SmartLink-s9CpxhIQ.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-DXk35boQ.css">
+  
+    <link rel="dns-prefetch" href="https://connect.facebook.net" />
+    <script src="/meta-pixel-bootstrap.js?v=3" defer></script>
+    <script src="/ga-bootstrap.js" defer></script>
+  </head>
+  <body>
+    <style>
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        min-height: 100dvh;
+        min-height: -webkit-fill-available;
+        color: #0f172a;
+        background-color: #f5f7fb;
+        background-image:
+          radial-gradient(ellipse 75% 55% at 50% 42%, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.55) 45%, transparent 100%),
+          radial-gradient(ellipse 55% 45% at -10% -8%, rgba(10, 31, 184, 0.22) 0%, transparent 72%),
+          radial-gradient(ellipse 65% 45% at -8% 108%, rgba(10, 31, 184, 0.28) 0%, transparent 75%),
+          radial-gradient(ellipse 48% 48% at 108% -6%, rgba(0, 194, 255, 0.18) 0%, transparent 72%),
+          radial-gradient(ellipse 38% 38% at 95% 18%, rgba(120, 230, 210, 0.14) 0%, transparent 72%);
+        /* Avoid `fixed` — blanks iOS Safari / installed PWAs. */
+        background-attachment: scroll;
+      }
+      #root {
+        min-height: 100dvh;
+        min-height: -webkit-fill-available;
+      }
+    </style>
+    <div id="root"></div>
+  <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a474a49d0d173241',t:'MTc5MTQ1NzIzOA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"4bf8b6397c3b474bb58c7551657f6741","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

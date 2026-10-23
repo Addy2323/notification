@@ -9,7 +9,8 @@ import { prisma } from './database/prisma';
 
 export const app = express();
 
-app.use(express.json());
+// A 5 MB photo can require nearly 7 MB when encoded as a JSON data URL.
+app.use(express.json({ limit: '8mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));

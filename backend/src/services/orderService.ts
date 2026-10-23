@@ -108,15 +108,15 @@ export async function createOrder(data: CreateOrderDTO) {
       product_sku_snapshot: it.sku || null,
       product_category_snapshot: it.category || null,
       unit_selling_price: price,
-      unit_cost_price: cost > 0 ? cost : null,
+      unit_cost_price: it.unitCostPrice === undefined ? null : cost,
       quantity: qty,
       discount: disc,
       subtotal,
-      profit_amount: cost > 0 ? itemProfit : null,
+      profit_amount: it.unitCostPrice === undefined ? null : itemProfit,
     };
   });
 
-  const finalAmount = data.amount !== undefined && data.amount !== null ? data.amount : totalRevenue;
+  const finalAmount = totalRevenue;
 
   const order = await prisma.$transaction(async (tx: any) => {
     const newOrder = await tx.order.create({
@@ -131,8 +131,8 @@ export async function createOrder(data: CreateOrderDTO) {
         image_url: data.imageUrl || null,
         amount: finalAmount,
         total_revenue: totalRevenue,
-        total_cost: totalCost > 0 ? totalCost : null,
-        gross_profit: totalCost > 0 ? grossProfit : totalRevenue,
+        total_cost: preparedItems.every(it => it.unit_cost_price !== null) ? totalCost : null,
+        gross_profit: preparedItems.every(it => it.unit_cost_price !== null) ? grossProfit : null,
         driver_id: data.driverId || null,
         driver_name: data.driverName || null,
         driver_phone: data.driverPhone || null,
@@ -245,6 +245,7 @@ export async function getOrderDetail(merchantId: string, orderId: string) {
     include: {
       customer: true,
       driver: true,
+      items: true,
       events: { orderBy: { timestamp: 'asc' } },
       notifications: { orderBy: { created_at: 'desc' } },
       merchant: { select: { business_name: true, logo_url: true, brand_color: true } },
@@ -469,4 +470,17 @@ export async function getOrderMetrics(merchantId: string) {
   ]);
 
   return { total, pending, confirmed, assigned, outForDelivery, delivered, cancelled };
+}
+
+// A conditional update ensures concurrent/repeated requests cannot refund twice.
+export async function refundOrder(merchantId: string, userId: string, orderId: string, input: { reason: string; restocked: boolean }) {
+  return prisma.$transaction(async tx => {
+    const order = await tx.order.findFirst({ where: { id: orderId, merchant_id: merchantId } });
+    if (!order) throw new Error('Order not found');
+    if (order.status !== 'DELIVERED') throw new Error('Only delivered orders can be refunded');
+    const changed = await tx.order.updateMany({ where: { id: orderId, merchant_id: merchantId, status: 'DELIVERED', payment_status: { not: 'REFUNDED' } }, data: { payment_status: 'REFUNDED' } });
+    if (changed.count !== 1) throw new Error('This order has already been refunded');
+    await tx.orderEvent.create({ data: { order_id: orderId, event_type: 'ORDER_REFUNDED', actor_type: 'MERCHANT', actor_reference: userId, metadata: JSON.stringify({ reason: input.reason, restocked: input.restocked, amount: Number(order.total_revenue ?? order.amount ?? 0) }) } });
+    return tx.order.findUnique({ where: { id: orderId } });
+  });
 }

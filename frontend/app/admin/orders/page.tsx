@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Swal from 'sweetalert2';
 import {
   ShoppingBag,
@@ -26,25 +26,38 @@ export default function GlobalOrdersPage() {
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<any>({ total: 0, totalPages: 0 });
+  const [error, setError] = useState('');
+  const [detailLoading, setDetailLoading] = useState(false);
+  const listRequest = useRef(0);
+  const detailRequest = useRef(0);
+  const money = (value: any) => value === null || value === undefined ? 'Not recorded' : `TZS ${Number(value).toLocaleString()}`;
   const loadOrders = async () => {
-    setLoading(true);
+    const id = ++listRequest.current;
+    setLoading(true); setError('');
     try {
-      const res = await fetchApi('/admin/reports/excel?reportType=SALES'); // We can fetch orders list
-      // Or fetch from overview/orders API
-      const overview = await fetchApi('/admin/overview?period=THIS_MONTH');
-      // For global orders query, we fetch via search or merchant profile APIs
-      const searchRes = await fetchApi(`/admin/search?q=${encodeURIComponent(searchQuery || 'a')}`);
-      setOrders(searchRes?.orders || []);
-    } catch (err) {
-      console.error('Failed to load global orders:', err);
-    } fontally: {
-      setLoading(false);
-    }
+      const params = new URLSearchParams({ search: searchQuery, status: statusFilter, page: String(page), limit: '25' });
+      const result = await fetchApi(`/admin/orders?${params}`);
+      if (id !== listRequest.current) return;
+      setOrders(result.orders); setPagination(result.pagination);
+    } catch (err: any) {
+      if (id === listRequest.current) { setError(err.message || 'Failed to load orders'); setOrders([]); }
+    } finally { if (id === listRequest.current) setLoading(false); }
   };
-
   useEffect(() => {
-    loadOrders();
-  }, [statusFilter]);
+    const timer = setTimeout(loadOrders, 250);
+    return () => { clearTimeout(timer); listRequest.current++; };
+  }, [statusFilter, searchQuery, page]);
+  const openOrder = async (id: string) => {
+    const request = ++detailRequest.current;
+    setDetailLoading(true); setError(''); setSelectedOrder(null);
+    try {
+      const detail = await fetchApi(`/admin/orders/${encodeURIComponent(id)}`);
+      if (request === detailRequest.current) setSelectedOrder(detail);
+    } catch (err: any) { if (request === detailRequest.current) setError(err.message); }
+    finally { if (request === detailRequest.current) setDetailLoading(false); }
+  };
 
   return (
     <div className="space-y-6">
@@ -60,13 +73,16 @@ export default function GlobalOrdersPage() {
         </div>
       </div>
 
+      {error && <p role="alert" className="p-4 border border-rose-700 rounded-xl text-rose-300">{error}</p>}
+      {detailLoading && <p role="status" className="text-amber-300">Loading order details...</p>}
+      <div className="flex justify-between text-sm text-slate-400"><span>{pagination.total} platform orders</span><button onClick={loadOrders} disabled={loading} className="text-amber-400">Refresh orders</button></div>
       {/* Filters & Search */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-900/90 p-4 rounded-2xl border border-slate-800">
-        <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800 overflow-x-auto">
-          {['ALL', 'PENDING', 'ON_THE_WAY', 'DELIVERED', 'FAILED', 'CANCELLED'].map((st) => (
+        <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800 overflow-x-auto max-w-full">
+          {['ALL', 'PENDING', 'CONFIRMED', 'DRIVER_ASSIGNED', 'OUT_FOR_DELIVERY', 'ARRIVED', 'DELIVERED', 'FAILED', 'CANCELLED', 'REFUNDED'].map((st) => (
             <button
               key={st}
-              onClick={() => setStatusFilter(st)}
+              onClick={() => { setPage(1); setStatusFilter(st); }}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 statusFilter === st
                   ? 'bg-amber-500 text-slate-950 shadow-sm'
@@ -84,7 +100,7 @@ export default function GlobalOrdersPage() {
             type="text"
             placeholder="Search order #, customer, phone, product..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => { setPage(1); setSearchQuery(e.target.value); }}
             className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
           />
         </div>
@@ -130,7 +146,7 @@ export default function GlobalOrdersPage() {
                     </td>
                     <td className="p-4">{o.product_name}</td>
                     <td className="p-4 font-mono font-bold text-emerald-400">
-                      TZS {Number(o.total_revenue || o.amount || 0).toLocaleString()}
+                      {money(o.net_revenue)}
                     </td>
                     <td className="p-4 font-bold">
                       <span
@@ -142,12 +158,12 @@ export default function GlobalOrdersPage() {
                             : 'bg-slate-800 text-slate-400'
                         }`}
                       >
-                        {o.status}
+                        {o.payment_status === 'REFUNDED' ? 'REFUNDED' : o.status}
                       </span>
                     </td>
                     <td className="p-4 text-right">
                       <button
-                        onClick={() => setSelectedOrder(o)}
+                        aria-label={`View order ${o.order_number}`} onClick={() => openOrder(o.id)}
                         className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
                       >
                         <Eye className="w-3.5 h-3.5 text-amber-400" />
@@ -161,10 +177,15 @@ export default function GlobalOrdersPage() {
         </div>
       </div>
 
+      <div className="flex items-center justify-end gap-4 text-sm text-slate-300">
+        <button disabled={loading || page <= 1} onClick={() => setPage(p => p - 1)}>Previous</button>
+        <span>Page {page} of {Math.max(1, pagination.totalPages)}</span>
+        <button disabled={loading || page >= pagination.totalPages} onClick={() => setPage(p => p + 1)}>Next</button>
+      </div>
       {/* Order Detail Timeline Modal */}
       {selectedOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+          <div role="dialog" aria-modal="true" aria-label="Order details" className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
                 <h3 className="text-base font-black text-white">Order #{selectedOrder.order_number}</h3>
@@ -176,6 +197,21 @@ export default function GlobalOrdersPage() {
             </div>
 
             <div className="space-y-3 text-xs">
+              <section className="text-slate-300 space-y-2">
+                <h4 className="font-bold text-white">Products</h4>
+                {selectedOrder.items?.length ? selectedOrder.items.map((item: any) => <p key={item.id}>{item.product_name_snapshot} ? Qty {item.quantity} ? Buying/unit: {money(item.unit_cost_price)} ? Selling/unit: {money(item.unit_selling_price)} ? Discount: {money(item.discount)}</p>) : <p>No line-item prices recorded for this order.</p>}
+              </section>
+              <section className="text-slate-300 space-y-2">
+                <h4 className="font-bold text-white">Order timeline</h4>
+                {selectedOrder.events?.length ? selectedOrder.events.map((event: any) => {
+                  let refund: any = {}; if (event.event_type === 'ORDER_REFUNDED') { try { refund = JSON.parse(event.metadata || '{}'); } catch {} }
+                  return <div key={event.id}><p>{event.event_type.replaceAll('_', ' ')} ? {new Date(event.timestamp).toLocaleString()} ? {event.actor_type}</p>{event.event_type === 'ORDER_REFUNDED' && <p>Reason: {refund.reason} ? {refund.restocked ? 'Returned to stock' : 'Cost retained'}</p>}</div>;
+                }) : <p>No timeline events recorded.</p>}
+              </section>
+              <section className="text-slate-300 space-y-2">
+                <h4 className="font-bold text-white">Notifications</h4>
+                {selectedOrder.notifications?.length ? selectedOrder.notifications.map((notification: any) => <p key={notification.id}>{notification.event_type} ? {notification.recipient_type} ? {notification.status} ? {new Date(notification.created_at).toLocaleString()}{notification.failure_reason ? ` ? ${notification.failure_reason}` : ''}</p>) : <p>No notifications recorded.</p>}
+              </section>
               <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800">
                 <p className="text-[10px] text-slate-400 font-bold uppercase">Customer Details</p>
                 <p className="font-bold text-white mt-1">{selectedOrder.customer_name}</p>
@@ -186,7 +222,13 @@ export default function GlobalOrdersPage() {
                 <p className="text-[10px] text-slate-400 font-bold uppercase">Product & Financials</p>
                 <p className="font-bold text-white mt-1">{selectedOrder.product_name}</p>
                 <p className="text-amber-400 font-mono font-bold mt-0.5">
-                  Revenue: TZS {Number(selectedOrder.total_revenue || selectedOrder.amount || 0).toLocaleString()}
+                  Net revenue: {money(selectedOrder.net_revenue)}
+                </p>
+                <p className="text-slate-300 mt-1">Buying cost: {money(selectedOrder.net_cost)} ? Gross profit: {money(selectedOrder.net_profit)}</p>
+                <p className="text-slate-300 mt-1">Refund: {money(selectedOrder.refund_amount)} ? Payment: {selectedOrder.payment_status}</p>
+                <p className="text-slate-300 mt-1">Delivery: {selectedOrder.delivery_address}</p>
+                <p className="text-slate-300 mt-1">Driver: {selectedOrder.driver_name || 'Unassigned'} {selectedOrder.driver_phone}</p>
+                <p className="text-slate-300 mt-1">Created: {new Date(selectedOrder.created_at).toLocaleString()} ? {selectedOrder.status}
                 </p>
               </div>
             </div>

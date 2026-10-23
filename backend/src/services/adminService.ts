@@ -1,3 +1,5 @@
+import { profileDateRange, ProfilePeriod } from '../utils/profilePeriod';
+import { ledgerFinancials } from './salesService';
 import bcrypt from 'bcryptjs';
 import { prisma } from '../database/prisma';
 import { calculateMerchantScore, getMerchantStreak } from './merchantScoringService';
@@ -320,7 +322,10 @@ export async function updateMerchantStatus(merchantId: string, status: 'ACTIVE' 
   return merchant;
 }
 
-export async function getMerchant360Profile(merchantId: string) {
+export async function getMerchant360Profile(merchantId: string, period: ProfilePeriod = 'ALL') {
+  const dates = profileDateRange(period);
+  const dateWhere = dates ? { created_at: dates } : {};
+  const activityWhere = dates ? { timestamp: dates } : {};
   const merchant = await prisma.merchant.findUnique({
     where: { id: merchantId },
     include: {
@@ -338,9 +343,9 @@ export async function getMerchant360Profile(merchantId: string) {
   }
 
   // Fetch metrics
-  const [orders, deliveries, notifications, auditLogs] = await Promise.all([
+  const [orders, deliveries, notifications, auditLogs, financialOrders, deliveryCount, notificationCount, activityCount] = await Promise.all([
     prisma.order.findMany({
-      where: { merchant_id: merchantId },
+      where: { merchant_id: merchantId, ...dateWhere },
       orderBy: { created_at: 'desc' },
       take: 200,
       include: {
@@ -349,20 +354,24 @@ export async function getMerchant360Profile(merchantId: string) {
       },
     }),
     prisma.delivery.findMany({
-      where: { merchant_id: merchantId },
+      where: { merchant_id: merchantId, ...dateWhere },
       orderBy: { created_at: 'desc' },
       take: 200,
     }),
     prisma.orderNotification.findMany({
-      where: { order: { merchant_id: merchantId } },
+      where: { order: { merchant_id: merchantId }, ...dateWhere },
       orderBy: { created_at: 'desc' },
       take: 100,
     }),
     prisma.auditLog.findMany({
-      where: { merchant_id: merchantId },
+      where: { merchant_id: merchantId, ...activityWhere },
       orderBy: { timestamp: 'desc' },
       take: 50,
     }),
+    prisma.order.findMany({ where: { merchant_id: merchantId, ...dateWhere }, select: { amount: true, total_revenue: true, total_cost: true, status: true, payment_status: true, events: { where: { event_type: 'ORDER_REFUNDED' } } } }),
+    prisma.delivery.count({ where: { merchant_id: merchantId, ...dateWhere } }),
+    prisma.orderNotification.count({ where: { order: { merchant_id: merchantId }, ...dateWhere } }),
+    prisma.auditLog.count({ where: { merchant_id: merchantId, ...activityWhere } }),
   ]);
 
   const streak = await getMerchantStreak(merchantId);
@@ -370,20 +379,22 @@ export async function getMerchant360Profile(merchantId: string) {
   await checkAndAwardAchievements(merchantId);
 
   // Financial aggregates
-  const totalSales = orders.reduce((sum, o) => sum + Number(o.total_revenue || o.amount || 0), 0);
-  const totalCost = orders.reduce((sum, o) => sum + Number(o.total_cost || 0), 0);
-  const grossProfit = orders.reduce((sum, o) => sum + Number(o.gross_profit || (Number(o.total_revenue || o.amount || 0) - Number(o.total_cost || 0))), 0);
-
-  const pendingOrders = orders.filter((o) => o.status === 'PENDING').length;
-  const deliveredOrders = orders.filter((o) => o.status === 'DELIVERED').length;
-  const failedOrders = orders.filter((o) => ['FAILED', 'CANCELLED'].includes(o.status)).length;
+  const totalSales = financialOrders.reduce((sum, o) => sum + ledgerFinancials(o).net_revenue, 0);
+  const totalCost = financialOrders.reduce((sum, o) => sum + (ledgerFinancials(o).net_cost ?? 0), 0);
+  const grossProfit = financialOrders.reduce((sum, o) => sum + (ledgerFinancials(o).net_profit ?? 0), 0);
+  const pendingOrders = financialOrders.filter(o => o.status === 'PENDING').length;
+  const deliveredOrders = financialOrders.filter(o => o.status === 'DELIVERED').length;
+  const failedOrders = financialOrders.filter(o => ['FAILED', 'CANCELLED'].includes(o.status)).length;
 
   return {
+    period,
     merchant,
     score: scoreData,
     streak,
     summary: {
-      totalOrders: orders.length,
+      totalOrders: financialOrders.length,
+      deliveryCount, notificationCount, activityCount,
+      missingCostCount: financialOrders.filter(o => ledgerFinancials(o).net_cost === null).length,
       pendingOrders,
       deliveredOrders,
       failedOrders,

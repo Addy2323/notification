@@ -5,17 +5,24 @@ import { fetchApi } from '@/lib/api';
 import { DollarSign, Search, Calendar, Filter, ArrowUpRight, TrendingUp, TrendingDown, Layers, ChevronDown, ChevronUp, Download, RefreshCw, ShoppingBag, Truck } from 'lucide-react';
 
 export default function SalesLedgerPage() {
+  const [error, setError] = useState('');
+  const [page, setPage] = useState(1);
+  const [refund, setRefund] = useState<any>(null);
+  const [reason, setReason] = useState('');
+  const [restocked, setRestocked] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [salesData, setSalesData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [range, setRange] = useState('TODAY');
+  const [range, setRange] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
 
   const loadSales = async () => {
     setLoading(true);
+    setError('');
     try {
-      const params = new URLSearchParams();
+      const params = new URLSearchParams({ page: String(page) });
       if (range) params.append('range', range);
       if (searchQuery) params.append('q', searchQuery);
       if (statusFilter) params.append('status', statusFilter);
@@ -23,7 +30,7 @@ export default function SalesLedgerPage() {
       const res = await fetchApi(`/sales?${params.toString()}`);
       setSalesData(res);
     } catch (err) {
-      console.error('Failed to load sales ledger:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load sales ledger');
     } finally {
       setLoading(false);
     }
@@ -31,7 +38,7 @@ export default function SalesLedgerPage() {
 
   useEffect(() => {
     loadSales();
-  }, [range, statusFilter]);
+  }, [range, statusFilter, page]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +58,19 @@ export default function SalesLedgerPage() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
+      {error && <p role="alert" className="p-4 bg-rose-50 text-rose-700">{error}</p>}
+      {refund && <form className="p-5 bg-white border rounded-xl space-y-3" onSubmit={async e => {
+        e.preventDefault(); setSaving(true);
+        try { await fetchApi(`/orders/${refund.id}/refund`, { method: 'POST', body: JSON.stringify({ reason, restocked }) }); setRefund(null); await loadSales(); }
+        catch (err: any) { setError(err.message); } finally { setSaving(false); }
+      }}>
+        <p className="font-bold">Record full refund: {refund.order_number} ? TZS {Number(refund.total_revenue ?? refund.amount ?? 0).toLocaleString()}</p>
+        <input aria-label="Refund reason" required maxLength={500} value={reason} onChange={e => setReason(e.target.value)} placeholder="Reason for refund" className="border rounded p-2 w-full" />
+        <label className="block"><input type="checkbox" checked={restocked} onChange={e => setRestocked(e.target.checked)} /> Goods returned to stock (recover buying cost)</label>
+        <p className="text-xs text-slate-500">Recording a refund updates the ledger. Process the customer payment separately.</p>
+        <button disabled={saving || !reason.trim()} className="bg-rose-600 text-white px-4 py-2 rounded disabled:opacity-50">{saving ? 'Saving...' : 'Record refund'}</button>
+        <button type="button" disabled={saving} onClick={() => setRefund(null)} className="px-4">Cancel</button>
+      </form>}
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 text-white p-6 rounded-2xl shadow-xl border border-slate-800">
         <div>
@@ -114,7 +134,7 @@ export default function SalesLedgerPage() {
           <p className="text-2xl font-black text-emerald-600 mt-2">
             TZS {summary.totalProfit.toLocaleString()}
           </p>
-          <p className="text-xs text-emerald-700 font-medium mt-1">Net profit after item cost</p>
+          <p className="text-xs text-emerald-700 font-medium mt-1">Gross profit after item cost and refunds</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
@@ -135,11 +155,17 @@ export default function SalesLedgerPage() {
         </div>
       </div>
 
+      <div className="p-4 rounded-xl border bg-white">
+        <p className="font-bold">Refunds: TZS {(summary.totalRefunds || 0).toLocaleString()} ? {summary.refundedCount || 0} orders</p>
+        <p className="text-xs text-slate-500">Revenue is after refunds. Product cost is recovered only for goods returned to stock. Figures include orders at every delivery stage.</p>
+        {!!summary.missingCostCount && <p className="text-amber-700 text-sm mt-2">{summary.missingCostCount} orders have no buying cost recorded; their profit is excluded.</p>}
+      </div>
       {/* Filter Bar */}
       <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Period Selector Pills */}
         <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
           {[
+            { id: 'ALL', label: 'All Time' },
             { id: 'TODAY', label: 'Today' },
             { id: 'YESTERDAY', label: 'Yesterday' },
             { id: 'THIS_WEEK', label: 'This Week' },
@@ -148,7 +174,7 @@ export default function SalesLedgerPage() {
           ].map((p) => (
             <button
               key={p.id}
-              onClick={() => setRange(p.id)}
+              onClick={() => { setPage(1); setRange(p.id); }}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
                 range === p.id
                   ? 'bg-slate-900 text-white shadow-sm'
@@ -175,10 +201,13 @@ export default function SalesLedgerPage() {
 
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={(e) => { setPage(1); setStatusFilter(e.target.value); }}
             className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF5500]"
           >
             <option value="">All Statuses</option>
+            <option value="REFUNDED">Refunded</option>
+            <option value="CONFIRMED">Confirmed</option>
+            <option value="ARRIVED">Arrived</option>
             <option value="DELIVERED">Delivered</option>
             <option value="OUT_FOR_DELIVERY">Out for Delivery</option>
             <option value="DRIVER_ASSIGNED">Driver Assigned</option>
@@ -188,6 +217,11 @@ export default function SalesLedgerPage() {
         </form>
       </div>
 
+      <div className="flex items-center justify-end gap-3 text-sm">
+        <button disabled={loading || page <= 1} onClick={() => setPage(p => p - 1)}>Previous</button>
+        <span>Page {page} of {Math.max(1, salesData?.pagination?.totalPages || 1)}</span>
+        <button disabled={loading || page >= (salesData?.pagination?.totalPages || 1)} onClick={() => setPage(p => p + 1)}>Next</button>
+      </div>
       {/* Digital Sales Ledger Table */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
@@ -223,9 +257,9 @@ export default function SalesLedgerPage() {
                 </tr>
               ) : (
                 orders.map((ord: any) => {
-                  const rev = Number(ord.total_revenue || ord.amount || 0);
-                  const cost = Number(ord.total_cost || 0);
-                  const profit = ord.gross_profit !== null && ord.gross_profit !== undefined ? Number(ord.gross_profit) : 0;
+                  const rev = Number(ord.net_revenue ?? 0);
+                  const cost = ord.net_cost;
+                  const profit = ord.net_profit;
                   const isExpanded = expandedOrderId === ord.id;
 
                   return (
@@ -251,10 +285,10 @@ export default function SalesLedgerPage() {
                           {rev.toLocaleString()}
                         </td>
                         <td className="py-3.5 px-4 text-right text-slate-500">
-                          {cost > 0 ? cost.toLocaleString() : '-'}
+                          {cost === null ? 'Not recorded' : Number(cost).toLocaleString()}
                         </td>
                         <td className="py-3.5 px-4 text-right font-bold text-emerald-600">
-                          {profit > 0 ? profit.toLocaleString() : '-'}
+                          {profit === null ? 'Not available' : Number(profit).toLocaleString()}
                         </td>
                         <td className="py-3.5 px-4 text-slate-600 font-medium">
                           {ord.driver_name || <span className="text-slate-300 italic">Unassigned</span>}
@@ -269,7 +303,7 @@ export default function SalesLedgerPage() {
                                 : 'bg-amber-100 text-amber-800'
                             }`}
                           >
-                            {ord.status}
+                            {ord.payment_status === 'REFUNDED' ? 'REFUNDED' : ord.status}
                           </span>
                         </td>
                         <td className="py-3.5 px-4 text-center text-slate-400">
@@ -282,9 +316,11 @@ export default function SalesLedgerPage() {
                         <tr className="bg-slate-50 border-t border-b border-slate-200">
                           <td colSpan={10} className="p-4">
                             <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
+                              {ord.status === 'DELIVERED' && ord.payment_status !== 'REFUNDED' && <button onClick={() => { setRefund(ord); setReason(''); setRestocked(false); }} className="px-3 py-2 rounded bg-rose-50 text-rose-700 font-bold">Record full refund</button>}
+                              {ord.events?.map((event: any) => { let data: any = {}; try { data = JSON.parse(event.metadata || '{}'); } catch {} return <p key={event.id} className="text-rose-700">Refund: {data.reason} ? {data.restocked ? 'Returned to stock' : 'Cost retained'} ? {new Date(event.timestamp).toLocaleString()}</p>; })}
                               <h4 className="font-bold text-slate-800 text-xs flex items-center gap-2">
                                 <ShoppingBag className="w-4 h-4 text-[#FF5500]" />
-                                Immutable Order Line Items (Snapshot at Time of Sale)
+                                Order line items
                               </h4>
 
                               {ord.items && ord.items.length > 0 ? (

@@ -11,6 +11,7 @@ router.get('/', orderController.listOrders);
 router.get('/metrics', orderController.getOrderMetrics);
 router.get('/:id', orderController.getOrderDetail);
 router.patch('/:id/status', orderController.updateOrderStatus);
+router.post('/:id/refund', orderController.refundOrder);
 router.post('/:id/assign-driver', orderController.assignDriver);
 
 export default router;

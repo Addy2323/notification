@@ -20,6 +20,16 @@ router.delete('/merchants/:id', adminController.deleteMerchant);
 router.get('/merchants/:id/profile', adminController.getMerchantProfile);
 router.patch('/merchants/:id/status', adminController.toggleMerchantStatus);
 
+// Platform orders (protected by ADMIN role above)
+router.get('/orders', adminController.listGlobalOrders);
+router.get('/orders/:id', adminController.getGlobalOrder);
+
+// Unified deliveries
+router.get('/deliveries', adminController.listAdminDeliveries);
+router.get('/deliveries/:source/:id', adminController.getAdminDelivery);
+
+router.get('/analytics', adminController.getPlatformAnalyticsSummary);
+
 // Global Search
 router.get('/search', adminController.globalSearch);
 

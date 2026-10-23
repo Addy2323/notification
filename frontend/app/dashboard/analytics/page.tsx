@@ -1,29 +1,30 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { fetchApi } from '@/lib/api';
 import { BarChart3, TrendingUp, TrendingDown, DollarSign, ShoppingBag, Truck, Award, RefreshCw } from 'lucide-react';
 
 export default function AnalyticsPage() {
-  const [range, setRange] = useState('TODAY');
+  const requestId = useRef(0);
+  const [error, setError] = useState('');
+  const [range, setRange] = useState('ALL');
   const [analytics, setAnalytics] = useState<any>(null);
   const [topProducts, setTopProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [hoveredPoint, setHoveredPoint] = useState<any>(null);
 
   const loadData = async () => {
-    setLoading(true);
+    const id = ++requestId.current;
+    setLoading(true); setError(''); setHoveredPoint(null);
     try {
-      const [resSummary, resTop] = await Promise.all([
-        fetchApi(`/analytics/summary?range=${range}`),
-        fetchApi(`/products/top?sortBy=revenue&limit=5`),
-      ]);
+      const resSummary = await fetchApi(`/analytics/summary?range=${range}`);
+      if (id !== requestId.current) return;
       setAnalytics(resSummary);
-      setTopProducts(resTop || []);
-    } catch (err) {
-      console.error('Failed to load analytics:', err);
+      setTopProducts(resSummary.topProducts || []);
+    } catch (err: any) {
+      if (id === requestId.current) { setError(err.message || 'Failed to load analytics'); setAnalytics(null); setTopProducts([]); }
     } finally {
-      setLoading(false);
+      if (id === requestId.current) setLoading(false);
     }
   };
 
@@ -103,6 +104,8 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12 overflow-x-hidden">
+      {error && <p role="alert" className="bg-rose-50 text-rose-700 p-4 rounded-xl">{error}</p>}
+      {loading && <p role="status" className="text-slate-500 text-sm">Loading analytics from saved orders...</p>}
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 bg-slate-900 text-white p-4 sm:p-6 rounded-2xl shadow-xl border border-slate-800 overflow-hidden">
         <div className="flex items-center gap-3">
@@ -119,6 +122,7 @@ export default function AnalyticsPage() {
           {/* Period Selector (Horizontal Scrollable on Mobile) */}
           <div className="flex items-center gap-1 bg-slate-800/90 p-1 rounded-xl border border-slate-700/80 overflow-x-auto max-w-full no-scrollbar">
             {[
+              { id: 'ALL', label: 'All Time' },
               { id: 'TODAY', label: 'Today' },
               { id: 'YESTERDAY', label: 'Yesterday' },
               { id: 'THIS_WEEK', label: 'Week' },
@@ -162,7 +166,7 @@ export default function AnalyticsPage() {
             TZS {kpis.totalSales.toLocaleString()}
           </p>
           <div className="flex items-center gap-1 mt-2 text-xs">
-            {comparison.salesGrowthPct >= 0 ? (
+            {comparison.salesGrowthPct === null ? <span className="text-slate-500">No comparison available</span> : comparison.salesGrowthPct >= 0 ? (
               <span className="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">
                 <TrendingUp className="w-3 h-3 mr-0.5" /> +{comparison.salesGrowthPct}%
               </span>
@@ -171,7 +175,7 @@ export default function AnalyticsPage() {
                 <TrendingDown className="w-3 h-3 mr-0.5" /> {comparison.salesGrowthPct}%
               </span>
             )}
-            <span className="text-slate-400">vs previous period</span>
+            {comparison.salesGrowthPct !== null && <span className="text-slate-400">vs previous period</span>}
           </div>
         </div>
 
@@ -219,6 +223,11 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
+      <div className="bg-white border rounded-xl p-4 text-sm text-slate-600">
+        <p>Buying cost: TZS {kpis.totalCost.toLocaleString()} ? Refunds: TZS {(kpis.totalRefunds || 0).toLocaleString()}</p>
+        <p className="text-xs mt-1">Based on orders created in the selected period, across all delivery stages, with current refunds deducted. Refunded units are excluded from products sold.</p>
+        {!!kpis.missingCostCount && <p className="text-amber-700 mt-2">{kpis.missingCostCount} orders have no buying cost recorded. Their profit is excluded.</p>}
+      </div>
       {/* Visual Chart Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Sales Trend Smooth Curve Line Chart */}
@@ -226,16 +235,16 @@ export default function AnalyticsPage() {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-bold text-slate-900 text-base uppercase tracking-wider text-xs text-amber-700">
-                SALES REVENUE VELOCITY (TSH TREND)
+                SALES REVENUE TREND (TZS)
               </h3>
-              <p className="text-xs text-slate-500">Smooth deposit & revenue inflow curve across time periods</p>
+              <p className="text-xs text-slate-500">Sales after refunds for the selected period</p>
             </div>
             <span className="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-mono font-semibold">
               Period: {range}
             </span>
           </div>
 
-          <div className="relative w-full overflow-x-auto">
+          <div className="relative w-full overflow-x-auto" onMouseLeave={() => setHoveredPoint(null)}>
             {loading ? (
               <div className="h-64 flex items-center justify-center text-slate-400">
                 <RefreshCw className="w-6 h-6 animate-spin text-[#FF5500]" />
@@ -343,7 +352,7 @@ export default function AnalyticsPage() {
                         fontWeight="600"
                         textAnchor="middle"
                       >
-                        {pt.label}
+                        {idx % Math.max(1, Math.ceil(points.length / 8)) === 0 || idx === points.length - 1 ? pt.label : ''}
                       </text>
                     </g>
                   ))}
@@ -369,9 +378,9 @@ export default function AnalyticsPage() {
           <div className="flex items-center justify-between text-xs text-slate-500 font-medium pt-2">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-gradient-to-r from-amber-500 to-[#FF5500]" />
-              <span>Smooth Deposit & Revenue Inflow Velocity</span>
+              <span>Sales revenue after refunds</span>
             </div>
-            <span>Peak Revenue: TZS {maxSalesInTrend.toLocaleString()}</span>
+            <span>Peak Revenue: TZS {Math.max(0, ...trend.map(point => point.sales)).toLocaleString()}</span>
           </div>
         </div>
 
@@ -399,7 +408,7 @@ export default function AnalyticsPage() {
                   </div>
                   <div className="text-right">
                     <p className="font-bold text-slate-900">TZS {p.totalRevenue.toLocaleString()}</p>
-                    <p className="text-[10px] text-emerald-600 font-semibold">+TZS {p.totalProfit.toLocaleString()} profit</p>
+                    <p className={`text-[10px] font-semibold ${p.totalProfit < 0 ? 'text-rose-600' : 'text-emerald-600'}`}>{p.missingCostCount ? 'Profit incomplete' : `TZS ${p.totalProfit.toLocaleString()} profit`}</p>
                   </div>
                 </div>
               ))

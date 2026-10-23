@@ -1,3 +1,12 @@
+import { getPlatformAnalytics } from '../services/adminAnalyticsService';
+import * as adminDeliveryService from '../services/adminDeliveryService';
+import { z } from 'zod';
+import * as adminOrderService from '../services/adminOrderService';
+const globalOrderFilters = z.object({
+  search: z.string().max(200).optional(), merchantId: z.string().optional(),
+  status: z.enum(['ALL', 'PENDING', 'CONFIRMED', 'DRIVER_ASSIGNED', 'OUT_FOR_DELIVERY', 'ON_THE_WAY', 'ARRIVED', 'DELIVERED', 'FAILED', 'CANCELLED', 'REFUNDED']).optional(),
+  page: z.coerce.number().int().min(1).default(1), limit: z.coerce.number().int().min(1).max(100).default(25)
+});
 import { Request, Response } from 'express';
 import { sendSuccess, sendError } from '../utils/response';
 import * as adminService from '../services/adminService';
@@ -94,7 +103,9 @@ export async function createMerchant(req: Request, res: Response) {
 export async function getMerchantProfile(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const profile = await adminService.getMerchant360Profile(id);
+    const period = z.enum(['ALL', 'TODAY', 'THIS_WEEK', 'THIS_MONTH', 'SEMI_ANNUAL']).safeParse(req.query.period || 'ALL');
+    if (!period.success) return sendError(res, 'VALIDATION_ERROR', 'Invalid merchant profile period', 400);
+    const profile = await adminService.getMerchant360Profile(id, period.data);
     return sendSuccess(res, profile);
   } catch (err: any) {
     return sendError(res, 'NOT_FOUND', err.message, 404);
@@ -282,3 +293,44 @@ export async function deleteMerchant(req: Request, res: Response) {
   }
 }
 
+
+export async function listGlobalOrders(req: Request, res: Response) {
+  const parsed = globalOrderFilters.safeParse(req.query);
+  if (!parsed.success) return sendError(res, 'VALIDATION_ERROR', 'Invalid order filters or pagination', 400);
+  try { return sendSuccess(res, await adminOrderService.listGlobalOrders(parsed.data)); }
+  catch (err: any) { return sendError(res, 'SERVER_ERROR', err.message, 500); }
+}
+export async function getGlobalOrder(req: Request, res: Response) {
+  try {
+    const order = await adminOrderService.getGlobalOrder(req.params.id);
+    if (!order) return sendError(res, 'NOT_FOUND', 'Order not found', 404);
+    return sendSuccess(res, order);
+  } catch (err: any) { return sendError(res, 'SERVER_ERROR', err.message, 500); }
+}
+
+const deliveryFilters = z.object({
+  page: z.coerce.number().int().min(1).max(10000).default(1), limit: z.coerce.number().int().min(1).max(100).default(25),
+  search: z.string().max(200).optional(), source: z.enum(['ALL', 'ORDER', 'DELIVERY']).default('ALL'),
+  status: z.enum(['ALL', 'PENDING', 'IN_TRANSIT', 'ARRIVED', 'DELIVERED', 'FAILED']).default('ALL')
+});
+export async function listAdminDeliveries(req: Request, res: Response) {
+  const parsed = deliveryFilters.safeParse(req.query);
+  if (!parsed.success) return sendError(res, 'VALIDATION_ERROR', 'Invalid delivery filters or pagination', 400);
+  try { return sendSuccess(res, await adminDeliveryService.listAdminDeliveries(parsed.data)); }
+  catch (err: any) { return sendError(res, 'SERVER_ERROR', err.message, 500); }
+}
+export async function getAdminDelivery(req: Request, res: Response) {
+  const source = req.params.source;
+  if (source !== 'ORDER' && source !== 'DELIVERY') return sendError(res, 'VALIDATION_ERROR', 'Invalid delivery source', 400);
+  try {
+    const record = await adminDeliveryService.getAdminDelivery(source, req.params.id);
+    return record ? sendSuccess(res, record) : sendError(res, 'NOT_FOUND', 'Delivery not found', 404);
+  } catch (err: any) { return sendError(res, 'SERVER_ERROR', err.message, 500); }
+}
+
+export async function getPlatformAnalyticsSummary(req: Request, res: Response) {
+  const period = z.enum(['ALL', 'TODAY', 'THIS_WEEK', 'THIS_MONTH', 'SEMI_ANNUAL']).safeParse(req.query.period || 'THIS_MONTH');
+  if (!period.success) return sendError(res, 'VALIDATION_ERROR', 'Invalid analytics period', 400);
+  try { return sendSuccess(res, await getPlatformAnalytics(period.data)); }
+  catch (err: any) { return sendError(res, 'SERVER_ERROR', err.message, 500); }
+}
