@@ -8,6 +8,7 @@ import { errorHandler } from './middleware/rateLimiter';
 import { prisma } from './database/prisma';
 
 export const app = express();
+app.set("trust proxy", 2);
 
 // A 5 MB photo can require nearly 7 MB when encoded as a JSON data URL.
 app.use(express.json({ limit: '8mb' }));
@@ -43,7 +44,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`====================================================`);
     console.log(`🚀 LUMO API Server running on port ${config.port}`);
     console.log(`   Environment: ${config.nodeEnv}`);
-    console.log(`   Database: ${config.databaseUrl}`);
+    console.log("   Database: configured");
     console.log(`====================================================`);
   });
 }
