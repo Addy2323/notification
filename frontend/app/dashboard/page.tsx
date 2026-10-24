@@ -49,6 +49,7 @@ export default function DashboardOverviewPage() {
   const [activeQuickAction, setActiveQuickAction] = useState<string | null>(null);
   const [trackInput, setTrackInput] = useState('');
   const [notificationLog, setNotificationLog] = useState<any[]>([]);
+  const [smsData, setSmsData] = useState<any>(null);
 
   const loadDashboardData = useCallback(async () => {
     setLoading(true);
@@ -107,6 +108,11 @@ export default function DashboardOverviewPage() {
       // 4. Fetch drivers
       fetchApi('/drivers')
         .then((data) => setDrivers(Array.isArray(data) ? data : []))
+        .catch(() => {});
+
+      // 5. Fetch SMS Balance
+      fetchApi('/sms/overview')
+        .then((data) => setSmsData(data))
         .catch(() => {});
     } catch (err) {
       console.error('Failed to load dashboard data:', err);
@@ -235,6 +241,67 @@ export default function DashboardOverviewPage() {
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/30 text-xs font-semibold">
               <User className="w-3.5 h-3.5 text-blue-400" />{' '}<T k="merchant.real_time_sms_dispatches" />{' '}</span>
           </div>
+        </div>
+      </div>
+
+      {/* SMS BALANCE PROGRESS CARD */}
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white border border-slate-700/80 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-5">
+        <div className="space-y-2 flex-1">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-[#FF5500]/20 text-[#FF5500]">
+                <MessageSquare className="w-4 h-4" />
+              </span>
+              <span className="text-xs font-black uppercase tracking-wider text-slate-300">
+                {locale === 'sw' ? 'Salio la SMS (SMS Balance)' : 'SMS Balance Health'}
+              </span>
+            </div>
+
+            <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-black border ${
+              (smsData?.account?.health?.color || 'green') === 'green'
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                : (smsData?.account?.health?.color || 'green') === 'amber'
+                ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+                : 'bg-red-500/20 text-red-300 border-red-500/30'
+            }`}>
+              {locale === 'sw'
+                ? smsData?.account?.health?.statusLabelSw || 'Salio la Kutosha'
+                : smsData?.account?.health?.statusLabelEn || '100% — Healthy Balance'}
+            </span>
+          </div>
+
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl sm:text-3xl font-black text-white">
+              {(smsData?.account?.availableCredits ?? 0).toLocaleString()}
+            </span>
+            <span className="text-xs text-slate-400 font-bold">
+              {locale === 'sw' ? 'SMS zilizopo' : 'credits available'}
+            </span>
+          </div>
+
+          {/* Dynamic Progress Bar */}
+          <div className="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${
+                (smsData?.account?.health?.color || 'green') === 'green'
+                  ? 'bg-emerald-500'
+                  : (smsData?.account?.health?.color || 'green') === 'amber'
+                  ? 'bg-amber-500'
+                  : 'bg-red-500'
+              }`}
+              style={{ width: `${smsData?.account?.health?.percentage ?? 100}%` }}
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 shrink-0">
+          <Link
+            href="/dashboard/sms"
+            className="px-4 py-2.5 rounded-xl bg-[#FF5500] hover:bg-orange-600 text-white font-black text-xs transition-all active:scale-95 shadow-md flex items-center gap-1.5"
+          >
+            <Zap className="w-3.5 h-3.5" />
+            <span>{locale === 'sw' ? 'Ongeza SMS Sasa' : 'Top Up SMS'}</span>
+          </Link>
         </div>
       </div>
 

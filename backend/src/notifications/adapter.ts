@@ -1,6 +1,7 @@
 import { prisma } from '../database/prisma';
 import { config } from '../config';
 import { Language } from '../localization';
+import { smsManagementService } from '../services/smsManagementService';
 
 export interface NotificationPayload {
   language?: Language;
@@ -201,6 +202,33 @@ export class NotificationService {
       // Execute async provider dispatch (non-blocking)
       setImmediate(async () => {
         try {
+          const delivery = await prisma.delivery.findUnique({
+            where: { id: payload.deliveryId },
+            select: { merchant_id: true },
+          });
+
+          if (delivery?.merchant_id) {
+            const deductRes = await smsManagementService.deductCredits({
+              merchantId: delivery.merchant_id,
+              messageBody: body,
+              reason: `Delivery ${payload.eventType} SMS`,
+              reference: payload.deliveryId,
+            });
+
+            if (!deductRes.allowed) {
+              console.warn(`[SMS QUOTA] Insufficient credits for merchant ${delivery.merchant_id}. Delivery SMS skipped.`);
+              await prisma.notification.update({
+                where: { id: notification.id },
+                data: {
+                  status: 'FAILED',
+                  failed_at: new Date(),
+                  failure_reason: 'Insufficient merchant SMS credits. Please top up your SMS balance.',
+                },
+              });
+              return;
+            }
+          }
+
           const result = await this.adapter.sendSMS(payload.recipient, body);
           if (result.success) {
             await prisma.notification.update({

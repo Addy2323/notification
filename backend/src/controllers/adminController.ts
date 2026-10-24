@@ -337,3 +337,116 @@ export async function getPlatformAnalyticsSummary(req: Request, res: Response) {
   try { return sendSuccess(res, await getPlatformAnalytics(period.data)); }
   catch (err: any) { return sendError(res, 'SERVER_ERROR', err.message, 500); }
 }
+
+export async function listAdminNotifications(req: Request, res: Response) {
+  try {
+    const { channel, status, event_type, search, page, limit } = req.query;
+    const pageNum = Math.max(1, Number(page) || 1);
+    const limitNum = Math.max(1, Math.min(100, Number(limit) || 30));
+    const skip = (pageNum - 1) * limitNum;
+
+    const where: any = {};
+    if (status && status !== 'ALL') where.status = status;
+    if (channel && channel !== 'ALL') where.channel = channel;
+    if (event_type && event_type !== 'ALL') {
+      if (event_type === 'RECEIPT_AUTOMATIC') {
+        where.event_type = 'RECEIPT_CONFIRMATION_REQUEST';
+      } else if (event_type === 'RECEIPT_RESENT') {
+        where.event_type = 'RECEIPT_CONFIRMATION_RESENT';
+      } else if (event_type === 'RECEIPT_FOLLOWUP') {
+        where.event_type = { in: ['RECEIPT_CONFIRMATION_THANK_YOU', 'RECEIPT_CONFIRMATION_INVESTIGATION', 'STAFF_FOLLOWUP_SMS'] };
+      } else if (event_type === 'ORDER_EVENTS') {
+        where.event_type = { notIn: ['RECEIPT_CONFIRMATION_REQUEST', 'RECEIPT_CONFIRMATION_RESENT', 'RECEIPT_CONFIRMATION_THANK_YOU', 'RECEIPT_CONFIRMATION_INVESTIGATION', 'STAFF_FOLLOWUP_SMS'] };
+      } else {
+        where.event_type = event_type;
+      }
+    }
+
+    if (search && (search as string).trim()) {
+      const s = (search as string).trim();
+      where.OR = [
+        { recipient_phone: { contains: s } },
+        { message_body: { contains: s, mode: 'insensitive' } },
+        { provider_message_id: { contains: s } },
+        { order: { order_number: { contains: s, mode: 'insensitive' } } },
+      ];
+    }
+
+    const [total, notifications, kpiCounts] = await Promise.all([
+      prisma.orderNotification.count({ where }),
+      prisma.orderNotification.findMany({
+        where,
+        orderBy: { created_at: 'desc' },
+        skip,
+        take: limitNum,
+        include: {
+          order: {
+            select: {
+              id: true,
+              order_number: true,
+              customer_name: true,
+              merchant: { select: { id: true, business_name: true } },
+            },
+          },
+        },
+      }),
+      Promise.all([
+        prisma.orderNotification.count(),
+        prisma.orderNotification.count({ where: { status: { in: ['SENT', 'DELIVERED'] } } }),
+        prisma.orderNotification.count({ where: { status: 'QUEUED' } }),
+        prisma.orderNotification.count({ where: { status: 'FAILED' } }),
+        prisma.orderNotification.count({ where: { event_type: 'RECEIPT_CONFIRMATION_REQUEST' } }),
+        prisma.orderNotification.count({ where: { event_type: 'RECEIPT_CONFIRMATION_RESENT' } }),
+      ]),
+    ]);
+
+    return sendSuccess(res, {
+      notifications,
+      kpis: {
+        total: kpiCounts[0],
+        delivered: kpiCounts[1],
+        queued: kpiCounts[2],
+        failed: kpiCounts[3],
+        automatic_confirmations: kpiCounts[4],
+        resent_confirmations: kpiCounts[5],
+      },
+      pagination: {
+        total,
+        page: pageNum,
+        limit: limitNum,
+        totalPages: Math.ceil(total / limitNum),
+      },
+    });
+  } catch (err: any) {
+    return sendError(res, 'SERVER_ERROR', err.message, 500);
+  }
+}
+
+export async function retryAdminNotification(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const notif = await prisma.orderNotification.findUnique({
+      where: { id },
+    });
+
+    if (!notif) return sendError(res, 'NOT_FOUND', 'Notification not found', 404);
+
+    const { MesejiSMSAdapter } = await import('../notifications/adapter');
+    const adapter = new MesejiSMSAdapter();
+    const result = await adapter.sendSMS(notif.recipient_phone, notif.message_body);
+
+    const updated = await prisma.orderNotification.update({
+      where: { id },
+      data: {
+        status: result.success ? 'SENT' : 'FAILED',
+        provider_message_id: result.messageId || notif.provider_message_id,
+        failure_reason: result.error || null,
+        sent_at: result.success ? new Date() : notif.sent_at,
+      },
+    });
+
+    return sendSuccess(res, { success: result.success, notification: updated });
+  } catch (err: any) {
+    return sendError(res, 'SERVER_ERROR', err.message, 500);
+  }
+}

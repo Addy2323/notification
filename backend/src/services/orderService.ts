@@ -1,6 +1,7 @@
 import { prisma } from '../database/prisma';
 import { generateDriverToken, generateTrackingToken } from '../utils/token';
 import { dispatchOrderEvent } from '../notifications/orderNotificationEngine';
+import { triggerOrderReceiptConfirmation } from './receiptConfirmationService';
 import { config } from '../config';
 import crypto from 'crypto';
 
@@ -368,6 +369,13 @@ export async function updateOrderStatus(
       ratingUrl,
     },
   });
+
+  // Automatically trigger customer order receipt confirmation SMS workflow
+  if (newStatus === 'DELIVERED') {
+    triggerOrderReceiptConfirmation(order.id).catch((err) => {
+      console.error('[ORDER DELIVERED RECEIPT CONFIRMATION ERROR]', err);
+    });
+  }
 
   return result;
 }

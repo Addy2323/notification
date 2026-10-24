@@ -51,4 +51,8 @@ router.get('/reports/excel', adminController.downloadExcelReport);
 // Audit Logs
 router.get('/audit-logs', adminController.getAuditLogs);
 
+// Bulk SMS & Notification Monitoring
+router.get('/notifications', adminController.listAdminNotifications);
+router.post('/notifications/:id/retry', adminController.retryAdminNotification);
+
 export default router;

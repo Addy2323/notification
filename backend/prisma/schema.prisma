@@ -33,6 +33,10 @@ model Merchant {
   achievements    MerchantAchievement[]
   analytics_events AnalyticsEvent[]
   ratings          CustomerRating[]
+  receipt_confirmations OrderReceiptConfirmation[]
+  sms_account           MerchantSmsAccount?
+  sms_ledgers           SmsCreditLedger[]
+  sms_topups            SmsTopupTransaction[]
 
   @@map("merchants")
 }
@@ -137,6 +141,8 @@ model Order {
   tracking_token      String?         @unique
   driver_token        String?         @unique
   rating_token        String?         @unique
+  receipt_confirmation_token String?  @unique
+  receipt_status      String?         @default("AWAITING_RESPONSE")
   created_at          DateTime        @default(now())
   updated_at          DateTime        @updatedAt
   confirmed_at        DateTime?
@@ -154,6 +160,7 @@ model Order {
   events              OrderEvent[]
   notifications       OrderNotification[]
   rating              CustomerRating?
+  receipt_confirmation OrderReceiptConfirmation?
 
   @@index([merchant_id])
   @@index([status])
@@ -449,6 +456,161 @@ model CustomerRating {
   @@index([driver_id])
   @@index([rating])
   @@map("customer_ratings")
+}
+
+model OrderReceiptConfirmation {
+  id                   String    @id @default(uuid())
+  order_id             String    @unique
+  merchant_id          String
+  confirmation_token   String    @unique
+  sms_status           String    @default("QUEUED") // QUEUED, SENT, DELIVERED, FAILED
+  sms_sent_at          DateTime?
+  sms_delivered_at     DateTime?
+  sms_message_id       String?
+  sms_failure_reason   String?
+  sms_type             String    @default("AUTOMATIC") // AUTOMATIC, RESENT
+  customer_response    String?   // RECEIVED, NOT_RECEIVED
+  responded_at         DateTime?
+  response_channel     String?   @default("WEB")
+  ip_address           String?
+  user_agent           String?
+  followup_status      String?   // OPEN, INVESTIGATING, RESOLVED, CLOSED
+  assigned_staff       String?
+  investigation_notes  String?   // JSON string of array [{ id, author, role, text, created_at }]
+  resolution_notes     String?
+  resolved_at          DateTime?
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
+
+  order                Order     @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  merchant             Merchant  @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+
+  @@index([merchant_id])
+  @@index([confirmation_token])
+  @@index([customer_response])
+  @@index([followup_status])
+  @@map("order_receipt_confirmations")
+}
+
+model ReceiptConfirmationSetting {
+  id                    String   @id @default("default")
+  auto_confirm_enabled  Boolean  @default(true)
+  send_delay_seconds    Int      @default(0)
+  reminder_enabled      Boolean  @default(false)
+  reminder_delay_hours  Int      @default(24)
+  max_reminders         Int      @default(1)
+  template_en           String   @default("Hello {{customerName}}, have you received your order #{{orderNumber}}? Please confirm here: {{confirmationLink}}")
+  template_sw           String   @default("Habari {{customerName}}, umepokea oda yako #{{orderNumber}}? Tafadhali thibitisha hapa: {{confirmationLink}}")
+  thank_you_en          String   @default("Thank you for shopping with us! We're glad you received your order. We appreciate your support.")
+  thank_you_sw          String   @default("Asante kwa kufanya manunuzi nasi! Tunafurahi kuwa umepokea oda yako. Tunathamini uaminifu wako.")
+  investigation_en      String   @default("We're sorry you haven't received your order. We're checking your order now and will get back to you shortly.")
+  investigation_sw      String   @default("Pole kwa kuwa bado hujapokea oda yako. Tunaifuatilia oda yako sasa na tutakujulisha hivi karibuni.")
+  updated_at            DateTime @updatedAt
+
+  @@map("receipt_confirmation_settings")
+}
+
+model MerchantSmsAccount {
+  id                      String    @id @default(uuid())
+  merchant_id             String    @unique
+  available_credits       Int       @default(0)
+  total_purchased         Int       @default(0)
+  total_consumed          Int       @default(0)
+  total_extended          Int       @default(0)
+  balance_reference_units Int       @default(0)
+  created_at              DateTime  @default(now())
+  updated_at              DateTime  @updatedAt
+
+  merchant                Merchant  @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+
+  @@map("merchant_sms_accounts")
+}
+
+model SmsCreditLedger {
+  id             String    @id @default(uuid())
+  merchant_id    String
+  amount         Int       // Positive for additions, negative for deductions
+  type           String    // PURCHASE, ADMIN_EXTENSION, MANUAL_APPROVAL, ADMIN_REVERSAL, USAGE_DEDUCTION, REFUND
+  balance_before Int
+  balance_after  Int
+  reference      String?
+  reason         String
+  admin_id       String?
+  created_at     DateTime  @default(now())
+
+  merchant       Merchant  @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+
+  @@index([merchant_id])
+  @@index([type])
+  @@index([created_at])
+  @@map("sms_credit_ledgers")
+}
+
+model SmsTopupTransaction {
+  id                 String    @id @default(uuid())
+  reference          String    @unique
+  merchant_id        String
+  requested_units    Int
+  unit_price         Int       @default(20)
+  total_amount       Int       // In TZS (requested_units * unit_price)
+  payment_status     String    @default("PENDING") // PENDING, COMPLETED, FAILED, CANCELLED, EXPIRED
+  allocated          Boolean   @default(false)
+  allocated_at       DateTime?
+  gateway_provider   String    @default("SNIPPE")
+  gateway_reference  String?
+  gateway_session_id String?
+  checkout_url       String?
+  payment_link_url   String?
+  customer_phone     String?
+  metadata           String?
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @updatedAt
+
+  merchant           Merchant  @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+
+  @@index([merchant_id])
+  @@index([reference])
+  @@index([payment_status])
+  @@map("sms_topup_transactions")
+}
+
+model SmsGlobalSetting {
+  id                         String    @id @default("default")
+  unit_price_tzs             Int       @default(20)
+  min_units                  Int       @default(25)
+  max_units                  Int       @default(500000)
+  admin_alert_phones         String    @default("[\"0768828247\",\"0711788830\"]")
+  auto_sync_enabled          Boolean   @default(true)
+  last_provider_sync_at      DateTime?
+  provider_account_name      String?   @default("Meseji SMS")
+  provider_balance_raw       String?
+  provider_balance_units     Int?
+  provider_balance_currency  String?   @default("TZS")
+  provider_balance_amount    Float?
+  provider_status            String?   @default("CONNECTED")
+  provider_metrics_json      String?
+  updated_at                 DateTime  @updatedAt
+
+  @@map("sms_global_settings")
+}
+
+model SmsProviderMessageRecord {
+  id                  String    @id @default(uuid())
+  provider_message_id String    @unique
+  merchant_id         String?
+  recipient           String
+  message_body        String?
+  status              String    @default("PENDING") // PENDING, DELIVERED, FAILED
+  units_billed        Int       @default(1)
+  cost                Decimal?  @db.Decimal(10, 2)
+  sent_at             DateTime?
+  delivered_at        DateTime?
+  created_at          DateTime  @default(now())
+
+  @@index([status])
+  @@index([merchant_id])
+  @@index([sent_at])
+  @@map("sms_provider_message_records")
 }
 
 

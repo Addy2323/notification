@@ -37,6 +37,7 @@ import {
   Sun,
   Moon,
   Star,
+  MessageSquare,
 } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
 import LanguageSelector from '@/components/LanguageSelector';
@@ -57,6 +58,8 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Drivers', href: '/admin/drivers', icon: Truck },
   { label: 'Deliveries', href: '/admin/deliveries', icon: Package },
   { label: 'Customer Ratings', href: '/admin/ratings', icon: Star },
+  { label: 'Receipt Confirmations', href: '/admin/receipt-confirmations', icon: CheckCircle2 },
+  { label: 'SMS Management', href: '/admin/sms', icon: MessageSquare },
   { label: 'Customers', href: '/admin/customers', icon: UserCheck },
   { label: 'Notifications', href: '/admin/notifications', icon: Bell },
   { label: 'Traffic & Growth', href: '/admin/traffic', icon: BarChart3 },

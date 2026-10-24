@@ -19,6 +19,7 @@ interface NotificationItem {
 
 export default function MerchantNotificationsPage() {
   const { t, label: uiLabel, locale } = useLanguage();
+  const isSwahili = locale === 'sw';
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [metrics, setMetrics] = useState({
@@ -161,11 +162,31 @@ export default function MerchantNotificationsPage() {
                 className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/70 hover:bg-slate-50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-2.5"
               >
                 <div className="space-y-1 max-w-xl">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="font-mono text-xs font-extrabold text-slate-900">#{item.order_number}</span>
                     <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 uppercase">
                       {item.channel}
                     </span>
+                    {item.event_type === 'RECEIPT_CONFIRMATION_REQUEST' && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                        {isSwahili ? 'Uthibitisho Kiotomatiki' : 'Receipt Confirmation'}
+                      </span>
+                    )}
+                    {item.event_type === 'RECEIPT_CONFIRMATION_RESENT' && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                        {isSwahili ? 'Uthibitisho Uliorudiwa' : 'Resent Confirmation'}
+                      </span>
+                    )}
+                    {item.event_type === 'RECEIPT_CONFIRMATION_THANK_YOU' && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800">
+                        {isSwahili ? 'Shukrani (YES)' : 'Thank-You (YES)'}
+                      </span>
+                    )}
+                    {item.event_type === 'RECEIPT_CONFIRMATION_INVESTIGATION' && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">
+                        {isSwahili ? 'Uchunguzi (NO)' : 'Investigation (NO)'}
+                      </span>
+                    )}
                     <span className="text-[10px] font-bold text-slate-500">
                       → {uiLabel(item.recipient_type)} ({item.recipient_phone})
                     </span>

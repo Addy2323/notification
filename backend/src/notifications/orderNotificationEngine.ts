@@ -1,6 +1,7 @@
 import { Language } from '../localization';
 import { prisma } from '../database/prisma';
 import { MesejiSMSAdapter, normalizePhone } from './adapter';
+import { smsManagementService } from '../services/smsManagementService';
 
 /**
  * SMS Template Variables:
@@ -150,6 +151,36 @@ export async function dispatchOrderNotification(params: {
     // Async send
     setImmediate(async () => {
       try {
+        // Billable SMS deduction check
+        const order = await prisma.order.findUnique({
+          where: { id: orderId },
+          select: { merchant_id: true, order_number: true },
+        });
+
+        if (order?.merchant_id) {
+          const deductRes = await smsManagementService.deductCredits({
+            merchantId: order.merchant_id,
+            messageBody,
+            reason: `Order #${order.order_number} ${eventType} SMS`,
+            reference: orderId,
+          });
+
+          if (!deductRes.allowed) {
+            console.warn(
+              `[SMS QUOTA] Merchant ${order.merchant_id} has insufficient credits (${deductRes.remainingCredits} available, needed ${deductRes.units}). SMS not dispatched.`
+            );
+            await prisma.orderNotification.update({
+              where: { id: notification.id },
+              data: {
+                status: 'FAILED',
+                failed_at: new Date(),
+                failure_reason: 'Insufficient merchant SMS credits. Please top up your SMS balance in Merchant Dashboard.',
+              },
+            });
+            return;
+          }
+        }
+
         const result = await smsAdapter.sendSMS(recipientPhone, messageBody);
         if (result.success) {
           await prisma.orderNotification.update({

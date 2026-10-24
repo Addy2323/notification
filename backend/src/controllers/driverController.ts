@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { sendSuccess, sendError } from '../utils/response';
 import { prisma } from '../database/prisma';
 import { dispatchOrderEvent } from '../notifications/orderNotificationEngine';
+import { triggerOrderReceiptConfirmation } from '../services/receiptConfirmationService';
 import { config } from '../config';
 import crypto from 'crypto';
 
@@ -171,6 +172,13 @@ async function handleOrderDriverAction(token: string, action: 'accept' | 'start'
       ratingUrl,
     },
   });
+
+  // Automatically trigger receipt confirmation workflow if delivered
+  if (action === 'delivered') {
+    triggerOrderReceiptConfirmation(order.id).catch((err) => {
+      console.error('[DRIVER ACTION DELIVERED RECEIPT CONFIRMATION ERROR]', err);
+    });
+  }
 
   return updatedOrder;
 }

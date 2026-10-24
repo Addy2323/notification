@@ -13,6 +13,8 @@ import analyticsRoutes from './analyticsRoutes';
 import reportRoutes from './reportRoutes';
 import trackingAnalyticsRoutes from './trackingAnalyticsRoutes';
 import ratingRoutes from './ratingRoutes';
+import receiptConfirmationRoutes from './receiptConfirmationRoutes';
+import smsManagementRoutes from './smsManagementRoutes';
 
 const router = Router();
 
@@ -30,5 +32,8 @@ router.use('/analytics', analyticsRoutes);
 router.use('/reports', reportRoutes);
 router.use('/track', trackingAnalyticsRoutes);
 router.use('/ratings', ratingRoutes);
+router.use('/confirm', receiptConfirmationRoutes);
+router.use('/receipt-confirmations', receiptConfirmationRoutes);
+router.use('/sms', smsManagementRoutes);
 
 export default router;
