@@ -13,7 +13,7 @@ export async function register(req: Request, res: Response) {
     }
 
     const result = await authService.registerMerchant(parse.data);
-    res.cookie('token', result.token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 7 * 24 * 3600 * 1000 });
+    res.cookie('token', result.token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', path: '/', maxAge: 7 * 24 * 3600 * 1000 });
     return sendSuccess(res, result, 201);
   } catch (err: any) {
     return sendError(res, 'REGISTRATION_FAILED', err.message || 'Registration failed', 400);
@@ -44,7 +44,7 @@ export async function verifyOtp(req: Request, res: Response) {
     }
 
     const result = await authService.verifyOtp(parse.data.phone, parse.data.otp);
-    res.cookie('token', result.token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 7 * 24 * 3600 * 1000 });
+    res.cookie('token', result.token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', path: '/', maxAge: 7 * 24 * 3600 * 1000 });
     return sendSuccess(res, result);
   } catch (err: any) {
     return sendError(res, 'AUTH_FAILED', err.message || 'Invalid OTP or phone number', 401);
@@ -60,7 +60,7 @@ export async function verifyPin(req: Request, res: Response) {
     }
 
     const result = await authService.verifyPin(parse.data.phone, parse.data.pin);
-    res.cookie('token', result.token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 7 * 24 * 3600 * 1000 });
+    res.cookie('token', result.token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', path: '/', maxAge: 7 * 24 * 3600 * 1000 });
     return sendSuccess(res, result);
   } catch (err: any) {
     return sendError(res, 'AUTH_FAILED', err.message || 'Invalid PIN passcode', 401);
@@ -121,7 +121,7 @@ export async function verifyPassword(req: Request, res: Response) {
     }
 
     const result = await authService.verifyPassword(parse.data.identifier, parse.data.password);
-    res.cookie('token', result.token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 7 * 24 * 3600 * 1000 });
+    res.cookie('token', result.token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', path: '/', maxAge: 7 * 24 * 3600 * 1000 });
     return sendSuccess(res, result);
   } catch (err: any) {
     return sendError(res, 'AUTH_FAILED', err.message || 'Invalid credentials', 401);

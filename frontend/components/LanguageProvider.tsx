@@ -30,13 +30,17 @@ export function LanguageProvider({ initialLanguage, children }: { initialLanguag
     window.addEventListener('lumo:authenticated', authenticated);
     window.addEventListener('lumo:logout', loggedOut);
     const startRevision = revision.current;
-    fetchApi('/auth/me').then(data => {
-      if (revision.current === startRevision) restore(data.user);
-      else if (!userId.current && data.user?.id) {
-        userId.current = data.user.id;
-        fetchApi('/auth/preferences/language', { method: 'PATCH', body: JSON.stringify({ language: browserLanguage() }) }).catch(() => setPreferenceError(true));
-      }
-    }).catch(() => {});
+    const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+    const isPublicPage = /^\/(login|register|forgot-password|track|driver|rate)(\/|$)/.test(pathname);
+    if (!isPublicPage) {
+      fetchApi('/auth/me').then(data => {
+        if (revision.current === startRevision) restore(data.user);
+        else if (!userId.current && data.user?.id) {
+          userId.current = data.user.id;
+          fetchApi('/auth/preferences/language', { method: 'PATCH', body: JSON.stringify({ language: browserLanguage() }) }).catch(() => setPreferenceError(true));
+        }
+      }).catch(() => {});
+    }
     const storage = (event: StorageEvent) => { if (event.key === 'lumo_language' && validLanguage(event.newValue)) { revision.current++; setCurrent(event.newValue); storeLanguage(event.newValue); } };
     window.addEventListener('storage', storage);
     return () => { window.removeEventListener('lumo:authenticated', authenticated); window.removeEventListener('lumo:logout', loggedOut); window.removeEventListener('storage', storage); };

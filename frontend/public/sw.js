@@ -1,5 +1,5 @@
 // LUMO Merchant Service Worker
-const CACHE_NAME = 'lumo-merchant-v1';
+const CACHE_NAME = 'lumo-merchant-v3';
 const APP_SHELL_ASSETS = [
   '/',
   '/manifest.json',
@@ -35,12 +35,15 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // STRICT SECURITY BYPASS: Never cache API endpoints, Auth, Driver, or Customer Tracking links
+  // STRICT SECURITY & AUTH BYPASS: Never cache or intercept API endpoints, Auth, Driver, Login, or Tracking links
   if (
     url.pathname.startsWith('/api') ||
     url.pathname.startsWith('/auth') ||
     url.pathname.startsWith('/track') ||
     url.pathname.startsWith('/driver') ||
+    url.pathname.startsWith('/login') ||
+    url.pathname.startsWith('/register') ||
+    url.pathname.startsWith('/forgot-password') ||
     event.request.method !== 'GET'
   ) {
     return; // Pass through to network natively
@@ -62,15 +65,23 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       })
-      .catch(() => {
+      .catch(async () => {
         // Fallback to cache when offline
-        return caches.match(event.request).then((cachedResponse) => {
-          if (cachedResponse) {
-            return cachedResponse;
+        const cachedResponse = await caches.match(event.request);
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        if (event.request.mode === 'navigate') {
+          const rootFallback = await caches.match('/');
+          if (rootFallback) {
+            return rootFallback;
           }
-          if (event.request.mode === 'navigate') {
-            return caches.match('/');
-          }
+        }
+        // Always return a valid Response to prevent "TypeError: Failed to convert value to 'Response'"
+        return new Response('Offline', {
+          status: 503,
+          statusText: 'Service Unavailable',
+          headers: { 'Content-Type': 'text/plain' },
         });
       })
   );

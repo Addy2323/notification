@@ -36,7 +36,10 @@ export function usePWAInstall(): PWAInstallState {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/sw.js')
-        .then((reg) => console.log('[PWA ServiceWorker] Registered:', reg.scope))
+        .then((reg) => {
+          reg.update().catch(() => {});
+          console.log('[PWA ServiceWorker] Registered:', reg.scope);
+        })
         .catch((err) => console.warn('[PWA ServiceWorker] Registration failed:', err));
     }
 
