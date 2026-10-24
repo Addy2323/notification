@@ -52,10 +52,10 @@ export class SmsManagementService {
 
     if (!key || key === 'your_meseji_api_key' || key === 'mock_sms_key') {
       return {
-        success: true,
-        balance: 680,
+        success: false,
+        balance: 675,
         rate: 15,
-        totalSent: 353,
+        totalSent: 358,
         username: 'addy2323',
         senderIds: ['MESEJI', 'LUMO', 'LOTUSRISE', 'VUNJABEI', 'KENDWAROCK'],
       };
@@ -65,11 +65,15 @@ export class SmsManagementService {
     const timeout = setTimeout(() => controller.abort(), 10000);
 
     try {
-      const headers = {
-        Authorization: `Bearer ${key}`,
+      // Meseji expects x-api-key header for API keys (zs_...)
+      // Never send Authorization: Bearer for API keys because Meseji will reject with 401
+      const headers: Record<string, string> = {
         'x-api-key': key,
         'Content-Type': 'application/json',
       };
+      if (key.startsWith('eyJ')) {
+        headers['Authorization'] = `Bearer ${key}`;
+      }
 
       const [statsRes, sendersRes] = await Promise.all([
         fetch('https://meseji.co.tz/api/v1/sms/user-stats', {
@@ -890,14 +894,15 @@ export class SmsManagementService {
     const startTime = Date.now();
     try {
       const currentSetting = await prisma.smsGlobalSetting.findUnique({ where: { id: 'default' } });
-      const live = await this.fetchLiveMesejiData((currentSetting as any)?.provider_api_key || undefined);
+      const apiKeyToUse = (currentSetting as any)?.provider_api_key || process.env.MESEJI_API_KEY || config.smsApiKey;
+      const live = await this.fetchLiveMesejiData(apiKeyToUse);
 
-      const balanceUnits = live.balance ?? 680;
+      const balanceUnits = live.balance ?? 675;
       const accountName = `Meseji (${live.username || 'addy2323'})`;
-      const senderIds = live.senderIds || ['MESEJI', 'LUMO', 'LOTUSRISE', 'VUNJABEI', 'KENDWAROCK'];
+      const senderIds = live.senderIds || ['MESEJI', 'LUMO', 'LOTUSRISE', 'VUNJABEIIII', 'KENDWAROCK'];
       const rawBalance = `${balanceUnits.toLocaleString()} SMS Units Available`;
       const providerRate = live.rate || 15;
-      const totalSent = live.totalSent ?? 353;
+      const totalSent = live.totalSent ?? 358;
 
       const deliveredCount = await prisma.orderNotification.count({ where: { status: 'DELIVERED' } });
       const sentCount = await prisma.orderNotification.count({ where: { status: 'SENT' } });

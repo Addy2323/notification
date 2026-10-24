@@ -9,7 +9,7 @@ export const config = {
   frontendUrl: process.env.FRONTEND_URL || 'https://lumotrack.lumo.co.tz',
   jwtSecret: process.env.JWT_SECRET as string,
   databaseUrl: process.env.DATABASE_URL as string,
-  smsApiKey: process.env.SMS_PROVIDER_API_KEY || 'mock_sms_key',
+  smsApiKey: process.env.MESEJI_API_KEY || process.env.SMS_PROVIDER_API_KEY || 'zs_f6ae2a4a1f321d11b1a3e296f377f070bacae5a212b456fd',
   snippe: {
     apiKey: process.env.SNIPPE_API_KEY || 'snp_e8d1cd22910f400d4b5cb3d7222bde781e18dc4896dba9f40a1f61a550735a44',
     apiUrl: process.env.SNIPPE_API_URL || 'https://api.snippe.sh',
