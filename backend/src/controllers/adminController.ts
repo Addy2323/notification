@@ -1,3 +1,4 @@
+import { resolveLanguage } from '../localization';
 import { getPlatformAnalytics } from '../services/adminAnalyticsService';
 import * as adminDeliveryService from '../services/adminDeliveryService';
 import { z } from 'zod';
@@ -200,6 +201,7 @@ export async function downloadPDFReport(req: Request, res: Response) {
       reportType,
       merchantId,
       adminName: req.user?.name || 'Administrator',
+      language: resolveLanguage(req),
     });
 
     res.setHeader('Content-Type', 'application/pdf');
@@ -221,6 +223,7 @@ export async function downloadExcelReport(req: Request, res: Response) {
       reportType,
       merchantId,
       adminName: req.user?.name || 'Administrator',
+      language: resolveLanguage(req),
     });
 
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

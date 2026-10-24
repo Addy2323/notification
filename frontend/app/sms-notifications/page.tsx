@@ -1,3 +1,6 @@
+import { localizedMetadata } from '@/lib/server-language';
+
+import { T, TLabel } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { MessageSquare, Bell, CheckCircle2, ShieldAlert, Zap, Smartphone, ArrowRight } from 'lucide-react';
@@ -5,7 +8,7 @@ import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Sections';
 import { constructMetadata, generateBreadcrumbSchema } from '@/lib/seo';
 
-export const metadata = constructMetadata({
+export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'SMS Delivery Notifications for Businesses in Tanzania | LUMO Track',
   description:
     'Send automated transactional SMS delivery notifications to customers in Tanzania. Keep buyers informed from dispatch to handover with live tracking links.',
@@ -18,7 +21,7 @@ export const metadata = constructMetadata({
     'SMS delivery tracking',
     'customer delivery notification',
   ],
-});
+})); }
 
 export default function SmsNotificationsPage() {
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -60,15 +63,9 @@ export default function SmsNotificationsPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-16">
         {/* Banner */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">
-            TRANSACTIONAL SMS NOTIFICATIONS
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-            SMS Delivery Notifications for Tanzanian Businesses
-          </h1>
-          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">
-            Automate customer delivery alerts with reliable SMS notifications delivered across Vodacom, Tigo, Airtel, and Halotel networks in Tanzania.
-          </p>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">{' '}<T k="public.transactional_sms_notifications" />{' '}</span>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">{' '}<T k="public.sms_delivery_notifications_for_tanzanian_businesses" />{' '}</h1>
+          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">{' '}<T k="public.automate_customer_delivery_alerts_with_reliable_sms_notifications_delivered_across_vo" />{' '}</p>
         </div>
 
         {/* SMS Notification Samples */}
@@ -78,7 +75,7 @@ export default function SmsNotificationsPage() {
               <div className="flex items-center justify-between border-b border-[#1A3150] pb-3">
                 <div className="flex items-center gap-2">
                   <Bell className="w-4 h-4 text-amber-400" />
-                  <h3 className="font-bold text-sm text-white">{notif.title}</h3>
+                  <h3 className="font-bold text-sm text-white"><TLabel value={notif.title} /></h3>
                 </div>
                 <span className="text-[10px] font-mono font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded">
                   {notif.stage}
@@ -93,30 +90,30 @@ export default function SmsNotificationsPage() {
 
         {/* Features list */}
         <div className="p-8 rounded-3xl bg-[#112239]/60 border border-[#1F3654] space-y-6">
-          <h2 className="text-2xl font-black text-white">Why Tanzanian Merchants Rely on LUMO SMS</h2>
+          <h2 className="text-2xl font-black text-white"><T k="public.why_tanzanian_merchants_rely_on_lumo_sms" /></h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-[#A0B8D0]">
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-white font-bold text-sm">
                 <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                <span>100% Mobile Reach</span>
+                <span><T k="public.100_mobile_reach" /></span>
               </div>
-              <p>Works on basic feature phones (kitochi) as well as smartphones across Tanzania.</p>
+              <p><T k="public.works_on_basic_feature_phones_kitochi_as_well_as_smartphones_across_tanzania" /></p>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-white font-bold text-sm">
                 <Zap className="w-5 h-5 text-amber-400" />
-                <span>Instant Triggering</span>
+                <span><T k="public.instant_triggering" /></span>
               </div>
-              <p>SMS notifications dispatch within seconds of status change by driver or merchant.</p>
+              <p><T k="public.sms_notifications_dispatch_within_seconds_of_status_change_by_driver_or_merchant" /></p>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-white font-bold text-sm">
                 <Smartphone className="w-5 h-5 text-blue-400" />
-                <span>One-Tap Web Link</span>
+                <span><T k="public.one_tap_web_link" /></span>
               </div>
-              <p>Includes a secure, clickable link pointing to the customer’s branded web tracking portal.</p>
+              <p><T k="public.includes_a_secure_clickable_link_pointing_to_the_customer_s_branded_web_tracking_port" /></p>
             </div>
           </div>
         </div>
@@ -127,7 +124,7 @@ export default function SmsNotificationsPage() {
             href="/register"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] text-white font-extrabold text-sm shadow-lg shadow-orange-500/20"
           >
-            <span>Start Sending SMS Alerts</span>
+            <span><T k="public.start_sending_sms_alerts" /></span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

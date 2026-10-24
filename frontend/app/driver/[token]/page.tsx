@@ -1,5 +1,7 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import {
@@ -39,6 +41,8 @@ const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string }>
 };
 
 export default function MobileDriverPortalPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const params = useParams();
   const token = params.token as string;
 
@@ -56,7 +60,7 @@ export default function MobileDriverPortalPage() {
       const data = await fetchApi(`/driver/${token}`);
       setDelivery(data);
     } catch (err: any) {
-      setErrorMsg(err.message || 'This delivery link is invalid or expired.');
+      setErrorMsg(err.message || t("public.this_delivery_link_is_invalid_or_expired"));
     } finally {
       setLoading(false);
     }
@@ -85,17 +89,17 @@ export default function MobileDriverPortalPage() {
       }
 
       const actionLabels: Record<string, string> = {
-        accept: 'Delivery accepted!',
-        start: 'Status updated: On The Way! Customer notified.',
-        nearby: 'Status updated: Nearby! Customer notified.',
-        delivered: 'Delivery completed! Customer notified.',
-        failed: 'Delivery marked as failed.',
+        accept: t('public.driver_action_accept'),
+        start: t('public.driver_action_start'),
+        nearby: t('public.driver_action_nearby'),
+        delivered: t('public.driver_action_delivered'),
+        failed: t('public.driver_action_failed'),
       };
 
       setSuccessMsg(actionLabels[action]);
       setTimeout(() => setSuccessMsg(null), 4000);
     } catch (err: any) {
-      setErrorMsg(err.message || 'Unable to update status. Please try again.');
+      setErrorMsg(err.message || t("public.unable_to_update_status_please_try_again"));
     } finally {
       setActionLoading(false);
     }
@@ -103,7 +107,7 @@ export default function MobileDriverPortalPage() {
 
   // Show loader until BOTH: splash timer is done AND first API call is done
   if (!splashDone || loading) {
-    return <LumoStartupLoader message="Loading delivery details..." />;
+    return <LumoStartupLoader message={t("admin.loading_delivery_details")} />;
   }
 
   if (errorMsg && !delivery) {
@@ -112,14 +116,14 @@ export default function MobileDriverPortalPage() {
         <div className="w-14 h-14 rounded-2xl bg-rose-950/80 border border-rose-800 text-rose-400 flex items-center justify-center mb-3">
           <AlertCircle className="w-7 h-7" />
         </div>
-        <h2 className="text-lg font-bold text-slate-100">Invalid or Expired Link</h2>
+        <h2 className="text-lg font-bold text-slate-100"><T k="public.invalid_or_expired_link" /></h2>
         <p className="text-xs text-slate-400 max-w-xs mt-1 mb-4">{errorMsg}</p>
         <button
           onClick={loadData}
           className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5"
         >
           <RefreshCw className="w-3.5 h-3.5" />
-          <span>Retry</span>
+          <span><T k="common.retry" /></span>
         </button>
       </div>
     );
@@ -139,12 +143,12 @@ export default function MobileDriverPortalPage() {
               {merchant?.business_name?.[0] || 'L'}
             </div>
             <div>
-              <h2 className="font-bold text-sm text-white tracking-tight">{merchant?.business_name || 'LUMO Merchant'}</h2>
-              <p className="text-[11px] text-slate-400 font-medium">Driver Portal</p>
+              <h2 className="font-bold text-sm text-white tracking-tight">{merchant?.business_name || t("common.lumo_merchant")}</h2>
+              <p className="text-[11px] text-slate-400 font-medium"><T k="public.driver_portal" /></p>
             </div>
           </div>
           <span className={`px-2.5 py-1 rounded-lg border text-[11px] font-bold ${statusCfg.bg} ${statusCfg.text}`}>
-            {statusCfg.label}
+            {uiLabel(statusCfg.label)}
           </span>
         </div>
 
@@ -167,11 +171,11 @@ export default function MobileDriverPortalPage() {
           {/* Order Header */}
           <div className="flex items-center justify-between pb-3 border-b border-slate-800">
             <div>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Order Number</p>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider"><T k="public.order_number" /></p>
               <h1 className="text-xl font-black text-white font-mono">{delivery?.order_number}</h1>
             </div>
             <div className="text-right">
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Item</p>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider"><T k="public.item" /></p>
               <p className="text-xs font-bold text-slate-200">{delivery?.product_description}</p>
             </div>
           </div>
@@ -179,7 +183,7 @@ export default function MobileDriverPortalPage() {
           {/* Customer & Address */}
           <div className="space-y-3">
             <div>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Customer</p>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"><T k="common.customer" /></p>
               <div className="flex items-center justify-between bg-slate-950 border border-slate-800 p-3 rounded-2xl">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-teal-950 border border-teal-800 text-teal-400 flex items-center justify-center">
@@ -195,13 +199,13 @@ export default function MobileDriverPortalPage() {
                   className="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all"
                 >
                   <Phone className="w-3.5 h-3.5" />
-                  <span>Call</span>
+                  <span><T k="public.call" /></span>
                 </a>
               </div>
             </div>
 
             <div>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Delivery Address</p>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"><T k="merchant.delivery_address" /></p>
               <div className="bg-slate-950 border border-slate-800 p-3 rounded-2xl space-y-2">
                 <p className="text-xs font-semibold text-amber-300 flex items-start gap-1.5">
                   <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
@@ -214,7 +218,7 @@ export default function MobileDriverPortalPage() {
                   className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-bold flex items-center justify-center gap-1.5 border border-slate-700 transition-all"
                 >
                   <Navigation className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Open Maps Navigation</span>
+                  <span><T k="public.open_maps_navigation" /></span>
                 </a>
               </div>
             </div>
@@ -225,12 +229,12 @@ export default function MobileDriverPortalPage() {
             {delivery?.status === 'DELIVERED' ? (
               <div className="w-full py-4 rounded-2xl bg-emerald-950 border border-emerald-800 text-emerald-300 font-black text-center text-sm flex items-center justify-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                <span>Delivery Completed</span>
+                <span><T k="public.delivery_completed" /></span>
               </div>
             ) : delivery?.status === 'CANCELLED' ? (
               <div className="w-full py-4 rounded-2xl bg-rose-950 border border-rose-800 text-rose-300 font-bold text-center text-sm flex items-center justify-center gap-2">
                 <XCircle className="w-5 h-5 text-rose-400" />
-                <span>Delivery Failed / Cancelled</span>
+                <span><T k="public.delivery_failed_cancelled" /></span>
               </div>
             ) : (
               <>
@@ -243,7 +247,7 @@ export default function MobileDriverPortalPage() {
                     className="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-extrabold text-sm shadow-md transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     <CheckCircle2 className="w-4 h-4" />
-                    <span>Accept Delivery</span>
+                    <span><T k="public.accept_delivery" /></span>
                   </button>
                 )}
 
@@ -256,7 +260,7 @@ export default function MobileDriverPortalPage() {
                     className="w-full py-3.5 rounded-2xl bg-teal-600 hover:bg-teal-500 active:bg-teal-700 text-white font-extrabold text-sm shadow-md transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     <Truck className="w-4 h-4" />
-                    <span>Start Delivery (On The Way)</span>
+                    <span><T k="public.start_delivery_on_the_way" /></span>
                   </button>
                 )}
 
@@ -269,7 +273,7 @@ export default function MobileDriverPortalPage() {
                     className="w-full py-3.5 rounded-2xl bg-purple-600 hover:bg-purple-500 active:bg-purple-700 text-white font-extrabold text-sm shadow-md transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     <MapPin className="w-4 h-4" />
-                    <span>I'm Nearby (Arrived)</span>
+                    <span><T k="public.i_m_nearby_arrived" /></span>
                   </button>
                 )}
 
@@ -282,7 +286,7 @@ export default function MobileDriverPortalPage() {
                     className="w-full py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-black text-base shadow-lg transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     <CheckCircle2 className="w-5 h-5" />
-                    <span>Mark Delivered</span>
+                    <span><T k="public.mark_delivered" /></span>
                   </button>
                 )}
 
@@ -294,7 +298,7 @@ export default function MobileDriverPortalPage() {
                   className="w-full py-2.5 rounded-xl bg-slate-950 hover:bg-rose-950 border border-slate-800 hover:border-rose-800 text-slate-400 hover:text-rose-300 font-semibold text-xs transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-1.5"
                 >
                   <XCircle className="w-3.5 h-3.5 text-rose-500" />
-                  <span>Failed Delivery</span>
+                  <span><T k="public.failed_delivery" /></span>
                 </button>
               </>
             )}
@@ -304,7 +308,7 @@ export default function MobileDriverPortalPage() {
         {/* Footer */}
         <div className="text-center text-xs text-slate-500 flex items-center justify-center gap-1.5">
           <ShieldCheck className="w-3.5 h-3.5 text-teal-500" />
-          <span>Zero-Typing Driver Portal • LUMO</span>
+          <span><T k="public.zero_typing_driver_portal_lumo" /></span>
         </div>
       </div>
     </div>

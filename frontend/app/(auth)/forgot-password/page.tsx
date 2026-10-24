@@ -1,13 +1,18 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Store, Phone, XCircle, CheckCircle2, ShieldCheck, ArrowRight, Eye, EyeOff, Lock, Clock, Sparkles, KeyRound } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
+import LanguageSelector from '@/components/LanguageSelector';
 import { OtpInput } from '@/app/components/OtpInput';
 
 export default function ForgotPasswordPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const router = useRouter();
 
   // Step state: 1 ('PHONE') | 2 ('OTP') | 3 ('RESET') | 4 ('SUCCESS')
@@ -73,10 +78,10 @@ export default function ForgotPasswordPage() {
       setStep(2);
       setTimerSeconds(60);
       setTimerActive(true);
-      setSuccessMessage(`Registered phone number verified! 6-digit SMS OTP code dispatched to ${phone}.`);
+      setSuccessMessage(t('auth.reset_otp_sent_to_phone', { phone }));
     } catch (err: any) {
       // Error message for un-registered phone numbers
-      setErrorMessage(err.message || 'The phone number inserted is not registered in our system.');
+      setErrorMessage(err.message || t("auth.the_phone_number_inserted_is_not_registered_in_our_system"));
     } finally {
       setLoading(false);
     }
@@ -95,9 +100,9 @@ export default function ForgotPasswordPage() {
       });
       setTimerSeconds(60);
       setTimerActive(true);
-      setSuccessMessage('A fresh 6-digit SMS verification code has been dispatched.');
+      setSuccessMessage(t('auth.reset_otp_sent_to_phone', { phone }));
     } catch (err: any) {
-      setErrorMessage(err.message || 'Failed to resend SMS OTP.');
+      setErrorMessage(err.message || t("auth.failed_to_resend_sms_otp"));
     } finally {
       setLoading(false);
     }
@@ -117,9 +122,9 @@ export default function ForgotPasswordPage() {
       });
 
       setStep(3);
-      setSuccessMessage('OTP code verified! Please set your new account password.');
+      setSuccessMessage(t('auth.otp_verified_set_password'));
     } catch (err: any) {
-      setErrorMessage(err.message || 'Invalid OTP code. Please check the 6-digit SMS code.');
+      setErrorMessage(err.message || t("auth.invalid_otp_code_please_check_the_6_digit_sms_code"));
     } finally {
       setLoading(false);
     }
@@ -137,13 +142,13 @@ export default function ForgotPasswordPage() {
     setErrorMessage(null);
 
     if (newPassword !== confirmPassword) {
-      setErrorMessage('New password and confirm password do not match.');
+      setErrorMessage(t("interactions.new_password_and_confirm_password_do_not_match"));
       setLoading(false);
       return;
     }
 
     if (newPassword.length < 6) {
-      setErrorMessage('Password must be at least 6 characters long.');
+      setErrorMessage(t("interactions.password_must_be_at_least_6_characters_long"));
       setLoading(false);
       return;
     }
@@ -160,9 +165,9 @@ export default function ForgotPasswordPage() {
       });
 
       setStep(4);
-      setSuccessMessage('Account credentials successfully updated! You may now sign in.');
+      setSuccessMessage(t('auth.password_reset_success'));
     } catch (err: any) {
-      setErrorMessage(err.message || 'Failed to update password.');
+      setErrorMessage(err.message || t("auth.failed_to_update_password"));
     } finally {
       setLoading(false);
     }
@@ -170,6 +175,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen bg-slate-100/90 text-slate-900 font-sans flex flex-col items-center justify-center p-3 sm:p-5 relative overflow-hidden selection:bg-emerald-600 selection:text-white">
+      <div className="flex justify-end p-3"><LanguageSelector /></div>
       {/* Liquid Water Glowing Orbs */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-teal-400/25 rounded-full blur-[120px] pointer-events-none animate-liquid-1" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-cyan-400/20 rounded-full blur-[140px] pointer-events-none animate-liquid-2" />
@@ -235,7 +241,7 @@ export default function ForgotPasswordPage() {
                       isActive || isCompleted ? 'text-slate-800' : 'text-slate-400'
                     }`}
                   >
-                    {s.label}
+                    {uiLabel(s.label)}
                   </span>
                 </div>
               );
@@ -249,17 +255,13 @@ export default function ForgotPasswordPage() {
                 <div className="w-11 h-11 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700 mx-auto mb-2 shadow-sm">
                   <Phone className="w-5 h-5 stroke-[2.2]" />
                 </div>
-                <h1 className="text-xl font-black text-slate-900 font-serif">Forgot Password?</h1>
-                <p className="text-xs text-slate-500 font-medium mt-1">
-                  Enter your registered business phone number to verify account existence.
-                </p>
+                <h1 className="text-xl font-black text-slate-900 font-serif"><T k="auth.forgot_password" /></h1>
+                <p className="text-xs text-slate-500 font-medium mt-1">{' '}<T k="auth.enter_your_registered_business_phone_number_to_verify_account_existence" />{' '}</p>
               </div>
 
               <form onSubmit={handleCheckPhone} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                    Registered Business Phone Number *
-                  </label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">{' '}<T k="auth.registered_business_phone_number_2" />{' '}</label>
                   <div className="relative">
                     <input
                       type="text"
@@ -275,7 +277,7 @@ export default function ForgotPasswordPage() {
                     />
                     <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                   </div>
-                  <p className="text-[10px] font-medium text-slate-400 mt-1">Enter your registered Tanzanian phone number</p>
+                  <p className="text-[10px] font-medium text-slate-400 mt-1"><T k="auth.enter_your_registered_tanzanian_phone_number" /></p>
                 </div>
 
                 <button
@@ -283,7 +285,7 @@ export default function ForgotPasswordPage() {
                   disabled={loading || !phone || phone.trim().length < 4}
                   className="w-full h-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs shadow-md transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
-                  {loading ? 'Verifying Registered Phone...' : 'VERIFY PHONE & SEND SMS OTP'}
+                  {loading ? t("auth.verifying_registered_phone") : t("auth.verify_phone_send_sms_otp")}
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </form>
@@ -297,13 +299,11 @@ export default function ForgotPasswordPage() {
                 <div className="w-11 h-11 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700 mx-auto mb-2 shadow-sm">
                   <ShieldCheck className="w-5 h-5 stroke-[2.2]" />
                 </div>
-                <h1 className="text-xl font-black text-slate-900 font-serif">Enter 6-Digit SMS Code</h1>
-                <p className="text-xs text-slate-500 font-medium mt-1">
-                  SMS code dispatched to <span className="font-mono font-bold text-emerald-700">{phone}</span>
+                <h1 className="text-xl font-black text-slate-900 font-serif"><T k="auth.enter_6_digit_sms_code" /></h1>
+                <p className="text-xs text-slate-500 font-medium mt-1">{' '}<T k="auth.sms_code_dispatched_to" />{' '}<span className="font-mono font-bold text-emerald-700">{phone}</span>
                 </p>
                 {merchantDetails?.business_name && (
-                  <p className="text-[11px] text-slate-400 font-bold mt-0.5">
-                    Store: {merchantDetails.business_name}
+                  <p className="text-[11px] text-slate-400 font-bold mt-0.5">{' '}<T k="auth.store" />{' '}{merchantDetails.business_name}
                   </p>
                 )}
               </div>
@@ -328,16 +328,14 @@ export default function ForgotPasswordPage() {
                     type="button"
                     onClick={() => setStep(1)}
                     className="flex-1 h-10 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50"
-                  >
-                    ← Change Phone
-                  </button>
+                  >{' '}<T k="auth.change_phone" />{' '}</button>
 
                   <button
                     type="submit"
                     disabled={loading || otpCode.length !== 6}
                     className="flex-1 h-10 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-md disabled:opacity-50"
                   >
-                    {loading ? 'Verifying...' : 'VERIFY CODE'}
+                    {loading ? t("auth.verifying") : t("auth.verify_code")}
                   </button>
                 </div>
               </form>
@@ -351,18 +349,14 @@ export default function ForgotPasswordPage() {
                 <div className="w-11 h-11 rounded-full bg-slate-900 text-white flex items-center justify-center mx-auto mb-2 shadow-sm">
                   <Lock className="w-5 h-5" />
                 </div>
-                <h1 className="text-xl font-black text-slate-900 font-serif">Create New Password</h1>
-                <p className="text-xs text-slate-500 font-medium mt-1">
-                  Set a secure password for your merchant operator account.
-                </p>
+                <h1 className="text-xl font-black text-slate-900 font-serif"><T k="auth.create_new_password" /></h1>
+                <p className="text-xs text-slate-500 font-medium mt-1">{' '}<T k="auth.set_a_secure_password_for_your_merchant_operator_account" />{' '}</p>
               </div>
 
               <form onSubmit={handleResetPassword} className="space-y-3.5">
                 {/* New Password */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    New Account Password *
-                  </label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">{' '}<T k="auth.new_account_password" />{' '}</label>
                   <div className="relative">
                     <input
                       type={showNewPassword ? 'text' : 'password'}
@@ -371,7 +365,7 @@ export default function ForgotPasswordPage() {
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       className="w-full bg-white border border-slate-200 rounded-xl px-9 pr-10 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-600/20 shadow-sm"
-                      placeholder="Min 6 characters"
+                      placeholder={t("auth.min_6_characters")}
                     />
                     <KeyRound className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                     <button
@@ -386,9 +380,7 @@ export default function ForgotPasswordPage() {
 
                 {/* Confirm New Password */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Confirm New Password *
-                  </label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">{' '}<T k="auth.confirm_new_password" />{' '}</label>
                   <div className="relative">
                     <input
                       type={showConfirmPassword ? 'text' : 'password'}
@@ -397,7 +389,7 @@ export default function ForgotPasswordPage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className="w-full bg-white border border-slate-200 rounded-xl px-9 pr-10 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-600/20 shadow-sm"
-                      placeholder="Repeat password"
+                      placeholder={t("auth.repeat_password")}
                     />
                     <KeyRound className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                     <button
@@ -412,9 +404,7 @@ export default function ForgotPasswordPage() {
 
                 {/* Optional PIN Reset */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Optional: Update 4-Digit PIN Passcode
-                  </label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">{' '}<T k="auth.optional_update_4_digit_pin_passcode" />{' '}</label>
                   <input
                     type="text"
                     maxLength={4}
@@ -430,7 +420,7 @@ export default function ForgotPasswordPage() {
                   disabled={loading || !newPassword || !confirmPassword}
                   className="w-full h-11 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
                 >
-                  {loading ? 'Updating Credentials...' : 'RESET PASSWORD & UPDATE ACCOUNT'}
+                  {loading ? t("auth.updating_credentials") : t("auth.reset_password_update_account")}
                   <ShieldCheck className="w-4 h-4" />
                 </button>
               </form>
@@ -444,29 +434,22 @@ export default function ForgotPasswordPage() {
                 <CheckCircle2 className="w-8 h-8 stroke-[2]" />
               </div>
               <div>
-                <h2 className="text-xl font-black text-slate-900 font-serif">Password Updated!</h2>
-                <p className="text-xs text-slate-600 font-medium mt-1">
-                  Your account password has been reset successfully. You may now sign in using your new credentials.
-                </p>
+                <h2 className="text-xl font-black text-slate-900 font-serif"><T k="auth.password_updated" /></h2>
+                <p className="text-xs text-slate-600 font-medium mt-1">{' '}<T k="auth.your_account_password_has_been_reset_successfully_you_may_now_sign_in_using_your_new_" />{' '}</p>
               </div>
 
               <Link
                 href="/login"
                 className="w-full h-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-lg flex items-center justify-center gap-2 transition-all"
-              >
-                PROCEED TO MERCHANT LOGIN
-                <ArrowRight className="w-4 h-4" />
+              >{' '}<T k="auth.proceed_to_merchant_login" />{' '}<ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           )}
 
           {/* Footer Navigation Link */}
           {step !== 4 && (
-            <div className="mt-5 pt-4 border-t border-slate-200/60 text-center text-xs font-medium text-slate-500">
-              Remember your password?{' '}
-              <Link href="/login" className="text-emerald-700 font-bold hover:underline">
-                Sign In to Gateway
-              </Link>
+            <div className="mt-5 pt-4 border-t border-slate-200/60 text-center text-xs font-medium text-slate-500">{' '}<T k="auth.remember_your_password" />{' '}
+              <Link href="/login" className="text-emerald-700 font-bold hover:underline">{' '}<T k="auth.sign_in_to_gateway" />{' '}</Link>
             </div>
           )}
         </div>

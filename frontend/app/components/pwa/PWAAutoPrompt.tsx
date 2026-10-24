@@ -1,11 +1,15 @@
 'use client';
 
+
+import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import { Smartphone, Download, X, ShieldCheck, Zap, Sparkles } from 'lucide-react';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 import { PWAInstallModal } from '@/app/components/pwa/PWAInstallModal';
 
 export function PWAAutoPrompt() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const { isInstalled, isIOS, promptInstall, dismissInstall } = usePWAInstall();
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -56,24 +60,19 @@ export function PWAAutoPrompt() {
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] font-black tracking-widest uppercase text-[#FF5500]">LUMO MERCHANT APP</span>
+                  <span className="text-[10px] font-black tracking-widest uppercase text-[#FF5500]"><T k="public.lumo_merchant_app" /></span>
                   <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-extrabold">
-                    <Sparkles className="w-2.5 h-2.5" /> FREE
-                  </span>
+                    <Sparkles className="w-2.5 h-2.5" />{' '}<T k="public.free" />{' '}</span>
                 </div>
-                <h3 className="text-base font-black text-white leading-tight">
-                  Download LUMO App
-                </h3>
-                <p className="text-xs text-slate-300 font-medium mt-0.5">
-                  Install for 1-tap fast access on your phone
-                </p>
+                <h3 className="text-base font-black text-white leading-tight">{' '}<T k="public.download_lumo_app" />{' '}</h3>
+                <p className="text-xs text-slate-300 font-medium mt-0.5">{' '}<T k="public.install_for_1_tap_fast_access_on_your_phone" />{' '}</p>
               </div>
             </div>
 
             <button
               onClick={handleClose}
               className="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-400 hover:text-white transition-colors shrink-0"
-              aria-label="Close app install banner"
+              aria-label={t("public.close_app_install_banner")}
             >
               <X className="w-4 h-4" />
             </button>
@@ -86,15 +85,13 @@ export function PWAAutoPrompt() {
               className="flex-1 py-3 px-4 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-black text-xs shadow-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
             >
               <Download className="w-4 h-4" />
-              <span>{isIOS ? 'Install on iPhone / iOS' : 'Install / Download App'}</span>
+              <span>{isIOS ? t("public.install_on_iphone_ios") : t("public.install_download_app")}</span>
             </button>
 
             <button
               onClick={handleClose}
               className="py-3 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 font-bold text-xs transition-all shrink-0"
-            >
-              Close
-            </button>
+            >{' '}<T k="common.close" />{' '}</button>
           </div>
         </div>
       </div>

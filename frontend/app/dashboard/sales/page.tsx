@@ -1,10 +1,17 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
+import OrderEditor from '@/components/OrderEditor';
 import { DollarSign, Search, Calendar, Filter, ArrowUpRight, TrendingUp, TrendingDown, Layers, ChevronDown, ChevronUp, Download, RefreshCw, ShoppingBag, Truck } from 'lucide-react';
 
 export default function SalesLedgerPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
+  const [editOrderId, setEditOrderId] = useState<string | null>(null);
+  const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [page, setPage] = useState(1);
   const [refund, setRefund] = useState<any>(null);
@@ -30,7 +37,7 @@ export default function SalesLedgerPage() {
       const res = await fetchApi(`/sales?${params.toString()}`);
       setSalesData(res);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load sales ledger');
+      setError(err instanceof Error ? err.message : t("merchant.failed_to_load_sales_ledger"));
     } finally {
       setLoading(false);
     }
@@ -58,18 +65,20 @@ export default function SalesLedgerPage() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
+      {editOrderId && <OrderEditor orderId={editOrderId} mode="edit" onClose={() => setEditOrderId(null)} onSaved={async () => { setEditOrderId(null); setSuccess(t("interactions.order_updated_buying_price_selling_price_and_profit_have_been_refreshed")); await loadSales(); }} />}
+      {success && <p role="status" className="p-4 rounded-xl bg-emerald-50 text-emerald-800">{success}<button type="button" onClick={() => setSuccess('')} className="ml-3 underline"><T k="merchant.dismiss" /></button></p>}
       {error && <p role="alert" className="p-4 bg-rose-50 text-rose-700">{error}</p>}
       {refund && <form className="p-5 bg-white border rounded-xl space-y-3" onSubmit={async e => {
         e.preventDefault(); setSaving(true);
         try { await fetchApi(`/orders/${refund.id}/refund`, { method: 'POST', body: JSON.stringify({ reason, restocked }) }); setRefund(null); await loadSales(); }
         catch (err: any) { setError(err.message); } finally { setSaving(false); }
       }}>
-        <p className="font-bold">Record full refund: {refund.order_number} ? TZS {Number(refund.total_revenue ?? refund.amount ?? 0).toLocaleString()}</p>
-        <input aria-label="Refund reason" required maxLength={500} value={reason} onChange={e => setReason(e.target.value)} placeholder="Reason for refund" className="border rounded p-2 w-full" />
-        <label className="block"><input type="checkbox" checked={restocked} onChange={e => setRestocked(e.target.checked)} /> Goods returned to stock (recover buying cost)</label>
-        <p className="text-xs text-slate-500">Recording a refund updates the ledger. Process the customer payment separately.</p>
-        <button disabled={saving || !reason.trim()} className="bg-rose-600 text-white px-4 py-2 rounded disabled:opacity-50">{saving ? 'Saving...' : 'Record refund'}</button>
-        <button type="button" disabled={saving} onClick={() => setRefund(null)} className="px-4">Cancel</button>
+        <p className="font-bold"><T k="merchant.record_full_refund" />{' '}{refund.order_number}{' '}<T k="merchant.tzs" />{' '}{Number(refund.total_revenue ?? refund.amount ?? 0).toLocaleString(locale)}</p>
+        <input aria-label={t("merchant.refund_reason")} required maxLength={500} value={reason} onChange={e => setReason(e.target.value)} placeholder={t("merchant.reason_for_refund")} className="border rounded p-2 w-full" />
+        <label className="block"><input type="checkbox" checked={restocked} onChange={e => setRestocked(e.target.checked)} />{' '}<T k="merchant.goods_returned_to_stock_recover_buying_cost" /></label>
+        <p className="text-xs text-slate-500"><T k="merchant.recording_a_refund_updates_the_ledger_process_the_customer_payment_separately" /></p>
+        <button disabled={saving || !reason.trim()} className="bg-rose-600 text-white px-4 py-2 rounded disabled:opacity-50">{saving ? t("common.saving") : t("merchant.record_refund")}</button>
+        <button type="button" disabled={saving} onClick={() => setRefund(null)} className="px-4"><T k="common.cancel" /></button>
       </form>}
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900 text-white p-6 rounded-2xl shadow-xl border border-slate-800">
@@ -79,8 +88,8 @@ export default function SalesLedgerPage() {
               <DollarSign className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Digital Sales Ledger</h1>
-              <p className="text-sm text-slate-400">Real-time revenue, product cost & profit calculations</p>
+              <h1 className="text-2xl font-bold tracking-tight"><T k="merchant.digital_sales_ledger" /></h1>
+              <p className="text-sm text-slate-400"><T k="merchant.buying_prices_selling_prices_automatic_profit_calculations" /></p>
             </div>
           </div>
         </div>
@@ -90,9 +99,7 @@ export default function SalesLedgerPage() {
             onClick={loadSales}
             className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-medium text-sm transition flex items-center gap-2 border border-slate-700"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            Refresh
-          </button>
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />{' '}<T k="common.refresh" />{' '}</button>
         </div>
       </div>
 
@@ -100,65 +107,65 @@ export default function SalesLedgerPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold tracking-wider uppercase text-slate-500">Total Sales Revenue</span>
+            <span className="text-xs font-bold tracking-wider uppercase text-slate-500"><T k="merchant.total_buying_price" /></span>
             <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl font-black text-slate-900 mt-2">
-            TZS {summary.totalRevenue.toLocaleString()}
+            TZS {summary.totalCost.toLocaleString(locale)}
           </p>
-          <p className="text-xs text-slate-500 mt-1">{summary.totalOrders} total recorded orders</p>
+          <p className="text-xs text-slate-500 mt-1"><T k="merchant.buying_total_across" />{' '}{summary.totalOrders}{' '}<T k="merchant.recorded_orders" /></p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold tracking-wider uppercase text-slate-500">Product Cost</span>
+            <span className="text-xs font-bold tracking-wider uppercase text-slate-500"><T k="merchant.total_selling_price" /></span>
             <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
               <Layers className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl font-black text-slate-900 mt-2">
-            TZS {summary.totalCost.toLocaleString()}
+            TZS {summary.totalRevenue.toLocaleString(locale)}
           </p>
-          <p className="text-xs text-slate-500 mt-1">Cost of goods sold</p>
+          <p className="text-xs text-slate-500 mt-1"><T k="merchant.selling_total_after_refunds" /></p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden border-l-4 border-l-emerald-500">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold tracking-wider uppercase text-slate-500">Gross Profit</span>
+            <span className="text-xs font-bold tracking-wider uppercase text-slate-500"><T k="common.gross_profit" /></span>
             <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <DollarSign className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl font-black text-emerald-600 mt-2">
-            TZS {summary.totalProfit.toLocaleString()}
+            TZS {summary.totalProfit.toLocaleString(locale)}
           </p>
-          <p className="text-xs text-emerald-700 font-medium mt-1">Gross profit after item cost and refunds</p>
+          <p className="text-xs text-emerald-700 font-medium mt-1"><T k="merchant.gross_profit_after_item_cost_and_refunds" /></p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold tracking-wider uppercase text-slate-500">Delivery Status</span>
+            <span className="text-xs font-bold tracking-wider uppercase text-slate-500"><T k="merchant.delivery_status" /></span>
             <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
               <Truck className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2 mt-2">
             <span className="text-2xl font-black text-slate-900">{summary.deliveredCount}</span>
-            <span className="text-xs font-semibold text-emerald-600 uppercase">Delivered</span>
+            <span className="text-xs font-semibold text-emerald-600 uppercase"><T k="common.delivered" /></span>
             <span className="text-slate-300">/</span>
             <span className="text-lg font-bold text-amber-600">{summary.pendingCount}</span>
-            <span className="text-xs font-medium text-slate-500">Pending</span>
+            <span className="text-xs font-medium text-slate-500"><T k="common.pending" /></span>
           </div>
-          <p className="text-xs text-slate-500 mt-1">Fulfillment efficiency</p>
+          <p className="text-xs text-slate-500 mt-1"><T k="merchant.fulfillment_efficiency" /></p>
         </div>
       </div>
 
       <div className="p-4 rounded-xl border bg-white">
-        <p className="font-bold">Refunds: TZS {(summary.totalRefunds || 0).toLocaleString()} ? {summary.refundedCount || 0} orders</p>
-        <p className="text-xs text-slate-500">Revenue is after refunds. Product cost is recovered only for goods returned to stock. Figures include orders at every delivery stage.</p>
-        {!!summary.missingCostCount && <p className="text-amber-700 text-sm mt-2">{summary.missingCostCount} orders have no buying cost recorded; their profit is excluded.</p>}
+        <p className="font-bold"><T k="merchant.refunds_tzs_2" />{' '}{(summary.totalRefunds || 0).toLocaleString(locale)} ? {summary.refundedCount || 0}{' '}<T k="merchant.orders" /></p>
+        <p className="text-xs text-slate-500"><T k="merchant.prices_shown_are_order_totals_including_quantity_and_discounts_selling_totals_are_aft" /></p>
+        {!!summary.missingCostCount && <p className="text-amber-700 text-sm mt-2">{summary.missingCostCount}{' '}<T k="admin.orders_have_no_buying_cost_recorded_their_profit_is_excluded" /></p>}
       </div>
       {/* Filter Bar */}
       <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -181,7 +188,7 @@ export default function SalesLedgerPage() {
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
               }`}
             >
-              {p.label}
+              {uiLabel(p.label)}
             </button>
           ))}
         </div>
@@ -192,7 +199,7 @@ export default function SalesLedgerPage() {
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search order #, customer, product..."
+              placeholder={t("merchant.search_order_customer_product")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF5500] focus:border-transparent transition"
@@ -204,23 +211,23 @@ export default function SalesLedgerPage() {
             onChange={(e) => { setPage(1); setStatusFilter(e.target.value); }}
             className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF5500]"
           >
-            <option value="">All Statuses</option>
-            <option value="REFUNDED">Refunded</option>
-            <option value="CONFIRMED">Confirmed</option>
-            <option value="ARRIVED">Arrived</option>
-            <option value="DELIVERED">Delivered</option>
-            <option value="OUT_FOR_DELIVERY">Out for Delivery</option>
-            <option value="DRIVER_ASSIGNED">Driver Assigned</option>
-            <option value="PENDING">Pending</option>
-            <option value="CANCELLED">Cancelled</option>
+            <option value=""><T k="merchant.all_statuses" /></option>
+            <option value="REFUNDED"><T k="common.refunded" /></option>
+            <option value="CONFIRMED"><T k="common.confirmed" /></option>
+            <option value="ARRIVED"><T k="common.arrived" /></option>
+            <option value="DELIVERED"><T k="common.delivered" /></option>
+            <option value="OUT_FOR_DELIVERY"><T k="common.out_for_delivery" /></option>
+            <option value="DRIVER_ASSIGNED"><T k="common.driver_assigned" /></option>
+            <option value="PENDING"><T k="common.pending" /></option>
+            <option value="CANCELLED"><T k="common.cancelled" /></option>
           </select>
         </form>
       </div>
 
       <div className="flex items-center justify-end gap-3 text-sm">
-        <button disabled={loading || page <= 1} onClick={() => setPage(p => p - 1)}>Previous</button>
-        <span>Page {page} of {Math.max(1, salesData?.pagination?.totalPages || 1)}</span>
-        <button disabled={loading || page >= (salesData?.pagination?.totalPages || 1)} onClick={() => setPage(p => p + 1)}>Next</button>
+        <button disabled={loading || page <= 1} onClick={() => setPage(p => p - 1)}><T k="common.previous" /></button>
+        <span><T k="common.page" />{' '}{page}{' '}<T k="common.of" />{' '}{Math.max(1, salesData?.pagination?.totalPages || 1)}</span>
+        <button disabled={loading || page >= (salesData?.pagination?.totalPages || 1)} onClick={() => setPage(p => p + 1)}><T k="common.next" /></button>
       </div>
       {/* Digital Sales Ledger Table */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -228,16 +235,16 @@ export default function SalesLedgerPage() {
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-900 text-white font-semibold uppercase tracking-wider">
               <tr>
-                <th className="py-3.5 px-4">Order ID</th>
-                <th className="py-3.5 px-4">Date & Time</th>
-                <th className="py-3.5 px-4">Customer</th>
-                <th className="py-3.5 px-4">Product / Line Items</th>
-                <th className="py-3.5 px-4 text-right">Revenue (TZS)</th>
-                <th className="py-3.5 px-4 text-right">Cost (TZS)</th>
-                <th className="py-3.5 px-4 text-right">Profit (TZS)</th>
-                <th className="py-3.5 px-4">Driver</th>
-                <th className="py-3.5 px-4">Status</th>
-                <th className="py-3.5 px-4 text-center">Details</th>
+                <th className="py-3.5 px-4"><T k="merchant.order_id" /></th>
+                <th className="py-3.5 px-4"><T k="merchant.date_time" /></th>
+                <th className="py-3.5 px-4"><T k="common.customer" /></th>
+                <th className="py-3.5 px-4"><T k="merchant.product_line_items" /></th>
+                <th className="py-3.5 px-4 text-right"><T k="merchant.buying_price_tzs" /></th>
+                <th className="py-3.5 px-4 text-right"><T k="merchant.selling_price_tzs" /></th>
+                <th className="py-3.5 px-4 text-right"><T k="merchant.profit_tzs" /></th>
+                <th className="py-3.5 px-4"><T k="common.driver" /></th>
+                <th className="py-3.5 px-4"><T k="common.status" /></th>
+                <th className="py-3.5 px-4 text-center"><T k="common.actions" /></th>
               </tr>
             </thead>
 
@@ -245,15 +252,11 @@ export default function SalesLedgerPage() {
               {loading ? (
                 <tr>
                   <td colSpan={10} className="text-center py-12 text-slate-400">
-                    <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-[#FF5500]" />
-                    Loading sales records...
-                  </td>
+                    <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-[#FF5500]" />{' '}<T k="merchant.loading_sales_records" />{' '}</td>
                 </tr>
               ) : orders.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="text-center py-12 text-slate-400">
-                    No sales records found for the selected criteria.
-                  </td>
+                  <td colSpan={10} className="text-center py-12 text-slate-400">{' '}<T k="merchant.no_sales_records_found_for_the_selected_criteria" />{' '}</td>
                 </tr>
               ) : (
                 orders.map((ord: any) => {
@@ -267,7 +270,7 @@ export default function SalesLedgerPage() {
                       <tr className="hover:bg-slate-50 transition cursor-pointer" onClick={() => setExpandedOrderId(isExpanded ? null : ord.id)}>
                         <td className="py-3.5 px-4 font-bold text-slate-900">{ord.order_number}</td>
                         <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
-                          {new Date(ord.created_at).toLocaleDateString()} {new Date(ord.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          {new Date(ord.created_at).toLocaleDateString(locale)} {new Date(ord.created_at).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })}
                         </td>
                         <td className="py-3.5 px-4">
                           <p className="font-semibold text-slate-800">{ord.customer_name}</p>
@@ -277,21 +280,21 @@ export default function SalesLedgerPage() {
                           <p className="font-medium text-slate-800 max-w-xs truncate">{ord.product_name}</p>
                           {ord.items && ord.items.length > 0 && (
                             <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-mono">
-                              {ord.items.length} item{ord.items.length > 1 ? 's' : ''}
+                              {t("common.item_count", { count: ord.items.length })}
                             </span>
                           )}
                         </td>
                         <td className="py-3.5 px-4 text-right font-bold text-slate-900">
-                          {rev.toLocaleString()}
+                          {cost === null ? t("common.not_recorded") : Number(cost).toLocaleString(locale)}
                         </td>
                         <td className="py-3.5 px-4 text-right text-slate-500">
-                          {cost === null ? 'Not recorded' : Number(cost).toLocaleString()}
+                          {rev.toLocaleString(locale)}
                         </td>
                         <td className="py-3.5 px-4 text-right font-bold text-emerald-600">
-                          {profit === null ? 'Not available' : Number(profit).toLocaleString()}
+                          {profit === null ? t("merchant.not_available") : Number(profit).toLocaleString(locale)}
                         </td>
                         <td className="py-3.5 px-4 text-slate-600 font-medium">
-                          {ord.driver_name || <span className="text-slate-300 italic">Unassigned</span>}
+                          {ord.driver_name || <span className="text-slate-300 italic"><T k="common.unassigned" /></span>}
                         </td>
                         <td className="py-3.5 px-4">
                           <span
@@ -303,11 +306,14 @@ export default function SalesLedgerPage() {
                                 : 'bg-amber-100 text-amber-800'
                             }`}
                           >
-                            {ord.payment_status === 'REFUNDED' ? 'REFUNDED' : ord.status}
+                            {uiLabel(ord.payment_status === 'REFUNDED' ? 'REFUNDED' : ord.status)}
                           </span>
                         </td>
                         <td className="py-3.5 px-4 text-center text-slate-400">
-                          {isExpanded ? <ChevronUp className="w-4 h-4 mx-auto" /> : <ChevronDown className="w-4 h-4 mx-auto" />}
+                          <div className="flex items-center justify-center gap-2">
+                            <button type="button" aria-label={t("interactions.edit_order_value0", { value0: (ord.order_number) ?? '' })} onClick={event => { event.stopPropagation(); setSuccess(''); setEditOrderId(ord.id); }} className="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 font-bold"><T k="merchant.edit" /></button>
+                            <button type="button" aria-label={t("interactions.value0_details_for_value1", { value0: (isExpanded ? t("admin.hide") : t("admin.show")) ?? '', value1: (ord.order_number) ?? '' })} aria-expanded={isExpanded} onClick={event => { event.stopPropagation(); setExpandedOrderId(isExpanded ? null : ord.id); }}>{isExpanded ? <ChevronUp className="w-4 h-4 mx-auto" /> : <ChevronDown className="w-4 h-4 mx-auto" />}</button>
+                          </div>
                         </td>
                       </tr>
 
@@ -316,12 +322,10 @@ export default function SalesLedgerPage() {
                         <tr className="bg-slate-50 border-t border-b border-slate-200">
                           <td colSpan={10} className="p-4">
                             <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
-                              {ord.status === 'DELIVERED' && ord.payment_status !== 'REFUNDED' && <button onClick={() => { setRefund(ord); setReason(''); setRestocked(false); }} className="px-3 py-2 rounded bg-rose-50 text-rose-700 font-bold">Record full refund</button>}
-                              {ord.events?.map((event: any) => { let data: any = {}; try { data = JSON.parse(event.metadata || '{}'); } catch {} return <p key={event.id} className="text-rose-700">Refund: {data.reason} ? {data.restocked ? 'Returned to stock' : 'Cost retained'} ? {new Date(event.timestamp).toLocaleString()}</p>; })}
+                              {ord.status === 'DELIVERED' && ord.payment_status !== 'REFUNDED' && <button onClick={() => { setRefund(ord); setReason(''); setRestocked(false); }} className="px-3 py-2 rounded bg-rose-50 text-rose-700 font-bold"><T k="common.record_full_refund" /></button>}
+                              {ord.events?.map((event: any) => { let data: any = {}; try { data = JSON.parse(event.metadata || '{}'); } catch {} return <p key={event.id} className="text-rose-700"><T k="admin.refund" />{' '}{data.reason} ? {data.restocked ? t("common.returned_to_stock") : t("admin.cost_retained")} ? {new Date(event.timestamp).toLocaleString(locale)}</p>; })}
                               <h4 className="font-bold text-slate-800 text-xs flex items-center gap-2">
-                                <ShoppingBag className="w-4 h-4 text-[#FF5500]" />
-                                Order line items
-                              </h4>
+                                <ShoppingBag className="w-4 h-4 text-[#FF5500]" />{' '}<T k="merchant.order_line_items" />{' '}</h4>
 
                               {ord.items && ord.items.length > 0 ? (
                                 <div className="divide-y divide-slate-100">
@@ -334,16 +338,16 @@ export default function SalesLedgerPage() {
                                         )}
                                       </div>
                                       <div className="flex items-center gap-6 text-slate-600">
-                                        <span>Qty: <strong>{it.quantity}</strong></span>
-                                        <span>Selling Price: TZS <strong>{Number(it.unit_selling_price).toLocaleString()}</strong></span>
-                                        <span>Unit Cost: TZS <strong>{it.unit_cost_price ? Number(it.unit_cost_price).toLocaleString() : '-'}</strong></span>
-                                        <span className="font-bold text-slate-900">Subtotal: TZS {Number(it.subtotal).toLocaleString()}</span>
+                                        <span><T k="merchant.qty" />{' '}<strong>{it.quantity}</strong></span>
+                                        <span><T k="merchant.selling_price_unit_tzs" />{' '}<strong>{Number(it.unit_selling_price).toLocaleString(locale)}</strong></span>
+                                        <span><T k="merchant.buying_price_unit_tzs" />{' '}<strong>{it.unit_cost_price === null ? t("common.not_recorded") : Number(it.unit_cost_price).toLocaleString(locale)}</strong></span>
+                                        <span className="font-bold text-slate-900"><T k="merchant.subtotal_tzs" />{' '}{Number(it.subtotal).toLocaleString(locale)}</span>
                                       </div>
                                     </div>
                                   ))}
                                 </div>
                               ) : (
-                                <p className="text-slate-400 italic text-xs">Single line item order: {ord.product_name}</p>
+                                <p className="text-slate-400 italic text-xs"><T k="merchant.single_line_item_order" />{' '}{ord.product_name}</p>
                               )}
                             </div>
                           </td>

@@ -1,12 +1,28 @@
 'use client';
 
+
+import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState, useEffect, useRef } from 'react';
 
 export function Simulator() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [speedMultiplier, setSpeedMultiplier] = useState<number>(1);
-  const [driverActionText, setDriverActionText] = useState<string>('Tap: “Start Ride to Sinza”');
+  const [driverActionIndex, setDriverActionIndex] = useState<number>(0);
+
+  const driverActions = [
+    { label: t("public.driver_action_start"), step: 2 },
+    { label: t("public.driver_action_nearby"), step: 2 },
+    { label: t("public.driver_action_delivered"), step: 3 },
+  ];
+
+  const toggleDriverAction = () => {
+    const next = (driverActionIndex + 1) % driverActions.length;
+    setDriverActionIndex(next);
+    jumpToStep(driverActions[next].step);
+  };
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -36,15 +52,6 @@ export function Simulator() {
     };
   }, [currentStep, isPlaying, speedMultiplier]);
 
-  const toggleDriverAction = () => {
-    if (driverActionText.includes('Start')) {
-      setDriverActionText('Tap: “I Have Arrived at Sinza”');
-    } else {
-      setDriverActionText('Tap: “Handover Complete (TZS 65k)”');
-      jumpToStep(3);
-    }
-  };
-
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pb-24" id="simulation">
       <div className="relative bg-surface-container rounded-3xl p-6 lg:p-10 shadow-xl overflow-hidden border border-outline-variant/30">
@@ -52,17 +59,13 @@ export function Simulator() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between pb-8 gap-4 border-b border-surface-variant/70">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="px-2.5 py-1 rounded-md bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase tracking-wider font-bold">Live System Sync</span>
-              <span className="px-2.5 py-1 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm uppercase tracking-wider font-semibold">Zero App Installs</span>
-              <span className="px-2.5 py-1 rounded-md bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm uppercase tracking-wider font-semibold">Instant GSM Delivery Link</span>
-              <span className="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider hidden sm:inline-block">Real-Time SMS Synchronization</span>
+              <span className="px-2.5 py-1 rounded-md bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase tracking-wider font-bold"><T k="public.live_system_sync" /></span>
+              <span className="px-2.5 py-1 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm uppercase tracking-wider font-semibold"><T k="public.zero_app_installs" /></span>
+              <span className="px-2.5 py-1 rounded-md bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm uppercase tracking-wider font-semibold"><T k="public.instant_gsm_delivery_link" /></span>
+              <span className="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider hidden sm:inline-block"><T k="public.real_time_sms_synchronization" /></span>
             </div>
-            <h2 className="font-headline-lg text-headline-lg-mobile lg:text-headline-lg text-on-surface font-extrabold tracking-tight">
-              Experience the Live 3-Phone Dispatch Simulation
-            </h2>
-            <p className="font-body-md text-on-surface-variant mt-1">
-              Witness how a single dispatch click triggers real-time zero-friction updates across merchant, rider, and recipient.
-            </p>
+            <h2 className="font-headline-lg text-headline-lg-mobile lg:text-headline-lg text-on-surface font-extrabold tracking-tight">{' '}<T k="public.experience_the_live_3_phone_dispatch_simulation" />{' '}</h2>
+            <p className="font-body-md text-on-surface-variant mt-1">{' '}<T k="public.witness_how_a_single_dispatch_click_triggers_real_time_zero_friction_updates_across_m" />{' '}</p>
           </div>
 
           {/* Interactive Controls (Play, Pause, Speed, Restart) */}
@@ -72,28 +75,25 @@ export function Simulator() {
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container text-label-md font-semibold transition-all"
             >
               <span className="material-symbols-outlined text-base">{isPlaying ? 'pause' : 'play_arrow'}</span>
-              <span>{isPlaying ? 'Pause' : 'Play'}</span>
+              <span>{isPlaying ? t("public.pause") : t("public.play")}</span>
             </button>
             <button
               onClick={() => setSpeedMultiplier(speedMultiplier === 1 ? 1.8 : 1)}
               className={`px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-variant text-label-sm font-code-tracking transition-all font-bold ${
                 speedMultiplier > 1 ? 'text-primary' : ''
               }`}
-            >
-              Speed: {speedMultiplier === 1 ? '1x' : '1.8x'}
+            >{' '}<T k="public.speed" />{' '}{speedMultiplier === 1 ? '1x' : '1.8x'}
             </button>
             <button
               onClick={() => jumpToStep(1)}
               className="p-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-variant transition-all"
-              title="Replay from Step 1"
+              title={t("public.replay_from_step_1")}
             >
               <span className="material-symbols-outlined text-lg">replay</span>
             </button>
             <div className="h-4 w-px bg-surface-variant"></div>
             <div className="flex items-center gap-1.5 text-tertiary text-xs font-bold font-code-tracking">
-              <span className="inline-block w-2 h-2 rounded-full bg-tertiary animate-ping"></span>
-              LIVE
-            </div>
+              <span className="inline-block w-2 h-2 rounded-full bg-tertiary animate-ping"></span>{' '}<T k="public.live" />{' '}</div>
           </div>
         </div>
 
@@ -115,10 +115,8 @@ export function Simulator() {
                 1
               </div>
               <div className="truncate">
-                <p className={`font-label-md text-xs font-bold truncate ${currentStep === 1 ? 'text-primary' : 'text-on-surface'}`}>
-                  1. Merchant Dispatches
-                </p>
-                <p className="text-[11px] text-on-surface-variant truncate hidden sm:block">Assign courier &amp; push order</p>
+                <p className={`font-label-md text-xs font-bold truncate ${currentStep === 1 ? 'text-primary' : 'text-on-surface'}`}>{' '}<T k="public.1_merchant_dispatches" />{' '}</p>
+                <p className="text-[11px] text-on-surface-variant truncate hidden sm:block"><T k="public.assign_courier_amp_push_order" /></p>
               </div>
             </button>
 
@@ -137,8 +135,8 @@ export function Simulator() {
                 2
               </div>
               <div className="truncate">
-                <p className="font-label-md text-xs font-bold text-on-surface truncate">2. Driver Receives SMS</p>
-                <p className="text-[11px] text-on-surface-variant truncate hidden sm:block">No-install web link activated</p>
+                <p className="font-label-md text-xs font-bold text-on-surface truncate"><T k="public.2_driver_receives_sms" /></p>
+                <p className="text-[11px] text-on-surface-variant truncate hidden sm:block"><T k="public.no_install_web_link_activated" /></p>
               </div>
             </button>
 
@@ -157,8 +155,8 @@ export function Simulator() {
                 3
               </div>
               <div className="truncate">
-                <p className="font-label-md text-xs font-bold text-on-surface truncate">3. Customer Instant Alert</p>
-                <p className="text-[11px] text-on-surface-variant truncate hidden sm:block">Live GPS tracking + WhatsApp card</p>
+                <p className="font-label-md text-xs font-bold text-on-surface truncate"><T k="public.3_customer_instant_alert" /></p>
+                <p className="text-[11px] text-on-surface-variant truncate hidden sm:block"><T k="public.live_gps_tracking_whatsapp_card" /></p>
               </div>
             </button>
           </div>
@@ -195,7 +193,7 @@ export function Simulator() {
                   </div>
                   <div>
                     <p className="font-label-md text-xs font-bold leading-tight">Zanzibar Crafts</p>
-                    <p className="text-[10px] text-on-surface-variant">Merchant Console</p>
+                    <p className="text-[10px] text-on-surface-variant"><T k="public.merchant_console" /></p>
                   </div>
                 </div>
                 <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-code-tracking text-[10px] font-bold">#LM-84912</span>
@@ -205,15 +203,15 @@ export function Simulator() {
               <div className="p-3.5 space-y-3 flex-1 overflow-y-auto text-left">
                 <div className="p-2.5 rounded-xl bg-surface-container-low border border-surface-variant space-y-1">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="text-on-surface-variant font-medium">Customer:</span>
+                    <span className="text-on-surface-variant font-medium"><T k="public.customer" /></span>
                     <span className="font-bold text-on-surface">Neema Mwamba</span>
                   </div>
                   <div className="flex justify-between items-center text-xs">
-                    <span className="text-on-surface-variant font-medium">Recipient Phone:</span>
+                    <span className="text-on-surface-variant font-medium"><T k="public.recipient_phone" /></span>
                     <span className="font-code-tracking text-xs font-bold text-primary">+255 712 901 844</span>
                   </div>
                   <div className="flex justify-between items-center text-xs">
-                    <span className="text-on-surface-variant font-medium">Amount Due:</span>
+                    <span className="text-on-surface-variant font-medium"><T k="public.amount_due" /></span>
                     <span className="font-code-tracking text-xs font-bold text-tertiary">TZS 65,000 (COD)</span>
                   </div>
                 </div>
@@ -222,23 +220,21 @@ export function Simulator() {
                   <div className="flex items-start gap-1.5 p-2 rounded-lg bg-surface-container">
                     <span className="material-symbols-outlined text-sm text-tertiary mt-0.5">location_on</span>
                     <div className="leading-tight">
-                      <p className="font-bold text-[11px] text-on-surface">Pickup: Zanzibar Crafts Flagship</p>
+                      <p className="font-bold text-[11px] text-on-surface"><T k="public.pickup_zanzibar_crafts_flagship" /></p>
                       <p className="text-[10px] text-on-surface-variant">Makumbusho Village Walk, Shop #14</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-1.5 p-2 rounded-lg bg-surface-container">
                     <span className="material-symbols-outlined text-sm text-primary mt-0.5">near_me</span>
                     <div className="leading-tight">
-                      <p className="font-bold text-[11px] text-on-surface">Dropoff: Sinza Kijiweni</p>
-                      <p className="text-[10px] text-on-surface-variant">Near TotalEnergies, blue iron gate behind grocery</p>
+                      <p className="font-bold text-[11px] text-on-surface"><T k="public.dropoff_sinza_kijiweni" /></p>
+                      <p className="text-[10px] text-on-surface-variant"><T k="public.near_totalenergies_blue_iron_gate_behind_grocery" /></p>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-1.5 pt-1">
-                  <label className="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wide">
-                    Assign Courier / Boda Rider
-                  </label>
+                  <label className="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wide">{' '}<T k="public.assign_courier_boda_rider" />{' '}</label>
                   <div className="p-2.5 rounded-xl border border-primary/50 bg-primary-fixed/20 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs">
@@ -251,7 +247,7 @@ export function Simulator() {
                         </p>
                       </div>
                     </div>
-                    <span className="material-symbols-outlined text-tertiary text-sm">verified</span>
+                    <span className="material-symbols-outlined text-tertiary text-sm"><T k="public.verified" /></span>
                   </div>
                   <p className="text-[10px] text-on-surface-variant">Motorbike: Bajaj Boxer #MC-449</p>
                 </div>
@@ -264,17 +260,17 @@ export function Simulator() {
                     }`}
                   >
                     <span className="material-symbols-outlined text-base">send_to_mobile</span>
-                    <span>DISPATCH TO JUMA (SMS SENT)</span>
+                    <span><T k="public.dispatch_to_juma_sms_sent" /></span>
                   </button>
                   <p className="text-center text-[10px] text-tertiary font-bold mt-1.5 flex items-center justify-center gap-1">
                     <span className="material-symbols-outlined text-xs">done_all</span>
-                    <span>Encrypted Dispatch Link Generated</span>
+                    <span><T k="public.encrypted_dispatch_link_generated" /></span>
                   </p>
                 </div>
               </div>
 
               <div className="bg-surface-container py-2 text-center border-t border-surface-variant">
-                <span className="text-[11px] font-bold text-on-surface uppercase tracking-wider">Phone 1: Merchant Web Console</span>
+                <span className="text-[11px] font-bold text-on-surface uppercase tracking-wider"><T k="public.phone_1_merchant_web_console" /></span>
               </div>
             </div>
           </div>
@@ -309,9 +305,9 @@ export function Simulator() {
                   <div>
                     <div className="flex items-center gap-1">
                       <p className="font-bold text-xs text-white">LUMO-DISPATCH</p>
-                      <span className="material-symbols-outlined text-tertiary-fixed text-[13px]">verified</span>
+                      <span className="material-symbols-outlined text-tertiary-fixed text-[13px]"><T k="public.verified" /></span>
                     </div>
-                    <p className="text-[10px] text-zinc-400">Official SMS Gateway</p>
+                    <p className="text-[10px] text-zinc-400"><T k="public.official_sms_gateway" /></p>
                   </div>
                 </div>
                 <span className="material-symbols-outlined text-zinc-400 text-sm">info</span>
@@ -320,7 +316,7 @@ export function Simulator() {
               {/* SMS Message Thread */}
               <div className="p-3.5 space-y-3 flex-1 overflow-y-auto text-left text-xs bg-zinc-950 font-body-sm">
                 <div className="text-center my-1">
-                  <span className="px-2.5 py-0.5 rounded-full bg-zinc-800/80 text-[10px] text-zinc-400 font-code-tracking">Today 09:41 AM</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-zinc-800/80 text-[10px] text-zinc-400 font-code-tracking"><T k="public.today_09_41_am" /></span>
                 </div>
 
                 <div className="bg-zinc-800 text-zinc-100 p-3 rounded-2xl rounded-tl-sm space-y-2 border border-zinc-700/70 shadow-sm transition-all">
@@ -328,8 +324,7 @@ export function Simulator() {
                     <span className="material-symbols-outlined text-sm">local_shipping</span>
                     <span>Agizo Jipya / New Dispatch: #LM-84912</span>
                   </p>
-                  <p className="text-[11px] leading-relaxed text-zinc-300">
-                    Habari <strong>Juma Hassan</strong>, Zanzibar Crafts imekupangia oda ya kupeleka <strong className="text-white">Sinza Kijiweni</strong>. COD: <strong className="text-tertiary-fixed">TZS 65,000</strong>.
+                  <p className="text-[11px] leading-relaxed text-zinc-300">{' '}<T k="public.legacy_hello" />{' '}<strong>Juma Hassan</strong><T k="public.legacy_zanzibar_crafts_has_assigned_you_a_delivery" />{' '}<strong className="text-white">Sinza Kijiweni</strong><T k="public.cod" />{' '}<strong className="text-tertiary-fixed">TZS 65,000</strong>.
                   </p>
 
                   <a
@@ -339,44 +334,41 @@ export function Simulator() {
                   >
                     <div className="flex items-center justify-between text-[10px]">
                       <span className="text-primary-fixed font-bold flex items-center gap-1">
-                        <span className="material-symbols-outlined text-xs">open_in_browser</span> BONYEZA HAPA KUANZA
-                      </span>
+                        <span className="material-symbols-outlined text-xs">open_in_browser</span>{' '}<T k="public.legacy_tap_here_to_start" />{' '}</span>
                       <span className="text-zinc-500 font-code-tracking">0.8 MB</span>
                     </div>
                     <p className="font-code-tracking text-xs font-bold text-white underline decoration-primary decoration-1">
                       https://lumo.to/d/tz-91a
                     </p>
-                    <p className="text-[10px] text-zinc-400">Hakuna kupakua App. Fungua kwa Chrome/Browser papo hapo.</p>
+                    <p className="text-[10px] text-zinc-400"><T k="public.legacy_no_app_download_open_instantly_in_chrome_or_your_browser" /></p>
                   </a>
                 </div>
 
                 <div className="pt-2 space-y-1.5">
-                  <p className="text-[10px] text-zinc-500 uppercase font-code-tracking">Driver 1-Tap Actions:</p>
+                  <p className="text-[10px] text-zinc-500 uppercase font-code-tracking"><T k="public.driver_1_tap_actions" /></p>
                   <button
                     onClick={toggleDriverAction}
                     className="w-full py-2.5 px-3 rounded-xl bg-primary text-white text-xs font-bold shadow hover:bg-primary-container transition-all flex items-center justify-center gap-2"
                   >
                     <span className="material-symbols-outlined text-sm">near_me</span>
-                    <span>{driverActionText}</span>
+                    <span>{driverActions[driverActionIndex].label}</span>
                   </button>
                 </div>
 
                 <div className={`justify-end ${currentStep >= 2 ? 'flex' : 'hidden'}`}>
-                  <div className="bg-tertiary text-white px-3 py-1.5 rounded-2xl rounded-tr-sm text-[11px] max-w-[80%] font-medium">
-                    Nimepokea, naondoka sasa hivi kuelekea Sinza 🛵💨
-                  </div>
+                  <div className="bg-tertiary text-white px-3 py-1.5 rounded-2xl rounded-tr-sm text-[11px] max-w-[80%] font-medium">{' '}<T k="public.legacy_received_i_am_leaving_now_for_sinza" />{' '}</div>
                 </div>
               </div>
 
               <div className="p-2.5 bg-zinc-900 border-t border-zinc-800 flex items-center gap-2">
-                <input className="bg-zinc-800 text-zinc-300 text-xs px-3 py-1.5 rounded-full flex-1 border-none focus:ring-0 placeholder:text-zinc-500" disabled placeholder="Driver reply via SMS or Web..." />
+                <input className="bg-zinc-800 text-zinc-300 text-xs px-3 py-1.5 rounded-full flex-1 border-none focus:ring-0 placeholder:text-zinc-500" disabled placeholder={t("public.driver_reply_via_sms_or_web")} />
                 <button className="w-7 h-7 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center">
                   <span className="material-symbols-outlined text-sm">mic</span>
                 </button>
               </div>
 
               <div className="bg-zinc-900 py-2 text-center border-t border-zinc-800">
-                <span className="text-[11px] font-bold text-zinc-300 uppercase tracking-wider">Phone 2: Driver Mobile (SMS / Web)</span>
+                <span className="text-[11px] font-bold text-zinc-300 uppercase tracking-wider"><T k="public.phone_2_driver_mobile_sms_web" /></span>
               </div>
             </div>
           </div>
@@ -410,12 +402,12 @@ export function Simulator() {
                   <div>
                     <div className="flex items-center gap-1">
                       <p className="font-bold text-xs text-on-surface">Zanzibar Crafts</p>
-                      <span className="material-symbols-outlined text-tertiary text-xs">verified</span>
+                      <span className="material-symbols-outlined text-tertiary text-xs"><T k="public.verified" /></span>
                     </div>
-                    <p className="text-[10px] text-tertiary font-bold">Verified Sender ID</p>
+                    <p className="text-[10px] text-tertiary font-bold"><T k="public.verified_sender_id" /></p>
                   </div>
                 </div>
-                <a className="p-1.5 rounded-full bg-surface-container hover:bg-surface-variant text-on-surface" href="tel:+255754892104" title="Call Driver">
+                <a className="p-1.5 rounded-full bg-surface-container hover:bg-surface-variant text-on-surface" href="tel:+255754892104" title={t("public.call_driver")}>
                   <span className="material-symbols-outlined text-sm text-tertiary">call</span>
                 </a>
               </div>
@@ -423,17 +415,15 @@ export function Simulator() {
               {/* Customer Message Body */}
               <div className="p-3.5 space-y-3 flex-1 overflow-y-auto text-left text-xs bg-surface-container-low">
                 <div className="text-center my-0.5">
-                  <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-[10px] text-on-surface-variant font-code-tracking">Today 09:41 AM</span>
+                  <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-[10px] text-on-surface-variant font-code-tracking"><T k="public.today_09_41_am" /></span>
                 </div>
 
                 <div className="p-3 rounded-2xl rounded-tl-sm bg-surface-container-lowest border border-outline-variant/40 space-y-2.5 shadow-sm">
                   <p className="font-bold text-xs text-primary flex items-center gap-1">
                     <span className="material-symbols-outlined text-sm">mark_email_read</span>
-                    <span>Oda Yako Iko Njiani! / Your Order is on the Way</span>
+                    <span><T k="public.legacy_your_order_is_on_the_way" /></span>
                   </p>
-                  <p className="text-[11px] leading-relaxed text-on-surface">
-                    Habari <strong>Neema</strong>, mzigo wako kutoka Zanzibar Crafts umekabidhiwa kwa dereva wetu:
-                  </p>
+                  <p className="text-[11px] leading-relaxed text-on-surface">{' '}<T k="public.legacy_hello" />{' '}<strong>Neema</strong><T k="public.legacy_your_package_from_zanzibar_crafts_has_been_handed_to_our_driver" />{' '}</p>
 
                   <div className="p-2.5 rounded-xl bg-surface-container space-y-1.5 border border-surface-variant">
                     <div className="flex items-center justify-between">
@@ -455,17 +445,17 @@ export function Simulator() {
                     <div className="pt-1 flex items-center gap-2">
                       <a className="flex-1 py-1.5 px-2 rounded-lg bg-surface-container-lowest text-on-surface border border-outline-variant hover:bg-surface-variant flex items-center justify-center gap-1 text-[11px] font-semibold" href="tel:+255754892104">
                         <span className="material-symbols-outlined text-xs text-tertiary">call</span>
-                        <span>Piga Simu</span>
+                        <span><T k="public.legacy_call" /></span>
                       </a>
                       <a className="flex-1 py-1.5 px-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container flex items-center justify-center gap-1 text-[11px] font-semibold" href="#simulation">
                         <span className="material-symbols-outlined text-xs">map</span>
-                        <span>Live Map</span>
+                        <span><T k="public.live_map" /></span>
                       </a>
                     </div>
                   </div>
 
                   <div className="p-2 rounded-lg bg-surface-container text-[11px]">
-                    <p className="text-on-surface-variant text-[10px]">Fuata safari kwa ramani (Live ETA ~12 mins):</p>
+                    <p className="text-on-surface-variant text-[10px]"><T k="public.legacy_follow_the_trip_on_the_map_live_eta_12_mins" /></p>
                     <p className="font-code-tracking text-xs font-bold text-primary underline">
                       lumo.to/t/neema-92a
                     </p>
@@ -473,22 +463,20 @@ export function Simulator() {
                 </div>
 
                 <div className={`flex justify-end pt-1 ${currentStep === 3 ? 'opacity-100 animate-pulse' : 'opacity-40'}`}>
-                  <div className="bg-primary text-on-primary px-3 py-1.5 rounded-2xl rounded-tr-sm text-[11px] max-w-[85%] font-medium shadow-sm">
-                    Asante sana! Nipo geti la bluu Sinza Kijiweni 🏡
-                  </div>
+                  <div className="bg-primary text-on-primary px-3 py-1.5 rounded-2xl rounded-tr-sm text-[11px] max-w-[85%] font-medium shadow-sm">{' '}<T k="public.legacy_thank_you_i_am_at_the_blue_gate_in_sinza_kijiweni" />{' '}</div>
                 </div>
               </div>
 
               <div className="p-2.5 bg-surface-container border-t border-surface-variant flex items-center gap-2">
                 <span className="material-symbols-outlined text-tertiary text-sm">chat</span>
-                <input className="bg-surface-container-lowest text-on-surface text-xs px-3 py-1.5 rounded-full flex-1 border border-outline-variant focus:ring-0 placeholder:text-on-surface-variant" disabled placeholder="Reply to Zanzibar Crafts..." />
+                <input className="bg-surface-container-lowest text-on-surface text-xs px-3 py-1.5 rounded-full flex-1 border border-outline-variant focus:ring-0 placeholder:text-on-surface-variant" disabled placeholder={t("public.reply_to_zanzibar_crafts")} />
                 <button className="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center">
                   <span className="material-symbols-outlined text-xs">arrow_upward</span>
                 </button>
               </div>
 
               <div className="bg-surface-container py-2 text-center border-t border-surface-variant">
-                <span className="text-[11px] font-bold text-on-surface uppercase tracking-wider">Phone 3: Customer Instant Alert</span>
+                <span className="text-[11px] font-bold text-on-surface uppercase tracking-wider"><T k="public.phone_3_customer_instant_alert" /></span>
               </div>
             </div>
           </div>
@@ -501,13 +489,11 @@ export function Simulator() {
               <span className="material-symbols-outlined text-xl">bolt</span>
             </span>
             <div>
-              <p className="font-headline-sm text-sm font-bold text-on-surface">The GSM-First African Reality</p>
-              <p className="text-xs text-on-surface-variant">No Play Store logins. No 80MB apps. Works on basic smartphones, 3G/4G, and handles COD reconciliation right out of the box.</p>
+              <p className="font-headline-sm text-sm font-bold text-on-surface"><T k="public.the_gsm_first_african_reality" /></p>
+              <p className="text-xs text-on-surface-variant"><T k="public.no_play_store_logins_no_80mb_apps_works_on_basic_smartphones_3g_4g_and_handles_cod_re" /></p>
             </div>
           </div>
-          <a className="shrink-0 px-4 py-2 rounded-xl bg-surface-container text-on-surface hover:bg-surface-variant font-label-md text-xs font-bold transition-colors" href="#how-it-works">
-            Learn Technical Architecture →
-          </a>
+          <a className="shrink-0 px-4 py-2 rounded-xl bg-surface-container text-on-surface hover:bg-surface-variant font-label-md text-xs font-bold transition-colors" href="#how-it-works">{' '}<T k="public.learn_technical_architecture" />{' '}</a>
         </div>
       </div>
     </section>

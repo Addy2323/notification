@@ -1,10 +1,14 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { Settings, Save, Shield, Bell, Sliders } from 'lucide-react';
 
 export default function AdminSettingsPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [weights, setWeights] = useState({
     orderVolumeWeight: 25,
     completionRateWeight: 25,
@@ -15,8 +19,8 @@ export default function AdminSettingsPage() {
 
   const handleSave = () => {
     Swal.fire({
-      title: 'Settings Saved',
-      text: 'Engagement scoring algorithm weights updated successfully.',
+      title: t("admin.settings_saved"),
+      text: t("admin.engagement_scoring_algorithm_weights_updated_successfully"),
       icon: 'success',
       background: '#0F172A',
       color: '#FFFFFF',
@@ -28,12 +32,8 @@ export default function AdminSettingsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div>
           <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-            <Settings className="w-6 h-6 text-amber-400" />
-            LUMO Administrative Control Settings
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Configure merchant engagement scoring weights, operational alert thresholds, and platform parameters.
-          </p>
+            <Settings className="w-6 h-6 text-amber-400" />{' '}<T k="admin.lumo_administrative_control_settings" />{' '}</h1>
+          <p className="text-xs text-slate-400 mt-1">{' '}<T k="admin.configure_merchant_engagement_scoring_weights_operational_alert_thresholds_and_platfo" />{' '}</p>
         </div>
 
         <button
@@ -41,21 +41,19 @@ export default function AdminSettingsPage() {
           className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-lg shadow-amber-500/20 flex items-center gap-2 self-start sm:self-auto"
         >
           <Save className="w-4 h-4" />
-          <span>Save Changes</span>
+          <span><T k="admin.save_changes" /></span>
         </button>
       </div>
 
       <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 space-y-6 max-w-3xl">
         <h3 className="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
-          <Sliders className="w-4 h-4 text-amber-400" />
-          Merchant Engagement Scoring Weights (Total 100 Points)
-        </h3>
+          <Sliders className="w-4 h-4 text-amber-400" />{' '}<T k="admin.merchant_engagement_scoring_weights_total_100_points" />{' '}</h3>
 
         <div className="space-y-4">
           <div>
             <div className="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-              <span>Order Volume Weight</span>
-              <span className="font-mono text-amber-400">{weights.orderVolumeWeight} pts</span>
+              <span><T k="admin.order_volume_weight" /></span>
+              <span className="font-mono text-amber-400">{weights.orderVolumeWeight}{' '}<T k="admin.pts" /></span>
             </div>
             <input
               type="range"
@@ -69,8 +67,8 @@ export default function AdminSettingsPage() {
 
           <div>
             <div className="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-              <span>Order Completion / Fulfillment Rate Weight</span>
-              <span className="font-mono text-amber-400">{weights.completionRateWeight} pts</span>
+              <span><T k="admin.order_completion_fulfillment_rate_weight" /></span>
+              <span className="font-mono text-amber-400">{weights.completionRateWeight}{' '}<T k="admin.pts" /></span>
             </div>
             <input
               type="range"
@@ -84,8 +82,8 @@ export default function AdminSettingsPage() {
 
           <div>
             <div className="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-              <span>Daily Order Consistency (Streak Weight)</span>
-              <span className="font-mono text-amber-400">{weights.streakWeight} pts</span>
+              <span><T k="admin.daily_order_consistency_streak_weight" /></span>
+              <span className="font-mono text-amber-400">{weights.streakWeight}{' '}<T k="admin.pts" /></span>
             </div>
             <input
               type="range"
@@ -99,8 +97,8 @@ export default function AdminSettingsPage() {
 
           <div>
             <div className="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-              <span>Driver Usage Weight</span>
-              <span className="font-mono text-amber-400">{weights.driverUsageWeight} pts</span>
+              <span><T k="admin.driver_usage_weight" /></span>
+              <span className="font-mono text-amber-400">{weights.driverUsageWeight}{' '}<T k="admin.pts" /></span>
             </div>
             <input
               type="range"
@@ -114,8 +112,8 @@ export default function AdminSettingsPage() {
 
           <div>
             <div className="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-              <span>SMS Notification Success Weight</span>
-              <span className="font-mono text-amber-400">{weights.notificationWeight} pts</span>
+              <span><T k="admin.sms_notification_success_weight" /></span>
+              <span className="font-mono text-amber-400">{weights.notificationWeight}{' '}<T k="admin.pts" /></span>
             </div>
             <input
               type="range"

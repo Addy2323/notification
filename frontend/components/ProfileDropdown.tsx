@@ -1,10 +1,14 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState, useEffect, useRef } from 'react';
 import { User, Camera, LogOut, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
 
 export default function ProfileDropdown() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [user, setUser] = useState<any>(null);
   const [merchant, setMerchant] = useState<any>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -71,7 +75,7 @@ export default function ProfileDropdown() {
       >
         <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center font-bold text-xs text-slate-600 relative group">
           {user.avatar_url ? (
-            <img src={user.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+            <img src={user.avatar_url} alt={t("merchant.profile")} className="w-full h-full object-cover" />
           ) : (
             <User className="w-5 h-5 text-slate-400 group-hover:text-slate-600 transition-colors" />
           )}
@@ -84,7 +88,7 @@ export default function ProfileDropdown() {
             <div className="relative group">
               <div className="w-16 h-16 rounded-full bg-slate-100 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center relative">
                 {user.avatar_url ? (
-                  <img src={user.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                  <img src={user.avatar_url} alt={t("merchant.profile")} className="w-full h-full object-cover" />
                 ) : (
                   <User className="w-8 h-8 text-slate-400" />
                 )}
@@ -106,17 +110,17 @@ export default function ProfileDropdown() {
                 {user.name} 
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
               </h3>
-              <p className="text-xs font-semibold text-slate-500 mt-0.5">{user.email || 'No email provided'}</p>
+              <p className="text-xs font-semibold text-slate-500 mt-0.5">{user.email || t("public.no_email_provided")}</p>
               <div className="mt-1.5 px-2 py-0.5 bg-teal-50 text-teal-700 text-[10px] font-bold rounded-md inline-block uppercase">
-                {user.role}
+                {uiLabel(user.role)}
               </div>
             </div>
           </div>
           
           <div className="p-4 bg-slate-50/50 space-y-3">
              <div className="space-y-1">
-               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Business Details</span>
-               <div className="text-sm font-semibold text-slate-800">{merchant?.business_name || 'Personal Workspace'}</div>
+               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider"><T k="admin.business_details" /></span>
+               <div className="text-sm font-semibold text-slate-800">{merchant?.business_name || t("public.personal_workspace")}</div>
                <div className="text-xs text-slate-500">{user.phone}</div>
              </div>
           </div>
@@ -130,9 +134,7 @@ export default function ProfileDropdown() {
                 });
               }}
             >
-              <LogOut className="w-4 h-4" />
-              Sign Out
-            </button>
+              <LogOut className="w-4 h-4" />{' '}<T k="merchant.sign_out" />{' '}</button>
           </div>
         </div>
       )}

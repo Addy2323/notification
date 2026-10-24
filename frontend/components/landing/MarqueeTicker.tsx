@@ -1,5 +1,7 @@
 'use client';
 
+
+import { useLanguage } from '@/components/LanguageProvider';
 import React from 'react';
 import { 
   Truck, ShieldCheck, MapPin, Smartphone, Zap, 
@@ -7,6 +9,8 @@ import {
 } from 'lucide-react';
 
 export function MarqueeTicker() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const items = [
     { icon: Zap, label: "10,000+ Daily Dispatches", highlight: "Automated" },
     { icon: ShieldCheck, label: "99.8% On-Time", highlight: "Notification Reliability" },
@@ -44,7 +48,7 @@ export function MarqueeTicker() {
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm">
                 <span className="font-extrabold text-white group-hover:text-[#FF5500] transition-colors">
-                  {item.label}
+                  {uiLabel(item.label)}
                 </span>
                 <span className="text-[10px] sm:text-xs font-semibold text-[#8A9EB8] bg-[#0B192C] px-2 py-0.5 rounded-md border border-[#1C365A]">
                   {item.highlight}

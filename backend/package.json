@@ -12,7 +12,8 @@
     "prisma:db-push": "prisma db push",
     "prisma:studio": "prisma studio",
     "postinstall": "prisma generate",
-    "test": "jest --detectOpenHandles --forceExit"
+    "test": "jest --detectOpenHandles --forceExit",
+    "db:language-migrate": "prisma db execute --file prisma/migrations/202610240001_user_language/migration.sql --schema prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

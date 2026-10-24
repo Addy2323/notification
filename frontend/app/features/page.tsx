@@ -1,3 +1,6 @@
+import { localizedMetadata } from '@/lib/server-language';
+
+import { T, TLabel } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { Shield, Smartphone, MessageSquare, Truck, CheckCircle2, ArrowRight, Package, MapPin, Zap } from 'lucide-react';
@@ -5,13 +8,13 @@ import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Sections';
 import { constructMetadata, generateBreadcrumbSchema } from '@/lib/seo';
 
-export const metadata = constructMetadata({
+export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'Features | Delivery Tracking & SMS Notification Platform',
   description:
     'Explore LUMO Track features: automated SMS & WhatsApp delivery alerts, zero-install customer web tracking portal, driver status updates, and merchant analytics in Tanzania.',
   canonicalUrl: '/features',
   alternateSwahiliUrl: '/sw/fuatilia-mizigo',
-});
+})); }
 
 export default function FeaturesPage() {
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -75,15 +78,9 @@ export default function FeaturesPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-16">
         {/* Hero Banner */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">
-            LUMO TRACK FEATURES
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-            Complete Delivery Communication & Tracking Suite
-          </h1>
-          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">
-            Everything your Tanzanian business needs to keep customers informed, reduce support calls, and ensure smooth delivery handovers.
-          </p>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">{' '}<T k="public.lumo_track_features" />{' '}</span>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">{' '}<T k="public.complete_delivery_communication_tracking_suite" />{' '}</h1>
+          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">{' '}<T k="public.everything_your_tanzanian_business_needs_to_keep_customers_informed_reduce_support_ca" />{' '}</p>
         </div>
 
         {/* Feature Grid */}
@@ -98,8 +95,8 @@ export default function FeaturesPage() {
                 <div className={`w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center ${feat.color}`}>
                   <Icon className="w-6 h-6" />
                 </div>
-                <h2 className="text-lg font-black text-white">{feat.title}</h2>
-                <p className="text-xs sm:text-sm text-[#A0B8D0] leading-relaxed">{feat.description}</p>
+                <h2 className="text-lg font-black text-white"><TLabel value={feat.title} /></h2>
+                <p className="text-xs sm:text-sm text-[#A0B8D0] leading-relaxed"><TLabel value={feat.description} /></p>
               </div>
             );
           })}
@@ -107,23 +104,17 @@ export default function FeaturesPage() {
 
         {/* CTA Banner */}
         <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-blue-950 via-[#112239] to-slate-950 border border-[#1F3654] text-center space-y-6 shadow-2xl">
-          <h2 className="text-2xl sm:text-4xl font-black text-white">Ready to automate your delivery notifications?</h2>
-          <p className="text-sm sm:text-base text-[#A0B8D0] max-w-2xl mx-auto">
-            Start notifying your Tanzanian customers today with SMS, WhatsApp updates, and app-free web tracking.
-          </p>
+          <h2 className="text-2xl sm:text-4xl font-black text-white"><T k="public.ready_to_automate_your_delivery_notifications" /></h2>
+          <p className="text-sm sm:text-base text-[#A0B8D0] max-w-2xl mx-auto">{' '}<T k="public.start_notifying_your_tanzanian_customers_today_with_sms_whatsapp_updates_and_app_free" />{' '}</p>
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/register"
               className="px-8 py-3.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] text-white font-extrabold text-sm shadow-lg shadow-orange-500/20 transition-all"
-            >
-              Start Free Trial
-            </Link>
+            >{' '}<T k="public.start_free_trial" />{' '}</Link>
             <Link
               href="/delivery-tracking"
               className="px-8 py-3.5 rounded-xl bg-[#162C4A] border border-[#2D4D77] hover:bg-[#1F3E68] text-white font-bold text-sm transition-all"
-            >
-              Learn About Tracking
-            </Link>
+            >{' '}<T k="public.learn_about_tracking" />{' '}</Link>
           </div>
         </div>
       </main>

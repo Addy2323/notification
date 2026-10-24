@@ -1,5 +1,7 @@
 'use client';
 
+
+import { T } from '@/components/LanguageProvider';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Clock, RefreshCw } from 'lucide-react';
 
@@ -225,16 +227,13 @@ export function OtpInput({
 
             <div className="text-xs font-medium">
               {timerActive ? (
-                <span className="text-slate-500">
-                  Code expires in <strong className={`font-mono ${
+                <span className="text-slate-500">{' '}<T k="public.code_expires_in" />{' '}<strong className={`font-mono ${
                     timer > 15 ? 'text-emerald-700' : timer > 5 ? 'text-amber-600' : 'text-rose-600'
                   }`}>{timerDisplay}</strong>
                 </span>
               ) : (
                 <span className="text-rose-600 font-bold flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  Code expired
-                </span>
+                  <Clock className="w-3 h-3" />{' '}<T k="public.code_expired" />{' '}</span>
               )}
             </div>
           </div>

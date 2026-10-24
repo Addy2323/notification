@@ -1,5 +1,7 @@
 'use client';
 
+
+import { T } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import { WifiOff, AlertTriangle } from 'lucide-react';
 
@@ -29,7 +31,7 @@ export function OfflineNotification() {
   return (
     <div className="fixed top-0 left-0 right-0 z-[200] bg-amber-600 text-white text-xs font-bold py-2 px-4 shadow-lg flex items-center justify-center gap-2 text-center animate-in slide-in-from-top-full duration-200">
       <WifiOff className="w-4 h-4 shrink-0" />
-      <span>You're offline. Some delivery actions may be unavailable.</span>
+      <span><T k="public.you_re_offline_some_delivery_actions_may_be_unavailable" /></span>
     </div>
   );
 }

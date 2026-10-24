@@ -1,0 +1,66 @@
+﻿0	Nenosiri jipya na uthibitisho wake havilingani.
+1	Nenosiri liwe na angalau herufi 6.
+5	Tuma msimbo wa SMS tena
+8	Rekebisha sehemu zilizoonyeshwa kabla ya kuendelea.
+9	Weka msimbo wa tarakimu 6 uliotumwa kwa {value0} kuthibitisha umiliki wa biashara.
+30	Nusu mwaka
+34	Akaunti za biashara (muda wote)
+35	{value0} hai · {value1} zenye oda katika kipindi hiki
+36	Oda na usafirishaji
+37	{value0} zimefikishwa / mizigo {value1} (pamoja na mizigo ya kujitegemea)
+38	Kiwango cha SMS zilizofika
+40	{value0} zimefika · {value1} zimeshindwa · {value2} ziko foleni
+42	Marejesho: {value0}
+43	Gharama ya kununua bidhaa
+44	Gharama inarejeshwa bidhaa zinaporudishwa dukani
+46	Oda {value0} hazina gharama ya kununua (faida haijahesabiwa)
+57	Hali za mizigo
+58	Hali za SMS
+59	 · Ilisasishwa mara ya mwisho: {value0}
+61	Hali zote
+62	Inasubiri / Imepangiwa
+63	Njiani
+64	Amefika / Karibu
+66	Imeshindikana / Imeghairiwa
+67	 · Imesasishwa {value0}
+68	Kumbukumbu / Chanzo
+70	Mteja / Anwani
+90	Unataka {value0} mfanyabiashara "{value1}"?
+91	Ndiyo, {value0} mfanyabiashara
+92	Hali ya mfanyabiashara imebadilishwa kuwa {value0}
+93	Mfanyabiashara {value0} amesajiliwa kwa nenosiri la muda.
+94	Taarifa za mfanyabiashara "{value0}" zimesasishwa.
+95	Una uhakika unataka kufuta "{value0}"? Hii haiwezi kutenguliwa na itafuta oda, mizigo na madereva wote wanaohusika.
+96	Mfanyabiashara "{value0}" amefutwa kabisa.
+102	Hali ya mfanyabiashara sasa ni {value0}
+110	Tazama oda {value0}
+113	wafanyabiashara
+114	mizigo
+115	wageni
+160	Faida TZS {value0}
+170	Dereva ameongezwa!
+173	Picha isiwe kubwa kuliko MB 5. Tafadhali chagua picha ndogo.
+174	Chagua picha kwenye maktaba ya picha.
+175	Oda imesajiliwa! SMS imetumwa kwa mteja kiotomatiki.
+179	Marejesho yamerekodiwa. Mauzo na faida vimesasishwa.
+180	Hali imebadilishwa kuwa {value0}. SMS imetumwa kiotomatiki.
+181	Dereva amepangiwa! SMS zimetumwa kwa mteja na dereva kiotomatiki.
+189	Mauzo na oda za leo
+191	Ufanisi wa wiki hii
+193	Mgawanyo wa mwezi mzima
+195	Muhtasari wa mauzo ya miezi 3
+197	Daftari la miezi 6
+199	Ripoti ya fedha ya mwaka mzima
+201	Oda imesasishwa. Bei za kununua na kuuza pamoja na faida zimesasishwa.
+205	Hariri oda {value0}
+206	Taarifa za {value0} kwa {value1}
+207	Imeshindikana kuhifadhi mipangilio. Jaribu tena.
+208	Una uhakika unataka kughairi usafirishaji huu? Dereva hataweza tena kubadilisha hali.
+232	Fuatilia mizigo. Endelea kuwasiliana.
+235	Tathmini kwa nyota {value0}
+239	Wasilisha tathmini
+241	Habari John! Oda yako #1024 kutoka HOME DECO imeundwa. Fuatilia hapa: lumotrack.lumo.co.tz/track/abc123xyz
+243	Dereva wako Ado yuko njiani na mzigo wako! Bonyeza hapa kufuatilia au kumpigia simu: lumotrack.lumo.co.tz/track/abc123xyz
+261	Nenda kwenye slaidi {value0}
+282	Chagua picha hadi MB 5.
+283	Chagua faili la picha.

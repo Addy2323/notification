@@ -10,6 +10,8 @@ router.post('/', orderController.createOrder);
 router.get('/', orderController.listOrders);
 router.get('/metrics', orderController.getOrderMetrics);
 router.get('/:id', orderController.getOrderDetail);
+router.patch('/:id', orderController.editOrder);
+router.delete('/:id', orderController.deleteOrder);
 router.patch('/:id/status', orderController.updateOrderStatus);
 router.post('/:id/refund', orderController.refundOrder);
 router.post('/:id/assign-driver', orderController.assignDriver);

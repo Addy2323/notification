@@ -1,9 +1,13 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState } from 'react';
 import { FileText, Download, Calendar, FileSpreadsheet, ShieldCheck, CheckCircle2, RefreshCw } from 'lucide-react';
 
 export default function ReportsPage() {
+  const { t, label: uiLabel, locale, language } = useLanguage();
+
   const [reportType, setReportType] = useState('DAILY');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -14,6 +18,7 @@ export default function ReportsPage() {
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
     const params = new URLSearchParams();
     params.append('reportType', reportType);
+    params.append('language', language);
     if (startDate) params.append('startDate', startDate);
     if (endDate) params.append('endDate', endDate);
 
@@ -37,7 +42,7 @@ export default function ReportsPage() {
 
       if (!res.ok) {
         const errJson = await res.json().catch(() => ({}));
-        throw new Error(errJson.error?.message || 'Failed to generate PDF');
+        throw new Error(errJson.error?.message || t("merchant.failed_to_generate_pdf"));
       }
 
       const blob = await res.blob();
@@ -50,7 +55,7 @@ export default function ReportsPage() {
       a.remove();
     } catch (err: any) {
       console.error('PDF download error:', err);
-      alert(err.message || 'Failed to generate PDF report. Please try again.');
+      alert(err.message || t("merchant.failed_to_generate_pdf_report_please_try_again"));
     } finally {
       setDownloadingPdf(false);
     }
@@ -73,7 +78,7 @@ export default function ReportsPage() {
 
       if (!res.ok) {
         const errJson = await res.json().catch(() => ({}));
-        throw new Error(errJson.error?.message || 'Failed to generate Excel');
+        throw new Error(errJson.error?.message || t("merchant.failed_to_generate_excel"));
       }
 
       const blob = await res.blob();
@@ -86,7 +91,7 @@ export default function ReportsPage() {
       a.remove();
     } catch (err: any) {
       console.error('Excel download error:', err);
-      alert(err.message || 'Failed to generate Excel workbook. Please try again.');
+      alert(err.message || t("merchant.failed_to_generate_excel_workbook_please_try_again"));
     } finally {
       setDownloadingExcel(false);
     }
@@ -101,8 +106,8 @@ export default function ReportsPage() {
             <FileText className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Paperless Sales & Delivery Reports</h1>
-            <p className="text-sm text-slate-400">Generate merchant PDF reports & multi-sheet Excel business workbooks</p>
+            <h1 className="text-2xl font-bold tracking-tight"><T k="merchant.paperless_sales_delivery_reports" /></h1>
+            <p className="text-sm text-slate-400"><T k="merchant.generate_merchant_pdf_reports_multi_sheet_excel_business_workbooks" /></p>
           </div>
         </div>
       </div>
@@ -112,8 +117,8 @@ export default function ReportsPage() {
         {/* Report Options Form */}
         <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
           <div>
-            <h3 className="text-base font-bold text-slate-900">1. Select Report Period Preset</h3>
-            <p className="text-xs text-slate-500 mt-1">Choose predefined timeframe or specify custom dates</p>
+            <h3 className="text-base font-bold text-slate-900"><T k="merchant.1_select_report_period_preset" /></h3>
+            <p className="text-xs text-slate-500 mt-1"><T k="merchant.choose_predefined_timeframe_or_specify_custom_dates" /></p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -136,9 +141,9 @@ export default function ReportsPage() {
               >
                 <div>
                   <span className={`text-xs font-bold block ${reportType === p.id ? 'text-[#FF5500]' : 'text-slate-900'}`}>
-                    {p.title}
+                    {uiLabel(p.title)}
                   </span>
-                  <span className="text-[11px] text-slate-500 font-medium block mt-1">{p.desc}</span>
+                  <span className="text-[11px] text-slate-500 font-medium block mt-1">{uiLabel(p.desc)}</span>
                 </div>
                 {reportType === p.id && <CheckCircle2 className="w-4 h-4 text-[#FF5500] mt-3 self-end" />}
               </button>
@@ -157,7 +162,7 @@ export default function ReportsPage() {
               ) : (
                 <FileText className="w-4 h-4 text-[#FF5500]" />
               )}
-              {downloadingPdf ? 'Generating PDF...' : 'Download Vector PDF Report'}
+              {downloadingPdf ? t("merchant.generating_pdf") : t("merchant.download_vector_pdf_report")}
             </button>
 
             <button
@@ -170,7 +175,7 @@ export default function ReportsPage() {
               ) : (
                 <FileSpreadsheet className="w-4 h-4 text-white" />
               )}
-              {downloadingExcel ? 'Generating Excel...' : 'Download Excel (.xlsx) Workbook'}
+              {downloadingExcel ? t("merchant.generating_excel") : t("merchant.download_excel_xlsx_workbook")}
             </button>
           </div>
         </div>
@@ -182,26 +187,22 @@ export default function ReportsPage() {
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-bold text-base">Paperless Merchant Operations</h3>
-              <p className="text-xs text-slate-400">Replaces physical paper order books</p>
+              <h3 className="font-bold text-base"><T k="merchant.paperless_merchant_operations" /></h3>
+              <p className="text-xs text-slate-400"><T k="merchant.replaces_physical_paper_order_books" /></p>
             </div>
           </div>
 
           <div className="space-y-4 text-xs text-slate-300">
             <div className="p-3 bg-slate-800/60 rounded-xl border border-slate-700/50 space-y-1">
               <h4 className="font-bold text-white flex items-center gap-1.5">
-                <FileText className="w-4 h-4 text-[#FF5500]" />
-                Branded PDF Reports
-              </h4>
-              <p className="text-slate-400">Vector PDF featuring merchant logo, Tanzanian skyline branding, summary cards, and itemized sales table.</p>
+                <FileText className="w-4 h-4 text-[#FF5500]" />{' '}<T k="merchant.branded_pdf_reports" />{' '}</h4>
+              <p className="text-slate-400"><T k="merchant.vector_pdf_featuring_merchant_logo_tanzanian_skyline_branding_summary_cards_and_itemi" /></p>
             </div>
 
             <div className="p-3 bg-slate-800/60 rounded-xl border border-slate-700/50 space-y-1">
               <h4 className="font-bold text-white flex items-center gap-1.5">
-                <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
-                Multi-Sheet Excel Workbook
-              </h4>
-              <p className="text-slate-400">Exports 8 dedicated sheets: Summary, Sales Ledger, Orders, Products, Customers, Deliveries, Drivers, and Notifications.</p>
+                <FileSpreadsheet className="w-4 h-4 text-emerald-400" />{' '}<T k="merchant.multi_sheet_excel_workbook" />{' '}</h4>
+              <p className="text-slate-400"><T k="merchant.exports_8_dedicated_sheets_summary_sales_ledger_orders_products_customers_deliveries_" /></p>
             </div>
           </div>
         </div>

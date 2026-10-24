@@ -1,10 +1,14 @@
 'use client';
 
+
+import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
 import { Settings, Building2, Phone, Mail, MapPin, Bell, Shield, Save, CheckCircle2, RefreshCw } from 'lucide-react';
 
 export default function SettingsPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [merchant, setMerchant] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -51,7 +55,7 @@ export default function SettingsPage() {
       setTimeout(() => setSavedSuccess(false), 3000);
     } catch (err: any) {
       console.error('Failed to update settings:', err);
-      alert('Failed to save settings. Please try again.');
+      alert(t("interactions.failed_to_save_settings_please_try_again"));
     } finally {
       setSaving(false);
     }
@@ -74,8 +78,8 @@ export default function SettingsPage() {
             <Settings className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Merchant & Account Settings</h1>
-            <p className="text-sm text-slate-400">Manage business details, contact channels & preferences</p>
+            <h1 className="text-2xl font-bold tracking-tight"><T k="merchant.merchant_account_settings" /></h1>
+            <p className="text-sm text-slate-400"><T k="merchant.manage_business_details_contact_channels_preferences" /></p>
           </div>
         </div>
       </div>
@@ -84,17 +88,13 @@ export default function SettingsPage() {
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
         <div>
           <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-[#FF5500]" />
-            Business Profile Details
-          </h3>
-          <p className="text-xs text-slate-500 mt-1">Information printed on customer tracking pages & receipts</p>
+            <Building2 className="w-5 h-5 text-[#FF5500]" />{' '}<T k="merchant.business_profile_details" />{' '}</h3>
+          <p className="text-xs text-slate-500 mt-1"><T k="merchant.information_printed_on_customer_tracking_pages_receipts" /></p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-              Business Name
-            </label>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">{' '}<T k="merchant.business_name" />{' '}</label>
             <input
               type="text"
               required
@@ -105,9 +105,7 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-              Business Phone
-            </label>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">{' '}<T k="merchant.business_phone" />{' '}</label>
             <input
               type="text"
               required
@@ -118,9 +116,7 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-              Business Email
-            </label>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">{' '}<T k="admin.business_email" />{' '}</label>
             <input
               type="email"
               value={formData.email}
@@ -130,9 +126,7 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-              Location / Address
-            </label>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">{' '}<T k="admin.location_address" />{' '}</label>
             <input
               type="text"
               value={formData.location}
@@ -146,9 +140,7 @@ export default function SettingsPage() {
         <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
           {savedSuccess && (
             <span className="text-xs text-emerald-600 font-bold flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4" />
-              Settings updated successfully!
-            </span>
+              <CheckCircle2 className="w-4 h-4" />{' '}<T k="merchant.settings_updated_successfully" />{' '}</span>
           )}
 
           <button
@@ -157,7 +149,7 @@ export default function SettingsPage() {
             className="ml-auto px-6 py-2.5 bg-[#FF5500] hover:bg-[#e04b00] text-white rounded-xl font-bold text-sm shadow-lg shadow-orange-500/20 transition flex items-center gap-2 disabled:opacity-50"
           >
             {saving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-            {saving ? 'Saving...' : 'Save Settings'}
+            {saving ? t("common.saving") : t("merchant.save_settings")}
           </button>
         </div>
       </form>

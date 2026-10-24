@@ -1,5 +1,7 @@
 'use client';
 
+
+import { T, useLanguage, TLabel } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { 
@@ -13,6 +15,8 @@ import { LumoLogo } from './LumoLogo';
    1. TRUST / VALUE PROPOSITION SECTION (Dark Navy Glass Cards)
    ========================================================================== */
 export function TrustSection() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const cards = [
     {
       icon: Send,
@@ -39,14 +43,10 @@ export function TrustSection() {
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3 sm:space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/40 text-[#FF5500] text-[11px] sm:text-xs font-bold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Seamless Customer Experience</span>
+            <span><T k="public.seamless_customer_experience" /></span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
-            How LUMO Transforms Delivery Communication
-          </h2>
-          <p className="text-[#A0B8D0] text-sm sm:text-lg">
-            Empower your Tanzania business with instant delivery notifications and zero-install web tracking.
-          </p>
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">{' '}<T k="public.how_lumo_transforms_delivery_communication" />{' '}</h2>
+          <p className="text-[#A0B8D0] text-sm sm:text-lg">{' '}<T k="public.empower_your_tanzania_business_with_instant_delivery_notifications_and_zero_install_w" />{' '}</p>
         </div>
 
         {/* 3 Dark Glass Cards */}
@@ -62,10 +62,10 @@ export function TrustSection() {
                   <Icon className="w-6 h-6 sm:w-7 sm:h-7 group-hover:text-[#FF5500] transition-colors" />
                 </div>
                 <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 tracking-tight group-hover:text-[#FF5500] transition-colors">
-                  {card.title}
+                  {uiLabel(card.title)}
                 </h3>
                 <p className="text-[#A0B8D0] text-xs sm:text-sm leading-relaxed">
-                  {card.description}
+                  {uiLabel(card.description)}
                 </p>
               </div>
             );
@@ -81,6 +81,8 @@ export function TrustSection() {
    2. PROCESS FLOW SECTION (Dispatch Pipeline)
    ========================================================================== */
 export function ProcessFlowSection() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const steps = [
     { num: "01", title: "Order Placed", desc: "Merchant receives customer order" },
     { num: "02", title: "Driver Assigned", desc: "Fleet or driver dispatched" },
@@ -95,12 +97,8 @@ export function ProcessFlowSection() {
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-16 space-y-2 sm:space-y-3">
-          <span className="text-[#FF5500] text-[11px] sm:text-xs font-black uppercase tracking-widest block">
-            End-to-End Pipeline
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-            Automated From Dispatch to Doorstep
-          </h2>
+          <span className="text-[#FF5500] text-[11px] sm:text-xs font-black uppercase tracking-widest block">{' '}<T k="public.end_to_end_pipeline" />{' '}</span>
+          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">{' '}<T k="public.automated_from_dispatch_to_doorstep" />{' '}</h2>
         </div>
 
         {/* Responsive Process Nodes with Horizontal Scroll Snap on Mobile + Hover Glow */}
@@ -117,8 +115,8 @@ export function ProcessFlowSection() {
                 <div className="w-2 h-2 rounded-full bg-[#FF5500] group-hover:animate-ping" />
               </div>
               <div>
-                <h4 className="text-sm sm:text-base font-bold text-white mb-1 group-hover:text-[#FF5500] transition-colors">{step.title}</h4>
-                <p className="text-xs text-[#8A9EB8] leading-snug">{step.desc}</p>
+                <h4 className="text-sm sm:text-base font-bold text-white mb-1 group-hover:text-[#FF5500] transition-colors">{uiLabel(step.title)}</h4>
+                <p className="text-xs text-[#8A9EB8] leading-snug"><TLabel value={step.desc} /></p>
               </div>
             </div>
           ))}
@@ -139,15 +137,9 @@ export function DualFeatureCards() {
         
         {/* Section Title */}
         <div className="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4">
-          <span className="text-[#FF5500] text-[11px] sm:text-xs font-black uppercase tracking-widest block">
-            MULTICHANNEL DISPATCH
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-            Branded Notifications Across All Channels
-          </h2>
-          <p className="text-[#A0B8D0] text-sm sm:text-base">
-            Deliver instant order status updates via SMS and WhatsApp directly to your customer's phone.
-          </p>
+          <span className="text-[#FF5500] text-[11px] sm:text-xs font-black uppercase tracking-widest block">{' '}<T k="public.multichannel_dispatch" />{' '}</span>
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">{' '}<T k="public.branded_notifications_across_all_channels" />{' '}</h2>
+          <p className="text-[#A0B8D0] text-sm sm:text-base">{' '}<T k="public.deliver_instant_order_status_updates_via_sms_and_whatsapp_directly_to_your_customer_s" />{' '}</p>
         </div>
 
         {/* Grid of 2 Large Dark Glass Feature Cards */}
@@ -156,23 +148,18 @@ export function DualFeatureCards() {
           {/* Card 1: Instant SMS Notifications */}
           <div className="bg-[#112239]/90 border border-[#1E3A5F] hover:border-[#FF5500]/60 rounded-2xl sm:rounded-3xl p-6 sm:p-10 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-500/15 group space-y-5 sm:space-y-6 shimmer-card">
             <div className="space-y-2 sm:space-y-3">
-              <span className="text-[11px] sm:text-xs font-extrabold text-[#FF5500] uppercase tracking-wider block">
-                SMS DISPATCH PROTOCOL
-              </span>
-              <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug group-hover:text-[#FF5500] transition-colors">High-Speed SMS Delivery Notifications</h3>
-              <p className="text-[#A0B8D0] text-xs sm:text-sm leading-relaxed">
-                Send localized SMS alerts with custom shop branding, driver contact details, and secure tracking links.
-              </p>
+              <span className="text-[11px] sm:text-xs font-extrabold text-[#FF5500] uppercase tracking-wider block">{' '}<T k="public.sms_dispatch_protocol" />{' '}</span>
+              <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug group-hover:text-[#FF5500] transition-colors"><T k="public.high_speed_sms_delivery_notifications" /></h3>
+              <p className="text-[#A0B8D0] text-xs sm:text-sm leading-relaxed">{' '}<T k="public.send_localized_sms_alerts_with_custom_shop_branding_driver_contact_details_and_secure" />{' '}</p>
             </div>
 
             {/* UI Mockup Container */}
             <div className="bg-[#081220] border border-[#1E3A5F] group-hover:border-[#FF5500]/40 rounded-xl sm:rounded-2xl p-4 sm:p-5 space-y-2.5 sm:space-y-3 font-mono text-xs transition-all">
               <div className="flex items-center justify-between text-[#8A9EB8] text-[9px] sm:text-[10px] pb-2 border-b border-[#182B46]">
-                <span>SENDER: LUMO-TRACK</span>
-                <span className="text-[#FF5500] font-bold">DELIVERED</span>
+                <span><T k="public.sender_lumo_track" /></span>
+                <span className="text-[#FF5500] font-bold"><T k="public.delivered" /></span>
               </div>
-              <p className="text-slate-200 leading-relaxed font-sans text-xs">
-                "Habari! Order yako #LM-8821 ipo njiani na dereva Ado Myamba (0784-000-111). Bofya hapa kuifuatilia kwenye ramani: <span className="text-[#FF5500] underline">lumo.co.tz/t/8821</span>"
+              <p className="text-slate-200 leading-relaxed font-sans text-xs">{' '}<T k="public.legacy_hello_your_order_lm_8821_is_on_the_way_with_driver_ado_myamba_0784_000_111_" />{' '}<span className="text-[#FF5500] underline">lumo.co.tz/t/8821</span>"
               </p>
             </div>
           </div>
@@ -180,28 +167,22 @@ export function DualFeatureCards() {
           {/* Card 2: WhatsApp Live Tracking */}
           <div className="bg-[#112239]/90 border border-[#1E3A5F] hover:border-[#25D366]/60 rounded-2xl sm:rounded-3xl p-6 sm:p-10 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-500/15 group space-y-5 sm:space-y-6 shimmer-card">
             <div className="space-y-2 sm:space-y-3">
-              <span className="text-[11px] sm:text-xs font-extrabold text-[#25D366] uppercase tracking-wider block">
-                WHATSAPP BUSINESS API
-              </span>
-              <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug group-hover:text-[#25D366] transition-colors">Interactive WhatsApp Tracking Link</h3>
-              <p className="text-[#A0B8D0] text-xs sm:text-sm leading-relaxed">
-                Connect your official WhatsApp Business account to send rich media dispatch updates with interactive action buttons.
-              </p>
+              <span className="text-[11px] sm:text-xs font-extrabold text-[#25D366] uppercase tracking-wider block">{' '}<T k="public.whatsapp_business_api" />{' '}</span>
+              <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug group-hover:text-[#25D366] transition-colors"><T k="public.interactive_whatsapp_tracking_link" /></h3>
+              <p className="text-[#A0B8D0] text-xs sm:text-sm leading-relaxed">{' '}<T k="public.connect_your_official_whatsapp_business_account_to_send_rich_media_dispatch_updates_w" />{' '}</p>
             </div>
 
             {/* UI Mockup Container */}
             <div className="bg-[#081220] border border-[#1E3A5F] group-hover:border-[#25D366]/40 rounded-xl sm:rounded-2xl p-4 sm:p-5 space-y-2.5 sm:space-y-3 font-mono text-xs transition-all">
               <div className="flex items-center justify-between text-[#8A9EB8] text-[9px] sm:text-[10px] pb-2 border-b border-[#182B46]">
-                <span>WHATSAPP BUSINESS</span>
-                <span className="text-[#25D366] font-bold">VERIFIED BOT</span>
+                <span><T k="public.whatsapp_business_2" /></span>
+                <span className="text-[#25D366] font-bold"><T k="public.verified_bot" /></span>
               </div>
               <div className="bg-[#112239] p-3 rounded-lg border border-[#1E3A5F] font-sans text-xs space-y-2">
-                <p className="text-white font-bold">🚚 Delivery Update</p>
-                <p className="text-[#A0B8D0]">Driver is 5 mins away from your location.</p>
+                <p className="text-white font-bold"><T k="public.delivery_update" /></p>
+                <p className="text-[#A0B8D0]"><T k="public.driver_is_5_mins_away_from_your_location" /></p>
                 <div className="pt-1.5">
-                  <span className="bg-[#25D366] hover:bg-[#1EBE57] text-slate-950 text-[10px] sm:text-[11px] font-extrabold px-3 py-1.5 rounded-md inline-block shadow-md transition-all group-hover:scale-105">
-                    Open Live Map 📍
-                  </span>
+                  <span className="bg-[#25D366] hover:bg-[#1EBE57] text-slate-950 text-[10px] sm:text-[11px] font-extrabold px-3 py-1.5 rounded-md inline-block shadow-md transition-all group-hover:scale-105">{' '}<T k="public.open_live_map" />{' '}</span>
                 </div>
               </div>
             </div>
@@ -218,6 +199,8 @@ export function DualFeatureCards() {
    4. FEATURE GRID SECTION (Post-Purchase Capabilities)
    ========================================================================== */
 export function FeatureGridSection() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const features = [
     {
       icon: MapPin,
@@ -257,12 +240,8 @@ export function FeatureGridSection() {
         
         {/* Section Title */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-2 sm:space-y-3">
-          <span className="text-[#FF5500] text-[11px] sm:text-xs font-black uppercase tracking-widest block">
-            ENTERPRISE CAPABILITIES
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-            Built for High-Growth Merchants & Delivery Fleets
-          </h2>
+          <span className="text-[#FF5500] text-[11px] sm:text-xs font-black uppercase tracking-widest block">{' '}<T k="public.enterprise_capabilities" />{' '}</span>
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">{' '}<T k="public.built_for_high_growth_merchants_delivery_fleets" />{' '}</h2>
         </div>
 
         {/* 6 Grid Dark Glass Cards (1 col mobile, 2 sm, 3 lg) */}
@@ -277,8 +256,8 @@ export function FeatureGridSection() {
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#0B192C] border border-[#1C365A] group-hover:border-[#FF5500]/50 group-hover:bg-[#FF5500]/10 flex items-center justify-center text-[#FF5500] mb-4 group-hover:scale-110 transition-all duration-300 shadow-md">
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
-                <h4 className="text-base sm:text-lg font-bold text-white mb-1.5 sm:mb-2 group-hover:text-[#FF5500] transition-colors">{feat.title}</h4>
-                <p className="text-[#A0B8D0] text-xs leading-relaxed">{feat.desc}</p>
+                <h4 className="text-base sm:text-lg font-bold text-white mb-1.5 sm:mb-2 group-hover:text-[#FF5500] transition-colors">{uiLabel(feat.title)}</h4>
+                <p className="text-[#A0B8D0] text-xs leading-relaxed"><TLabel value={feat.desc} /></p>
               </div>
             );
           })}
@@ -301,25 +280,21 @@ export function AboutUsSection() {
           <div className="lg:col-span-6 space-y-4 sm:space-y-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/40 text-[#FF5500] text-[11px] sm:text-xs font-bold uppercase tracking-wider">
               <Building2 className="w-3.5 h-3.5" />
-              <span>ABOUT LUMO PLATFORM</span>
+              <span><T k="public.about_lumo_platform" /></span>
             </div>
 
-            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-              Transforming Customer Delivery Relations Across Tanzania
-            </h2>
+            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">{' '}<T k="public.transforming_customer_delivery_relations_across_tanzania" />{' '}</h2>
 
-            <p className="text-[#A0B8D0] text-sm sm:text-base leading-relaxed">
-              LUMO is Tanzania's premier customer delivery communication platform. We empower merchants, e-commerce shops, and logistics fleets to deliver exceptional post-purchase transparency through automated SMS, WhatsApp notifications, and live map tracking.
-            </p>
+            <p className="text-[#A0B8D0] text-sm sm:text-base leading-relaxed">{' '}<T k="public.lumo_is_tanzania_s_premier_customer_delivery_communication_platform_we_empower_mercha" />{' '}</p>
 
             <div className="grid grid-cols-2 gap-4 sm:gap-6 pt-2">
               <div className="bg-[#112239] border border-[#1E3A5F] p-4 rounded-xl">
                 <p className="text-xl sm:text-2xl font-black text-[#FF5500]">100%</p>
-                <p className="text-[11px] sm:text-xs text-[#8A9EB8] font-bold pt-1">Web-Based Access</p>
+                <p className="text-[11px] sm:text-xs text-[#8A9EB8] font-bold pt-1"><T k="public.web_based_access" /></p>
               </div>
               <div className="bg-[#112239] border border-[#1E3A5F] p-4 rounded-xl">
                 <p className="text-xl sm:text-2xl font-black text-[#FF5500]">99.9%</p>
-                <p className="text-[11px] sm:text-xs text-[#8A9EB8] font-bold pt-1">Notification Reliability</p>
+                <p className="text-[11px] sm:text-xs text-[#8A9EB8] font-bold pt-1"><T k="public.notification_reliability" /></p>
               </div>
             </div>
           </div>
@@ -329,11 +304,9 @@ export function AboutUsSection() {
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#FF5500] text-white flex items-center justify-center font-black text-lg sm:text-xl">
                 L
               </div>
-              <blockquote className="text-base sm:text-lg text-white font-medium italic leading-relaxed">
-                "Uhusiano bora na wateja wako ni misingi yetu. Delivery transparency builds trust and repeat orders for every retail merchant."
-              </blockquote>
+              <blockquote className="text-base sm:text-lg text-white font-medium italic leading-relaxed">{' '}<T k="public.uhusiano_bora_na_wateja_wako_ni_misingi_yetu_delivery_transparency_builds_trust_and_r" />{' '}</blockquote>
               <div className="border-t border-[#1F3A60] pt-4 flex items-center justify-between text-xs text-[#8A9EB8]">
-                <span className="font-bold text-white">LUMO Team</span>
+                <span className="font-bold text-white"><T k="public.lumo_team" /></span>
                 <span>Dar es Salaam, Tanzania</span>
               </div>
             </div>
@@ -359,27 +332,19 @@ export function CtaBanner() {
           <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-[#FF5500]/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="max-w-2xl mx-auto space-y-3 sm:space-y-4 relative z-10">
-            <h2 className="text-2xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-              Ready to Automate Your Delivery Notifications?
-            </h2>
-            <p className="text-[#A0B8D0] text-sm sm:text-lg">
-              Start dispatching customer notifications and live map tracking links in under 5 minutes.
-            </p>
+            <h2 className="text-2xl sm:text-5xl font-black text-white tracking-tight leading-tight">{' '}<T k="public.ready_to_automate_your_delivery_notifications_2" />{' '}</h2>
+            <p className="text-[#A0B8D0] text-sm sm:text-lg">{' '}<T k="public.start_dispatching_customer_notifications_and_live_map_tracking_links_in_under_5_minut" />{' '}</p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 sm:gap-4 relative z-10 pt-2">
             <a
               href="#get-started"
               className="px-7 py-3.5 sm:py-4 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] text-white font-black text-sm sm:text-base shadow-xl shadow-orange-500/20 transition-all hover:scale-105"
-            >
-              Start Free Trial
-            </a>
+            >{' '}<T k="public.start_free_trial" />{' '}</a>
             <a
               href="mailto:support@lumo.co.tz"
               className="px-7 py-3.5 sm:py-4 rounded-xl bg-[#0B192C] border border-[#1E3A5F] text-[#A0B8D0] hover:text-white font-bold text-sm sm:text-base transition-colors"
-            >
-              Contact Support
-            </a>
+            >{' '}<T k="public.contact_support" />{' '}</a>
           </div>
 
         </div>
@@ -400,23 +365,20 @@ export function Footer() {
         {/* Brand Logo & Tagline */}
         <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
           <LumoLogo size={32} textColor="text-white" />
-          <span className="text-xs text-[#8A9EB8]">
-            | Customer Delivery Notifications & Tracking
-          </span>
+          <span className="text-xs text-[#8A9EB8]">{' '}<T k="public.customer_delivery_notifications_tracking" />{' '}</span>
         </div>
 
         {/* Simplified Nav Links */}
         <div className="flex items-center gap-6 sm:gap-8 text-xs font-semibold text-[#A0B8D0]">
-          <Link href="/#features" className="hover:text-white transition-colors">Features</Link>
-          <Link href="/about" className="hover:text-white transition-colors">About Us</Link>
-          <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+          <Link href="/#features" className="hover:text-white transition-colors"><T k="common.features" /></Link>
+          <Link href="/about" className="hover:text-white transition-colors"><T k="common.about_us" /></Link>
+          <Link href="/contact" className="hover:text-white transition-colors"><T k="public.contact" /></Link>
         </div>
 
 
         {/* Copyright */}
         <div className="text-xs text-[#8A9EB8]">
-          &copy; {new Date().getFullYear()} LUMO Technologies. All rights reserved.
-        </div>
+          &copy; {new Date().getFullYear()}{' '}<T k="public.lumo_technologies_all_rights_reserved" />{' '}</div>
 
       </div>
     </footer>

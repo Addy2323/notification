@@ -1,3 +1,4 @@
+import { resolveLanguage } from '../localization';
 import { Request, Response } from 'express';
 import { ReportService } from '../services/reportService';
 import { sendError } from '../utils/response';
@@ -9,6 +10,7 @@ export class ReportController {
       const { reportType, startDate, endDate } = req.query;
 
       const pdfBuffer = await ReportService.generatePDF(merchantId, {
+        language: resolveLanguage(req),
         reportType: (reportType as any) || 'DAILY',
         startDate: startDate ? new Date(startDate as string) : undefined,
         endDate: endDate ? new Date(endDate as string) : undefined,
@@ -28,6 +30,7 @@ export class ReportController {
       const { reportType, startDate, endDate } = req.query;
 
       const excelBuffer = await ReportService.generateExcel(merchantId, {
+        language: resolveLanguage(req),
         reportType: (reportType as any) || 'DAILY',
         startDate: startDate ? new Date(startDate as string) : undefined,
         endDate: endDate ? new Date(endDate as string) : undefined,

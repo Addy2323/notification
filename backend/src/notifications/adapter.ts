@@ -1,7 +1,9 @@
 import { prisma } from '../database/prisma';
 import { config } from '../config';
+import { Language } from '../localization';
 
 export interface NotificationPayload {
+  language?: Language;
   deliveryId: string;
   eventId?: string;
   eventType: string;
@@ -139,6 +141,18 @@ export class NotificationService {
     const { eventType, merchantName, productName, driverName, trackingUrl, businessLocation } = payload;
     const currentTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
+    if (payload.language === 'sw') {
+      const map = businessLocation ? `https://maps.google.com/?q=${encodeURIComponent(businessLocation)}` : '';
+      switch (eventType) {
+        case 'DELIVERY_CREATED': return `${merchantName} amesajili mzigo wa ${productName} saa ${currentTime}. Dereva wako ni ${driverName || 'Dereva'}. Fuatilia: ${trackingUrl}`;
+        case 'DRIVER_ASSIGNED': return `Arifa ya LUMO: Umepangiwa kuchukua ${productName} kutoka ${merchantName}. Ramani ya duka: ${map}`;
+        case 'ON_THE_WAY': return `${productName} kutoka ${merchantName} iko njiani. Dereva: ${driverName || 'Dereva'}. Fuatilia: ${trackingUrl}`;
+        case 'ARRIVED': return `Dereva kutoka ${merchantName} amefika. Tafadhali pokea ${productName}.`;
+        case 'DELIVERED': return `${productName} imewekwa kuwa imefikishwa. Asante.`;
+        case 'DELIVERY_CANCELLED': return `Usafirishaji wa ${productName} kutoka ${merchantName} umeghairiwa. Wasiliana na mfanyabiashara.`;
+        default: return `Taarifa ya ${productName} kutoka ${merchantName}: ${trackingUrl}`;
+      }
+    }
     switch (eventType) {
       case 'DELIVERY_CREATED':
         return `${merchantName} has registered a delivery for ${productName} at ${currentTime}. Your assigned driver is ${driverName}. Track it here: ${trackingUrl}`;
@@ -163,6 +177,13 @@ export class NotificationService {
    */
   public async dispatchNotification(payload: NotificationPayload): Promise<void> {
     try {
+      if (!payload.language) {
+        const created = await prisma.deliveryEvent.findFirst({ where: { delivery_id: payload.deliveryId, event_type: 'DELIVERY_CREATED' }, orderBy: { timestamp: 'asc' }, select: { actor_reference: true } });
+        if (created?.actor_reference) {
+          const user = await prisma.merchantUser.findUnique({ where: { id: created.actor_reference }, select: { language: true } });
+          payload = { ...payload, language: user?.language === 'sw' ? 'sw' : 'en' };
+        }
+      }
       const channel = payload.channel || 'SMS';
       const body = this.buildTemplateBody(payload);
 

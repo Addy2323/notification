@@ -1,5 +1,7 @@
 'use client';
 
+
+import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
@@ -27,6 +29,8 @@ import {
 import { fetchApi } from '@/lib/api';
 
 export default function AdminOverviewDashboard() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [period, setPeriod] = useState<string>('THIS_MONTH');
   const [loading, setLoading] = useState(true);
   const [metrics, setMetrics] = useState<any>(null);
@@ -88,15 +92,9 @@ export default function AdminOverviewDashboard() {
       {/* Top Banner & Period Selector */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800/80 pb-5">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-            LUMO Control Centre Overview
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">
-              Live Operations
-            </span>
+          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">{' '}<T k="admin.lumo_control_centre_overview" />{' '}<span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">{' '}<T k="admin.live_operations" />{' '}</span>
           </h1>
-          <p className="text-xs text-slate-400 font-medium mt-1">
-            Real-time platform performance snapshot, merchant metrics, sales, deliveries & traffic.
-          </p>
+          <p className="text-xs text-slate-400 font-medium mt-1">{' '}<T k="admin.real_time_platform_performance_snapshot_merchant_metrics_sales_deliveries_traffic" />{' '}</p>
         </div>
 
         {/* Dashboard Period Selector */}
@@ -111,12 +109,12 @@ export default function AdminOverviewDashboard() {
                   : 'text-slate-400 hover:text-white hover:bg-slate-800'
               }`}
             >
-              {p.label}
+              {uiLabel(p.label)}
             </button>
           ))}
           <button
             onClick={loadData}
-            title="Refresh Data"
+            title={t("admin.refresh_data")}
             className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-amber-400' : ''}`} />
@@ -129,52 +127,52 @@ export default function AdminOverviewDashboard() {
         {/* Card 1: Total Merchants */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider">Total Merchants</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider"><T k="admin.total_merchants" /></span>
             <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
               <Users className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl md:text-3xl font-black text-white">
-            {metrics?.merchants?.total?.toLocaleString() || 0}
+            {metrics?.merchants?.total?.toLocaleString(locale) || 0}
           </p>
           <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-            <span className="text-emerald-400 font-bold">{metrics?.merchants?.active || 0} Active</span>
-            <span>{metrics?.merchants?.newToday || 0} New Today</span>
+            <span className="text-emerald-400 font-bold">{metrics?.merchants?.active || 0}{' '}<T k="admin.active" /></span>
+            <span>{metrics?.merchants?.newToday || 0}{' '}<T k="admin.new_today" /></span>
           </div>
         </div>
 
         {/* Card 2: Total Orders */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider">Total Orders</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider"><T k="common.total_orders" /></span>
             <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
               <ShoppingBag className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl md:text-3xl font-black text-white">
-            {metrics?.orders?.total?.toLocaleString() || 0}
+            {metrics?.orders?.total?.toLocaleString(locale) || 0}
           </p>
           <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-            <span>Period Total</span>
-            <span className="text-amber-400 font-bold">Selected Range</span>
+            <span><T k="admin.period_total" /></span>
+            <span className="text-amber-400 font-bold"><T k="admin.selected_range" /></span>
           </div>
         </div>
 
         {/* Card 3: Total Sales Value */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider">Total Sales Value</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider"><T k="admin.total_sales_value" /></span>
             <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
               <DollarSign className="w-4 h-4" />
             </div>
           </div>
           <p className="text-xl md:text-2xl font-black text-emerald-400 font-mono truncate">
-            TZS {(metrics?.orders?.totalSalesValue || 0).toLocaleString()}
+            TZS {(metrics?.orders?.totalSalesValue || 0).toLocaleString(locale)}
           </p>
           <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-            <span>Gross Profit:</span>
+            <span><T k="admin.gross_profit_3" /></span>
             <span className="text-emerald-300 font-bold font-mono">
-              TZS {(metrics?.orders?.totalGrossProfit || 0).toLocaleString()}
+              TZS {(metrics?.orders?.totalGrossProfit || 0).toLocaleString(locale)}
             </span>
           </div>
         </div>
@@ -182,58 +180,58 @@ export default function AdminOverviewDashboard() {
         {/* Card 4: Total Deliveries */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider">Total Deliveries</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider"><T k="admin.total_deliveries" /></span>
             <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
               <Package className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl md:text-3xl font-black text-white">
-            {metrics?.deliveries?.total?.toLocaleString() || 0}
+            {metrics?.deliveries?.total?.toLocaleString(locale) || 0}
           </p>
           <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px]">
-            <span className="text-emerald-400 font-bold">{metrics?.deliveries?.delivered || 0} Delivered</span>
-            <span className="text-rose-400 font-bold">{metrics?.deliveries?.failed || 0} Failed</span>
+            <span className="text-emerald-400 font-bold">{metrics?.deliveries?.delivered || 0}{' '}<T k="common.delivered" /></span>
+            <span className="text-rose-400 font-bold">{metrics?.deliveries?.failed || 0}{' '}<T k="common.failed" /></span>
           </div>
         </div>
 
         {/* Card 5: Total Drivers */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider">Platform Drivers</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider"><T k="admin.platform_drivers" /></span>
             <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
               <Truck className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl md:text-3xl font-black text-white">
-            {metrics?.drivers?.total?.toLocaleString() || 0}
+            {metrics?.drivers?.total?.toLocaleString(locale) || 0}
           </p>
           <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-            <span className="text-indigo-300 font-bold">{metrics?.drivers?.delivering || 0} Delivering</span>
-            <span className="text-emerald-400 font-bold">{metrics?.drivers?.available || 0} Available</span>
+            <span className="text-indigo-300 font-bold">{metrics?.drivers?.delivering || 0}{' '}<T k="admin.delivering" /></span>
+            <span className="text-emerald-400 font-bold">{metrics?.drivers?.available || 0}{' '}<T k="admin.available" /></span>
           </div>
         </div>
 
         {/* Card 6: Notifications */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider">SMS Notifications</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider"><T k="admin.sms_notifications" /></span>
             <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
               <Bell className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl md:text-3xl font-black text-white">
-            {metrics?.notifications?.total?.toLocaleString() || 0}
+            {metrics?.notifications?.total?.toLocaleString(locale) || 0}
           </p>
           <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-            <span className="text-emerald-400 font-bold">{metrics?.notifications?.delivered || 0} Delivered</span>
-            <span className="text-amber-400 font-bold">{metrics?.notifications?.queued || 0} Queued</span>
+            <span className="text-emerald-400 font-bold">{metrics?.notifications?.delivered || 0}{' '}<T k="common.delivered" /></span>
+            <span className="text-amber-400 font-bold">{metrics?.notifications?.queued || 0}{' '}<T k="admin.queued" /></span>
           </div>
         </div>
 
         {/* Card 7: Live Active Visitors */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider">Live Active Visitors</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider"><T k="admin.live_active_visitors" /></span>
             <div className="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center">
               <Eye className="w-4 h-4 animate-pulse" />
             </div>
@@ -242,17 +240,15 @@ export default function AdminOverviewDashboard() {
             ● {activeVisitorsCount}
           </p>
           <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-            <span>Website Traffic</span>
-            <Link href="/admin/traffic" className="text-amber-400 font-bold hover:underline">
-              View Traffic →
-            </Link>
+            <span><T k="admin.website_traffic" /></span>
+            <Link href="/admin/traffic" className="text-amber-400 font-bold hover:underline">{' '}<T k="admin.view_traffic" />{' '}</Link>
           </div>
         </div>
 
         {/* Card 8: Merchant Engagement */}
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 relative overflow-hidden group hover:border-slate-700 transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider">Engaged Merchants</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider"><T k="admin.engaged_merchants" /></span>
             <div className="w-8 h-8 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center">
               <TrendingUp className="w-4 h-4" />
             </div>
@@ -261,10 +257,8 @@ export default function AdminOverviewDashboard() {
             {metrics?.merchants?.engagedPeriod || 0}
           </p>
           <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-            <span>Active in Period</span>
-            <Link href="/admin/rankings" className="text-teal-300 font-bold hover:underline">
-              Rankings →
-            </Link>
+            <span><T k="admin.active_in_period" /></span>
+            <Link href="/admin/rankings" className="text-teal-300 font-bold hover:underline">{' '}<T k="admin.rankings" />{' '}</Link>
           </div>
         </div>
       </div>
@@ -274,12 +268,8 @@ export default function AdminOverviewDashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
           <div>
             <h2 className="text-lg font-black text-white tracking-tight flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-amber-400" />
-              LUMO Platform Growth Analytics
-            </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Historical trends across Merchants, Orders, Sales, Deliveries, and Website Visitors.
-            </p>
+              <TrendingUp className="w-5 h-5 text-amber-400" />{' '}<T k="admin.lumo_platform_growth_analytics" />{' '}</h2>
+            <p className="text-xs text-slate-400 mt-0.5">{' '}<T k="admin.historical_trends_across_merchants_orders_sales_deliveries_and_website_visitors" />{' '}</p>
           </div>
 
           <div className="flex items-center gap-2">
@@ -377,20 +367,18 @@ export default function AdminOverviewDashboard() {
               <div className="flex justify-between text-[10px] text-slate-500 font-mono px-1">
                 {growthData.map((item, idx) => (
                   <div key={idx} className="text-center">
-                    <span className="font-bold text-slate-400 block">{item.label}</span>
+                    <span className="font-bold text-slate-400 block">{uiLabel(item.label)}</span>
                     <span className="text-[9px] text-amber-400">
                       {growthMetric === 'sales'
-                        ? `TZS ${(item[growthMetric] || 0).toLocaleString()}`
-                        : (item[growthMetric] || 0).toLocaleString()}
+                        ? `TZS ${(item[growthMetric] || 0).toLocaleString(locale)}`
+                        : (item[growthMetric] || 0).toLocaleString(locale)}
                     </span>
                   </div>
                 ))}
               </div>
             </div>
           ) : (
-            <div className="h-full flex items-center justify-center text-slate-500 text-xs">
-              No growth dataset available for this interval.
-            </div>
+            <div className="h-full flex items-center justify-center text-slate-500 text-xs">{' '}<T k="admin.no_growth_dataset_available_for_this_interval" />{' '}</div>
           )}
         </div>
       </div>
@@ -402,51 +390,43 @@ export default function AdminOverviewDashboard() {
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <div className="flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-400" />
-              <h3 className="text-sm font-bold text-white">Merchants Needing Attention</h3>
+              <h3 className="text-sm font-bold text-white"><T k="admin.merchants_needing_attention" /></h3>
             </div>
-            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400">
-              Backlog Monitor
-            </span>
+            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400">{' '}<T k="admin.backlog_monitor" />{' '}</span>
           </div>
 
           <div className="space-y-2.5">
             <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs">
               <div>
                 <p className="font-bold text-white">David Sportware</p>
-                <p className="text-[10px] text-rose-400">18 Pending orders requiring dispatch</p>
+                <p className="text-[10px] text-rose-400"><T k="admin.18_pending_orders_requiring_dispatch" /></p>
               </div>
               <Link
                 href="/admin/merchants"
                 className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-[10px] font-bold text-amber-400 border border-slate-800"
-              >
-                Investigate
-              </Link>
+              >{' '}<T k="admin.investigate" />{' '}</Link>
             </div>
 
             <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs">
               <div>
                 <p className="font-bold text-white">ABC Electronics</p>
-                <p className="text-[10px] text-amber-400">3 Unassigned drivers for active deliveries</p>
+                <p className="text-[10px] text-amber-400"><T k="admin.3_unassigned_drivers_for_active_deliveries" /></p>
               </div>
               <Link
                 href="/admin/merchants"
                 className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-[10px] font-bold text-amber-400 border border-slate-800"
-              >
-                Investigate
-              </Link>
+              >{' '}<T k="admin.investigate" />{' '}</Link>
             </div>
 
             <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs">
               <div>
                 <p className="font-bold text-white">Zanzibar Fashion</p>
-                <p className="text-[10px] text-slate-400">Merchant profile onboarding incomplete</p>
+                <p className="text-[10px] text-slate-400"><T k="admin.merchant_profile_onboarding_incomplete" /></p>
               </div>
               <Link
                 href="/admin/merchants"
                 className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-[10px] font-bold text-amber-400 border border-slate-800"
-              >
-                Inspect
-              </Link>
+              >{' '}<T k="admin.inspect" />{' '}</Link>
             </div>
           </div>
         </div>
@@ -456,11 +436,10 @@ export default function AdminOverviewDashboard() {
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <div className="flex items-center gap-2">
               <Activity className="w-4 h-4 text-emerald-400" />
-              <h3 className="text-sm font-bold text-white">Live Platform Activity Stream</h3>
+              <h3 className="text-sm font-bold text-white"><T k="admin.live_platform_activity_stream" /></h3>
             </div>
             <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Live
-            </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>{' '}<T k="admin.live" />{' '}</span>
           </div>
 
           <div className="space-y-2 max-h-64 overflow-y-auto custom-scrollbar pr-1">
@@ -482,13 +461,13 @@ export default function AdminOverviewDashboard() {
                   <span className="text-slate-200 font-medium">{item.text}</span>
                 </div>
                 <span className="text-[9px] font-mono text-slate-500">
-                  {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {new Date(item.timestamp).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
             ))}
 
             {liveStream.length === 0 && (
-              <p className="text-xs text-slate-500 text-center py-6">Listening for live platform activity...</p>
+              <p className="text-xs text-slate-500 text-center py-6"><T k="admin.listening_for_live_platform_activity" /></p>
             )}
           </div>
         </div>

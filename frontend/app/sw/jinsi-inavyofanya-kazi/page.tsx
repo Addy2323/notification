@@ -1,3 +1,6 @@
+import { localizedMetadata } from '@/lib/server-language';
+
+import { TLabel, T } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { Package, Bell, Truck, Smartphone, CheckCircle2, ArrowRight } from 'lucide-react';
@@ -5,7 +8,7 @@ import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Sections';
 import { constructMetadata, generateBreadcrumbSchema } from '@/lib/seo';
 
-export const metadata = constructMetadata({
+export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'Jinsi LUMO Track Inavyofanya Kazi | Hatua 5 za Utoaji wa Mzigo',
   description:
     'Jifunze jinsi LUMO Track inavyofanya kazi kwa hatua 5 rahisi: Sajili mzigo, tuma SMS, dereva anaanza safari, mteja anafuatilia, na kukabidhi mzigo.',
@@ -16,7 +19,7 @@ export const metadata = constructMetadata({
     'hatua za delivery Tanzania',
     'kufuatilia mzigo Tanzania',
   ],
-});
+})); }
 
 export default function SwahiliJinsiInavyofanyaKaziPage() {
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -42,15 +45,9 @@ export default function SwahiliJinsiInavyofanyaKaziPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-16">
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">
-            HATUA 5 RAHISI
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-            Jinsi LUMO Track Inavyofanya Kazi
-          </h1>
-          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">
-            Njia rahisi na ya kisasa ya kuratibu delivery za biashara yako nchini Tanzania.
-          </p>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">{' '}<T k="public.legacy_5_simple_steps" />{' '}</span>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">{' '}<T k="public.legacy_how_lumo_track_works" />{' '}</h1>
+          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">{' '}<T k="public.legacy_a_simple_modern_way_to_coordinate_your_business_deliveries_in_tanzania" />{' '}</p>
         </div>
 
         <div className="space-y-4 max-w-3xl mx-auto">
@@ -60,8 +57,8 @@ export default function SwahiliJinsiInavyofanyaKaziPage() {
                 {s.num}
               </div>
               <div>
-                <h2 className="font-bold text-white text-base">{s.title}</h2>
-                <p className="text-xs text-[#A0B8D0]">{s.desc}</p>
+                <h2 className="font-bold text-white text-base"><TLabel value={s.title} /></h2>
+                <p className="text-xs text-[#A0B8D0]"><TLabel value={s.desc} /></p>
               </div>
             </div>
           ))}
@@ -72,7 +69,7 @@ export default function SwahiliJinsiInavyofanyaKaziPage() {
             href="/register"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] text-white font-extrabold text-sm shadow-lg shadow-orange-500/20"
           >
-            <span>Anza Kutumia Sasa</span>
+            <span><T k="public.legacy_get_started_now" /></span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

@@ -1,5 +1,7 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Star, CheckCircle, Package, Truck, Store, AlertCircle, Loader2, MessageSquare } from 'lucide-react';
@@ -32,6 +34,8 @@ const RATING_LABELS: Record<number, { title: string; subtitle: string; color: st
 };
 
 export default function CustomerRatingPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const params = useParams();
   const token = params?.token as string;
 
@@ -62,7 +66,7 @@ export default function CustomerRatingPage() {
           setSubmitted(true);
         }
       } catch (err: any) {
-        setError(err.message || 'Unable to load delivery details for rating.');
+        setError(err.message || t("public.unable_to_load_delivery_details_for_rating"));
       } finally {
         setLoading(false);
       }
@@ -74,7 +78,7 @@ export default function CustomerRatingPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedRating < 1 || selectedRating > 5) {
-      setSubmitError('Please select a star rating between 1 and 5 stars.');
+      setSubmitError(t('public.rating_required'));
       return;
     }
 
@@ -93,7 +97,7 @@ export default function CustomerRatingPage() {
 
       setSubmitted(true);
     } catch (err: any) {
-      setSubmitError(err.message || 'Failed to submit rating. Please try again.');
+      setSubmitError(err.message || t("public.failed_to_submit_rating_please_try_again"));
     } finally {
       setSubmitting(false);
     }
@@ -114,22 +118,16 @@ export default function CustomerRatingPage() {
         {/* Header Branding */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-semibold uppercase tracking-wider mb-4">
-            <Store className="w-3.5 h-3.5" />
-            LUMO Tracking Service Quality
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-            Delivery Experience
-          </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Your feedback helps us continuously improve delivery standards.
-          </p>
+            <Store className="w-3.5 h-3.5" />{' '}<T k="public.lumo_tracking_service_quality" />{' '}</div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">{' '}<T k="public.delivery_experience" />{' '}</h1>
+          <p className="text-sm text-slate-400 mt-1">{' '}<T k="public.your_feedback_helps_us_continuously_improve_delivery_standards" />{' '}</p>
         </div>
 
         {/* Loading State */}
         {loading && (
           <div className="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-8 text-center backdrop-blur-xl shadow-2xl">
             <Loader2 className="w-8 h-8 text-orange-500 animate-spin mx-auto mb-3" />
-            <p className="text-sm text-slate-300">Retrieving order details...</p>
+            <p className="text-sm text-slate-300"><T k="public.retrieving_order_details" /></p>
           </div>
         )}
 
@@ -137,7 +135,7 @@ export default function CustomerRatingPage() {
         {!loading && error && (
           <div className="bg-rose-950/40 border border-rose-800/50 rounded-2xl p-6 text-center backdrop-blur-xl shadow-2xl">
             <AlertCircle className="w-10 h-10 text-rose-500 mx-auto mb-3" />
-            <h2 className="text-lg font-bold text-rose-200">Unable to Rate Order</h2>
+            <h2 className="text-lg font-bold text-rose-200"><T k="public.unable_to_rate_order" /></h2>
             <p className="text-sm text-rose-300/80 mt-1">{error}</p>
           </div>
         )}
@@ -163,30 +161,27 @@ export default function CustomerRatingPage() {
                   <div>
                     <h3 className="font-bold text-white text-base">{info.merchant_name}</h3>
                     <p className="text-xs text-slate-400 flex items-center gap-1">
-                      <Package className="w-3 h-3 text-orange-400" />
-                      Order {info.order_number}
+                      <Package className="w-3 h-3 text-orange-400" />{' '}<T k="common.order" />{' '}{info.order_number}
                     </p>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    Delivered
-                  </span>
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">{' '}<T k="common.delivered" />{' '}</span>
                 </div>
               </div>
 
               {/* Package & Driver Info */}
               <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-800/80 text-xs">
                 <div className="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
-                  <span className="text-slate-400 block text-[11px] mb-0.5">Item</span>
+                  <span className="text-slate-400 block text-[11px] mb-0.5"><T k="public.item" /></span>
                   <span className="font-medium text-slate-200 truncate block">{info.product_name}</span>
                 </div>
                 <div className="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
-                  <span className="text-slate-400 block text-[11px] mb-0.5">Driver</span>
+                  <span className="text-slate-400 block text-[11px] mb-0.5"><T k="common.driver" /></span>
                   <span className="font-medium text-slate-200 flex items-center gap-1 truncate">
                     <Truck className="w-3 h-3 text-amber-400 shrink-0" />
-                    {info.driver_name || 'Assigned Driver'}
+                    {info.driver_name || t("public.assigned_driver")}
                   </span>
                 </div>
               </div>
@@ -199,18 +194,18 @@ export default function CustomerRatingPage() {
                   <CheckCircle className="w-8 h-8" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-white">Thank You for Your Feedback!</h2>
+                  <h2 className="text-xl font-bold text-white"><T k="public.thank_you_for_your_feedback" /></h2>
                   <p className="text-sm text-slate-300 mt-1 max-w-sm mx-auto">
                     {info.is_already_rated
-                      ? 'You have already rated this delivery experience.'
-                      : 'Your rating has been recorded and shared with the merchant and delivery driver.'}
+                      ? t("public.you_have_already_rated_this_delivery_experience")
+                      : t("public.your_rating_has_been_recorded_and_shared_with_the_merchant_and_delivery_driver")}
                   </p>
                 </div>
 
                 {/* Display submitted rating summary */}
                 <div className="bg-slate-900/70 border border-slate-700/60 rounded-xl p-4 max-w-sm mx-auto text-left">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-slate-400">Your Rating</span>
+                    <span className="text-xs text-slate-400"><T k="public.your_rating" /></span>
                     <div className="flex items-center gap-1 text-amber-400">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star
@@ -224,7 +219,7 @@ export default function CustomerRatingPage() {
                   </div>
                   {ratingDetails && (
                     <div className="text-xs font-semibold text-orange-400">
-                      {ratingDetails.title}
+                      {uiLabel(ratingDetails.title)}
                     </div>
                   )}
                   {comment && (
@@ -235,20 +230,15 @@ export default function CustomerRatingPage() {
                   )}
                 </div>
 
-                <p className="text-xs text-slate-500 pt-2">
-                  Powered by <span className="text-orange-400 font-semibold">LUMO Tracking</span>
+                <p className="text-xs text-slate-500 pt-2">{' '}<T k="public.powered_by" />{' '}<span className="text-orange-400 font-semibold">LUMO Tracking</span>
                 </p>
               </div>
             ) : (
               /* Interactive Rating Form */
               <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
                 <div className="text-center">
-                  <h2 className="text-lg font-bold text-white">
-                    How was your delivery experience?
-                  </h2>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Select a star rating from 1 (Very Poor) to 5 (Excellent)
-                  </p>
+                  <h2 className="text-lg font-bold text-white">{' '}<T k="public.how_was_your_delivery_experience" />{' '}</h2>
+                  <p className="text-xs text-slate-400 mt-1">{' '}<T k="public.select_a_star_rating_from_1_very_poor_to_5_excellent" />{' '}</p>
                 </div>
 
                 {/* Star Selector */}
@@ -267,7 +257,7 @@ export default function CustomerRatingPage() {
                             ? 'text-amber-400 drop-shadow-[0_0_12px_rgba(251,191,36,0.5)]'
                             : 'text-slate-600 hover:text-slate-400'
                         }`}
-                        aria-label={`Rate ${star} star`}
+                        aria-label={t("interactions.rate_value0_star", { value0: (star) ?? '' })}
                       >
                         <Star className={`w-8 h-8 sm:w-10 sm:h-10 ${isActive ? 'fill-amber-400' : ''}`} />
                       </button>
@@ -279,29 +269,26 @@ export default function CustomerRatingPage() {
                 {ratingDetails ? (
                   <div className={`p-3.5 rounded-xl border text-center transition-all ${ratingDetails.bg}`}>
                     <div className={`text-sm font-bold ${ratingDetails.color}`}>
-                      {ratingDetails.title}
+                      {uiLabel(ratingDetails.title)}
                     </div>
                     <div className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
-                      {ratingDetails.subtitle}
+                      {uiLabel(ratingDetails.subtitle)}
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center text-xs text-slate-500 italic h-10 flex items-center justify-center">
-                    Tap a star above to set your rating
-                  </div>
+                  <div className="text-center text-xs text-slate-500 italic h-10 flex items-center justify-center">{' '}<T k="public.tap_a_star_above_to_set_your_rating" />{' '}</div>
                 )}
 
                 {/* Optional Comment Input */}
                 <div className="space-y-1.5">
-                  <label htmlFor="comment" className="block text-xs font-semibold text-slate-300">
-                    💬 Tell us more about your experience <span className="text-slate-500 font-normal">(Optional)</span>
+                  <label htmlFor="comment" className="block text-xs font-semibold text-slate-300">{' '}<T k="public.tell_us_more_about_your_experience" />{' '}<span className="text-slate-500 font-normal"><T k="public.optional" /></span>
                   </label>
                   <textarea
                     id="comment"
                     rows={3}
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    placeholder="E.g., Delivery was fast, driver was friendly and careful with the package."
+                    placeholder={t("public.e_g_delivery_was_fast_driver_was_friendly_and_careful_with_the_package")}
                     className="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
                   />
                 </div>
@@ -322,9 +309,7 @@ export default function CustomerRatingPage() {
                 >
                   {submitting ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Submitting Rating...
-                    </>
+                      <Loader2 className="w-4 h-4 animate-spin" />{' '}<T k="public.submitting_rating" />{' '}</>
                   ) : (
                     'Submit Rating'
                   )}
@@ -337,8 +322,7 @@ export default function CustomerRatingPage() {
 
       {/* Footer */}
       <footer className="relative z-10 text-center text-xs text-slate-500 py-4">
-        &copy; {new Date().getFullYear()} LUMO Tracking. All rights reserved.
-      </footer>
+        &copy; {new Date().getFullYear()}{' '}<T k="public.lumo_tracking_all_rights_reserved" />{' '}</footer>
     </div>
   );
 }

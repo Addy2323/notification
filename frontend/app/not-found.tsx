@@ -1,12 +1,15 @@
+import { localizedMetadata } from '@/lib/server-language';
+
+import { T } from '@/components/LanguageProvider';
 import Link from 'next/link';
 import { PackageX, ArrowLeft, Search, Home, HelpCircle, PhoneCall } from 'lucide-react';
 import { constructMetadata } from '@/lib/seo';
 
-export const metadata = constructMetadata({
+export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'Page Not Found | LUMO Track',
   description: 'The requested page or delivery tracking link could not be found on LUMO Track.',
   noIndex: true,
-});
+})); }
 
 export default function NotFound() {
   return (
@@ -21,13 +24,9 @@ export default function NotFound() {
         </div>
 
         <div className="space-y-2">
-          <span className="text-[10px] font-bold tracking-widest text-amber-400 uppercase font-mono bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
-            Error 404
-          </span>
-          <h1 className="text-2xl font-black text-white tracking-tight">Page Not Found</h1>
-          <p className="text-xs text-slate-400 leading-relaxed">
-            The delivery tracking page, feature route, or resource you requested could not be found or may have expired.
-          </p>
+          <span className="text-[10px] font-bold tracking-widest text-amber-400 uppercase font-mono bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">{' '}<T k="public.error_404" />{' '}</span>
+          <h1 className="text-2xl font-black text-white tracking-tight"><T k="public.page_not_found" /></h1>
+          <p className="text-xs text-slate-400 leading-relaxed">{' '}<T k="public.the_delivery_tracking_page_feature_route_or_resource_you_requested_could_not_be_found" />{' '}</p>
         </div>
 
         {/* Quick Navigation Links */}
@@ -37,7 +36,7 @@ export default function NotFound() {
             className="flex items-center gap-2 p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-amber-500/40 hover:bg-slate-850 text-slate-300 hover:text-white transition-all group"
           >
             <Home className="w-4 h-4 text-amber-400" />
-            <span>Homepage</span>
+            <span><T k="public.homepage" /></span>
           </Link>
 
           <Link
@@ -45,7 +44,7 @@ export default function NotFound() {
             className="flex items-center gap-2 p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-amber-500/40 hover:bg-slate-850 text-slate-300 hover:text-white transition-all group"
           >
             <Search className="w-4 h-4 text-amber-400" />
-            <span>Tracking Info</span>
+            <span><T k="public.tracking_info" /></span>
           </Link>
 
           <Link
@@ -53,7 +52,7 @@ export default function NotFound() {
             className="flex items-center gap-2 p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-amber-500/40 hover:bg-slate-850 text-slate-300 hover:text-white transition-all group"
           >
             <HelpCircle className="w-4 h-4 text-amber-400" />
-            <span>How It Works</span>
+            <span><T k="public.how_it_works" /></span>
           </Link>
 
           <Link
@@ -61,7 +60,7 @@ export default function NotFound() {
             className="flex items-center gap-2 p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-amber-500/40 hover:bg-slate-850 text-slate-300 hover:text-white transition-all group"
           >
             <PhoneCall className="w-4 h-4 text-amber-400" />
-            <span>Support</span>
+            <span><T k="public.support" /></span>
           </Link>
         </div>
 
@@ -70,8 +69,7 @@ export default function NotFound() {
             href="/"
             className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-amber-400 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Return to LUMO Track Home
-          </Link>
+            <ArrowLeft className="w-4 h-4" />{' '}<T k="public.return_to_lumo_track_home" />{' '}</Link>
           <span className="text-[10px] text-slate-600 font-mono">LUMO v2.5</span>
         </div>
       </div>

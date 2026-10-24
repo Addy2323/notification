@@ -1,0 +1,1265 @@
+{
+  "entries": [
+    {
+      "file": "reportService.ts",
+      "start": 4406,
+      "end": 4452,
+      "text": "Financial & Delivery Operations Audit System",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 4584,
+      "end": 4621,
+      "text": "Report: {value0} AUDIT",
+      "expressions": [
+        "options.reportType"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 4732,
+      "end": 4754,
+      "text": "Generated: {value0}",
+      "expressions": [
+        "nowStr"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 4870,
+      "end": 4896,
+      "text": "Status: GENERATED REPORT",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 5204,
+      "end": 5225,
+      "text": "OPERATIONAL SUMMARY",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 5537,
+      "end": 5551,
+      "text": "TRANSACTIONS",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 5651,
+      "end": 5665,
+      "text": "Total Count:",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 5723,
+      "end": 5741,
+      "text": "{value0}",
+      "expressions": [
+        "orders.length"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 5829,
+      "end": 5846,
+      "text": "Volume / Sales:",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 5904,
+      "end": 5940,
+      "text": "TZS {value0}",
+      "expressions": [
+        "totalSales.toLocaleString()"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 6028,
+      "end": 6046,
+      "text": "Delivered Sales:",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 6125,
+      "end": 6166,
+      "text": "+TZS {value0}",
+      "expressions": [
+        "deliveredSales.toLocaleString()"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 6275,
+      "end": 6292,
+      "text": "Pending Volume:",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 6371,
+      "end": 6409,
+      "text": "TZS {value0}",
+      "expressions": [
+        "pendingSales.toLocaleString()"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 6642,
+      "end": 6651,
+      "text": "FINANCE",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 6754,
+      "end": 6770,
+      "text": "Sales Revenue:",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 6850,
+      "end": 6887,
+      "text": "+TZS {value0}",
+      "expressions": [
+        "totalSales.toLocaleString()"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 6996,
+      "end": 7011,
+      "text": "Product Cost:",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 7091,
+      "end": 7127,
+      "text": "-TZS {value0}",
+      "expressions": [
+        "totalCost.toLocaleString()"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 7236,
+      "end": 7251,
+      "text": "Gross Profit:",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 7331,
+      "end": 7368,
+      "text": "TZS {value0}",
+      "expressions": [
+        "grossProfit.toLocaleString()"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 7477,
+      "end": 7493,
+      "text": "Automated SMS:",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 7573,
+      "end": 7601,
+      "text": "{value0} Sent",
+      "expressions": [
+        "notificationsCount"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 8132,
+      "end": 8160,
+      "text": "Gross Profit After Refunds",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 8262,
+      "end": 8337,
+      "text": "{value0} {value1}",
+      "expressions": [
+        "isPositive ? '+TZS' : '-TZS'",
+        "Math.abs(grossProfit).toLocaleString()"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 8511,
+      "end": 8525,
+      "text": "Not recorded",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 8893,
+      "end": 8962,
+      "text": "Period: {value0} - {value1}",
+      "expressions": [
+        "start.toLocaleDateString()",
+        "end.toLocaleDateString()"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 9019,
+      "end": 9092,
+      "text": "Refunds: TZS {value0} | Orders missing buying cost: {value1}",
+      "expressions": [
+        "money(refunds)",
+        "missing"
+      ]
+    },
+    {
+      "file": "reportService.ts",
+      "start": 9149,
+      "end": 9362,
+      "text": "Figures include all delivery stages for orders created in this period, using their current refund state. Profit excludes orders without buying costs. Costs are recovered only when refunded goods return to stock.",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 10817,
+      "end": 10846,
+      "text": "No records for this period.",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 10912,
+      "end": 10932,
+      "text": "SALES LEDGER (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 10935,
+      "end": 10949,
+      "text": "Order / Date",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 10951,
+      "end": 10971,
+      "text": "Customer / Product",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 10973,
+      "end": 10984,
+      "text": "Net sales",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 10986,
+      "end": 11003,
+      "text": "Net buying cost",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 11005,
+      "end": 11019,
+      "text": "Gross profit",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 11021,
+      "end": 11029,
+      "text": "Status",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 11411,
+      "end": 11441,
+      "text": "PRODUCT PRICES AT SALE (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 11444,
+      "end": 11461,
+      "text": "Order / Product",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 11463,
+      "end": 11468,
+      "text": "Qty",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 11470,
+      "end": 11485,
+      "text": "Buying / unit",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 11487,
+      "end": 11503,
+      "text": "Selling / unit",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 11505,
+      "end": 11515,
+      "text": "Discount",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 11517,
+      "end": 11530,
+      "text": "Sale profit",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 12271,
+      "end": 12290,
+      "text": "Returned to stock",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 12293,
+      "end": 12308,
+      "text": "Cost retained",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 12336,
+      "end": 12358,
+      "text": "REFUND RECORDS (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 12361,
+      "end": 12368,
+      "text": "Order",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 12370,
+      "end": 12383,
+      "text": "Refund date",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 12385,
+      "end": 12393,
+      "text": "Amount",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 12395,
+      "end": 12403,
+      "text": "Reason",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 12405,
+      "end": 12412,
+      "text": "Goods",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 13990,
+      "end": 13999,
+      "text": "Summary",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 14049,
+      "end": 14057,
+      "text": "Metric",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 14104,
+      "end": 14111,
+      "text": "Value",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 14948,
+      "end": 14972,
+      "text": "Merchant Business Name",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 15063,
+      "end": 15076,
+      "text": "Report Type",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 15143,
+      "end": 15155,
+      "text": "Start Date",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 15230,
+      "end": 15240,
+      "text": "End Date",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 15313,
+      "end": 15327,
+      "text": "Total Orders",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 15389,
+      "end": 15416,
+      "text": "Total Sales Revenue (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 15475,
+      "end": 15501,
+      "text": "Total Product Cost (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 15559,
+      "end": 15579,
+      "text": "Gross Profit (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 15639,
+      "end": 15654,
+      "text": "Refunds (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 15780,
+      "end": 15808,
+      "text": "Orders Missing Buying Cost",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 15929,
+      "end": 15950,
+      "text": "Total Products Sold",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16011,
+      "end": 16029,
+      "text": "Delivered Orders",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16092,
+      "end": 16112,
+      "text": "Pending Deliveries",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16173,
+      "end": 16198,
+      "text": "Failed/Cancelled Orders",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16258,
+      "end": 16278,
+      "text": "Notifications Sent",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16383,
+      "end": 16397,
+      "text": "Sales Ledger",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16445,
+      "end": 16455,
+      "text": "Order ID",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16507,
+      "end": 16519,
+      "text": "Order Date",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16564,
+      "end": 16579,
+      "text": "Customer Name",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16632,
+      "end": 16648,
+      "text": "Customer Phone",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16702,
+      "end": 16716,
+      "text": "Product Name",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16768,
+      "end": 16773,
+      "text": "SKU",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16817,
+      "end": 16827,
+      "text": "Category",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16876,
+      "end": 16886,
+      "text": "Quantity",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16935,
+      "end": 16950,
+      "text": "Selling Price",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 16996,
+      "end": 17007,
+      "text": "Unit Cost",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 17052,
+      "end": 17067,
+      "text": "Sales Revenue",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 17115,
+      "end": 17127,
+      "text": "Total Cost",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 17177,
+      "end": 17191,
+      "text": "Gross Profit",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 17238,
+      "end": 17251,
+      "text": "Driver Name",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 17302,
+      "end": 17310,
+      "text": "Status",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 19688,
+      "end": 19699,
+      "text": "Customers",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 19746,
+      "end": 19761,
+      "text": "Customer Name",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 19806,
+      "end": 19820,
+      "text": "Phone Number",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 19866,
+      "end": 19873,
+      "text": "Email",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 19919,
+      "end": 19937,
+      "text": "Delivery Address",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 19985,
+      "end": 19999,
+      "text": "Total Orders",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 20051,
+      "end": 20065,
+      "text": "Created Date",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 20468,
+      "end": 20477,
+      "text": "Drivers",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 20526,
+      "end": 20539,
+      "text": "Driver Name",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 20584,
+      "end": 20598,
+      "text": "Phone Number",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 20644,
+      "end": 20658,
+      "text": "Vehicle Info",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 20706,
+      "end": 20714,
+      "text": "Status",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 20761,
+      "end": 20779,
+      "text": "Total Deliveries",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 21124,
+      "end": 21139,
+      "text": "Notifications",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 21187,
+      "end": 21197,
+      "text": "Order ID",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 21249,
+      "end": 21265,
+      "text": "Recipient Type",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 21310,
+      "end": 21324,
+      "text": "Phone Number",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 21370,
+      "end": 21384,
+      "text": "Message Text",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 21429,
+      "end": 21437,
+      "text": "Status",
+      "expressions": []
+    },
+    {
+      "file": "reportService.ts",
+      "start": 21484,
+      "end": 21495,
+      "text": "Sent Time",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 5056,
+      "end": 5071,
+      "text": "LUMO TRACKING",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 5154,
+      "end": 5189,
+      "text": "ADMINISTRATION OPERATIONAL REPORT",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 5256,
+      "end": 5287,
+      "text": "Report Period: {value0}",
+      "expressions": [
+        "data.period"
+      ]
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 5332,
+      "end": 5378,
+      "text": "Generated At: {value0}",
+      "expressions": [
+        "new Date().toLocaleString()"
+      ]
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 5423,
+      "end": 5456,
+      "text": "Generated By: {value0}",
+      "expressions": [
+        "data.adminName"
+      ]
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 5654,
+      "end": 5681,
+      "text": "PLATFORM SUMMARY snapshot",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 5939,
+      "end": 5956,
+      "text": "TOTAL MERCHANTS",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 6247,
+      "end": 6261,
+      "text": "TOTAL ORDERS",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 6551,
+      "end": 6570,
+      "text": "TOTAL SALES (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 6865,
+      "end": 6885,
+      "text": "GROSS PROFIT (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 7109,
+      "end": 7136,
+      "text": "RECENT OPERATIONAL ORDERS",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 7300,
+      "end": 7309,
+      "text": "ORDER #",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 7341,
+      "end": 7351,
+      "text": "MERCHANT",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 7384,
+      "end": 7394,
+      "text": "CUSTOMER",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 7427,
+      "end": 7436,
+      "text": "PRODUCT",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 7469,
+      "end": 7477,
+      "text": "STATUS",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 7510,
+      "end": 7525,
+      "text": "REVENUE (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 8317,
+      "end": 8369,
+      "text": "LUMO Tracking — Confidential Administrative Report",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 8753,
+      "end": 8771,
+      "text": "Platform Summary",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 8815,
+      "end": 8823,
+      "text": "Metric",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 8867,
+      "end": 8874,
+      "text": "Value",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 8948,
+      "end": 8963,
+      "text": "Report Period",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 9001,
+      "end": 9018,
+      "text": "Total Merchants",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 9072,
+      "end": 9086,
+      "text": "Total Orders",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 9137,
+      "end": 9155,
+      "text": "Delivered Orders",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 9210,
+      "end": 9237,
+      "text": "Failed / Cancelled Orders",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 9289,
+      "end": 9308,
+      "text": "Total Sales (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 9358,
+      "end": 9384,
+      "text": "Total Product Cost (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 9433,
+      "end": 9453,
+      "text": "Gross Profit (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 9504,
+      "end": 9522,
+      "text": "Total Deliveries",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 9577,
+      "end": 9592,
+      "text": "Total Drivers",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 9644,
+      "end": 9669,
+      "text": "Total SMS Notifications",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 9994,
+      "end": 10005,
+      "text": "Merchants",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10051,
+      "end": 10055,
+      "text": "ID",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10095,
+      "end": 10110,
+      "text": "Business Name",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10161,
+      "end": 10168,
+      "text": "Phone",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10220,
+      "end": 10227,
+      "text": "Email",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10270,
+      "end": 10278,
+      "text": "Status",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10322,
+      "end": 10335,
+      "text": "Joined Date",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10683,
+      "end": 10691,
+      "text": "Orders",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10734,
+      "end": 10748,
+      "text": "Order Number",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10798,
+      "end": 10808,
+      "text": "Merchant",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10854,
+      "end": 10864,
+      "text": "Customer",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10915,
+      "end": 10922,
+      "text": "Phone",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 10974,
+      "end": 10983,
+      "text": "Product",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 11033,
+      "end": 11048,
+      "text": "Revenue (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 11093,
+      "end": 11105,
+      "text": "Cost (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 11147,
+      "end": 11167,
+      "text": "Gross Profit (TZS)",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 11211,
+      "end": 11219,
+      "text": "Status",
+      "expressions": []
+    },
+    {
+      "file": "adminReportService.ts",
+      "start": 11263,
+      "end": 11269,
+      "text": "Date",
+      "expressions": []
+    }
+  ],
+  "strings": [
+    "Financial & Delivery Operations Audit System",
+    "Report: {value0} AUDIT",
+    "Generated: {value0}",
+    "Status: GENERATED REPORT",
+    "OPERATIONAL SUMMARY",
+    "TRANSACTIONS",
+    "Total Count:",
+    "{value0}",
+    "Volume / Sales:",
+    "TZS {value0}",
+    "Delivered Sales:",
+    "+TZS {value0}",
+    "Pending Volume:",
+    "FINANCE",
+    "Sales Revenue:",
+    "Product Cost:",
+    "-TZS {value0}",
+    "Gross Profit:",
+    "Automated SMS:",
+    "{value0} Sent",
+    "Gross Profit After Refunds",
+    "{value0} {value1}",
+    "Not recorded",
+    "Period: {value0} - {value1}",
+    "Refunds: TZS {value0} | Orders missing buying cost: {value1}",
+    "Figures include all delivery stages for orders created in this period, using their current refund state. Profit excludes orders without buying costs. Costs are recovered only when refunded goods return to stock.",
+    "No records for this period.",
+    "SALES LEDGER (TZS)",
+    "Order / Date",
+    "Customer / Product",
+    "Net sales",
+    "Net buying cost",
+    "Gross profit",
+    "Status",
+    "PRODUCT PRICES AT SALE (TZS)",
+    "Order / Product",
+    "Qty",
+    "Buying / unit",
+    "Selling / unit",
+    "Discount",
+    "Sale profit",
+    "Returned to stock",
+    "Cost retained",
+    "REFUND RECORDS (TZS)",
+    "Order",
+    "Refund date",
+    "Amount",
+    "Reason",
+    "Goods",
+    "Summary",
+    "Metric",
+    "Value",
+    "Merchant Business Name",
+    "Report Type",
+    "Start Date",
+    "End Date",
+    "Total Orders",
+    "Total Sales Revenue (TZS)",
+    "Total Product Cost (TZS)",
+    "Gross Profit (TZS)",
+    "Refunds (TZS)",
+    "Orders Missing Buying Cost",
+    "Total Products Sold",
+    "Delivered Orders",
+    "Pending Deliveries",
+    "Failed/Cancelled Orders",
+    "Notifications Sent",
+    "Sales Ledger",
+    "Order ID",
+    "Order Date",
+    "Customer Name",
+    "Customer Phone",
+    "Product Name",
+    "SKU",
+    "Category",
+    "Quantity",
+    "Selling Price",
+    "Unit Cost",
+    "Sales Revenue",
+    "Total Cost",
+    "Gross Profit",
+    "Driver Name",
+    "Customers",
+    "Phone Number",
+    "Email",
+    "Delivery Address",
+    "Created Date",
+    "Drivers",
+    "Vehicle Info",
+    "Total Deliveries",
+    "Notifications",
+    "Recipient Type",
+    "Message Text",
+    "Sent Time",
+    "LUMO TRACKING",
+    "ADMINISTRATION OPERATIONAL REPORT",
+    "Report Period: {value0}",
+    "Generated At: {value0}",
+    "Generated By: {value0}",
+    "PLATFORM SUMMARY snapshot",
+    "TOTAL MERCHANTS",
+    "TOTAL ORDERS",
+    "TOTAL SALES (TZS)",
+    "GROSS PROFIT (TZS)",
+    "RECENT OPERATIONAL ORDERS",
+    "ORDER #",
+    "MERCHANT",
+    "CUSTOMER",
+    "PRODUCT",
+    "STATUS",
+    "REVENUE (TZS)",
+    "LUMO Tracking — Confidential Administrative Report",
+    "Platform Summary",
+    "Report Period",
+    "Total Merchants",
+    "Failed / Cancelled Orders",
+    "Total Sales (TZS)",
+    "Total Drivers",
+    "Total SMS Notifications",
+    "Merchants",
+    "ID",
+    "Business Name",
+    "Phone",
+    "Joined Date",
+    "Orders",
+    "Order Number",
+    "Merchant",
+    "Customer",
+    "Product",
+    "Revenue (TZS)",
+    "Cost (TZS)",
+    "Date"
+  ]
+}

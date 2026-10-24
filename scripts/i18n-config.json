@@ -1,0 +1,486 @@
+{
+  "entries": [
+    {
+      "file": "app/admin/achievements/page.tsx",
+      "text": "Awarded when merchant fulfills 10 orders on LUMO"
+    },
+    {
+      "file": "app/admin/achievements/page.tsx",
+      "text": "Awarded when merchant reaches 100 successful dispatches"
+    },
+    {
+      "file": "app/admin/achievements/page.tsx",
+      "text": "Awarded to elite high-volume merchants"
+    },
+    {
+      "file": "app/admin/achievements/page.tsx",
+      "text": "Awarded for consecutive daily order processing"
+    },
+    {
+      "file": "app/admin/achievements/page.tsx",
+      "text": "Awarded for generating over 10M TZS gross revenue"
+    },
+    {
+      "file": "app/delivery-tracking/page.tsx",
+      "text": "Merchant registers the delivery order in the LUMO dashboard with customer phone number, delivery address, and product details."
+    },
+    {
+      "file": "app/delivery-tracking/page.tsx",
+      "text": "Driver starts the delivery. The customer receives an automated SMS/WhatsApp notification with a secure web tracking link."
+    },
+    {
+      "file": "app/delivery-tracking/page.tsx",
+      "text": "Driver approaches the customer location and updates status to Arrived. Customer gets a reminder to prepare for handover."
+    },
+    {
+      "file": "app/delivery-tracking/page.tsx",
+      "text": "Package is handed over using 4-digit PIN verification code. Status updates to Delivered in real-time."
+    },
+    {
+      "file": "app/faq/page.tsx",
+      "text": "Do my customers need to download an application to track their delivery?"
+    },
+    {
+      "file": "app/faq/page.tsx",
+      "text": "No! LUMO Track is 100% web-based. Customers receive an SMS or WhatsApp message containing a secure link. Tapping the link opens the live delivery tracking portal instantly in their phone browser without installing any app."
+    },
+    {
+      "file": "app/faq/page.tsx",
+      "text": "Do my drivers need to install an app to update delivery status?"
+    },
+    {
+      "file": "app/faq/page.tsx",
+      "text": "No. Drivers receive a lightweight action web link on their mobile phone. They can tap \"Start Delivery\", \"Arrived\", or enter the customer PIN code right from their phone browser."
+    },
+    {
+      "file": "app/faq/page.tsx",
+      "text": "How do customer SMS notifications work in Tanzania?"
+    },
+    {
+      "file": "app/faq/page.tsx",
+      "text": "LUMO Track integrates with local telecom networks in Tanzania (Vodacom, Tigo, Airtel, Halotel). Whenever an order is created or status changes, an automated SMS is dispatched to the customer."
+    },
+    {
+      "file": "app/faq/page.tsx",
+      "text": "Can I display my business logo and shop branding on tracking pages?"
+    },
+    {
+      "file": "app/faq/page.tsx",
+      "text": "Yes! Every merchant profile includes custom branding settings. Your shop name, logo, phone number, and brand color will appear prominently on your customer tracking portal."
+    },
+    {
+      "file": "app/faq/page.tsx",
+      "text": "How does 4-digit PIN delivery verification work?"
+    },
+    {
+      "file": "app/faq/page.tsx",
+      "text": "When an order is created, the customer receives a unique 4-digit PIN via SMS. Upon arrival, the driver asks the customer for the PIN and enters it into the portal to confirm handover, preventing disputes."
+    },
+    {
+      "file": "app/how-it-works/page.tsx",
+      "text": "Merchant registers order in the LUMO dashboard with customer phone number, delivery destination address, and driver assignment."
+    },
+    {
+      "file": "app/how-it-works/page.tsx",
+      "text": "System dispatches automated SMS/WhatsApp message containing the customer’s unique, secure web tracking link."
+    },
+    {
+      "file": "app/how-it-works/page.tsx",
+      "text": "Driver opens browser action link on their phone and taps \"Start Delivery\", updating order status to On the Way."
+    },
+    {
+      "file": "app/how-it-works/page.tsx",
+      "text": "Customer opens their web portal link to view live delivery timeline, driver name, and merchant contact options without an app."
+    },
+    {
+      "file": "app/how-it-works/page.tsx",
+      "text": "Driver verifies handover using 4-digit PIN code. Status changes to Delivered, sending confirmation receipt to merchant and buyer."
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Ideal for small social sellers and new merchants starting delivery notifications."
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Up to 50 Deliveries/month"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "App-Free Customer Tracking Link"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Mobile Driver Action Portal"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Basic SMS Alerts"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Merchant Dashboard Access"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "For growing Tanzanian shops requiring WhatsApp alerts and custom branding."
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Unlimited Monthly Deliveries"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Automated SMS & WhatsApp Alerts"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Custom Merchant Logo & Colors"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "4-Digit PIN Handover Verification"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Driver Call & Chat Connectivity"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Priority Merchant Support"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Start Growth Plan"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "For courier companies and large delivery fleets managing multiple drivers."
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Dedicated SMS Gateway"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Custom WhatsApp Business Bot"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Unlimited Driver Accounts"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Advanced Analytics & Audit Logs"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "24/7 Dedicated Account Manager"
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "text": "Contact Sales"
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "text": "Fast, professional, and perfect delivery!"
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "text": "Good service with minor room for improvement."
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "text": "Satisfactory delivery, but could be better."
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "text": "Unsatisfactory experience or significant delay."
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "text": "Very bad delivery experience or unprofessional."
+    },
+    {
+      "file": "app/sw/jinsi-inavyofanya-kazi/page.tsx",
+      "text": "Ingiza taarifa za oda na namba ya simu ya mteja kwenye Dashboard."
+    },
+    {
+      "file": "app/sw/jinsi-inavyofanya-kazi/page.tsx",
+      "text": "Mteja anapokea SMS au WhatsApp yenye Link ya kufuatilia mzigo wake."
+    },
+    {
+      "file": "app/sw/jinsi-inavyofanya-kazi/page.tsx",
+      "text": "Dereva anabonyeza link kwenye simu yake kuanza safari."
+    },
+    {
+      "file": "app/sw/jinsi-inavyofanya-kazi/page.tsx",
+      "text": "Mteja anaona dereva aliko na muda unaokadiriwa kufika."
+    },
+    {
+      "file": "app/sw/jinsi-inavyofanya-kazi/page.tsx",
+      "text": "Mzigo unakabidhiwa kwa kuweka PIN ya namba 4 ya mteja."
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "text": "The merchant is preparing your order for dispatch."
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "text": "Your order is confirmed and scheduled for pickup."
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "text": "Your driver is en route with your package!"
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "text": "Your delivery is almost here! Please be ready to receive your order."
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "text": "Your order has been successfully delivered. Enjoy!"
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "text": "Please contact merchant support for assistance."
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "DELIVERY TRACKING & NOTIFICATIONS IN TANZANIA"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "AUTOMATED DISPATCH & APP-FREE CONSUMER PORTAL"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Delivery Tracking & Notifications for Tanzanian Businesses"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Keep Customers Informed From Dispatch to Doorstep"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Instant SMS Delivery Updates"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "REAL-TIME DISPATCH UPDATES IN TANZANIA"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "ACCURATE STATUS & DIRECT DRIVER CONNECTIVITY"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "SMS Delivery Notifications & Live Web Tracking"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Zero-Install Delivery Tracking Software"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Instant SMS Alerts"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Direct Driver Call Link"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Instant Web Tracking"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "INTERACTIVE MESSAGING & MERCHANT BRANDING"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Branded WhatsApp Notifications & Tracking"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Direct Customer Delivery Communication"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Verified WhatsApp Alerts"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "One-Click Web Tracking"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "SECURE OTP HANDOVER PROOF"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "FRAUD PREVENTION & DELIVERY VERIFICATION"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "OTP Delivery Verification & Order Handover"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Secure Package Receipt Protocol for Tanzania"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "4-Digit PIN Code"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Instant Receipt SMS"
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "text": "Automated Ledger Sync"
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "text": "Merchant receives customer order"
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "text": "Fleet or driver dispatched"
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "text": "Instant SMS with tracking URL"
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "text": "Customer tracks driver on map"
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "text": "Order fulfilled with OTP confirmation"
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "text": "Live GPS driver positioning rendered smoothly on customer tracking links."
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "text": "Customers track packages instantly inside their mobile web browser."
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "text": "Trigger notifications automatically when order status changes to Dispatched."
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "text": "Verify delivery completion using secure 4-digit driver pin verification."
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "text": "Monitor delivery times, driver speed, and customer satisfaction metrics."
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "text": "Manage multiple retail outlets or restaurant branches from one unified admin dashboard."
+    }
+  ],
+  "strings": [
+    "Awarded when merchant fulfills 10 orders on LUMO",
+    "Awarded when merchant reaches 100 successful dispatches",
+    "Awarded to elite high-volume merchants",
+    "Awarded for consecutive daily order processing",
+    "Awarded for generating over 10M TZS gross revenue",
+    "Merchant registers the delivery order in the LUMO dashboard with customer phone number, delivery address, and product details.",
+    "Driver starts the delivery. The customer receives an automated SMS/WhatsApp notification with a secure web tracking link.",
+    "Driver approaches the customer location and updates status to Arrived. Customer gets a reminder to prepare for handover.",
+    "Package is handed over using 4-digit PIN verification code. Status updates to Delivered in real-time.",
+    "Do my customers need to download an application to track their delivery?",
+    "No! LUMO Track is 100% web-based. Customers receive an SMS or WhatsApp message containing a secure link. Tapping the link opens the live delivery tracking portal instantly in their phone browser without installing any app.",
+    "Do my drivers need to install an app to update delivery status?",
+    "No. Drivers receive a lightweight action web link on their mobile phone. They can tap \"Start Delivery\", \"Arrived\", or enter the customer PIN code right from their phone browser.",
+    "How do customer SMS notifications work in Tanzania?",
+    "LUMO Track integrates with local telecom networks in Tanzania (Vodacom, Tigo, Airtel, Halotel). Whenever an order is created or status changes, an automated SMS is dispatched to the customer.",
+    "Can I display my business logo and shop branding on tracking pages?",
+    "Yes! Every merchant profile includes custom branding settings. Your shop name, logo, phone number, and brand color will appear prominently on your customer tracking portal.",
+    "How does 4-digit PIN delivery verification work?",
+    "When an order is created, the customer receives a unique 4-digit PIN via SMS. Upon arrival, the driver asks the customer for the PIN and enters it into the portal to confirm handover, preventing disputes.",
+    "Merchant registers order in the LUMO dashboard with customer phone number, delivery destination address, and driver assignment.",
+    "System dispatches automated SMS/WhatsApp message containing the customer’s unique, secure web tracking link.",
+    "Driver opens browser action link on their phone and taps \"Start Delivery\", updating order status to On the Way.",
+    "Customer opens their web portal link to view live delivery timeline, driver name, and merchant contact options without an app.",
+    "Driver verifies handover using 4-digit PIN code. Status changes to Delivered, sending confirmation receipt to merchant and buyer.",
+    "Ideal for small social sellers and new merchants starting delivery notifications.",
+    "Up to 50 Deliveries/month",
+    "App-Free Customer Tracking Link",
+    "Mobile Driver Action Portal",
+    "Basic SMS Alerts",
+    "Merchant Dashboard Access",
+    "For growing Tanzanian shops requiring WhatsApp alerts and custom branding.",
+    "Unlimited Monthly Deliveries",
+    "Automated SMS & WhatsApp Alerts",
+    "Custom Merchant Logo & Colors",
+    "4-Digit PIN Handover Verification",
+    "Driver Call & Chat Connectivity",
+    "Priority Merchant Support",
+    "Start Growth Plan",
+    "For courier companies and large delivery fleets managing multiple drivers.",
+    "Dedicated SMS Gateway",
+    "Custom WhatsApp Business Bot",
+    "Unlimited Driver Accounts",
+    "Advanced Analytics & Audit Logs",
+    "24/7 Dedicated Account Manager",
+    "Contact Sales",
+    "Fast, professional, and perfect delivery!",
+    "Good service with minor room for improvement.",
+    "Satisfactory delivery, but could be better.",
+    "Unsatisfactory experience or significant delay.",
+    "Very bad delivery experience or unprofessional.",
+    "Ingiza taarifa za oda na namba ya simu ya mteja kwenye Dashboard.",
+    "Mteja anapokea SMS au WhatsApp yenye Link ya kufuatilia mzigo wake.",
+    "Dereva anabonyeza link kwenye simu yake kuanza safari.",
+    "Mteja anaona dereva aliko na muda unaokadiriwa kufika.",
+    "Mzigo unakabidhiwa kwa kuweka PIN ya namba 4 ya mteja.",
+    "The merchant is preparing your order for dispatch.",
+    "Your order is confirmed and scheduled for pickup.",
+    "Your driver is en route with your package!",
+    "Your delivery is almost here! Please be ready to receive your order.",
+    "Your order has been successfully delivered. Enjoy!",
+    "Please contact merchant support for assistance.",
+    "DELIVERY TRACKING & NOTIFICATIONS IN TANZANIA",
+    "AUTOMATED DISPATCH & APP-FREE CONSUMER PORTAL",
+    "Delivery Tracking & Notifications for Tanzanian Businesses",
+    "Keep Customers Informed From Dispatch to Doorstep",
+    "Instant SMS Delivery Updates",
+    "REAL-TIME DISPATCH UPDATES IN TANZANIA",
+    "ACCURATE STATUS & DIRECT DRIVER CONNECTIVITY",
+    "SMS Delivery Notifications & Live Web Tracking",
+    "Zero-Install Delivery Tracking Software",
+    "Instant SMS Alerts",
+    "Direct Driver Call Link",
+    "Instant Web Tracking",
+    "INTERACTIVE MESSAGING & MERCHANT BRANDING",
+    "Branded WhatsApp Notifications & Tracking",
+    "Direct Customer Delivery Communication",
+    "Verified WhatsApp Alerts",
+    "One-Click Web Tracking",
+    "SECURE OTP HANDOVER PROOF",
+    "FRAUD PREVENTION & DELIVERY VERIFICATION",
+    "OTP Delivery Verification & Order Handover",
+    "Secure Package Receipt Protocol for Tanzania",
+    "4-Digit PIN Code",
+    "Instant Receipt SMS",
+    "Automated Ledger Sync",
+    "Merchant receives customer order",
+    "Fleet or driver dispatched",
+    "Instant SMS with tracking URL",
+    "Customer tracks driver on map",
+    "Order fulfilled with OTP confirmation",
+    "Live GPS driver positioning rendered smoothly on customer tracking links.",
+    "Customers track packages instantly inside their mobile web browser.",
+    "Trigger notifications automatically when order status changes to Dispatched.",
+    "Verify delivery completion using secure 4-digit driver pin verification.",
+    "Monitor delivery times, driver speed, and customer satisfaction metrics.",
+    "Manage multiple retail outlets or restaurant branches from one unified admin dashboard."
+  ]
+}

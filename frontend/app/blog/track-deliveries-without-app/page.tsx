@@ -1,3 +1,6 @@
+import { localizedMetadata } from '@/lib/server-language';
+
+import { T } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { Clock, User, ArrowLeft, ArrowRight } from 'lucide-react';
@@ -5,13 +8,13 @@ import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Sections';
 import { constructMetadata, generateArticleSchema, generateBreadcrumbSchema } from '@/lib/seo';
 
-export const metadata = constructMetadata({
+export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'How to Track Deliveries Without Forcing App Downloads | LUMO Blog',
   description:
     'Learn why zero-install web tracking links outperform mobile applications for last-mile customer communication in Tanzania.',
   canonicalUrl: '/blog/track-deliveries-without-app',
   alternateSwahiliUrl: '/sw',
-});
+})); }
 
 export default function Article4Page() {
   const articleSchema = generateArticleSchema({
@@ -44,20 +47,16 @@ export default function Article4Page() {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-8">
         <Link href="/blog" className="inline-flex items-center gap-2 text-xs font-bold text-[#FF5500] hover:underline">
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Blog Index</span>
+          <span><T k="common.back_to_blog_index" /></span>
         </Link>
 
         <div className="space-y-4">
-          <span className="px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold">
-            MOBILE UX
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight">
-            How to Track Deliveries Without Forcing App Downloads
-          </h1>
+          <span className="px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold">{' '}<T k="public.mobile_ux" />{' '}</span>
+          <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight">{' '}<T k="public.how_to_track_deliveries_without_forcing_app_downloads" />{' '}</h1>
           <div className="flex items-center gap-4 text-xs text-slate-400 border-b border-slate-800 pb-6">
             <span className="flex items-center gap-1">
               <User className="w-3.5 h-3.5 text-[#FF5500]" />
-              <span>LUMO Tech Team</span>
+              <span><T k="public.lumo_tech_team" /></span>
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
@@ -68,25 +67,19 @@ export default function Article4Page() {
         </div>
 
         <article className="prose prose-invert max-w-none text-slate-[#A0B8D0] space-y-6 text-sm sm:text-base leading-relaxed">
-          <p>
-            App fatigue is real. Requiring buyers to download a dedicated mobile application simply to track a single delivery leads to poor user adoption and customer frustration.
-          </p>
+          <p>{' '}<T k="public.app_fatigue_is_real_requiring_buyers_to_download_a_dedicated_mobile_application_simpl" />{' '}</p>
 
-          <h2 className="text-xl font-bold text-white pt-4">The Web Native Advantage</h2>
-          <p>
-            Modern web standards allow rich, responsive tracking portals to load in under a second over mobile networks without downloading MBs of app packages.
-          </p>
+          <h2 className="text-xl font-bold text-white pt-4"><T k="public.the_web_native_advantage" /></h2>
+          <p>{' '}<T k="public.modern_web_standards_allow_rich_responsive_tracking_portals_to_load_in_under_a_second" />{' '}</p>
 
           <div className="p-6 rounded-2xl bg-[#112239] border border-[#1F3654] my-8 space-y-3">
-            <h3 className="font-bold text-white text-base">Provide App-Free Tracking Today</h3>
-            <p className="text-xs text-[#A0B8D0]">
-              Give your customers instant web tracking with LUMO Track.
-            </p>
+            <h3 className="font-bold text-white text-base"><T k="public.provide_app_free_tracking_today" /></h3>
+            <p className="text-xs text-[#A0B8D0]">{' '}<T k="public.give_your_customers_instant_web_tracking_with_lumo_track" />{' '}</p>
             <Link
               href="/register"
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] text-white font-extrabold text-xs shadow-md"
             >
-              <span>Start Free Today</span>
+              <span><T k="public.start_free_today" /></span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

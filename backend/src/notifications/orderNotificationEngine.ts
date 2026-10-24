@@ -1,3 +1,4 @@
+import { Language } from '../localization';
 import { prisma } from '../database/prisma';
 import { MesejiSMSAdapter, normalizePhone } from './adapter';
 
@@ -39,6 +40,28 @@ const DRIVER_TEMPLATES: Record<string, string> = {
   ORDER_CANCELLED:
     'Hello {{driverName}}, {{merchantName}} order #{{orderNumber}} has been cancelled.',
 };
+
+export const SW_CUSTOMER_TEMPLATES: Record<string, string> = {
+  ORDER_CREATED: 'Habari {{customerName}}, asante kwa kununua kutoka {{merchantName}}! Oda {{orderNumber}} imepokelewa na inasubiri. Tutakupa taarifa zaidi.',
+  ORDER_CONFIRMED: 'Habari {{customerName}}, {{merchantName}} amethibitisha oda {{orderNumber}}. Tutakujulisha ikiwa tayari kusafirishwa.',
+  DRIVER_ASSIGNED: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} italetwa na {{driverName}}, {{driverPhone}}. Anwani: {{deliveryAddress}}. Asante kwa kununua kwetu!',
+  OUT_FOR_DELIVERY: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} iko njiani na {{driverName}}. Tafadhali jiandae kuipokea. Asante kwa kununua kwetu!',
+  DRIVER_ARRIVED: 'Mzigo wako unakaribia kufika! Dereva {{driverName}} yuko karibu. Jiandae kupokea oda {{orderNumber}} kutoka {{merchantName}}.',
+  DRIVER_NEARBY: 'Mzigo wako unakaribia kufika! Dereva {{driverName}} yuko karibu. Jiandae kupokea oda {{orderNumber}} kutoka {{merchantName}}.',
+  ORDER_DELIVERED: 'Oda yako {{orderNumber}} imefikishwa. Asante kwa kununua kutoka {{merchantName}}. Tafadhali tathmini huduma: {{ratingUrl}}',
+  ORDER_CANCELLED: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} imeghairiwa. Wasiliana nasi kwa taarifa zaidi.'
+};
+export const SW_DRIVER_TEMPLATES: Record<string, string> = {
+  DRIVER_ASSIGNED: 'Umepangiwa mzigo mpya. Oda: {{orderNumber}}. Mteja: {{customerName}}. Anwani: {{deliveryAddress}}. Fungua: {{driverUrl}}',
+  OUT_FOR_DELIVERY: 'Habari {{driverName}}, thibitisha umeanza safari ya oda {{orderNumber}} kutoka {{merchantName}} kwenda {{deliveryAddress}}.',
+  ORDER_DELIVERED: 'Habari {{driverName}}, usafirishaji wa oda {{orderNumber}} kutoka {{merchantName}} umekamilika. Asante!',
+  ORDER_CANCELLED: 'Habari {{driverName}}, oda {{orderNumber}} kutoka {{merchantName}} imeghairiwa.'
+};
+export function orderMessageTemplate(eventType: string, recipientType: 'CUSTOMER' | 'DRIVER', language: Language) {
+  const english = recipientType === 'CUSTOMER' ? CUSTOMER_TEMPLATES : DRIVER_TEMPLATES;
+  const swahili = recipientType === 'CUSTOMER' ? SW_CUSTOMER_TEMPLATES : SW_DRIVER_TEMPLATES;
+  return (language === 'sw' ? swahili[eventType] : undefined) ?? english[eventType];
+}
 
 interface TemplateVars {
   merchantName: string;
@@ -82,6 +105,7 @@ export async function dispatchOrderNotification(params: {
   recipientType: 'CUSTOMER' | 'DRIVER';
   recipientPhone: string;
   vars: TemplateVars;
+  language?: Language;
 }): Promise<void> {
   const { orderId, eventType, recipientType, recipientPhone, vars } = params;
 
@@ -100,8 +124,7 @@ export async function dispatchOrderNotification(params: {
     }
 
     // Select template
-    const templates = recipientType === 'CUSTOMER' ? CUSTOMER_TEMPLATES : DRIVER_TEMPLATES;
-    const template = templates[eventType];
+    const template = orderMessageTemplate(eventType, recipientType, params.language || 'en');
 
     if (!template) {
       console.log(`[ORDER NOTIFICATION] No template for ${recipientType}/${eventType}`);
@@ -174,9 +197,20 @@ export async function dispatchOrderEvent(params: {
   customerPhone: string;
   driverPhone?: string;
   vars: TemplateVars;
+  language?: Language;
 }): Promise<void> {
   const { orderId, eventType, customerPhone, driverPhone, vars } = params;
 
+  // Use the saved preference of the account that created the order. Existing
+  // stored messages remain unchanged; language affects only future notifications.
+  let language: Language = params.language || 'en';
+  if (!params.language) {
+    const created = await prisma.orderEvent.findFirst({ where: { order_id: orderId, event_type: 'ORDER_CREATED' }, select: { actor_reference: true }, orderBy: { timestamp: 'asc' } });
+    if (created?.actor_reference) {
+      const user = await prisma.merchantUser.findUnique({ where: { id: created.actor_reference }, select: { language: true } });
+      language = user?.language === 'sw' ? 'sw' : 'en';
+    }
+  }
   // Customer notification
   if (CUSTOMER_TEMPLATES[eventType]) {
     await dispatchOrderNotification({
@@ -185,6 +219,7 @@ export async function dispatchOrderEvent(params: {
       recipientType: 'CUSTOMER',
       recipientPhone: customerPhone,
       vars,
+      language,
     });
   }
 
@@ -196,6 +231,7 @@ export async function dispatchOrderEvent(params: {
       recipientType: 'DRIVER',
       recipientPhone: driverPhone,
       vars,
+      language,
     });
   }
 }

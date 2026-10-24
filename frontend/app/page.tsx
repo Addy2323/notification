@@ -1,5 +1,7 @@
 'use client';
 
+
+import { useLanguage } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/landing/Header';
 import { Hero } from '@/components/landing/Hero';
@@ -19,6 +21,8 @@ import { PWAInstallBanner } from '@/app/components/pwa/PWAInstallBanner';
 import { PWAAutoPrompt } from '@/app/components/pwa/PWAAutoPrompt';
 
 export default function LandingPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
@@ -31,7 +35,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#0B192C] font-sans antialiased text-white selection:bg-[#FF5500] selection:text-white">
       {/* Startup Loader Splash Overlay */}
-      <LumoStartupLoader visible={showSplash} message="Loading LUMO Platform..." subtext="Track deliveries. Stay connected." />
+      <LumoStartupLoader visible={showSplash} message={t("public.loading_lumo_platform")} subtext="Track deliveries. Stay connected." />
 
       {/* 1. Header */}
       <Header />

@@ -1,11 +1,15 @@
 'use client';
 
+
+import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import { fetchApi } from '@/lib/api';
 import { Contact, Search, Plus, Phone, MapPin, ShoppingBag, Calendar, UserCheck, RefreshCw, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CustomersPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -45,8 +49,8 @@ export default function CustomersPage() {
             <Contact className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Customer CRM & Records</h1>
-            <p className="text-sm text-slate-400">Manage customer phonebooks, order histories & lifetime value</p>
+            <h1 className="text-2xl font-bold tracking-tight"><T k="merchant.customer_crm_records" /></h1>
+            <p className="text-sm text-slate-400"><T k="merchant.manage_customer_phonebooks_order_histories_lifetime_value" /></p>
           </div>
         </div>
 
@@ -55,17 +59,13 @@ export default function CustomersPage() {
             onClick={loadCustomers}
             className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-medium text-sm transition flex items-center gap-2 border border-slate-700"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            Refresh
-          </button>
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />{' '}<T k="common.refresh" />{' '}</button>
 
           <Link
             href="/dashboard/orders"
             className="px-4 py-2.5 bg-[#FF5500] hover:bg-[#e04b00] text-white rounded-xl font-bold text-sm transition flex items-center gap-2 shadow-lg shadow-orange-500/20"
           >
-            <Plus className="w-4 h-4" />
-            New Order
-          </Link>
+            <Plus className="w-4 h-4" />{' '}<T k="merchant.new_order" />{' '}</Link>
         </div>
       </div>
 
@@ -73,18 +73,18 @@ export default function CustomersPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase text-slate-500">Total Recorded Customers</span>
+            <span className="text-xs font-bold uppercase text-slate-500"><T k="merchant.total_recorded_customers" /></span>
             <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
               <Contact className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl font-black text-slate-900 mt-2">{customers.length}</p>
-          <p className="text-xs text-slate-500 mt-1">Unique customer phone profiles</p>
+          <p className="text-xs text-slate-500 mt-1"><T k="merchant.unique_customer_phone_profiles" /></p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase text-slate-500">Active Buyers</span>
+            <span className="text-xs font-bold uppercase text-slate-500"><T k="merchant.active_buyers" /></span>
             <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <UserCheck className="w-4 h-4" />
             </div>
@@ -92,12 +92,12 @@ export default function CustomersPage() {
           <p className="text-2xl font-black text-emerald-600 mt-2">
             {customers.filter((c) => (c.orders ? c.orders.length > 0 : true)).length}
           </p>
-          <p className="text-xs text-slate-500 mt-1">Customers with delivery records</p>
+          <p className="text-xs text-slate-500 mt-1"><T k="merchant.customers_with_delivery_records" /></p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase text-slate-500">Repeat Customers</span>
+            <span className="text-xs font-bold uppercase text-slate-500"><T k="merchant.repeat_customers" /></span>
             <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
               <ShoppingBag className="w-4 h-4" />
             </div>
@@ -105,7 +105,7 @@ export default function CustomersPage() {
           <p className="text-2xl font-black text-amber-600 mt-2">
             {customers.filter((c) => (c.orders ? c.orders.length > 1 : false)).length}
           </p>
-          <p className="text-xs text-slate-500 mt-1">Multiple order placements</p>
+          <p className="text-xs text-slate-500 mt-1"><T k="merchant.multiple_order_placements" /></p>
         </div>
       </div>
 
@@ -115,16 +115,14 @@ export default function CustomersPage() {
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search customer by name, phone, address..."
+            placeholder={t("merchant.search_customer_by_name_phone_address")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF5500] focus:border-transparent transition"
           />
         </div>
 
-        <span className="text-xs text-slate-500 font-medium">
-          Showing <strong>{filteredCustomers.length}</strong> of {customers.length} customers
-        </span>
+        <span className="text-xs text-slate-500 font-medium">{' '}<T k="merchant.showing" />{' '}<strong>{filteredCustomers.length}</strong>{' '}<T k="common.of" />{' '}{customers.length}{' '}<T k="merchant.customers" />{' '}</span>
       </div>
 
       {/* Customers Table */}
@@ -133,12 +131,12 @@ export default function CustomersPage() {
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-900 text-white font-semibold uppercase tracking-wider">
               <tr>
-                <th className="py-3.5 px-4">Customer Name</th>
-                <th className="py-3.5 px-4">Phone Number</th>
-                <th className="py-3.5 px-4">Delivery Address</th>
-                <th className="py-3.5 px-4 text-center">Total Orders</th>
-                <th className="py-3.5 px-4">Joined Date</th>
-                <th className="py-3.5 px-4 text-right">Quick Action</th>
+                <th className="py-3.5 px-4"><T k="admin.customer_name" /></th>
+                <th className="py-3.5 px-4"><T k="common.phone_number" /></th>
+                <th className="py-3.5 px-4"><T k="merchant.delivery_address" /></th>
+                <th className="py-3.5 px-4 text-center"><T k="common.total_orders" /></th>
+                <th className="py-3.5 px-4"><T k="admin.joined_date" /></th>
+                <th className="py-3.5 px-4 text-right"><T k="merchant.quick_action" /></th>
               </tr>
             </thead>
 
@@ -146,15 +144,11 @@ export default function CustomersPage() {
               {loading ? (
                 <tr>
                   <td colSpan={6} className="text-center py-12 text-slate-400">
-                    <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-[#FF5500]" />
-                    Loading customer records...
-                  </td>
+                    <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-[#FF5500]" />{' '}<T k="merchant.loading_customer_records" />{' '}</td>
                 </tr>
               ) : filteredCustomers.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center py-12 text-slate-400">
-                    No customers found matching your search.
-                  </td>
+                  <td colSpan={6} className="text-center py-12 text-slate-400">{' '}<T k="merchant.no_customers_found_matching_your_search" />{' '}</td>
                 </tr>
               ) : (
                 filteredCustomers.map((c) => (
@@ -176,24 +170,22 @@ export default function CustomersPage() {
                     <td className="py-3.5 px-4 text-slate-600">
                       <span className="flex items-center gap-1 max-w-xs truncate">
                         <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
-                        {c.delivery_address || <span className="text-slate-300 italic">No address stored</span>}
+                        {c.delivery_address || <span className="text-slate-300 italic"><T k="merchant.no_address_stored" /></span>}
                       </span>
                     </td>
                     <td className="py-3.5 px-4 text-center font-bold text-slate-900">
                       <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 text-[11px]">
-                        {c.orders ? c.orders.length : 0} order{c.orders && c.orders.length === 1 ? '' : 's'}
+                        {c.orders ? c.orders.length : 0}{' '}<T k="merchant.order" />{c.orders && c.orders.length === 1 ? '' : 's'}
                       </span>
                     </td>
                     <td className="py-3.5 px-4 text-slate-500">
-                      {new Date(c.created_at).toLocaleDateString()}
+                      {new Date(c.created_at).toLocaleDateString(locale)}
                     </td>
                     <td className="py-3.5 px-4 text-right">
                       <Link
                         href={`/dashboard/orders?customerPhone=${encodeURIComponent(c.phone)}`}
                         className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-700 rounded-lg text-[11px] font-semibold transition"
-                      >
-                        Create Order
-                        <ArrowUpRight className="w-3 h-3" />
+                      >{' '}<T k="common.create_order" />{' '}<ArrowUpRight className="w-3 h-3" />
                       </Link>
                     </td>
                   </tr>

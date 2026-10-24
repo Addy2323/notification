@@ -1,5 +1,7 @@
 'use client';
 
+
+import { TLabel } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -84,7 +86,7 @@ export function MobileBottomNav({ type = 'merchant', unreadCount = 0 }: MobileBo
                   isActive ? 'text-white' : 'text-slate-400'
                 }`}
               >
-                {item.name}
+                <TLabel value={item.name} />
               </span>
             </Link>
           );

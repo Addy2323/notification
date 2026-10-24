@@ -43,6 +43,7 @@ model MerchantUser {
   name            String
   phone           String    @unique
   email           String?   @unique
+  language        String    @default("en")
   avatar_url      String?
   role            String    @default("MERCHANT")
   password_hash   String?

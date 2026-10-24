@@ -1,10 +1,13 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Store, XCircle, Phone, ArrowRight, CheckCircle2, KeyRound, ShieldCheck, RefreshCw, X, UserCheck, Plus, Eye, EyeOff } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
+import LanguageSelector from '@/components/LanguageSelector';
 
 interface SavedMerchant {
   id: string;
@@ -14,6 +17,8 @@ interface SavedMerchant {
 }
 
 export default function LoginPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const router = useRouter();
 
   // Auth Mode: 'PIN' | 'PASSWORD'
@@ -137,7 +142,7 @@ export default function LoginPage() {
         setPhoneConfirmed(true);
       }
     } catch (err: any) {
-      setErrorMessage(err.message || 'The phone number inserted is not registered in our system.');
+      setErrorMessage(err.message || t("auth.the_phone_number_inserted_is_not_registered_in_our_system"));
       setMatchedStore(null);
       setPhoneConfirmed(false);
     } finally {
@@ -184,9 +189,9 @@ export default function LoginPage() {
       // Save successful login account to device memory
       persistAccountToDevice({
         id: data.user?.id || 'm-' + Date.now(),
-        name: data.user?.name || matchedStore?.name || 'Merchant User',
+        name: data.user?.name || matchedStore?.name || t("auth.merchant_user"),
         phone,
-        business_name: data.user?.merchant?.business_name || matchedStore?.business_name || 'LUMO Merchant',
+        business_name: data.user?.merchant?.business_name || matchedStore?.business_name || t("common.lumo_merchant"),
       });
 
       if (data.user?.role === 'ADMIN') {
@@ -195,7 +200,7 @@ export default function LoginPage() {
         router.push('/dashboard');
       }
     } catch (err: any) {
-      setErrorMessage(err.message || 'Invalid PIN passcode');
+      setErrorMessage(err.message || t("auth.invalid_pin_passcode"));
       setPin('');
     } finally {
       setLoading(false);
@@ -216,9 +221,9 @@ export default function LoginPage() {
 
       persistAccountToDevice({
         id: data.user?.id || 'm-' + Date.now(),
-        name: data.user?.name || matchedStore?.name || 'Merchant User',
+        name: data.user?.name || matchedStore?.name || t("auth.merchant_user"),
         phone,
-        business_name: data.user?.merchant?.business_name || matchedStore?.business_name || 'LUMO Merchant',
+        business_name: data.user?.merchant?.business_name || matchedStore?.business_name || t("common.lumo_merchant"),
       });
 
       if (data.user?.role === 'ADMIN') {
@@ -227,7 +232,7 @@ export default function LoginPage() {
         router.push('/dashboard');
       }
     } catch (err: any) {
-      setErrorMessage(err.message || 'Invalid credentials');
+      setErrorMessage(err.message || t("auth.invalid_credentials"));
     } finally {
       setLoading(false);
     }
@@ -235,6 +240,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-slate-100/90 text-slate-900 font-sans flex flex-col items-center justify-center p-3 sm:p-5 relative overflow-hidden selection:bg-emerald-600 selection:text-white">
+      <div className="flex justify-end p-3"><LanguageSelector /></div>
       {/* Ambient Orbs */}
       <div className="absolute top-[-10%] left-[-10%] w-[450px] h-[450px] bg-teal-400/25 rounded-full blur-[120px] pointer-events-none animate-liquid-1" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[450px] h-[450px] bg-cyan-400/20 rounded-full blur-[140px] pointer-events-none animate-liquid-2" />
@@ -273,18 +279,14 @@ export default function LoginPage() {
               <Store className="w-4 h-4 stroke-[2.2]" />
             </div>
 
-            <h1 className="text-xl font-black text-slate-900 font-serif tracking-tight">Merchant Portal</h1>
-            <p className="text-[11px] font-medium text-slate-500 mt-0.5">
-              Sign in to manage delivery notifications & merchant orders.
-            </p>
+            <h1 className="text-xl font-black text-slate-900 font-serif tracking-tight"><T k="auth.merchant_portal" /></h1>
+            <p className="text-[11px] font-medium text-slate-500 mt-0.5">{' '}<T k="auth.sign_in_to_manage_delivery_notifications_merchant_orders" />{' '}</p>
           </div>
 
           {/* DEVICE HISTORY QUICK CHIPS (If any saved accounts exist) */}
           {savedAccounts.length > 0 && (
             <div className="mb-3">
-              <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1.5">
-                Saved Accounts on this Device
-              </label>
+              <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1.5">{' '}<T k="auth.saved_accounts_on_this_device" />{' '}</label>
               <div className="flex flex-wrap gap-1.5">
                 {savedAccounts.map((acc) => {
                   const isSelected = phone === acc.phone && phoneConfirmed;
@@ -317,7 +319,7 @@ export default function LoginPage() {
                   className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200"
                 >
                   <Plus className="w-3 h-3" />
-                  <span>Other</span>
+                  <span><T k="auth.other" /></span>
                 </button>
               </div>
             </div>
@@ -342,16 +344,12 @@ export default function LoginPage() {
                 type="button"
                 onClick={handleSwitchToNewPhone}
                 className="text-[10px] font-bold text-slate-500 hover:text-slate-900 underline shrink-0"
-              >
-                Change
-              </button>
+              >{' '}<T k="auth.change" />{' '}</button>
             </div>
           ) : (
             <form onSubmit={handleVerifyPhoneSubmit} className="mb-3 space-y-2">
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                  Registered Business Phone Number
-                </label>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">{' '}<T k="auth.registered_business_phone_number" />{' '}</label>
                 <div className="relative">
                   <input
                     type="text"
@@ -367,7 +365,7 @@ export default function LoginPage() {
                   />
                   <Phone className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                 </div>
-                <p className="text-[10px] font-medium text-slate-400 mt-1">Enter your registered Tanzanian phone number</p>
+                <p className="text-[10px] font-medium text-slate-400 mt-1"><T k="auth.enter_your_registered_tanzanian_phone_number" /></p>
               </div>
 
               <button
@@ -375,7 +373,7 @@ export default function LoginPage() {
                 disabled={checkingPhone || !phone || phone.trim().length < 4}
                 className="w-full h-9 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm flex items-center justify-center gap-1.5 transition-all disabled:opacity-50"
               >
-                {checkingPhone ? 'Searching Store...' : 'CONTINUE TO SIGN IN'}
+                {checkingPhone ? t("auth.searching_store") : t("auth.continue_to_sign_in")}
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </form>
@@ -396,9 +394,7 @@ export default function LoginPage() {
                       ? 'bg-white text-slate-900 shadow-sm border border-slate-200/60'
                       : 'text-slate-500 hover:text-slate-800'
                   }`}
-                >
-                  PIN Passcode
-                </button>
+                >{' '}<T k="auth.pin_passcode" />{' '}</button>
 
                 <button
                   type="button"
@@ -411,9 +407,7 @@ export default function LoginPage() {
                       ? 'bg-white text-slate-900 shadow-sm border border-slate-200/60'
                       : 'text-slate-500 hover:text-slate-800'
                   }`}
-                >
-                  Password Access
-                </button>
+                >{' '}<T k="auth.password_access" />{' '}</button>
               </div>
 
               {/* TAB 1: PIN Passcode View */}
@@ -437,7 +431,7 @@ export default function LoginPage() {
                   </div>
 
                   <p className="text-[11px] font-medium text-slate-400 my-1">
-                    {loading ? 'Authenticating...' : 'Enter 4-digit PIN'}
+                    {loading ? t("auth.authenticating") : t("auth.enter_4_digit_pin")}
                   </p>
 
                   {/* Compact 3x4 Touch Keypad */}
@@ -459,9 +453,7 @@ export default function LoginPage() {
                       disabled={loading || pin.length === 0}
                       onClick={handleClearPin}
                       className="water-keypad-btn text-slate-400 text-xs font-semibold disabled:opacity-40"
-                    >
-                      Clear
-                    </button>
+                    >{' '}<T k="auth.clear" />{' '}</button>
 
                     <button
                       type="button"
@@ -477,9 +469,7 @@ export default function LoginPage() {
                       disabled={loading || pin.length === 0}
                       onClick={handleDeletePin}
                       className="water-keypad-btn text-slate-900 font-semibold text-xs disabled:opacity-40"
-                    >
-                      Delete
-                    </button>
+                    >{' '}<T k="auth.delete" />{' '}</button>
                   </div>
 
                   {/* Forgot PIN / Password Link */}
@@ -488,7 +478,7 @@ export default function LoginPage() {
                     className="mt-2.5 text-[11px] font-semibold text-emerald-700 hover:underline flex items-center gap-1"
                   >
                     <RefreshCw className="w-3 h-3" />
-                    <span>Forgot PIN Passcode / Password?</span>
+                    <span><T k="auth.forgot_pin_passcode_password" /></span>
                   </Link>
                 </div>
               )}
@@ -498,9 +488,7 @@ export default function LoginPage() {
                 <div className="space-y-3 animate-in fade-in duration-200">
                   <form onSubmit={handlePasswordLogin} className="space-y-3">
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                        Password
-                      </label>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">{' '}<T k="auth.password" />{' '}</label>
                       <div className="relative">
                         <input
                           type={showPassword ? 'text' : 'password'}
@@ -515,7 +503,7 @@ export default function LoginPage() {
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
                           className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors p-1"
-                          title={showPassword ? 'Hide Password' : 'Show Password'}
+                          title={showPassword ? t("auth.hide_password") : t("auth.show_password")}
                         >
                           {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                         </button>
@@ -527,7 +515,7 @@ export default function LoginPage() {
                       disabled={loading || !password}
                       className="w-full h-10 flex items-center justify-center gap-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs shadow-md transition-all disabled:opacity-50"
                     >
-                      {loading ? 'Authenticating...' : 'SIGN IN WITH PASSWORD'}
+                      {loading ? t("auth.authenticating") : t("auth.sign_in_with_password")}
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </form>
@@ -538,7 +526,7 @@ export default function LoginPage() {
                       className="text-[11px] font-semibold text-emerald-700 hover:underline inline-flex items-center gap-1"
                     >
                       <RefreshCw className="w-3 h-3" />
-                      <span>Forgot Password? Reset via SMS OTP</span>
+                      <span><T k="auth.forgot_password_reset_via_sms_otp" /></span>
                     </Link>
                   </div>
                 </div>
@@ -547,11 +535,8 @@ export default function LoginPage() {
           )}
 
           {/* Footer Navigation Link */}
-          <div className="mt-4 pt-3 border-t border-slate-200/60 text-center text-xs font-medium text-slate-500">
-            New merchant business?{' '}
-            <Link href="/register" className="text-emerald-700 font-bold hover:underline">
-              Register Merchant Account
-            </Link>
+          <div className="mt-4 pt-3 border-t border-slate-200/60 text-center text-xs font-medium text-slate-500">{' '}<T k="auth.new_merchant_business" />{' '}
+            <Link href="/register" className="text-emerald-700 font-bold hover:underline">{' '}<T k="auth.register_merchant_account" />{' '}</Link>
           </div>
         </div>
       </div>

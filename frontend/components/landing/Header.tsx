@@ -1,12 +1,17 @@
 'use client';
 
+
+import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { LumoLogo } from './LumoLogo';
+import LanguageSelector from '@/components/LanguageSelector';
 import { PWAInstallButton } from '@/app/components/pwa/PWAInstallButton';
 
 export function Header() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -20,38 +25,38 @@ export function Header() {
 
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-6 xl:gap-8 font-semibold text-[#A0B8D0]">
-          <Link href="/features" className="hover:text-white transition-colors py-2">Features</Link>
-          <Link href="/contact" className="hover:text-white transition-colors py-2">Contact Us</Link>
-          <Link href="/about" className="hover:text-white transition-colors py-2">About Us</Link>
+          <Link href="/features" className="hover:text-white transition-colors py-2"><T k="common.features" /></Link>
+          <Link href="/contact" className="hover:text-white transition-colors py-2"><T k="public.contact_us" /></Link>
+          <Link href="/about" className="hover:text-white transition-colors py-2"><T k="common.about_us" /></Link>
         </nav>
 
         {/* Right Desktop Action Buttons */}
         <div className="hidden md:flex items-center gap-4">
+          <LanguageSelector />
           <PWAInstallButton variant="header" />
 
           <Link 
             href="/login" 
             className="text-sm font-semibold text-[#A0B8D0] hover:text-white transition-colors px-2 py-2"
-          >
-            Log in
-          </Link>
+          >{' '}<T k="public.log_in" />{' '}</Link>
           <Link
             href="/register"
             className="px-5 py-2.5 rounded-lg bg-[#FF5500] hover:bg-[#E04B00] text-white text-sm font-bold transition-all shadow-md hover:shadow-orange-500/25 active:scale-95 flex items-center justify-center gap-2"
           >
-            <span>Start free</span>
+            <span><T k="public.start_free" /></span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
         {/* Mobile Hamburger Toggle Button */}
         <div className="flex md:hidden items-center gap-2">
+          <LanguageSelector />
           <PWAInstallButton variant="header" />
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-lg bg-[#112239] border border-[#1E3A5F] text-[#A0B8D0] hover:text-white focus:outline-none"
-            aria-label="Toggle Navigation Menu"
+            aria-label={t("public.toggle_navigation_menu")}
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -67,30 +72,22 @@ export function Header() {
               href="/#features" 
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 border-b border-[#162A45] hover:text-white transition-colors"
-            >
-              Features
-            </Link>
+            >{' '}<T k="common.features" />{' '}</Link>
             <Link 
               href="/about" 
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 border-b border-[#162A45] hover:text-white transition-colors"
-            >
-              About Us
-            </Link>
+            >{' '}<T k="common.about_us" />{' '}</Link>
             <Link 
               href="/contact" 
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 border-b border-[#162A45] hover:text-white transition-colors"
-            >
-              Contact
-            </Link>
+            >{' '}<T k="public.contact" />{' '}</Link>
             <Link 
               href="/login" 
               onClick={() => setMobileMenuOpen(false)}
               className="py-2 border-b border-[#162A45] text-white hover:text-[#FF5500] transition-colors"
-            >
-              Log in to Dashboard
-            </Link>
+            >{' '}<T k="public.log_in_to_dashboard" />{' '}</Link>
           </nav>
         </div>
       )}

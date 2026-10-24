@@ -1,5 +1,7 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useEffect, useState } from 'react';
 import {
   Star,
@@ -54,6 +56,8 @@ interface MerchantRatingsData {
 }
 
 export default function MerchantRatingsPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<MerchantRatingsData | null>(null);
@@ -69,7 +73,7 @@ export default function MerchantRatingsPage() {
       const res = await fetchApi(`/ratings/merchant?period=${period}`);
       setData(res);
     } catch (err: any) {
-      setError(err.message || 'Failed to load rating analytics.');
+      setError(err.message || t("merchant.failed_to_load_rating_analytics"));
     } finally {
       setLoading(false);
     }
@@ -98,13 +102,9 @@ export default function MerchantRatingsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold text-orange-600 uppercase tracking-wider mb-1">
-            <Star className="w-4 h-4 fill-orange-500 text-orange-500" />
-            Quality Control & Customer Experience
-          </div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Customer Ratings</h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Monitor delivery performance, customer satisfaction, and driver service quality.
-          </p>
+            <Star className="w-4 h-4 fill-orange-500 text-orange-500" />{' '}<T k="merchant.quality_control_customer_experience" />{' '}</div>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight"><T k="common.customer_ratings" /></h1>
+          <p className="text-xs text-slate-500 mt-0.5">{' '}<T k="merchant.monitor_delivery_performance_customer_satisfaction_and_driver_service_quality" />{' '}</p>
         </div>
 
         {/* Period Filter Tabs */}
@@ -124,12 +124,12 @@ export default function MerchantRatingsPage() {
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
               }`}
             >
-              {tab.label}
+              {uiLabel(tab.label)}
             </button>
           ))}
           <button
             onClick={loadData}
-            title="Refresh"
+            title={t("common.refresh")}
             className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 rounded-lg ml-1"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
@@ -140,14 +140,14 @@ export default function MerchantRatingsPage() {
       {loading && !data && (
         <div className="py-20 text-center">
           <Loader2 className="w-8 h-8 text-[#FF5500] animate-spin mx-auto mb-3" />
-          <p className="text-xs font-bold text-slate-500">Loading rating metrics...</p>
+          <p className="text-xs font-bold text-slate-500"><T k="merchant.loading_rating_metrics" /></p>
         </div>
       )}
 
       {error && !data && (
         <div className="p-6 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-center">
           <AlertCircle className="w-8 h-8 text-rose-600 mx-auto mb-2" />
-          <h3 className="font-bold text-sm">Failed to Load Customer Ratings</h3>
+          <h3 className="font-bold text-sm"><T k="merchant.failed_to_load_customer_ratings" /></h3>
           <p className="text-xs text-rose-600 mt-1">{error}</p>
         </div>
       )}
@@ -161,7 +161,7 @@ export default function MerchantRatingsPage() {
               <div className="absolute top-0 right-0 p-4 opacity-10">
                 <Star className="w-24 h-24 fill-white" />
               </div>
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Average Rating</span>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider"><T k="merchant.average_rating" /></span>
               <div className="flex items-baseline gap-2 mt-2">
                 <span className="text-4xl font-black text-white">{data.average_rating.toFixed(1)}</span>
                 <span className="text-slate-400 font-bold text-sm">/ 5.0</span>
@@ -178,7 +178,7 @@ export default function MerchantRatingsPage() {
                   />
                 ))}
                 <span className="text-xs text-slate-300 font-bold ml-1.5">
-                  ({data.total_ratings} {data.total_ratings === 1 ? 'rating' : 'ratings'})
+                  ({data.total_ratings} {data.total_ratings === 1 ? t("admin.rating") : t("admin.ratings")})
                 </span>
               </div>
             </div>
@@ -186,21 +186,19 @@ export default function MerchantRatingsPage() {
             {/* Total Ratings Card */}
             <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs">
               <div className="flex items-center justify-between text-slate-500 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Total Customer Reviews</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500"><T k="merchant.total_customer_reviews" /></span>
                 <div className="p-2 rounded-xl bg-orange-50 text-[#FF5500]">
                   <Users className="w-4 h-4" />
                 </div>
               </div>
               <div className="text-3xl font-black text-slate-900">{data.total_ratings}</div>
-              <p className="text-xs text-slate-500 mt-1">
-                Completed delivery ratings
-              </p>
+              <p className="text-xs text-slate-500 mt-1">{' '}<T k="merchant.completed_delivery_ratings" />{' '}</p>
             </div>
 
             {/* Top Driver Card */}
             <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs">
               <div className="flex items-center justify-between text-slate-500 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Top Rated Driver</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500"><T k="merchant.top_rated_driver" /></span>
                 <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600">
                   <Award className="w-4 h-4" />
                 </div>
@@ -212,11 +210,11 @@ export default function MerchantRatingsPage() {
                 {data.driver_ratings[0] ? (
                   <>
                     <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                    <span>{data.driver_ratings[0].average_rating.toFixed(1)} rating</span>
-                    <span className="text-slate-400">({data.driver_ratings[0].total_ratings} orders)</span>
+                    <span>{data.driver_ratings[0].average_rating.toFixed(1)}{' '}<T k="admin.rating" /></span>
+                    <span className="text-slate-400">({data.driver_ratings[0].total_ratings}{' '}<T k="merchant.orders_3" /></span>
                   </>
                 ) : (
-                  <span className="text-slate-400 font-normal">No driver ratings yet</span>
+                  <span className="text-slate-400 font-normal"><T k="merchant.no_driver_ratings_yet" /></span>
                 )}
               </div>
             </div>
@@ -224,7 +222,7 @@ export default function MerchantRatingsPage() {
             {/* Feedback Response Rate Card */}
             <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs">
               <div className="flex items-center justify-between text-slate-500 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Comments Left</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500"><T k="merchant.comments_left" /></span>
                 <div className="p-2 rounded-xl bg-blue-50 text-blue-600">
                   <MessageSquare className="w-4 h-4" />
                 </div>
@@ -232,9 +230,7 @@ export default function MerchantRatingsPage() {
               <div className="text-3xl font-black text-slate-900">
                 {data.feedback.filter((f) => f.comment && f.comment.trim().length > 0).length}
               </div>
-              <p className="text-xs text-slate-500 mt-1">
-                Detailed customer feedback notes
-              </p>
+              <p className="text-xs text-slate-500 mt-1">{' '}<T k="merchant.detailed_customer_feedback_notes" />{' '}</p>
             </div>
           </div>
 
@@ -243,9 +239,7 @@ export default function MerchantRatingsPage() {
             {/* Rating Breakdown Card */}
             <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
               <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                <Filter className="w-4 h-4 text-[#FF5500]" />
-                Rating Distribution
-              </h2>
+                <Filter className="w-4 h-4 text-[#FF5500]" />{' '}<T k="merchant.rating_distribution" />{' '}</h2>
 
               <div className="space-y-3">
                 {[5, 4, 3, 2, 1].map((stars) => {
@@ -278,27 +272,22 @@ export default function MerchantRatingsPage() {
             <div className="lg:col-span-2 p-6 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <Truck className="w-4 h-4 text-[#FF5500]" />
-                  Driver Performance Quality
-                </h2>
+                  <Truck className="w-4 h-4 text-[#FF5500]" />{' '}<T k="merchant.driver_performance_quality" />{' '}</h2>
                 <span className="text-xs font-bold text-slate-400">
-                  {data.driver_ratings.length} {data.driver_ratings.length === 1 ? 'Driver' : 'Drivers'} Rated
-                </span>
+                  {data.driver_ratings.length} {data.driver_ratings.length === 1 ? t("common.driver") : t("common.drivers")}{' '}<T k="merchant.rated" />{' '}</span>
               </div>
 
               {data.driver_ratings.length === 0 ? (
-                <div className="text-center py-8 text-xs text-slate-400">
-                  No driver ratings recorded for this period.
-                </div>
+                <div className="text-center py-8 text-xs text-slate-400">{' '}<T k="merchant.no_driver_ratings_recorded_for_this_period" />{' '}</div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     <thead>
                       <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider">
-                        <th className="pb-3">Driver Name</th>
-                        <th className="pb-3">Phone</th>
-                        <th className="pb-3 text-center">Total Ratings</th>
-                        <th className="pb-3 text-right">Avg Score</th>
+                        <th className="pb-3"><T k="common.driver_name" /></th>
+                        <th className="pb-3"><T k="merchant.phone" /></th>
+                        <th className="pb-3 text-center"><T k="admin.total_ratings" /></th>
+                        <th className="pb-3 text-right"><T k="admin.avg_score" /></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
@@ -332,12 +321,8 @@ export default function MerchantRatingsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-[#FF5500]" />
-                  Recent Customer Feedback
-                </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Individual customer ratings and delivery comments.
-                </p>
+                  <MessageSquare className="w-4 h-4 text-[#FF5500]" />{' '}<T k="merchant.recent_customer_feedback" />{' '}</h2>
+                <p className="text-xs text-slate-500 mt-0.5">{' '}<T k="merchant.individual_customer_ratings_and_delivery_comments" />{' '}</p>
               </div>
 
               {/* Star Rating Filter Chips & Search Input */}
@@ -348,7 +333,7 @@ export default function MerchantRatingsPage() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search feedback..."
+                    placeholder={t("merchant.search_feedback")}
                     className="pl-8 pr-3 py-1.5 bg-slate-100 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF5500]"
                   />
                 </div>
@@ -359,9 +344,7 @@ export default function MerchantRatingsPage() {
                     className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                       starFilter === 'ALL' ? 'bg-[#0F172A] text-white' : 'text-slate-600 hover:text-slate-900'
                     }`}
-                  >
-                    All Stars
-                  </button>
+                  >{' '}<T k="merchant.all_stars" />{' '}</button>
                   {[5, 4, 3, 2, 1].map((star) => (
                     <button
                       key={star}
@@ -383,8 +366,8 @@ export default function MerchantRatingsPage() {
             {filteredFeedback.length === 0 ? (
               <div className="text-center py-12 border-2 border-dashed border-slate-100 rounded-xl">
                 <MessageSquare className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-                <p className="text-xs font-bold text-slate-500">No customer feedback matching criteria</p>
-                <p className="text-[11px] text-slate-400 mt-0.5">Try resetting your filter or period</p>
+                <p className="text-xs font-bold text-slate-500"><T k="merchant.no_customer_feedback_matching_criteria" /></p>
+                <p className="text-[11px] text-slate-400 mt-0.5"><T k="merchant.try_resetting_your_filter_or_period" /></p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -401,8 +384,7 @@ export default function MerchantRatingsPage() {
                             <span className="text-[11px] font-mono text-slate-400">{fb.customer_phone}</span>
                           </div>
                           <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
-                            <Package className="w-3 h-3 text-orange-500" />
-                            Order #{fb.order_number} ({fb.product_name})
+                            <Package className="w-3 h-3 text-orange-500" />{' '}<T k="common.order_2" />{fb.order_number} ({fb.product_name})
                           </p>
                         </div>
 
@@ -419,16 +401,15 @@ export default function MerchantRatingsPage() {
                           "{fb.comment}"
                         </div>
                       ) : (
-                        <div className="mt-2 text-[11px] text-slate-400 italic">No written comment provided</div>
+                        <div className="mt-2 text-[11px] text-slate-400 italic"><T k="merchant.no_written_comment_provided" /></div>
                       )}
                     </div>
 
                     <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-[11px] text-slate-500">
                       <span className="flex items-center gap-1 font-medium text-slate-700">
-                        <Truck className="w-3 h-3 text-slate-400" />
-                        Driver: <strong className="text-slate-900">{fb.driver_name || 'Unassigned'}</strong>
+                        <Truck className="w-3 h-3 text-slate-400" />{' '}<T k="common.driver_2" />{' '}<strong className="text-slate-900">{fb.driver_name || t("common.unassigned")}</strong>
                       </span>
-                      <span>{new Date(fb.created_at).toLocaleDateString()}</span>
+                      <span>{new Date(fb.created_at).toLocaleDateString(locale)}</span>
                     </div>
                   </div>
                 ))}

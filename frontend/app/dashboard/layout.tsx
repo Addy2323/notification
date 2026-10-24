@@ -1,15 +1,20 @@
 'use client';
 
+
+import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, Truck, Palette, Settings, LogOut, Plus, Shield, Menu, X, Bell, ShoppingBag, Users, DollarSign, Contact, BarChart3, FileText, Search, RefreshCw, Store, Star } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
+import LanguageSelector from '@/components/LanguageSelector';
 import { LumoLogo } from '@/components/landing/LumoLogo';
 import { MobileBottomNav } from '@/app/components/MobileBottomNav';
 import { PWAInstallButton } from '@/app/components/pwa/PWAInstallButton';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -60,7 +65,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="w-10 h-10 rounded-xl bg-[#0F172A] animate-pulse flex items-center justify-center text-[#FF5500] font-black">
             <span>L</span>
           </div>
-          <p className="text-xs font-bold text-slate-500">Loading LUMO Workspace...</p>
+          <p className="text-xs font-bold text-slate-500"><T k="merchant.loading_lumo_workspace" /></p>
         </div>
       </div>
     );
@@ -82,7 +87,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             const active = pathname === item.href || (item.href === '/dashboard/orders' && pathname.startsWith('/dashboard/orders/'));
             return (
               <Link
-                key={item.name}
+                key={uiLabel(item.name)}
                 href={item.href}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-extrabold text-xs active:scale-95 hover:scale-[1.01] transition-all duration-150 ${
                   active
@@ -91,7 +96,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 }`}
               >
                 <Icon className={`w-4 h-4 ${active ? 'text-[#FF5500]' : 'text-slate-400'}`} />
-                <span>{item.name}</span>
+                <span>{uiLabel(item.name)}</span>
               </Link>
             );
           })}
@@ -102,7 +107,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-extrabold text-xs text-amber-700 hover:bg-amber-50 border border-amber-200 mt-4 active:scale-95 transition-all duration-150"
             >
               <Shield className="w-4 h-4 text-[#FF5500]" />
-              <span>Admin Console</span>
+              <span><T k="merchant.admin_console" /></span>
             </Link>
           )}
         </nav>
@@ -117,19 +122,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="flex items-center gap-2.5 overflow-hidden">
             <div className="w-8 h-8 rounded-xl bg-[#0F172A] text-white flex items-center justify-center text-xs font-black overflow-hidden">
               {user?.avatar_url ? (
-                <img src={user.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                <img src={user.avatar_url} alt={t("merchant.profile")} className="w-full h-full object-cover" />
               ) : (
                 user?.name?.[0] || 'M'
               )}
             </div>
             <div className="truncate">
               <p className="text-xs font-extrabold text-slate-900 truncate">{merchant?.business_name || user?.name}</p>
-              <p className="text-[10px] text-slate-400 font-mono font-semibold uppercase">{user?.role}</p>
+              <p className="text-[10px] text-slate-400 font-mono font-semibold uppercase">{uiLabel(user?.role)}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            title="Sign Out"
+            title={t("merchant.sign_out")}
             className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100 active:scale-90 transition-all duration-150"
           >
             <LogOut className="w-4 h-4" />
@@ -145,7 +150,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 active:scale-90 transition-transform"
-              title="Open Navigation Menu"
+              title={t("merchant.open_navigation_menu")}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5 stroke-[2.5]" />}
             </button>
@@ -154,6 +159,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
           {/* Right Action Icons (Search, Refresh, User Profile) */}
           <div className="flex items-center gap-2">
+            <LanguageSelector />
             <PWAInstallButton variant="header" />
             <button
               onClick={() => {
@@ -161,20 +167,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 if (searchInput) searchInput.focus();
               }}
               className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center active:scale-90 transition-all"
-              title="Search"
+              title={t("merchant.search")}
             >
               <Search className="w-4 h-4" />
             </button>
             <button
               onClick={() => window.location.reload()}
               className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center active:scale-90 transition-all"
-              title="Refresh"
+              title={t("common.refresh")}
             >
               <RefreshCw className="w-4 h-4" />
             </button>
             <div className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-xs overflow-hidden border border-slate-200">
               {user?.avatar_url ? (
-                <img src={user.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                <img src={user.avatar_url} alt={t("merchant.profile")} className="w-full h-full object-cover" />
               ) : (
                 user?.name?.[0] || 'M'
               )}
@@ -191,9 +197,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <span className="text-xs font-black text-slate-900 leading-tight tracking-tight uppercase">
               {merchant?.business_name || 'HOME DECO'}
             </span>
-            <span className="text-[9px] font-bold text-slate-400 leading-tight">
-              Live Dispatch Portal
-            </span>
+            <span className="text-[9px] font-bold text-slate-400 leading-tight">{' '}<T k="merchant.live_dispatch_portal" />{' '}</span>
           </div>
         </div>
       </div>
@@ -206,7 +210,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             const active = pathname === item.href;
             return (
               <Link
-                key={item.name}
+                key={uiLabel(item.name)}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold active:scale-95 transition-all duration-150 ${
@@ -214,7 +218,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 }`}
               >
                 <Icon className={`w-4 h-4 ${active ? 'text-[#FF5500]' : 'text-slate-400'}`} />
-                <span>{item.name}</span>
+                <span>{uiLabel(item.name)}</span>
               </Link>
             );
           })}
@@ -226,13 +230,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             className="w-full flex items-center gap-3 px-3.5 py-2.5 text-left text-xs font-extrabold text-rose-600 hover:bg-rose-50 rounded-xl active:scale-95 transition-transform"
           >
             <LogOut className="w-4 h-4" />
-            <span>Sign Out</span>
+            <span><T k="merchant.sign_out" /></span>
           </button>
         </div>
       )}
 
       {/* Main Content Area (Independently scrollable with padding for mobile bottom bar) */}
-      <main className="flex-1 h-screen overflow-y-auto p-4 md:p-8 pb-20 md:pb-8 max-w-7xl mx-auto w-full bg-white">{children}</main>
+      <main className="flex-1 h-screen overflow-y-auto p-4 md:p-8 pb-20 md:pb-8 max-w-7xl mx-auto w-full bg-white"><div className="hidden md:flex justify-end mb-4"><LanguageSelector /></div>{children}</main>
 
       {/* Native Mobile Bottom Navigation Bar (Visible only on mobile devices) */}
       <MobileBottomNav type="merchant" />

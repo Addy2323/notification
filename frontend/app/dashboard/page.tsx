@@ -1,5 +1,7 @@
 'use client';
 
+
+import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import {
@@ -27,6 +29,8 @@ interface OrderItem {
 }
 
 export default function DashboardOverviewPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [merchant, setMerchant] = useState<any>(null);
   const [orders, setOrders] = useState<OrderItem[]>([]);
   const [metrics, setMetrics] = useState({
@@ -126,41 +130,31 @@ export default function DashboardOverviewPage() {
     switch (status) {
       case 'DELIVERED':
         return (
-          <span className="px-3 py-1 bg-emerald-100 text-emerald-800 font-extrabold text-[11px] rounded-lg inline-block uppercase tracking-wider">
-            Delivered
-          </span>
+          <span className="px-3 py-1 bg-emerald-100 text-emerald-800 font-extrabold text-[11px] rounded-lg inline-block uppercase tracking-wider">{' '}<T k="common.delivered" />{' '}</span>
         );
       case 'OUT_FOR_DELIVERY':
       case 'ON_THE_WAY':
         return (
-          <span className="px-3 py-1 bg-orange-100 text-[#FF5500] font-extrabold text-[11px] rounded-lg inline-block uppercase tracking-wider border border-orange-200">
-            Out for Delivery
-          </span>
+          <span className="px-3 py-1 bg-orange-100 text-[#FF5500] font-extrabold text-[11px] rounded-lg inline-block uppercase tracking-wider border border-orange-200">{' '}<T k="common.out_for_delivery" />{' '}</span>
         );
       case 'DRIVER_ASSIGNED':
         return (
-          <span className="px-3 py-1 bg-slate-100 text-slate-800 font-extrabold text-[11px] rounded-lg inline-block uppercase tracking-wider border border-slate-300">
-            Driver Assigned
-          </span>
+          <span className="px-3 py-1 bg-slate-100 text-slate-800 font-extrabold text-[11px] rounded-lg inline-block uppercase tracking-wider border border-slate-300">{' '}<T k="common.driver_assigned" />{' '}</span>
         );
       case 'ARRIVED':
       case 'DRIVER_NEARBY':
         return (
-          <span className="px-3 py-1 bg-amber-100 text-amber-800 font-extrabold text-[11px] rounded-lg inline-block uppercase tracking-wider">
-            Driver Nearby
-          </span>
+          <span className="px-3 py-1 bg-amber-100 text-amber-800 font-extrabold text-[11px] rounded-lg inline-block uppercase tracking-wider">{' '}<T k="merchant.driver_nearby" />{' '}</span>
         );
       case 'CANCELLED':
       case 'FAILED':
         return (
-          <span className="px-3 py-1 bg-rose-100 text-rose-800 font-extrabold text-[11px] rounded-lg inline-block uppercase tracking-wider">
-            Failed
-          </span>
+          <span className="px-3 py-1 bg-rose-100 text-rose-800 font-extrabold text-[11px] rounded-lg inline-block uppercase tracking-wider">{' '}<T k="common.failed" />{' '}</span>
         );
       default:
         return (
           <span className="px-3 py-1 bg-slate-100 text-slate-700 font-bold text-[11px] rounded-lg inline-block uppercase tracking-wider">
-            {status}
+            {uiLabel(status)}
           </span>
         );
     }
@@ -190,7 +184,7 @@ export default function DashboardOverviewPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search Order #, Customer, Driver..."
+            placeholder={t("merchant.search_order_customer_driver")}
             className="w-full pl-9 pr-4 py-2 bg-slate-100/80 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:bg-white focus:border-[#FF5500] transition-all"
           />
         </div>
@@ -200,7 +194,7 @@ export default function DashboardOverviewPage() {
           className="px-4 py-2 bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-extrabold text-xs rounded-xl shadow-xs transition-all flex items-center gap-1.5 shrink-0"
         >
           <Plus className="w-4 h-4 stroke-[3]" />
-          <span className="hidden sm:inline">New Order</span>
+          <span className="hidden sm:inline"><T k="merchant.new_order" /></span>
         </Link>
       </div>
 
@@ -217,26 +211,17 @@ export default function DashboardOverviewPage() {
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
             <div className="space-y-3 max-w-xl">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF5500] text-white text-[10px] font-black uppercase tracking-wider shadow-sm">
-                <span className="text-xs">▶</span> LUMO DISPATCH ENGINE
-              </span>
+                <span className="text-xs">▶</span>{' '}<T k="merchant.lumo_dispatch_engine" />{' '}</span>
 
-              <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-                All Dispatches & Operations
-              </h1>
+              <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">{' '}<T k="merchant.all_dispatches_operations" />{' '}</h1>
 
-              <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
-                Browse every verified delivery, driver assignment, and real-time SMS tracking update across Tanzania in one place.
-              </p>
+              <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">{' '}<T k="merchant.browse_every_verified_delivery_driver_assignment_and_real_time_sms_tracking_update_ac" />{' '}</p>
             </div>
 
             {/* Right Calligraphic Slogan (Matching Screenshot Signature) */}
             <div className="hidden sm:flex flex-col items-end text-right shrink-0 pt-2">
-              <span className="text-xl sm:text-2xl font-serif italic text-white/90 font-bold drop-shadow-xs">
-                Deliveries Build
-              </span>
-              <span className="text-2xl sm:text-3xl font-serif italic text-[#FF5500] font-black drop-shadow-xs">
-                a Brighter Tanzania
-              </span>
+              <span className="text-xl sm:text-2xl font-serif italic text-white/90 font-bold drop-shadow-xs">{' '}<T k="merchant.deliveries_build" />{' '}</span>
+              <span className="text-2xl sm:text-3xl font-serif italic text-[#FF5500] font-black drop-shadow-xs">{' '}<T k="merchant.a_brighter_tanzania" />{' '}</span>
             </div>
           </div>
 
@@ -244,25 +229,18 @@ export default function DashboardOverviewPage() {
           <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/10">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold">
               <CheckCircle2 className="w-3.5 h-3.5" />
-              {deliveredCount} verified deliveries
-            </span>
+              {deliveredCount}{' '}<T k="merchant.verified_deliveries" />{' '}</span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/30 text-xs font-semibold">
-              <MapPin className="w-3.5 h-3.5 text-[#FF5500]" />
-              All Tanzania regions
-            </span>
+              <MapPin className="w-3.5 h-3.5 text-[#FF5500]" />{' '}<T k="merchant.all_tanzania_regions" />{' '}</span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/30 text-xs font-semibold">
-              <User className="w-3.5 h-3.5 text-blue-400" />
-              Real-time SMS dispatches
-            </span>
+              <User className="w-3.5 h-3.5 text-blue-400" />{' '}<T k="merchant.real_time_sms_dispatches" />{' '}</span>
           </div>
         </div>
       </div>
 
       {/* QUICK MERCHANT ACTIONS SECTION (2x2 Grid matching user image) */}
       <div className="space-y-3">
-        <h2 className="text-xs font-black uppercase tracking-wider text-[#FF5500]">
-          QUICK MERCHANT ACTIONS
-        </h2>
+        <h2 className="text-xs font-black uppercase tracking-wider text-[#FF5500]">{' '}<T k="merchant.quick_merchant_actions" />{' '}</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Card 1: Create Order */}
@@ -275,8 +253,8 @@ export default function DashboardOverviewPage() {
                 <Plus className="w-6 h-6 stroke-[3]" />
               </div>
               <div>
-                <p className="text-sm font-black text-white leading-tight">Create Order</p>
-                <p className="text-xs text-slate-400 font-medium">Start dispatch from</p>
+                <p className="text-sm font-black text-white leading-tight"><T k="common.create_order" /></p>
+                <p className="text-xs text-slate-400 font-medium"><T k="merchant.start_dispatch_from" /></p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />
@@ -292,8 +270,8 @@ export default function DashboardOverviewPage() {
                 <UserCheck className="w-6 h-6 stroke-[2.5]" />
               </div>
               <div>
-                <p className="text-sm font-black text-white leading-tight">Assign Driver</p>
-                <p className="text-xs text-slate-400 font-medium">Driver fleet dispatch</p>
+                <p className="text-sm font-black text-white leading-tight"><T k="merchant.assign_driver" /></p>
+                <p className="text-xs text-slate-400 font-medium"><T k="merchant.driver_fleet_dispatch" /></p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />
@@ -309,8 +287,8 @@ export default function DashboardOverviewPage() {
                 <Compass className="w-6 h-6 stroke-[2.5]" />
               </div>
               <div>
-                <p className="text-sm font-black text-white leading-tight">Track Delivery</p>
-                <p className="text-xs text-slate-400 font-medium">Public link & track</p>
+                <p className="text-sm font-black text-white leading-tight"><T k="merchant.track_delivery" /></p>
+                <p className="text-xs text-slate-400 font-medium"><T k="merchant.public_link_track" /></p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />
@@ -326,8 +304,8 @@ export default function DashboardOverviewPage() {
                 <Bell className="w-6 h-6 stroke-[2.5]" />
               </div>
               <div>
-                <p className="text-sm font-black text-white leading-tight">View Notifications</p>
-                <p className="text-xs text-slate-400 font-medium">Read SMS & app feed</p>
+                <p className="text-sm font-black text-white leading-tight"><T k="merchant.view_notifications" /></p>
+                <p className="text-xs text-slate-400 font-medium"><T k="merchant.read_sms_app_feed" /></p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />
@@ -340,7 +318,7 @@ export default function DashboardOverviewPage() {
         {/* Today's Orders */}
         <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-black text-slate-800 mb-1">Today's Orders</p>
+            <p className="text-xs font-black text-slate-800 mb-1"><T k="merchant.today_s_orders" /></p>
             <p className="text-3xl font-black text-slate-900 tracking-tight">{todaysOrdersCount}</p>
           </div>
           <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
@@ -351,7 +329,7 @@ export default function DashboardOverviewPage() {
         {/* Out for Delivery */}
         <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-black text-[#FF5500] mb-1">Out for Delivery</p>
+            <p className="text-xs font-black text-[#FF5500] mb-1"><T k="common.out_for_delivery" /></p>
             <p className="text-3xl font-black text-[#FF5500] tracking-tight">{outForDeliveryCount}</p>
           </div>
           <div className="w-10 h-10 rounded-full bg-orange-50 text-[#FF5500] flex items-center justify-center shrink-0">
@@ -362,7 +340,7 @@ export default function DashboardOverviewPage() {
         {/* Delivered */}
         <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-black text-emerald-600 mb-1">Delivered</p>
+            <p className="text-xs font-black text-emerald-600 mb-1"><T k="common.delivered" /></p>
             <p className="text-3xl font-black text-emerald-600 tracking-tight">{deliveredCount}</p>
           </div>
           <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
@@ -373,7 +351,7 @@ export default function DashboardOverviewPage() {
         {/* Failed */}
         <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-black text-rose-600 mb-1">Failed</p>
+            <p className="text-xs font-black text-rose-600 mb-1"><T k="common.failed" /></p>
             <p className="text-3xl font-black text-rose-600 tracking-tight">{failedCount}</p>
           </div>
           <div className="w-10 h-10 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
@@ -384,7 +362,7 @@ export default function DashboardOverviewPage() {
         {/* Notifications Sent (Full width below) */}
         <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-xs col-span-2 flex items-center justify-between">
           <div>
-            <p className="text-xs font-black text-amber-600 mb-1">Notifications Sent</p>
+            <p className="text-xs font-black text-amber-600 mb-1"><T k="merchant.notifications_sent" /></p>
             <p className="text-3xl font-black text-amber-600 tracking-tight">{notificationsSentCount}</p>
           </div>
           <div className="w-10 h-10 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
@@ -397,8 +375,8 @@ export default function DashboardOverviewPage() {
       <div className="bg-white border border-slate-200/80 rounded-3xl shadow-xs overflow-hidden">
         <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 className="text-base font-black text-slate-900">Live Deliveries</h2>
-            <p className="text-xs text-slate-500 font-medium">Real-time dispatches and driver assignments</p>
+            <h2 className="text-base font-black text-slate-900"><T k="merchant.live_deliveries" /></h2>
+            <p className="text-xs text-slate-500 font-medium"><T k="merchant.real_time_dispatches_and_driver_assignments" /></p>
           </div>
 
           {/* Status Filters */}
@@ -413,31 +391,27 @@ export default function DashboardOverviewPage() {
                     : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
                 }`}
               >
-                {st === 'ALL' ? 'All' : st.replace(/_/g, ' ')}
+                {st === 'ALL' ? t("admin.all") : st.replace(/_/g, ' ')}
               </button>
             ))}
           </div>
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-slate-400 text-xs font-bold">
-            Loading live dispatches...
-          </div>
+          <div className="p-12 text-center text-slate-400 text-xs font-bold">{' '}<T k="merchant.loading_live_dispatches" />{' '}</div>
         ) : filteredOrders.length === 0 ? (
           <div className="p-12 text-center flex flex-col items-center justify-center space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center">
               <PackageX className="w-6 h-6" />
             </div>
-            <h3 className="text-sm font-black text-slate-800">No Orders Found</h3>
-            <p className="text-xs text-slate-500 max-w-sm font-medium">
-              Click below to dispatch your first order.
-            </p>
+            <h3 className="text-sm font-black text-slate-800"><T k="merchant.no_orders_found" /></h3>
+            <p className="text-xs text-slate-500 max-w-sm font-medium">{' '}<T k="merchant.click_below_to_dispatch_your_first_order" />{' '}</p>
             <Link
               href="/dashboard/orders"
               className="mt-2 px-4 py-2.5 bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-extrabold text-xs rounded-xl shadow-xs transition-all flex items-center gap-2"
             >
               <Plus className="w-4 h-4 stroke-[3]" />
-              <span>Create First Order</span>
+              <span><T k="merchant.create_first_order" /></span>
             </Link>
           </div>
         ) : (
@@ -445,11 +419,11 @@ export default function DashboardOverviewPage() {
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-extrabold uppercase tracking-wider text-[10px]">
-                  <th className="p-4">Order #</th>
-                  <th className="p-4">Customer</th>
-                  <th className="p-4">Driver</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4 text-right">Actions</th>
+                  <th className="p-4"><T k="common.order_2" /></th>
+                  <th className="p-4"><T k="common.customer" /></th>
+                  <th className="p-4"><T k="common.driver" /></th>
+                  <th className="p-4"><T k="common.status" /></th>
+                  <th className="p-4 text-right"><T k="common.actions" /></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -471,7 +445,7 @@ export default function DashboardOverviewPage() {
                           <span className="font-extrabold text-slate-800">{item.driver_name}</span>
                         </div>
                       ) : (
-                        <span className="text-slate-400 italic font-medium">Unassigned</span>
+                        <span className="text-slate-400 italic font-medium"><T k="common.unassigned" /></span>
                       )}
                     </td>
                     <td className="p-4">{renderStatusBadge(item.status)}</td>
@@ -482,7 +456,7 @@ export default function DashboardOverviewPage() {
                             href={`/track/${item.tracking_token}`}
                             target="_blank"
                             className="p-1.5 text-slate-400 hover:text-[#FF5500] rounded-lg hover:bg-slate-100 transition-colors"
-                            title="Open Customer Tracking Link"
+                            title={t("merchant.open_customer_tracking_link")}
                           >
                             <ExternalLink className="w-4 h-4" />
                           </Link>
@@ -490,9 +464,7 @@ export default function DashboardOverviewPage() {
                         <Link
                           href={`/dashboard/orders/${item.id}`}
                           className="px-3.5 py-1.5 bg-[#0F172A] hover:bg-slate-800 text-white rounded-xl text-xs font-black transition-colors inline-block"
-                        >
-                          Details
-                        </Link>
+                        >{' '}<T k="merchant.details" />{' '}</Link>
                       </div>
                     </td>
                   </tr>
@@ -507,22 +479,20 @@ export default function DashboardOverviewPage() {
       {activeQuickAction === 'TRACK' && (
         <div className="fixed inset-0 bg-[#0F172A]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4 border border-slate-200">
-            <h3 className="text-base font-black text-slate-900">Track Customer Delivery</h3>
-            <p className="text-xs text-slate-500 font-medium">Enter an Order Number or Tracking Token to open live portal:</p>
+            <h3 className="text-base font-black text-slate-900"><T k="merchant.track_customer_delivery" /></h3>
+            <p className="text-xs text-slate-500 font-medium"><T k="merchant.enter_an_order_number_or_tracking_token_to_open_live_portal" /></p>
             <input
               type="text"
               value={trackInput}
               onChange={(e) => setTrackInput(e.target.value)}
-              placeholder="e.g. LUMO-8241 or tracking token..."
+              placeholder={t("merchant.e_g_lumo_8241_or_tracking_token")}
               className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:outline-none focus:border-[#FF5500]"
             />
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
                 onClick={() => setActiveQuickAction(null)}
                 className="px-4 py-2 bg-slate-100 text-slate-700 font-extrabold text-xs rounded-xl"
-              >
-                Close
-              </button>
+              >{' '}<T k="common.close" />{' '}</button>
               <button
                 onClick={() => {
                   if (trackInput.trim()) {
@@ -531,9 +501,7 @@ export default function DashboardOverviewPage() {
                   }
                 }}
                 className="px-4 py-2 bg-[#FF5500] hover:bg-[#E04B00] text-white font-extrabold text-xs rounded-xl shadow-xs"
-              >
-                Open Tracking Portal
-              </button>
+              >{' '}<T k="merchant.open_tracking_portal" />{' '}</button>
             </div>
           </div>
         </div>
@@ -545,28 +513,24 @@ export default function DashboardOverviewPage() {
           <div className="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-4 max-h-[80vh] flex flex-col justify-between border border-slate-200">
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-base font-black text-slate-900">SMS Notifications Feed</h3>
-                <span className="text-xs font-extrabold text-[#FF5500] bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200">
-                  Meseji SMS Logs
-                </span>
+                <h3 className="text-base font-black text-slate-900"><T k="merchant.sms_notifications_feed" /></h3>
+                <span className="text-xs font-extrabold text-[#FF5500] bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200">{' '}<T k="merchant.meseji_sms_logs" />{' '}</span>
               </div>
-              <p className="text-xs text-slate-500 font-medium mb-3">All automated customer and driver SMS alerts sent via Meseji API:</p>
+              <p className="text-xs text-slate-500 font-medium mb-3"><T k="merchant.all_automated_customer_and_driver_sms_alerts_sent_via_meseji_api" /></p>
 
               <div className="space-y-2 overflow-y-auto max-h-72 pr-1">
                 {notificationLog.length === 0 ? (
-                  <p className="text-xs text-slate-400 p-4 text-center">No notifications logged yet.</p>
+                  <p className="text-xs text-slate-400 p-4 text-center"><T k="merchant.no_notifications_logged_yet" /></p>
                 ) : (
                   notificationLog.map((log) => (
                     <div key={log.id} className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-xs">
                       <div>
                         <p className="font-extrabold text-slate-900">{log.type}</p>
-                        <p className="text-[11px] text-slate-500 font-medium">To: {log.recipient}</p>
+                        <p className="text-[11px] text-slate-500 font-medium"><T k="merchant.to" />{' '}{log.recipient}</p>
                       </div>
                       <div className="text-right">
-                        <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-extrabold text-[10px] rounded-md uppercase">
-                          Sent
-                        </span>
-                        <p className="text-[10px] font-mono text-slate-400 font-bold mt-0.5">Order {log.order}</p>
+                        <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-extrabold text-[10px] rounded-md uppercase">{' '}<T k="merchant.sent" />{' '}</span>
+                        <p className="text-[10px] font-mono text-slate-400 font-bold mt-0.5"><T k="common.order" />{' '}{log.order}</p>
                       </div>
                     </div>
                   ))
@@ -578,9 +542,7 @@ export default function DashboardOverviewPage() {
               <button
                 onClick={() => setActiveQuickAction(null)}
                 className="px-4 py-2 bg-[#0F172A] text-white font-extrabold text-xs rounded-xl"
-              >
-                Close
-              </button>
+              >{' '}<T k="common.close" />{' '}</button>
             </div>
           </div>
         </div>

@@ -1,5 +1,7 @@
 'use client';
 
+
+import { T, TLabel, useLanguage } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Shield, Zap, MessageSquare, PhoneCall, CheckCircle2, Lock, ArrowRight, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -51,6 +53,7 @@ const SLIDE_INTERVAL = 5000; // 5 Seconds per slide
 const FADE_DURATION = 400; // Smooth 400ms fade duration
 
 export function Hero() {
+  const { t, label: uiLabel, locale } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFading, setIsFading] = useState(false);
 
@@ -91,28 +94,28 @@ export function Hero() {
           {/* LUMO Brand Orange Eyebrow Pill Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/40 text-[#FF5500] text-[11px] sm:text-xs font-extrabold uppercase tracking-wider sm:tracking-widest shadow-sm">
             <span className="w-2 h-2 rounded-full bg-[#FF5500] animate-pulse"></span>
-            <span>{activeSlide.eyebrow}</span>
+            <span><TLabel value={activeSlide.eyebrow} /></span>
           </div>
 
           {/* Real-time Dispatch Tag */}
           <div className="flex items-center gap-1.5 text-[#FF5500] text-[11px] sm:text-xs font-extrabold tracking-wider uppercase">
             <MapPin className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span>{activeSlide.tagline}</span>
+            <span><TLabel value={activeSlide.tagline} /></span>
           </div>
 
           {/* Main Headline & Subheadline aligned with active slide */}
           <div className="space-y-2 min-h-[120px] sm:min-h-[140px]">
             <h1 className="text-3xl sm:text-5xl lg:text-[56px] font-black text-white tracking-tight leading-[1.1] transition-all">
-              {activeSlide.headline}
+              <TLabel value={activeSlide.headline} />
             </h1>
             <p className="text-xl sm:text-3xl font-extrabold text-[#FF5500] tracking-tight leading-snug">
-              {activeSlide.subheadline}
+              <TLabel value={activeSlide.subheadline} />
             </p>
           </div>
 
           {/* Description Subtext */}
           <p className="text-sm sm:text-lg text-[#A0B8D0] leading-relaxed max-w-xl min-h-[60px]">
-            {activeSlide.description}
+            <TLabel value={activeSlide.description} />
           </p>
 
           {/* CTA Buttons */}
@@ -121,7 +124,7 @@ export function Hero() {
               href="/register"
               className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-lg bg-[#FF5500] hover:bg-[#E04B00] text-white text-base font-extrabold shadow-lg shadow-orange-500/20 hover:shadow-orange-500/35 transition-all active:scale-95"
             >
-              <span>Get Started Free</span>
+              <span><T k="public.get_started_free" /></span>
               <ArrowRight className="w-4 h-4" />
             </Link>
 
@@ -129,7 +132,7 @@ export function Hero() {
               href="#features"
               className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-lg bg-[#112239]/90 border border-[#1F3654] hover:border-[#2D4D77] text-[#C0D5EC] hover:text-white text-base font-bold transition-all hover:bg-[#162C4A]"
             >
-              <span>Explore Features</span>
+              <span><T k="public.explore_features" /></span>
             </a>
           </div>
 
@@ -138,7 +141,7 @@ export function Hero() {
             {activeSlide.features.map((feat, idx) => (
               <div key={idx} className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-[#FF5500] shrink-0" />
-                <span>{feat}</span>
+                <span><TLabel value={feat} /></span>
               </div>
             ))}
           </div>
@@ -154,7 +157,7 @@ export function Hero() {
             <div className="relative flex justify-center group cursor-pointer" onClick={handleNextSlide}>
               <img 
                 src={activeSlide.image} 
-                alt={activeSlide.headline}
+                alt={uiLabel(activeSlide.headline)}
                 className={`w-full h-auto object-contain drop-shadow-2xl transition-all duration-700 ease-in-out transform group-hover:scale-105 ${isFading ? 'opacity-0 scale-[0.97] blur-[2px]' : 'opacity-100 scale-100 blur-0'}`}
               />
             </div>
@@ -170,7 +173,7 @@ export function Hero() {
                       ? 'w-8 bg-[#FF5500] shadow-md shadow-orange-500/50'
                       : 'w-2.5 bg-[#1E3654] hover:bg-[#FF5500]/60 hover:w-5'
                   }`}
-                  aria-label={`Go to slide ${index + 1}`}
+                  aria-label={t('common.go_to_slide', { number: index + 1 })}
                 />
               ))}
             </div>

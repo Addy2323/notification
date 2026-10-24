@@ -1,10 +1,14 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState, useEffect, useRef } from 'react';
 import { fetchApi } from '@/lib/api';
 import { BarChart3, TrendingUp, TrendingDown, DollarSign, ShoppingBag, Truck, Award, RefreshCw } from 'lucide-react';
 
 export default function AnalyticsPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const requestId = useRef(0);
   const [error, setError] = useState('');
   const [range, setRange] = useState('ALL');
@@ -22,7 +26,7 @@ export default function AnalyticsPage() {
       setAnalytics(resSummary);
       setTopProducts(resSummary.topProducts || []);
     } catch (err: any) {
-      if (id === requestId.current) { setError(err.message || 'Failed to load analytics'); setAnalytics(null); setTopProducts([]); }
+      if (id === requestId.current) { setError(err.message || t("admin.failed_to_load_analytics")); setAnalytics(null); setTopProducts([]); }
     } finally {
       if (id === requestId.current) setLoading(false);
     }
@@ -105,7 +109,7 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12 overflow-x-hidden">
       {error && <p role="alert" className="bg-rose-50 text-rose-700 p-4 rounded-xl">{error}</p>}
-      {loading && <p role="status" className="text-slate-500 text-sm">Loading analytics from saved orders...</p>}
+      {loading && <p role="status" className="text-slate-500 text-sm"><T k="merchant.loading_analytics_from_saved_orders" /></p>}
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 bg-slate-900 text-white p-4 sm:p-6 rounded-2xl shadow-xl border border-slate-800 overflow-hidden">
         <div className="flex items-center gap-3">
@@ -113,8 +117,8 @@ export default function AnalyticsPage() {
             <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Interactive Business Analytics</h1>
-            <p className="text-xs sm:text-sm text-slate-400">Sales performance, profit margins, fulfillment velocity & growth metrics</p>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight"><T k="merchant.interactive_business_analytics" /></h1>
+            <p className="text-xs sm:text-sm text-slate-400"><T k="merchant.sales_performance_profit_margins_fulfillment_velocity_growth_metrics" /></p>
           </div>
         </div>
 
@@ -138,7 +142,7 @@ export default function AnalyticsPage() {
                     : 'text-slate-400 hover:text-white hover:bg-slate-700/60'
                 }`}
               >
-                {p.label}
+                {uiLabel(p.label)}
               </button>
             ))}
           </div>
@@ -146,7 +150,7 @@ export default function AnalyticsPage() {
           <button
             onClick={loadData}
             className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl transition border border-slate-700 shrink-0"
-            title="Refresh Data"
+            title={t("admin.refresh_data")}
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -157,16 +161,16 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase text-slate-500">Sales Revenue</span>
+            <span className="text-xs font-bold uppercase text-slate-500"><T k="merchant.sales_revenue" /></span>
             <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <DollarSign className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl font-black text-slate-900 mt-2">
-            TZS {kpis.totalSales.toLocaleString()}
+            TZS {kpis.totalSales.toLocaleString(locale)}
           </p>
           <div className="flex items-center gap-1 mt-2 text-xs">
-            {comparison.salesGrowthPct === null ? <span className="text-slate-500">No comparison available</span> : comparison.salesGrowthPct >= 0 ? (
+            {comparison.salesGrowthPct === null ? <span className="text-slate-500"><T k="merchant.no_comparison_available" /></span> : comparison.salesGrowthPct >= 0 ? (
               <span className="inline-flex items-center text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">
                 <TrendingUp className="w-3 h-3 mr-0.5" /> +{comparison.salesGrowthPct}%
               </span>
@@ -175,58 +179,54 @@ export default function AnalyticsPage() {
                 <TrendingDown className="w-3 h-3 mr-0.5" /> {comparison.salesGrowthPct}%
               </span>
             )}
-            {comparison.salesGrowthPct !== null && <span className="text-slate-400">vs previous period</span>}
+            {comparison.salesGrowthPct !== null && <span className="text-slate-400"><T k="merchant.vs_previous_period" /></span>}
           </div>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-500">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase text-slate-500">Gross Profit</span>
+            <span className="text-xs font-bold uppercase text-slate-500"><T k="common.gross_profit" /></span>
             <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl font-black text-emerald-600 mt-2">
-            TZS {kpis.grossProfit.toLocaleString()}
+            TZS {kpis.grossProfit.toLocaleString(locale)}
           </p>
-          <p className="text-xs text-slate-500 mt-2">
-            Margin: <strong>{kpis.totalSales > 0 ? Math.round((kpis.grossProfit / kpis.totalSales) * 100) : 0}%</strong> of revenue
-          </p>
+          <p className="text-xs text-slate-500 mt-2">{' '}<T k="merchant.margin" />{' '}<strong>{kpis.totalSales > 0 ? Math.round((kpis.grossProfit / kpis.totalSales) * 100) : 0}%</strong>{' '}<T k="merchant.of_revenue" />{' '}</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase text-slate-500">Orders & Products</span>
+            <span className="text-xs font-bold uppercase text-slate-500"><T k="merchant.orders_products" /></span>
             <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
               <ShoppingBag className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-2xl font-black text-slate-900 mt-2">{kpis.totalOrders} Orders</p>
+          <p className="text-2xl font-black text-slate-900 mt-2">{kpis.totalOrders}{' '}<T k="common.orders" /></p>
           <p className="text-xs text-slate-500 mt-2">
-            <strong>{kpis.productsSold}</strong> individual products sold
-          </p>
+            <strong>{kpis.productsSold}</strong>{' '}<T k="merchant.individual_products_sold" />{' '}</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase text-slate-500">Fulfillment & SMS</span>
+            <span className="text-xs font-bold uppercase text-slate-500"><T k="merchant.fulfillment_sms" /></span>
             <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
               <Truck className="w-4 h-4" />
             </div>
           </div>
           <p className="text-2xl font-black text-slate-900 mt-2">
-            {kpis.deliveredCount} <span className="text-xs text-emerald-600 font-semibold uppercase">Delivered</span>
+            {kpis.deliveredCount} <span className="text-xs text-emerald-600 font-semibold uppercase"><T k="common.delivered" /></span>
           </p>
           <p className="text-xs text-slate-500 mt-2">
-            <strong>{kpis.notificationsSent}</strong> automated SMS sent
-          </p>
+            <strong>{kpis.notificationsSent}</strong>{' '}<T k="merchant.automated_sms_sent" />{' '}</p>
         </div>
       </div>
 
       <div className="bg-white border rounded-xl p-4 text-sm text-slate-600">
-        <p>Buying cost: TZS {kpis.totalCost.toLocaleString()} ? Refunds: TZS {(kpis.totalRefunds || 0).toLocaleString()}</p>
-        <p className="text-xs mt-1">Based on orders created in the selected period, across all delivery stages, with current refunds deducted. Refunded units are excluded from products sold.</p>
-        {!!kpis.missingCostCount && <p className="text-amber-700 mt-2">{kpis.missingCostCount} orders have no buying cost recorded. Their profit is excluded.</p>}
+        <p><T k="merchant.buying_cost_tzs" />{' '}{kpis.totalCost.toLocaleString(locale)}{' '}<T k="merchant.refunds_tzs" />{' '}{(kpis.totalRefunds || 0).toLocaleString(locale)}</p>
+        <p className="text-xs mt-1"><T k="merchant.based_on_orders_created_in_the_selected_period_across_all_delivery_stages_with_curren" /></p>
+        {!!kpis.missingCostCount && <p className="text-amber-700 mt-2">{kpis.missingCostCount}{' '}<T k="merchant.orders_have_no_buying_cost_recorded_their_profit_is_excluded" /></p>}
       </div>
       {/* Visual Chart Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -234,13 +234,10 @@ export default function AnalyticsPage() {
         <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-slate-900 text-base uppercase tracking-wider text-xs text-amber-700">
-                SALES REVENUE TREND (TZS)
-              </h3>
-              <p className="text-xs text-slate-500">Sales after refunds for the selected period</p>
+              <h3 className="font-bold text-slate-900 text-base uppercase tracking-wider text-xs text-amber-700">{' '}<T k="merchant.sales_revenue_trend_tzs" />{' '}</h3>
+              <p className="text-xs text-slate-500"><T k="merchant.sales_after_refunds_for_the_selected_period" /></p>
             </div>
-            <span className="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-mono font-semibold">
-              Period: {range}
+            <span className="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-mono font-semibold">{' '}<T k="merchant.period" />{' '}{range}
             </span>
           </div>
 
@@ -250,9 +247,7 @@ export default function AnalyticsPage() {
                 <RefreshCw className="w-6 h-6 animate-spin text-[#FF5500]" />
               </div>
             ) : trend.length === 0 ? (
-              <div className="h-64 flex items-center justify-center text-slate-400 text-xs">
-                No sales trend data available for this selection
-              </div>
+              <div className="h-64 flex items-center justify-center text-slate-400 text-xs">{' '}<T k="merchant.no_sales_trend_data_available_for_this_selection" />{' '}</div>
             ) : (
               <div className="relative">
                 <svg
@@ -367,8 +362,8 @@ export default function AnalyticsPage() {
                       top: `${(hoveredPoint.y / svgHeight) * 100}%`,
                     }}
                   >
-                    <p className="font-bold">{hoveredPoint.label}</p>
-                    <p className="text-amber-400 font-mono">TZS {hoveredPoint.sales.toLocaleString()}</p>
+                    <p className="font-bold">{uiLabel(hoveredPoint.label)}</p>
+                    <p className="text-amber-400 font-mono">TZS {hoveredPoint.sales.toLocaleString(locale)}</p>
                   </div>
                 )}
               </div>
@@ -378,9 +373,9 @@ export default function AnalyticsPage() {
           <div className="flex items-center justify-between text-xs text-slate-500 font-medium pt-2">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-gradient-to-r from-amber-500 to-[#FF5500]" />
-              <span>Sales revenue after refunds</span>
+              <span><T k="merchant.sales_revenue_after_refunds" /></span>
             </div>
-            <span>Peak Revenue: TZS {Math.max(0, ...trend.map(point => point.sales)).toLocaleString()}</span>
+            <span><T k="merchant.peak_revenue_tzs" />{' '}{Math.max(0, ...trend.map(point => point.sales)).toLocaleString(locale)}</span>
           </div>
         </div>
 
@@ -388,12 +383,12 @@ export default function AnalyticsPage() {
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
           <div className="flex items-center gap-2">
             <Award className="w-5 h-5 text-amber-500" />
-            <h3 className="font-bold text-slate-900 text-base">Top Selling Products</h3>
+            <h3 className="font-bold text-slate-900 text-base"><T k="merchant.top_selling_products" /></h3>
           </div>
 
           <div className="divide-y divide-slate-100">
             {topProducts.length === 0 ? (
-              <p className="text-slate-400 text-xs py-8 text-center">No product sales records yet</p>
+              <p className="text-slate-400 text-xs py-8 text-center"><T k="merchant.no_product_sales_records_yet" /></p>
             ) : (
               topProducts.map((p, idx) => (
                 <div key={idx} className="py-3 flex items-center justify-between text-xs">
@@ -403,12 +398,12 @@ export default function AnalyticsPage() {
                     </span>
                     <div>
                       <p className="font-bold text-slate-800">{p.name}</p>
-                      <p className="text-[10px] text-slate-400">{p.orderCount} orders • {p.totalQty} units sold</p>
+                      <p className="text-[10px] text-slate-400">{p.orderCount}{' '}<T k="merchant.orders_2" />{' '}{p.totalQty}{' '}<T k="merchant.units_sold" /></p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-slate-900">TZS {p.totalRevenue.toLocaleString()}</p>
-                    <p className={`text-[10px] font-semibold ${p.totalProfit < 0 ? 'text-rose-600' : 'text-emerald-600'}`}>{p.missingCostCount ? 'Profit incomplete' : `TZS ${p.totalProfit.toLocaleString()} profit`}</p>
+                    <p className="font-bold text-slate-900">TZS {p.totalRevenue.toLocaleString(locale)}</p>
+                    <p className={`text-[10px] font-semibold ${p.totalProfit < 0 ? 'text-rose-600' : 'text-emerald-600'}`}>{p.missingCostCount ? t("merchant.profit_incomplete") : t("interactions.tzs_value0_profit", { value0: (p.totalProfit.toLocaleString(locale)) ?? '' })}</p>
                   </div>
                 </div>
               ))

@@ -1,0 +1,4327 @@
+{
+  "entries": [
+    {
+      "file": "app/(auth)/forgot-password/page.tsx",
+      "start": 4914,
+      "end": 4963,
+      "text": "New password and confirm password do not match.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/forgot-password/page.tsx",
+      "start": 5074,
+      "end": 5120,
+      "text": "Password must be at least 6 characters long.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/forgot-password/page.tsx",
+      "start": 8609,
+      "end": 8622,
+      "text": "Phone Check",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/forgot-password/page.tsx",
+      "start": 8658,
+      "end": 8667,
+      "text": "SMS OTP",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/forgot-password/page.tsx",
+      "start": 8703,
+      "end": 8717,
+      "text": "New Password",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/forgot-password/page.tsx",
+      "start": 14125,
+      "end": 14142,
+      "text": "Resend SMS Code",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/(auth)/forgot-password/page.tsx",
+      "start": 16189,
+      "end": 16195,
+      "text": "text",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/forgot-password/page.tsx",
+      "start": 16198,
+      "end": 16208,
+      "text": "password",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/forgot-password/page.tsx",
+      "start": 17558,
+      "end": 17564,
+      "text": "text",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/forgot-password/page.tsx",
+      "start": 17567,
+      "end": 17577,
+      "text": "password",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/login/page.tsx",
+      "start": 21263,
+      "end": 21269,
+      "text": "text",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/login/page.tsx",
+      "start": 21272,
+      "end": 21282,
+      "text": "password",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/register/page.tsx",
+      "start": 3654,
+      "end": 3708,
+      "text": "Please fix the highlighted errors before continuing.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/register/page.tsx",
+      "start": 10170,
+      "end": 10259,
+      "text": "Enter the 6-digit SMS code sent to {value0} to verify business ownership.",
+      "template": true,
+      "expressions": [
+        "form.business_phone"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/register/page.tsx",
+      "start": 15687,
+      "end": 15706,
+      "text": "info@business.com",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/(auth)/register/page.tsx",
+      "start": 16297,
+      "end": 16303,
+      "text": "text",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/register/page.tsx",
+      "start": 16306,
+      "end": 16316,
+      "text": "password",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/(auth)/register/page.tsx",
+      "start": 21118,
+      "end": 21135,
+      "text": "Resend SMS Code",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/achievements/page.tsx",
+      "start": 339,
+      "end": 366,
+      "text": "First 10 Orders Completed",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/achievements/page.tsx",
+      "start": 455,
+      "end": 477,
+      "text": "100 Orders Centurion",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/achievements/page.tsx",
+      "start": 573,
+      "end": 596,
+      "text": "1,000 Orders Platinum",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/achievements/page.tsx",
+      "start": 675,
+      "end": 698,
+      "text": "7-Day Activity Streak",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/achievements/page.tsx",
+      "start": 785,
+      "end": 812,
+      "text": "TZS 10,000,000 Sales Club",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 1770,
+      "end": 1775,
+      "text": "img",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 1813,
+      "end": 1837,
+      "text": "0 0 {value0} {value1}",
+      "template": true,
+      "expressions": [
+        "width",
+        "height"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 2209,
+      "end": 2214,
+      "text": "end",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 2361,
+      "end": 2404,
+      "text": "{value0},{value1}",
+      "template": true,
+      "expressions": [
+        "x(index)",
+        "y(Number(row[s.key] || 0))"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 2422,
+      "end": 2428,
+      "text": "none",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 2851,
+      "end": 2864,
+      "text": "transparent",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 3083,
+      "end": 3091,
+      "text": "middle",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 3304,
+      "end": 3310,
+      "text": "none",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 3392,
+      "end": 3400,
+      "text": "polite",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 3434,
+      "end": 3534,
+      "text": "{value0} ? {value1}",
+      "template": true,
+      "expressions": [
+        "rows[hover].label",
+        "series.map(s => `${s.label}: ${format(rows[hover][s.key])}`).join(' ? ')"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 3476,
+      "end": 3519,
+      "text": "{value0}: {value1}",
+      "template": true,
+      "expressions": [
+        "s.label",
+        "format(rows[hover][s.key])"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 5865,
+      "end": 5875,
+      "text": "All Time",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 5888,
+      "end": 5895,
+      "text": "Today",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 5912,
+      "end": 5923,
+      "text": "This Week",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 5941,
+      "end": 5953,
+      "text": "This Month",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 5972,
+      "end": 5984,
+      "text": "Semiannual",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 6107,
+      "end": 6231,
+      "text": "px-4 py-2 rounded-xl text-xs font-bold {value0}",
+      "template": true,
+      "expressions": [
+        "period === value ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 6290,
+      "end": 6297,
+      "text": "alert",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 6388,
+      "end": 6396,
+      "text": "status",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 6589,
+      "end": 6619,
+      "text": "Merchant accounts (all time)",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 6643,
+      "end": 6731,
+      "text": "{value0} active ? {value1} with orders in this period",
+      "template": true,
+      "expressions": [
+        "data.merchants.active",
+        "data.merchants.engaged"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 6746,
+      "end": 6770,
+      "text": "Orders and fulfillment",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 6793,
+      "end": 6904,
+      "text": "{value0} delivered / {value1} dispatches (including standalone deliveries)",
+      "template": true,
+      "expressions": [
+        "data.summary.delivered",
+        "data.summary.dispatches"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 6919,
+      "end": 6938,
+      "text": "SMS delivery rate",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 7008,
+      "end": 7045,
+      "text": "{value0}%",
+      "template": true,
+      "expressions": [
+        "data.notifications.deliveryRate"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 7047,
+      "end": 7166,
+      "text": "{value0} delivered ? {value1} failed ? {value2} queued",
+      "template": true,
+      "expressions": [
+        "data.notifications.delivered",
+        "data.notifications.failed",
+        "data.notifications.queued"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 7181,
+      "end": 7202,
+      "text": "Sales after refunds",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 7231,
+      "end": 7272,
+      "text": "Refunds: {value0}",
+      "template": true,
+      "expressions": [
+        "money(data.summary.refunds)"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 7287,
+      "end": 7308,
+      "text": "Product buying cost",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 7336,
+      "end": 7389,
+      "text": "Cost recovered for refunded goods returned to stock",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 7404,
+      "end": 7418,
+      "text": "Gross profit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 7448,
+      "end": 7527,
+      "text": "{value0} orders missing buying cost (profit excluded)",
+      "template": true,
+      "expressions": [
+        "data.summary.missingCostCount"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8198,
+      "end": 8205,
+      "text": "sales",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8214,
+      "end": 8235,
+      "text": "Sales after refunds",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8264,
+      "end": 8272,
+      "text": "profit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8281,
+      "end": 8295,
+      "text": "Gross profit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8435,
+      "end": 8443,
+      "text": "orders",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8452,
+      "end": 8468,
+      "text": "Orders created",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8497,
+      "end": 8508,
+      "text": "delivered",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8517,
+      "end": 8539,
+      "text": "Delivered dispatches",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8658,
+      "end": 8672,
+      "text": "smsDelivered",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8681,
+      "end": 8696,
+      "text": "Delivered SMS",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8725,
+      "end": 8736,
+      "text": "smsFailed",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8745,
+      "end": 8757,
+      "text": "Failed SMS",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8836,
+      "end": 8855,
+      "text": "Dispatch statuses",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 8882,
+      "end": 8896,
+      "text": "SMS statuses",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/analytics/page.tsx",
+      "start": 9517,
+      "end": 9600,
+      "text": "{value0}%",
+      "template": true,
+      "expressions": [
+        "count / Math.max(1, ...Object.values(counts as Record<string, number>)) * 100"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 3518,
+      "end": 3525,
+      "text": "alert",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 3597,
+      "end": 3637,
+      "text": " ? Last successful refresh: {value0}",
+      "template": true,
+      "expressions": [
+        "updated"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 3680,
+      "end": 3688,
+      "text": "status",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 4022,
+      "end": 4053,
+      "text": "{value0} flex-1 min-w-64",
+      "template": true,
+      "expressions": [
+        "inputClass"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 4230,
+      "end": 4244,
+      "text": "All statuses",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 4259,
+      "end": 4279,
+      "text": "Pending / Assigned",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 4297,
+      "end": 4309,
+      "text": "In transit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 4324,
+      "end": 4342,
+      "text": "Arrived / Nearby",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 4359,
+      "end": 4370,
+      "text": "Delivered",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 4384,
+      "end": 4404,
+      "text": "Failed / Cancelled",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 5002,
+      "end": 5025,
+      "text": " ? Updated {value0}",
+      "template": true,
+      "expressions": [
+        "updated"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 5243,
+      "end": 5263,
+      "text": "Reference / Source",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 5265,
+      "end": 5275,
+      "text": "Merchant",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 5277,
+      "end": 5297,
+      "text": "Customer / Address",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 5299,
+      "end": 5308,
+      "text": "Product",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 5310,
+      "end": 5318,
+      "text": "Driver",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 5320,
+      "end": 5328,
+      "text": "Status",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 5330,
+      "end": 5339,
+      "text": "Created",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 5341,
+      "end": 5350,
+      "text": "Details",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 5936,
+      "end": 5961,
+      "text": "{value0}-{value1}",
+      "template": true,
+      "expressions": [
+        "row.source",
+        "row.id"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 7541,
+      "end": 7549,
+      "text": "dialog",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 7561,
+      "end": 7567,
+      "text": "true",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 8390,
+      "end": 8399,
+      "text": "Created",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 8424,
+      "end": 8434,
+      "text": "Assigned",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 8460,
+      "end": 8469,
+      "text": "Started",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 8526,
+      "end": 8535,
+      "text": "Arrived",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 8560,
+      "end": 8571,
+      "text": "Delivered",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/deliveries/page.tsx",
+      "start": 8598,
+      "end": 8609,
+      "text": "Cancelled",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/health/page.tsx",
+      "start": 7813,
+      "end": 8097,
+      "text": "px-2 py-0.5 rounded-full text-[9px] font-bold {value0}",
+      "template": true,
+      "expressions": [
+        "inc.severity === 'CRITICAL'\r\n                            ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30'\r\n                            : 'bg-amber-500/10 text-amber-400'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 4710,
+      "end": 4717,
+      "text": "light",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 4720,
+      "end": 4760,
+      "text": "theme-light bg-slate-50 text-slate-900",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 4763,
+      "end": 4803,
+      "text": "theme-dark bg-slate-950 text-slate-100",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 5012,
+      "end": 5019,
+      "text": "light",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 6165,
+      "end": 6172,
+      "text": "light",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 7411,
+      "end": 7418,
+      "text": "light",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 12640,
+      "end": 12646,
+      "text": "dark",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 12739,
+      "end": 13031,
+      "text": "p-2 rounded-xl border transition-all flex items-center justify-center {value0}",
+      "template": true,
+      "expressions": [
+        "theme === 'light'\r\n                ? 'bg-slate-100 border-slate-300 text-amber-600 hover:bg-slate-200'\r\n                : 'bg-slate-900 border-slate-800 text-amber-400 hover:bg-slate-800'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 12838,
+      "end": 12845,
+      "text": "light",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 13070,
+      "end": 13076,
+      "text": "dark",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 13841,
+      "end": 14111,
+      "text": "p-2 rounded-xl border relative transition-colors {value0}",
+      "template": true,
+      "expressions": [
+        "theme === 'light'\r\n                  ? 'border-slate-300 text-slate-600 hover:bg-slate-100'\r\n                  : 'border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 13921,
+      "end": 13928,
+      "text": "light",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 16750,
+      "end": 16757,
+      "text": "light",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/layout.tsx",
+      "start": 17129,
+      "end": 17136,
+      "text": "light",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 2752,
+      "end": 2820,
+      "text": "Do you want to {value0} merchant \"{value1}\"?",
+      "template": true,
+      "expressions": [
+        "actionText",
+        "merchant.business_name"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 3061,
+      "end": 3090,
+      "text": "Yes, {value0} merchant",
+      "template": true,
+      "expressions": [
+        "actionText"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 3449,
+      "end": 3493,
+      "text": "Merchant status changed to {value0}",
+      "template": true,
+      "expressions": [
+        "targetStatus"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 4633,
+      "end": 4714,
+      "text": "Merchant {value0} created successfully with temporary password.",
+      "template": true,
+      "expressions": [
+        "formData.businessName"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 7222,
+      "end": 7289,
+      "text": "Merchant \"{value0}\" details updated successfully.",
+      "template": true,
+      "expressions": [
+        "formData.businessName"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 8008,
+      "end": 8163,
+      "text": "Are you sure you want to delete \"{value0}\"? This action CANNOT be undone and will delete all associated orders, deliveries, and drivers.",
+      "template": true,
+      "expressions": [
+        "merchant.business_name"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 8693,
+      "end": 8761,
+      "text": "Merchant \"{value0}\" has been permanently deleted.",
+      "template": true,
+      "expressions": [
+        "merchant.business_name"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 10866,
+      "end": 11096,
+      "text": "px-3 py-1.5 rounded-lg text-xs font-bold transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "statusFilter === st\r\n                  ? 'bg-amber-500 text-slate-950 shadow-sm'\r\n                  : 'text-slate-400 hover:text-white'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 16791,
+      "end": 17287,
+      "text": "inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold {value0}",
+      "template": true,
+      "expressions": [
+        "m.status === 'ACTIVE'\r\n                              ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'\r\n                              : m.status === 'SUSPENDED'\r\n                              ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30'\r\n                              : 'bg-slate-800 text-slate-400 border border-slate-700'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 24110,
+      "end": 24131,
+      "text": "info@business.co.tz",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 24752,
+      "end": 24777,
+      "text": "Dar es Salaam, Tanzania",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 25805,
+      "end": 25815,
+      "text": "John Doe",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 27192,
+      "end": 27198,
+      "text": "text",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/page.tsx",
+      "start": 27201,
+      "end": 27211,
+      "text": "password",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 2139,
+      "end": 2217,
+      "text": "Do you want to {value0} merchant \"{value1}\"?",
+      "template": true,
+      "expressions": [
+        "actionText",
+        "profile?.merchant?.business_name"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 2458,
+      "end": 2487,
+      "text": "Yes, {value0} merchant",
+      "template": true,
+      "expressions": [
+        "actionText"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 2852,
+      "end": 2892,
+      "text": "Merchant status is now {value0}",
+      "template": true,
+      "expressions": [
+        "targetStatus"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 3446,
+      "end": 3453,
+      "text": "alert",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 5473,
+      "end": 5483,
+      "text": "All Time",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 5496,
+      "end": 5503,
+      "text": "Today",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 5520,
+      "end": 5531,
+      "text": "This Week",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 5549,
+      "end": 5561,
+      "text": "This Month",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 5580,
+      "end": 5592,
+      "text": "Semiannual",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 5715,
+      "end": 5839,
+      "text": "px-4 py-2 rounded-xl text-xs font-bold {value0}",
+      "template": true,
+      "expressions": [
+        "period === value ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 7112,
+      "end": 7513,
+      "text": "px-3 py-1 rounded-full text-xs font-bold {value0}",
+      "template": true,
+      "expressions": [
+        "merchant.status === 'ACTIVE'\r\n                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'\r\n                      : merchant.status === 'SUSPENDED'\r\n                      ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30'\r\n                      : 'bg-slate-800 text-slate-400'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 11861,
+      "end": 11871,
+      "text": "Overview",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 15902,
+      "end": 15910,
+      "text": "Orders",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 17833,
+      "end": 17840,
+      "text": "Sales",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 19265,
+      "end": 19274,
+      "text": "Drivers",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/merchants/[id]/page.tsx",
+      "start": 20217,
+      "end": 20226,
+      "text": "Reports",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/orders/page.tsx",
+      "start": 3180,
+      "end": 3187,
+      "text": "alert",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/orders/page.tsx",
+      "start": 3298,
+      "end": 3306,
+      "text": "status",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/orders/page.tsx",
+      "start": 4234,
+      "end": 4464,
+      "text": "px-3 py-1.5 rounded-lg text-xs font-bold transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "statusFilter === st\r\n                  ? 'bg-amber-500 text-slate-950 shadow-sm'\r\n                  : 'text-slate-400 hover:text-white'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/orders/page.tsx",
+      "start": 7597,
+      "end": 8020,
+      "text": "px-2.5 py-1 rounded-full text-[10px] {value0}",
+      "template": true,
+      "expressions": [
+        "o.status === 'DELIVERED'\r\n                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'\r\n                            : o.status === 'PENDING'\r\n                            ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'\r\n                            : 'bg-slate-800 text-slate-400'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/orders/page.tsx",
+      "start": 8309,
+      "end": 8339,
+      "text": "View order {value0}",
+      "template": true,
+      "expressions": [
+        "o.order_number"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/orders/page.tsx",
+      "start": 9484,
+      "end": 9492,
+      "text": "dialog",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/orders/page.tsx",
+      "start": 9504,
+      "end": 9510,
+      "text": "true",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/orders/page.tsx",
+      "start": 12216,
+      "end": 12251,
+      "text": " ? {value0}",
+      "template": true,
+      "expressions": [
+        "notification.failure_reason"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 3848,
+      "end": 4134,
+      "text": "px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap {value0}",
+      "template": true,
+      "expressions": [
+        "period === p.value\r\n                  ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'\r\n                  : 'text-slate-400 hover:text-white hover:bg-slate-800'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 14724,
+      "end": 14732,
+      "text": "orders",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 14734,
+      "end": 14741,
+      "text": "sales",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 14743,
+      "end": 14754,
+      "text": "merchants",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 14756,
+      "end": 14768,
+      "text": "deliveries",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 14770,
+      "end": 14780,
+      "text": "visitors",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 14941,
+      "end": 15195,
+      "text": "px-3 py-1 rounded-lg text-xs font-bold capitalize transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "growthMetric === m\r\n                      ? 'bg-amber-500 text-slate-950 shadow-sm'\r\n                      : 'text-slate-400 hover:text-white'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 15662,
+      "end": 15905,
+      "text": "px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "growthInterval === inv\r\n                      ? 'bg-slate-800 text-white'\r\n                      : 'text-slate-500 hover:text-slate-300'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 16378,
+      "end": 16384,
+      "text": "none",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 17772,
+      "end": 17794,
+      "text": "url(#growthGradient)",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 17861,
+      "end": 17867,
+      "text": "none",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 18041,
+      "end": 18048,
+      "text": "round",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 18089,
+      "end": 18096,
+      "text": "round",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 18665,
+      "end": 18672,
+      "text": "sales",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 18700,
+      "end": 18757,
+      "text": "TZS {value0}",
+      "template": true,
+      "expressions": [
+        "(item[growthMetric] || 0).toLocaleString(locale)"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 23760,
+      "end": 23769,
+      "text": "2-digit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/page.tsx",
+      "start": 23779,
+      "end": 23788,
+      "text": "2-digit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/rankings/page.tsx",
+      "start": 1970,
+      "end": 2212,
+      "text": "px-3 py-1.5 rounded-xl text-xs font-bold transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "metric === m\r\n                  ? 'bg-amber-500 text-slate-950 shadow-md'\r\n                  : 'text-slate-400 hover:text-white hover:bg-slate-800'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 4050,
+      "end": 4055,
+      "text": "all",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 4064,
+      "end": 4074,
+      "text": "All Time",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 4097,
+      "end": 4104,
+      "text": "today",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 4113,
+      "end": 4120,
+      "text": "Today",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 4143,
+      "end": 4149,
+      "text": "week",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 4158,
+      "end": 4169,
+      "text": "This Week",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 4192,
+      "end": 4199,
+      "text": "month",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 4208,
+      "end": 4220,
+      "text": "This Month",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 4383,
+      "end": 4640,
+      "text": "px-3 py-1.5 rounded-lg text-xs font-bold transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "period === tab.id\r\n                  ? 'bg-amber-500 text-slate-950 shadow-md font-bold'\r\n                  : 'text-slate-400 hover:text-white hover:bg-slate-800'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 7010,
+      "end": 7026,
+      "text": "fill-slate-950",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 11332,
+      "end": 11341,
+      "text": "{value0}%",
+      "template": true,
+      "expressions": [
+        "pct"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 14194,
+      "end": 14690,
+      "text": "px-2 py-0.5 rounded-full text-[10px] font-bold {value0}",
+      "template": true,
+      "expressions": [
+        "m.average_rating >= 4.5\r\n                                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'\r\n                                  : m.average_rating >= 3.5\r\n                                  ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'\r\n                                  : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 19435,
+      "end": 19632,
+      "text": "px-2.5 py-1 rounded-lg text-xs font-bold transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "ratingFilter === 'ALL' ? 'bg-amber-500 text-slate-950' : 'text-slate-400 hover:text-white'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 19810,
+      "end": 20001,
+      "text": "px-2 py-1 rounded-lg text-xs font-bold transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "ratingFilter === '5' ? 'bg-emerald-500 text-white' : 'text-slate-400 hover:text-white'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 20196,
+      "end": 20412,
+      "text": "px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "ratingFilter === 'LOW' ? 'bg-rose-500 text-white' : 'text-rose-400 hover:text-rose-300'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/ratings/page.tsx",
+      "start": 21209,
+      "end": 21497,
+      "text": "p-4 rounded-xl bg-slate-950 border transition-all flex flex-col justify-between space-y-3 {value0}",
+      "template": true,
+      "expressions": [
+        "log.rating <= 2\r\n                        ? 'border-rose-800/60 bg-rose-950/20'\r\n                        : 'border-slate-800 hover:border-slate-700'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/reports/page.tsx",
+      "start": 2434,
+      "end": 2712,
+      "text": "py-2 rounded-xl text-xs font-bold border transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "period === p\r\n                    ? 'bg-amber-500 text-slate-950 border-amber-500 shadow-md'\r\n                    : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/admin/traffic/page.tsx",
+      "start": 3155,
+      "end": 3231,
+      "text": "{value0}%",
+      "template": true,
+      "expressions": [
+        "trafficData.funnel[trafficData.funnel.length - 1]?.conversionRate || 0"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/blog/delivery-tracking-tanzania-guide/page.tsx",
+      "start": 894,
+      "end": 956,
+      "text": "Complete Guide to Delivery Tracking for Tanzanian Businesses",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/blog/page.tsx",
+      "start": 1010,
+      "end": 1072,
+      "text": "Complete Guide to Delivery Tracking for Tanzanian Businesses",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/blog/page.tsx",
+      "start": 1487,
+      "end": 1556,
+      "text": "How SMS Notifications Improve Customer Trust in Last-Mile Logistics",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/blog/page.tsx",
+      "start": 1974,
+      "end": 2043,
+      "text": "Why WhatsApp Delivery Notifications Outperform Traditional Tracking",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/blog/page.tsx",
+      "start": 2444,
+      "end": 2499,
+      "text": "How to Track Deliveries Without Forcing App Downloads",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/blog/sms-notifications-customer-communication/page.tsx",
+      "start": 892,
+      "end": 961,
+      "text": "How SMS Notifications Improve Customer Trust in Last-Mile Logistics",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/blog/track-deliveries-without-app/page.tsx",
+      "start": 858,
+      "end": 913,
+      "text": "How to Track Deliveries Without Forcing App Downloads",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/blog/whatsapp-delivery-notifications-guide/page.tsx",
+      "start": 867,
+      "end": 936,
+      "text": "Why WhatsApp Delivery Notifications Outperform Traditional Tracking",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/components/MobileBottomNav.tsx",
+      "start": 2266,
+      "end": 2494,
+      "text": "relative flex flex-col items-center justify-center flex-1 h-full py-1 transition-all duration-200 active:scale-90 select-none {value0}",
+      "template": true,
+      "expressions": [
+        "isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/components/MobileBottomNav.tsx",
+      "start": 2651,
+      "end": 2774,
+      "text": "absolute top-0 w-8 h-1 rounded-b-full {value0} shadow-[0_2px_8px_rgba(255,85,0,0.6)] animate-in fade-in duration-200",
+      "template": true,
+      "expressions": [
+        "accentGlow"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/components/MobileBottomNav.tsx",
+      "start": 3043,
+      "end": 3073,
+      "text": "{value0} scale-110",
+      "template": true,
+      "expressions": [
+        "activeIconColor"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/components/OtpInput.tsx",
+      "start": 4670,
+      "end": 4679,
+      "text": "numeric",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/components/OtpInput.tsx",
+      "start": 4710,
+      "end": 4725,
+      "text": "one-time-code",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/components/OtpInput.tsx",
+      "start": 5347,
+      "end": 5360,
+      "text": "cursor-text",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/components/OtpInput.tsx",
+      "start": 6910,
+      "end": 6916,
+      "text": "none",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/components/OtpInput.tsx",
+      "start": 6943,
+      "end": 6957,
+      "text": "currentColor",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/components/OtpInput.tsx",
+      "start": 7150,
+      "end": 7156,
+      "text": "none",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/components/OtpInput.tsx",
+      "start": 7183,
+      "end": 7197,
+      "text": "currentColor",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/components/OtpInput.tsx",
+      "start": 7269,
+      "end": 7297,
+      "text": "{value0} 94.25",
+      "template": true,
+      "expressions": [
+        "progress * 0.9425"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/components/OtpInput.tsx",
+      "start": 7332,
+      "end": 7339,
+      "text": "round",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/components/OtpInput.tsx",
+      "start": 7370,
+      "end": 7538,
+      "text": "transition-all duration-1000 ease-linear {value0}",
+      "template": true,
+      "expressions": [
+        "timer > 15 ? 'text-emerald-500' : timer > 5 ? 'text-amber-500' : 'text-rose-500'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/components/OtpInput.tsx",
+      "start": 7614,
+      "end": 7815,
+      "text": "absolute inset-0 flex items-center justify-center text-[9px] font-black font-mono {value0}",
+      "template": true,
+      "expressions": [
+        "timer > 15 ? 'text-emerald-700' : timer > 5 ? 'text-amber-600' : 'text-rose-600'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/components/pwa/PWAInstallButton.tsx",
+      "start": 1611,
+      "end": 1620,
+      "text": "sidebar",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/components/pwa/PWAInstallButton.tsx",
+      "start": 1740,
+      "end": 1748,
+      "text": "header",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 3646,
+      "end": 3653,
+      "text": "alert",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 3746,
+      "end": 3754,
+      "text": "status",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 5079,
+      "end": 5089,
+      "text": "All Time",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 5130,
+      "end": 5137,
+      "text": "Today",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 5182,
+      "end": 5193,
+      "text": "Yesterday",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 5238,
+      "end": 5244,
+      "text": "Week",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 5290,
+      "end": 5297,
+      "text": "Month",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 5342,
+      "end": 5348,
+      "text": "Year",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 5507,
+      "end": 5785,
+      "text": "px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition shrink-0 {value0}",
+      "template": true,
+      "expressions": [
+        "range === p.id\r\n                    ? 'bg-[#FF5500] text-white shadow-sm'\r\n                    : 'text-slate-400 hover:text-white hover:bg-slate-700/60'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 12527,
+      "end": 12557,
+      "text": "0 0 {value0} {value1}",
+      "template": true,
+      "expressions": [
+        "svgWidth",
+        "svgHeight"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 14307,
+      "end": 14312,
+      "text": "end",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 14351,
+      "end": 14362,
+      "text": "monospace",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 14464,
+      "end": 14496,
+      "text": "{value0}M",
+      "template": true,
+      "expressions": [
+        "(val / 1000000).toFixed(1)"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 14571,
+      "end": 14600,
+      "text": "{value0}k",
+      "template": true,
+      "expressions": [
+        "(val / 1000).toFixed(0)"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 14849,
+      "end": 14869,
+      "text": "url(#areaGradient)",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 15044,
+      "end": 15050,
+      "text": "none",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 15081,
+      "end": 15101,
+      "text": "url(#lineGradient)",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 15180,
+      "end": 15187,
+      "text": "round",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 15226,
+      "end": 15233,
+      "text": "round",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 16509,
+      "end": 16517,
+      "text": "middle",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 17140,
+      "end": 17179,
+      "text": "{value0}%",
+      "template": true,
+      "expressions": [
+        "(hoveredPoint.x / svgWidth) * 100"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 17209,
+      "end": 17249,
+      "text": "{value0}%",
+      "template": true,
+      "expressions": [
+        "(hoveredPoint.y / svgHeight) * 100"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/analytics/page.tsx",
+      "start": 19806,
+      "end": 19858,
+      "text": "TZS {value0} profit",
+      "template": true,
+      "expressions": [
+        "p.totalProfit.toLocaleString(locale)"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/branding/page.tsx",
+      "start": 4044,
+      "end": 4057,
+      "text": "Logo Orange",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/branding/page.tsx",
+      "start": 4098,
+      "end": 4123,
+      "text": "Navy Blue (Blue Bahari)",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/branding/page.tsx",
+      "start": 4164,
+      "end": 4176,
+      "text": "Ocean Blue",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/branding/page.tsx",
+      "start": 4217,
+      "end": 4229,
+      "text": "Pure White",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/branding/page.tsx",
+      "start": 8316,
+      "end": 8325,
+      "text": "image/*",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/branding/page.tsx",
+      "start": 9988,
+      "end": 10015,
+      "text": "info@davidsportware.co.tz",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/deliveries/new/page.tsx",
+      "start": 4174,
+      "end": 4184,
+      "text": "customer",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/deliveries/new/page.tsx",
+      "start": 4389,
+      "end": 4399,
+      "text": "customer",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/deliveries/new/page.tsx",
+      "start": 4522,
+      "end": 4532,
+      "text": "customer",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/deliveries/new/page.tsx",
+      "start": 5415,
+      "end": 5423,
+      "text": "driver",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/deliveries/new/page.tsx",
+      "start": 5628,
+      "end": 5636,
+      "text": "driver",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/deliveries/new/page.tsx",
+      "start": 5759,
+      "end": 5767,
+      "text": "driver",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/deliveries/page.tsx",
+      "start": 15231,
+      "end": 15355,
+      "text": "inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[10px] font-extrabold {value0} {value1}",
+      "template": true,
+      "expressions": [
+        "statusCfg.bg",
+        "statusCfg.color"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/drivers/page.tsx",
+      "start": 1747,
+      "end": 1777,
+      "text": "Driver created successfully!",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/layout.tsx",
+      "start": 5253,
+      "end": 5262,
+      "text": "sidebar",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/layout.tsx",
+      "start": 7653,
+      "end": 7661,
+      "text": "header",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/layout.tsx",
+      "start": 9524,
+      "end": 9535,
+      "text": "HOME DECO",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/layout.tsx",
+      "start": 10858,
+      "end": 10864,
+      "text": "menu",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/orders/page.tsx",
+      "start": 4244,
+      "end": 4307,
+      "text": "Photo must be 5 MB or smaller. Please choose a smaller image.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/orders/page.tsx",
+      "start": 4410,
+      "end": 4459,
+      "text": "Please choose an image from your photo library.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/orders/page.tsx",
+      "start": 9828,
+      "end": 9890,
+      "text": "Order created successfully! Customer SMS sent automatically.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/orders/page.tsx",
+      "start": 18244,
+      "end": 18361,
+      "text": "inline-flex items-center gap-1 px-2 py-1 rounded-lg border text-[10px] font-bold {value0} {value1}",
+      "template": true,
+      "expressions": [
+        "statusCfg.bg",
+        "statusCfg.color"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/orders/page.tsx",
+      "start": 19659,
+      "end": 19665,
+      "text": "edit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/orders/page.tsx",
+      "start": 19876,
+      "end": 19884,
+      "text": "delete",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/orders/page.tsx",
+      "start": 20618,
+      "end": 20672,
+      "text": "Refund recorded. Sales and profit have been updated.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/orders/page.tsx",
+      "start": 29763,
+      "end": 29772,
+      "text": "image/*",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/orders/page.tsx",
+      "start": 31214,
+      "end": 31304,
+      "text": "TZS {value0}",
+      "template": true,
+      "expressions": [
+        "(Number(orderForm.amount) - Number(orderForm.buyingPrice)).toLocaleString(locale)"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/orders/[id]/page.tsx",
+      "start": 5617,
+      "end": 5696,
+      "text": "Status updated to {value0}. SMS sent automatically.",
+      "template": true,
+      "expressions": [
+        "STATUS_CONFIG[newStatus]?.label"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/orders/[id]/page.tsx",
+      "start": 6116,
+      "end": 6176,
+      "text": "Driver assigned! Customer & Driver SMS sent automatically.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/orders/[id]/page.tsx",
+      "start": 9150,
+      "end": 9204,
+      "text": "Refund recorded. Sales and profit have been updated.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/orders/[id]/page.tsx",
+      "start": 9703,
+      "end": 9827,
+      "text": "inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border text-[10px] font-bold mt-1 {value0} {value1}",
+      "template": true,
+      "expressions": [
+        "statusCfg.bg",
+        "statusCfg.color"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/page.tsx",
+      "start": 8250,
+      "end": 8280,
+      "text": "url('/tanzania_skyline.png')",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/page.tsx",
+      "start": 19705,
+      "end": 19959,
+      "text": "px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "statusFilter === st\r\n                    ? 'bg-[#0F172A] text-white shadow-xs'\r\n                    : 'bg-slate-100 hover:bg-slate-200 text-slate-600'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 3481,
+      "end": 3486,
+      "text": "all",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 3495,
+      "end": 3505,
+      "text": "All Time",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 3528,
+      "end": 3535,
+      "text": "today",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 3544,
+      "end": 3551,
+      "text": "Today",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 3574,
+      "end": 3580,
+      "text": "week",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 3589,
+      "end": 3600,
+      "text": "This Week",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 3623,
+      "end": 3630,
+      "text": "month",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 3639,
+      "end": 3651,
+      "text": "This Month",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 3814,
+      "end": 4064,
+      "text": "px-3 py-1.5 rounded-lg text-xs font-bold transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "period === tab.id\r\n                  ? 'bg-[#0F172A] text-white shadow-xs'\r\n                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 6402,
+      "end": 6433,
+      "text": "fill-amber-400 text-amber-400",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 11403,
+      "end": 11412,
+      "text": "{value0}%",
+      "template": true,
+      "expressions": [
+        "pct"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 16659,
+      "end": 16854,
+      "text": "px-2.5 py-1 rounded-lg text-xs font-bold transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "starFilter === 'ALL' ? 'bg-[#0F172A] text-white' : 'text-slate-600 hover:text-slate-900'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 17132,
+      "end": 17408,
+      "text": "px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-0.5 transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "starFilter === star\r\n                          ? 'bg-amber-500 text-white'\r\n                          : 'text-slate-600 hover:text-slate-900'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 17549,
+      "end": 17561,
+      "text": "fill-white",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/ratings/page.tsx",
+      "start": 17564,
+      "end": 17595,
+      "text": "fill-amber-400 text-amber-400",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 4916,
+      "end": 4930,
+      "text": "Daily Report",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 4938,
+      "end": 4962,
+      "text": "Today's sales & orders",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 5004,
+      "end": 5019,
+      "text": "Weekly Report",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 5027,
+      "end": 5053,
+      "text": "Current week performance",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 5096,
+      "end": 5112,
+      "text": "Monthly Report",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 5120,
+      "end": 5144,
+      "text": "Full monthly breakdown",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 5189,
+      "end": 5200,
+      "text": "Quarterly",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 5208,
+      "end": 5231,
+      "text": "3-month sales summary",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 5278,
+      "end": 5291,
+      "text": "Semi-Annual",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 5299,
+      "end": 5322,
+      "text": "6-month ledger record",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 5364,
+      "end": 5372,
+      "text": "Annual",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 5380,
+      "end": 5408,
+      "text": "Full year financial report",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/reports/page.tsx",
+      "start": 5572,
+      "end": 5882,
+      "text": "p-4 rounded-xl border text-left transition flex flex-col justify-between {value0}",
+      "template": true,
+      "expressions": [
+        "reportType === p.id\r\n                    ? 'border-[#FF5500] bg-orange-50/50 ring-2 ring-[#FF5500]/20'\r\n                    : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 2400,
+      "end": 2406,
+      "text": "edit",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 2500,
+      "end": 2576,
+      "text": "Order updated. Buying price, selling price and profit have been refreshed.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 2632,
+      "end": 2640,
+      "text": "status",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 2854,
+      "end": 2861,
+      "text": "alert",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 10404,
+      "end": 10414,
+      "text": "All Time",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 10453,
+      "end": 10460,
+      "text": "Today",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 10503,
+      "end": 10514,
+      "text": "Yesterday",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 10557,
+      "end": 10568,
+      "text": "This Week",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 10612,
+      "end": 10624,
+      "text": "This Month",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 10667,
+      "end": 10678,
+      "text": "This Year",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 10844,
+      "end": 11088,
+      "text": "px-3 py-1.5 rounded-lg text-xs font-semibold transition {value0}",
+      "template": true,
+      "expressions": [
+        "range === p.id\r\n                  ? 'bg-slate-900 text-white shadow-sm'\r\n                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 16192,
+      "end": 16201,
+      "text": "2-digit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 16211,
+      "end": 16220,
+      "text": "2-digit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 18086,
+      "end": 18537,
+      "text": "inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold {value0}",
+      "template": true,
+      "expressions": [
+        "ord.status === 'DELIVERED'\r\n                                ? 'bg-emerald-100 text-emerald-800'\r\n                                : ord.status === 'CANCELLED' || ord.status === 'FAILED'\r\n                                ? 'bg-rose-100 text-rose-800'\r\n                                : 'bg-amber-100 text-amber-800'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 18953,
+      "end": 18985,
+      "text": "Edit order {value0}",
+      "template": true,
+      "expressions": [
+        "ord.order_number"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/sales/page.tsx",
+      "start": 19247,
+      "end": 19330,
+      "text": "{value0} details for {value1}",
+      "template": true,
+      "expressions": [
+        "isExpanded ? t(\"admin.hide\") : t(\"admin.show\")",
+        "ord.order_number"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/dashboard/settings/page.tsx",
+      "start": 1867,
+      "end": 1911,
+      "text": "Failed to save settings. Please try again.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/deliveries/[id]/page.tsx",
+      "start": 1643,
+      "end": 1743,
+      "text": "Are you sure you want to cancel this delivery? The driver will no longer be able to update status.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/deliveries/[id]/page.tsx",
+      "start": 4504,
+      "end": 4511,
+      "text": "track",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/deliveries/[id]/page.tsx",
+      "start": 4711,
+      "end": 4718,
+      "text": "track",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/deliveries/[id]/page.tsx",
+      "start": 4965,
+      "end": 4973,
+      "text": "driver",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/deliveries/[id]/page.tsx",
+      "start": 5173,
+      "end": 5181,
+      "text": "driver",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/deliveries/[id]/page.tsx",
+      "start": 11449,
+      "end": 11461,
+      "text": "07XXXXXXXX",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/delivery-tracking/page.tsx",
+      "start": 1349,
+      "end": 1358,
+      "text": "Created",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/delivery-tracking/page.tsx",
+      "start": 1573,
+      "end": 1585,
+      "text": "On the Way",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/delivery-tracking/page.tsx",
+      "start": 1793,
+      "end": 1802,
+      "text": "Arrived",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/delivery-tracking/page.tsx",
+      "start": 2010,
+      "end": 2021,
+      "text": "Delivered",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/driver/[token]/page.tsx",
+      "start": 6262,
+      "end": 6349,
+      "text": "px-2.5 py-1 rounded-lg border text-[11px] font-bold {value0} {value1}",
+      "template": true,
+      "expressions": [
+        "statusCfg.bg",
+        "statusCfg.text"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/driver/[token]/page.tsx",
+      "start": 11590,
+      "end": 11598,
+      "text": "accept",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/driver/[token]/page.tsx",
+      "start": 12374,
+      "end": 12381,
+      "text": "start",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/driver/[token]/page.tsx",
+      "start": 13085,
+      "end": 13093,
+      "text": "nearby",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/driver/[token]/page.tsx",
+      "start": 13832,
+      "end": 13843,
+      "text": "delivered",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/driver/[token]/page.tsx",
+      "start": 14482,
+      "end": 14490,
+      "text": "failed",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/features/page.tsx",
+      "start": 1058,
+      "end": 1100,
+      "text": "Automated SMS & WhatsApp Delivery Alerts",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/features/page.tsx",
+      "start": 1353,
+      "end": 1383,
+      "text": "App-Free Web Tracking Portal",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/features/page.tsx",
+      "start": 1669,
+      "end": 1701,
+      "text": "Mobile Browser Driver Workflow",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/features/page.tsx",
+      "start": 1962,
+      "end": 1996,
+      "text": "Secure OTP Handover Verification",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/features/page.tsx",
+      "start": 2238,
+      "end": 2266,
+      "text": "Merchant Control Dashboard",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/features/page.tsx",
+      "start": 2533,
+      "end": 2559,
+      "text": "Custom Merchant Branding",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/how-it-works/page.tsx",
+      "start": 1203,
+      "end": 1222,
+      "text": "Create a Delivery",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/how-it-works/page.tsx",
+      "start": 1436,
+      "end": 1457,
+      "text": "Notify the Customer",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/how-it-works/page.tsx",
+      "start": 1649,
+      "end": 1673,
+      "text": "Driver Starts Delivery",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/how-it-works/page.tsx",
+      "start": 1869,
+      "end": 1895,
+      "text": "Customer Tracks Delivery",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/how-it-works/page.tsx",
+      "start": 2111,
+      "end": 2137,
+      "text": "Driver Confirms Delivery",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/layout.tsx",
+      "start": 1336,
+      "end": 1341,
+      "text": "yes",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/layout.tsx",
+      "start": 1404,
+      "end": 1409,
+      "text": "yes",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/layout.tsx",
+      "start": 1481,
+      "end": 1500,
+      "text": "black-translucent",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/layout.tsx",
+      "start": 1561,
+      "end": 1576,
+      "text": "LUMO Merchant",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/loading.tsx",
+      "start": 179,
+      "end": 205,
+      "text": "Loading your delivery...",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/page.tsx",
+      "start": 1310,
+      "end": 1345,
+      "text": "Track deliveries. Stay connected.",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/pricing/page.tsx",
+      "start": 3782,
+      "end": 3989,
+      "text": "p-8 rounded-3xl bg-[#112239] border relative space-y-6 flex flex-col justify-between {value0}",
+      "template": true,
+      "expressions": [
+        "p.popular ? 'border-[#FF5500] shadow-2xl shadow-orange-500/10' : 'border-[#1F3654]'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "start": 10459,
+      "end": 10490,
+      "text": "fill-amber-400 text-amber-400",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "start": 12599,
+      "end": 12915,
+      "text": "p-2 rounded-xl transition-all duration-200 transform hover:scale-115 focus:outline-none {value0}",
+      "template": true,
+      "expressions": [
+        "isActive\r\n                            ? 'text-amber-400 drop-shadow-[0_0_12px_rgba(251,191,36,0.5)]'\r\n                            : 'text-slate-600 hover:text-slate-400'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "start": 12954,
+      "end": 12973,
+      "text": "Rate {value0} star",
+      "template": true,
+      "expressions": [
+        "star"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "start": 13080,
+      "end": 13096,
+      "text": "fill-amber-400",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "start": 13346,
+      "end": 13418,
+      "text": "p-3.5 rounded-xl border text-center transition-all {value0}",
+      "template": true,
+      "expressions": [
+        "ratingDetails.bg"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "start": 14135,
+      "end": 14144,
+      "text": "comment",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "app/rate/[token]/page.tsx",
+      "start": 16084,
+      "end": 16099,
+      "text": "Submit Rating",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sms-notifications/page.tsx",
+      "start": 1284,
+      "end": 1305,
+      "text": "Order Created Alert",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sms-notifications/page.tsx",
+      "start": 1323,
+      "end": 1432,
+      "text": "Habari John! Odha yako #1024 kutoka HOME DECO imeundwa. Fuatilia hapa: lumotrack.lumo.co.tz/track/abc123xyz",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sms-notifications/page.tsx",
+      "start": 1488,
+      "end": 1512,
+      "text": "Out for Delivery Alert",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sms-notifications/page.tsx",
+      "start": 1530,
+      "end": 1653,
+      "text": "Dereva wako Ado yuko njiani na mzigo wako! Bonyeza hapa kufuatilia au kumpigia simu: lumotrack.lumo.co.tz/track/abc123xyz",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sms-notifications/page.tsx",
+      "start": 1712,
+      "end": 1734,
+      "text": "Driver Arrived Alert",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sms-notifications/page.tsx",
+      "start": 1752,
+      "end": 1833,
+      "text": "Dereva wako amewasili karibu na eneo lako! Tafadhali kuwa tayari kupokea mzigo.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sms-notifications/page.tsx",
+      "start": 1889,
+      "end": 1920,
+      "text": "Delivery Confirmation Receipt",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sms-notifications/page.tsx",
+      "start": 1938,
+      "end": 2014,
+      "text": "Mzigo wako umewasilishwa kikamilifu. Ahsante kwa kununua kutoka HOME DECO!",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sw/jinsi-inavyofanya-kazi/page.tsx",
+      "start": 1199,
+      "end": 1213,
+      "text": "Sajili Mzigo",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sw/jinsi-inavyofanya-kazi/page.tsx",
+      "start": 1316,
+      "end": 1328,
+      "text": "Tuma Arifa",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sw/jinsi-inavyofanya-kazi/page.tsx",
+      "start": 1433,
+      "end": 1456,
+      "text": "Dereva Anaanza Safari",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sw/jinsi-inavyofanya-kazi/page.tsx",
+      "start": 1548,
+      "end": 1572,
+      "text": "Mteja Anafuatilia Live",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/sw/jinsi-inavyofanya-kazi/page.tsx",
+      "start": 1664,
+      "end": 1686,
+      "text": "Thibitisha Kukabidhi",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "start": 3923,
+      "end": 3939,
+      "text": "Order Received",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "start": 4053,
+      "end": 4070,
+      "text": "Order Confirmed",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "start": 4189,
+      "end": 4206,
+      "text": "Driver Assigned",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "start": 4375,
+      "end": 4396,
+      "text": "Out for Delivery 🚚",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "start": 4529,
+      "end": 4550,
+      "text": "Driver is Nearby 📍",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "start": 4682,
+      "end": 4696,
+      "text": "Delivered 🎉",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "app/track/[token]/page.tsx",
+      "start": 4810,
+      "end": 4827,
+      "text": "Order Cancelled",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/common/LumoStartupLoader.tsx",
+      "start": 367,
+      "end": 618,
+      "text": "fixed inset-0 z-50 flex flex-col justify-between bg-[#050D1A] text-white select-none font-sans overflow-hidden transition-all duration-700 ease-in-out {value0}",
+      "template": true,
+      "expressions": [
+        "visible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Header.tsx",
+      "start": 1652,
+      "end": 1660,
+      "text": "header",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "components/landing/Header.tsx",
+      "start": 2465,
+      "end": 2473,
+      "text": "header",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "components/landing/Hero.tsx",
+      "start": 8801,
+      "end": 8827,
+      "text": "Go to slide {value0}",
+      "template": true,
+      "expressions": [
+        "index + 1"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/LumoLogo.tsx",
+      "start": 333,
+      "end": 380,
+      "text": "inline-flex items-center gap-2.5 {value0}",
+      "template": true,
+      "expressions": [
+        "className"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/LumoLogo.tsx",
+      "start": 503,
+      "end": 514,
+      "text": "LUMO Logo",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 735,
+      "end": 755,
+      "text": "1. Create Delivery",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 935,
+      "end": 960,
+      "text": "2. Instant Notification",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 1136,
+      "end": 1167,
+      "text": "3. Direct Web Tracking Portal",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 4194,
+      "end": 4208,
+      "text": "Order Placed",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 4279,
+      "end": 4296,
+      "text": "Driver Assigned",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 4361,
+      "end": 4371,
+      "text": "SMS Sent",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 4439,
+      "end": 4454,
+      "text": "Live Tracking",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 4522,
+      "end": 4533,
+      "text": "Delivered",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 12451,
+      "end": 12475,
+      "text": "Real-Time Map Tracking",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 12620,
+      "end": 12643,
+      "text": "Zero App Installation",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 12776,
+      "end": 12803,
+      "text": "Automated Dispatch Alerts",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 12952,
+      "end": 12979,
+      "text": "OTP Delivery Confirmation",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 13122,
+      "end": 13151,
+      "text": "Fleet Performance Analytics",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Sections.tsx",
+      "start": 13290,
+      "end": 13314,
+      "text": "Multi-Store Management",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Simulator.tsx",
+      "start": 3931,
+      "end": 3938,
+      "text": "pause",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Simulator.tsx",
+      "start": 3941,
+      "end": 3953,
+      "text": "play_arrow",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Simulator.tsx",
+      "start": 4194,
+      "end": 4419,
+      "text": "px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-variant text-label-sm font-code-tracking transition-all font-bold {value0}",
+      "template": true,
+      "expressions": [
+        "speedMultiplier > 1 ? 'text-primary' : ''"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Simulator.tsx",
+      "start": 9142,
+      "end": 9420,
+      "text": "transition-all duration-500 rounded-[2.5rem] p-2 sm:p-2.5 bg-zinc-900 shadow-2xl {value0}",
+      "template": true,
+      "expressions": [
+        "currentStep === 1\r\n              ? 'ring-4 ring-primary ring-offset-4 ring-offset-surface-container opacity-100'\r\n              : 'ring-2 ring-transparent opacity-85'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Simulator.tsx",
+      "start": 16578,
+      "end": 16858,
+      "text": "transition-all duration-500 rounded-[2.5rem] p-2 sm:p-2.5 bg-zinc-900 shadow-2xl {value0}",
+      "template": true,
+      "expressions": [
+        "currentStep === 2\r\n              ? 'ring-4 ring-secondary ring-offset-4 ring-offset-surface-container opacity-100'\r\n              : 'ring-2 ring-transparent opacity-85'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Simulator.tsx",
+      "start": 22178,
+      "end": 22231,
+      "text": "justify-end {value0}",
+      "template": true,
+      "expressions": [
+        "currentStep >= 2 ? 'flex' : 'hidden'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Simulator.tsx",
+      "start": 23442,
+      "end": 23721,
+      "text": "transition-all duration-500 rounded-[2.5rem] p-2 sm:p-2.5 bg-zinc-900 shadow-2xl {value0}",
+      "template": true,
+      "expressions": [
+        "currentStep === 3\r\n              ? 'ring-4 ring-tertiary ring-offset-4 ring-offset-surface-container opacity-100'\r\n              : 'ring-2 ring-transparent opacity-85'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "components/landing/Simulator.tsx",
+      "start": 28207,
+      "end": 28217,
+      "text": "'FILL' 1",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 2264,
+      "end": 2292,
+      "text": "Choose a photo up to 5 MB.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 2371,
+      "end": 2394,
+      "text": "Choose an image file.",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 4289,
+      "end": 4295,
+      "text": "edit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 5165,
+      "end": 5173,
+      "text": "dialog",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 5185,
+      "end": 5191,
+      "text": "true",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 5213,
+      "end": 5219,
+      "text": "edit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 5479,
+      "end": 5485,
+      "text": "edit",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 5718,
+      "end": 5725,
+      "text": "alert",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 5917,
+      "end": 5925,
+      "text": "delete",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 6812,
+      "end": 6824,
+      "text": "07XXXXXXXX",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 7848,
+      "end": 7855,
+      "text": "price",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 8124,
+      "end": 8130,
+      "text": "cost",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 8360,
+      "end": 8370,
+      "text": "quantity",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 8596,
+      "end": 8606,
+      "text": "discount",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 8915,
+      "end": 8963,
+      "text": "TZS {value0}",
+      "template": true,
+      "expressions": [
+        "(revenue - cost).toLocaleString(locale)"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 9308,
+      "end": 9317,
+      "text": "image/*",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 9831,
+      "end": 9839,
+      "text": "delete",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 9887,
+      "end": 9996,
+      "text": "px-4 py-2 rounded-xl text-white disabled:opacity-50 {value0}",
+      "template": true,
+      "expressions": [
+        "mode === 'delete' ? 'bg-rose-600' : 'bg-emerald-600'"
+      ],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 9951,
+      "end": 9959,
+      "text": "delete",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderEditor.tsx",
+      "start": 10083,
+      "end": 10091,
+      "text": "delete",
+      "template": false,
+      "expressions": [],
+      "attribute": false
+    },
+    {
+      "file": "components/OrderRefundDialog.tsx",
+      "start": 1541,
+      "end": 1549,
+      "text": "dialog",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "components/OrderRefundDialog.tsx",
+      "start": 1561,
+      "end": 1567,
+      "text": "true",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "components/OrderRefundDialog.tsx",
+      "start": 1826,
+      "end": 1833,
+      "text": "alert",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    },
+    {
+      "file": "components/ProfileDropdown.tsx",
+      "start": 6142,
+      "end": 6151,
+      "text": "image/*",
+      "template": false,
+      "expressions": [],
+      "attribute": true
+    }
+  ],
+  "strings": [
+    "New password and confirm password do not match.",
+    "Password must be at least 6 characters long.",
+    "Phone Check",
+    "SMS OTP",
+    "New Password",
+    "Resend SMS Code",
+    "text",
+    "password",
+    "Please fix the highlighted errors before continuing.",
+    "Enter the 6-digit SMS code sent to {value0} to verify business ownership.",
+    "info@business.com",
+    "First 10 Orders Completed",
+    "100 Orders Centurion",
+    "1,000 Orders Platinum",
+    "7-Day Activity Streak",
+    "TZS 10,000,000 Sales Club",
+    "img",
+    "0 0 {value0} {value1}",
+    "end",
+    "{value0},{value1}",
+    "none",
+    "transparent",
+    "middle",
+    "polite",
+    "{value0} ? {value1}",
+    "{value0}: {value1}",
+    "All Time",
+    "Today",
+    "This Week",
+    "This Month",
+    "Semiannual",
+    "px-4 py-2 rounded-xl text-xs font-bold {value0}",
+    "alert",
+    "status",
+    "Merchant accounts (all time)",
+    "{value0} active ? {value1} with orders in this period",
+    "Orders and fulfillment",
+    "{value0} delivered / {value1} dispatches (including standalone deliveries)",
+    "SMS delivery rate",
+    "{value0}%",
+    "{value0} delivered ? {value1} failed ? {value2} queued",
+    "Sales after refunds",
+    "Refunds: {value0}",
+    "Product buying cost",
+    "Cost recovered for refunded goods returned to stock",
+    "Gross profit",
+    "{value0} orders missing buying cost (profit excluded)",
+    "sales",
+    "profit",
+    "orders",
+    "Orders created",
+    "delivered",
+    "Delivered dispatches",
+    "smsDelivered",
+    "Delivered SMS",
+    "smsFailed",
+    "Failed SMS",
+    "Dispatch statuses",
+    "SMS statuses",
+    " ? Last successful refresh: {value0}",
+    "{value0} flex-1 min-w-64",
+    "All statuses",
+    "Pending / Assigned",
+    "In transit",
+    "Arrived / Nearby",
+    "Delivered",
+    "Failed / Cancelled",
+    " ? Updated {value0}",
+    "Reference / Source",
+    "Merchant",
+    "Customer / Address",
+    "Product",
+    "Driver",
+    "Status",
+    "Created",
+    "Details",
+    "{value0}-{value1}",
+    "dialog",
+    "true",
+    "Assigned",
+    "Started",
+    "Arrived",
+    "Cancelled",
+    "px-2 py-0.5 rounded-full text-[9px] font-bold {value0}",
+    "light",
+    "theme-light bg-slate-50 text-slate-900",
+    "theme-dark bg-slate-950 text-slate-100",
+    "dark",
+    "p-2 rounded-xl border transition-all flex items-center justify-center {value0}",
+    "p-2 rounded-xl border relative transition-colors {value0}",
+    "Do you want to {value0} merchant \"{value1}\"?",
+    "Yes, {value0} merchant",
+    "Merchant status changed to {value0}",
+    "Merchant {value0} created successfully with temporary password.",
+    "Merchant \"{value0}\" details updated successfully.",
+    "Are you sure you want to delete \"{value0}\"? This action CANNOT be undone and will delete all associated orders, deliveries, and drivers.",
+    "Merchant \"{value0}\" has been permanently deleted.",
+    "px-3 py-1.5 rounded-lg text-xs font-bold transition-all {value0}",
+    "inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold {value0}",
+    "info@business.co.tz",
+    "Dar es Salaam, Tanzania",
+    "John Doe",
+    "Merchant status is now {value0}",
+    "px-3 py-1 rounded-full text-xs font-bold {value0}",
+    "Overview",
+    "Orders",
+    "Sales",
+    "Drivers",
+    "Reports",
+    "px-2.5 py-1 rounded-full text-[10px] {value0}",
+    "View order {value0}",
+    " ? {value0}",
+    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap {value0}",
+    "merchants",
+    "deliveries",
+    "visitors",
+    "px-3 py-1 rounded-lg text-xs font-bold capitalize transition-all {value0}",
+    "px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all {value0}",
+    "url(#growthGradient)",
+    "round",
+    "TZS {value0}",
+    "2-digit",
+    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all {value0}",
+    "all",
+    "today",
+    "week",
+    "month",
+    "fill-slate-950",
+    "px-2 py-0.5 rounded-full text-[10px] font-bold {value0}",
+    "px-2.5 py-1 rounded-lg text-xs font-bold transition-all {value0}",
+    "px-2 py-1 rounded-lg text-xs font-bold transition-all {value0}",
+    "px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition-all {value0}",
+    "p-4 rounded-xl bg-slate-950 border transition-all flex flex-col justify-between space-y-3 {value0}",
+    "py-2 rounded-xl text-xs font-bold border transition-all {value0}",
+    "Complete Guide to Delivery Tracking for Tanzanian Businesses",
+    "How SMS Notifications Improve Customer Trust in Last-Mile Logistics",
+    "Why WhatsApp Delivery Notifications Outperform Traditional Tracking",
+    "How to Track Deliveries Without Forcing App Downloads",
+    "relative flex flex-col items-center justify-center flex-1 h-full py-1 transition-all duration-200 active:scale-90 select-none {value0}",
+    "absolute top-0 w-8 h-1 rounded-b-full {value0} shadow-[0_2px_8px_rgba(255,85,0,0.6)] animate-in fade-in duration-200",
+    "{value0} scale-110",
+    "numeric",
+    "one-time-code",
+    "cursor-text",
+    "currentColor",
+    "{value0} 94.25",
+    "transition-all duration-1000 ease-linear {value0}",
+    "absolute inset-0 flex items-center justify-center text-[9px] font-black font-mono {value0}",
+    "sidebar",
+    "header",
+    "Yesterday",
+    "Week",
+    "Month",
+    "Year",
+    "px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition shrink-0 {value0}",
+    "monospace",
+    "{value0}M",
+    "{value0}k",
+    "url(#areaGradient)",
+    "url(#lineGradient)",
+    "TZS {value0} profit",
+    "Logo Orange",
+    "Navy Blue (Blue Bahari)",
+    "Ocean Blue",
+    "Pure White",
+    "image/*",
+    "info@davidsportware.co.tz",
+    "customer",
+    "driver",
+    "inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[10px] font-extrabold {value0} {value1}",
+    "Driver created successfully!",
+    "HOME DECO",
+    "menu",
+    "Photo must be 5 MB or smaller. Please choose a smaller image.",
+    "Please choose an image from your photo library.",
+    "Order created successfully! Customer SMS sent automatically.",
+    "inline-flex items-center gap-1 px-2 py-1 rounded-lg border text-[10px] font-bold {value0} {value1}",
+    "edit",
+    "delete",
+    "Refund recorded. Sales and profit have been updated.",
+    "Status updated to {value0}. SMS sent automatically.",
+    "Driver assigned! Customer & Driver SMS sent automatically.",
+    "inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border text-[10px] font-bold mt-1 {value0} {value1}",
+    "url('/tanzania_skyline.png')",
+    "px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all {value0}",
+    "fill-amber-400 text-amber-400",
+    "px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-0.5 transition-all {value0}",
+    "fill-white",
+    "Daily Report",
+    "Today's sales & orders",
+    "Weekly Report",
+    "Current week performance",
+    "Monthly Report",
+    "Full monthly breakdown",
+    "Quarterly",
+    "3-month sales summary",
+    "Semi-Annual",
+    "6-month ledger record",
+    "Annual",
+    "Full year financial report",
+    "p-4 rounded-xl border text-left transition flex flex-col justify-between {value0}",
+    "Order updated. Buying price, selling price and profit have been refreshed.",
+    "This Year",
+    "px-3 py-1.5 rounded-lg text-xs font-semibold transition {value0}",
+    "inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold {value0}",
+    "Edit order {value0}",
+    "{value0} details for {value1}",
+    "Failed to save settings. Please try again.",
+    "Are you sure you want to cancel this delivery? The driver will no longer be able to update status.",
+    "track",
+    "07XXXXXXXX",
+    "On the Way",
+    "px-2.5 py-1 rounded-lg border text-[11px] font-bold {value0} {value1}",
+    "accept",
+    "start",
+    "nearby",
+    "failed",
+    "Automated SMS & WhatsApp Delivery Alerts",
+    "App-Free Web Tracking Portal",
+    "Mobile Browser Driver Workflow",
+    "Secure OTP Handover Verification",
+    "Merchant Control Dashboard",
+    "Custom Merchant Branding",
+    "Create a Delivery",
+    "Notify the Customer",
+    "Driver Starts Delivery",
+    "Customer Tracks Delivery",
+    "Driver Confirms Delivery",
+    "yes",
+    "black-translucent",
+    "LUMO Merchant",
+    "Loading your delivery...",
+    "Track deliveries. Stay connected.",
+    "p-8 rounded-3xl bg-[#112239] border relative space-y-6 flex flex-col justify-between {value0}",
+    "p-2 rounded-xl transition-all duration-200 transform hover:scale-115 focus:outline-none {value0}",
+    "Rate {value0} star",
+    "fill-amber-400",
+    "p-3.5 rounded-xl border text-center transition-all {value0}",
+    "comment",
+    "Submit Rating",
+    "Order Created Alert",
+    "Habari John! Odha yako #1024 kutoka HOME DECO imeundwa. Fuatilia hapa: lumotrack.lumo.co.tz/track/abc123xyz",
+    "Out for Delivery Alert",
+    "Dereva wako Ado yuko njiani na mzigo wako! Bonyeza hapa kufuatilia au kumpigia simu: lumotrack.lumo.co.tz/track/abc123xyz",
+    "Driver Arrived Alert",
+    "Dereva wako amewasili karibu na eneo lako! Tafadhali kuwa tayari kupokea mzigo.",
+    "Delivery Confirmation Receipt",
+    "Mzigo wako umewasilishwa kikamilifu. Ahsante kwa kununua kutoka HOME DECO!",
+    "Sajili Mzigo",
+    "Tuma Arifa",
+    "Dereva Anaanza Safari",
+    "Mteja Anafuatilia Live",
+    "Thibitisha Kukabidhi",
+    "Order Received",
+    "Order Confirmed",
+    "Driver Assigned",
+    "Out for Delivery 🚚",
+    "Driver is Nearby 📍",
+    "Delivered 🎉",
+    "Order Cancelled",
+    "fixed inset-0 z-50 flex flex-col justify-between bg-[#050D1A] text-white select-none font-sans overflow-hidden transition-all duration-700 ease-in-out {value0}",
+    "Go to slide {value0}",
+    "inline-flex items-center gap-2.5 {value0}",
+    "LUMO Logo",
+    "1. Create Delivery",
+    "2. Instant Notification",
+    "3. Direct Web Tracking Portal",
+    "Order Placed",
+    "SMS Sent",
+    "Live Tracking",
+    "Real-Time Map Tracking",
+    "Zero App Installation",
+    "Automated Dispatch Alerts",
+    "OTP Delivery Confirmation",
+    "Fleet Performance Analytics",
+    "Multi-Store Management",
+    "pause",
+    "play_arrow",
+    "px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-variant text-label-sm font-code-tracking transition-all font-bold {value0}",
+    "transition-all duration-500 rounded-[2.5rem] p-2 sm:p-2.5 bg-zinc-900 shadow-2xl {value0}",
+    "justify-end {value0}",
+    "'FILL' 1",
+    "Choose a photo up to 5 MB.",
+    "Choose an image file.",
+    "price",
+    "cost",
+    "quantity",
+    "discount",
+    "px-4 py-2 rounded-xl text-white disabled:opacity-50 {value0}"
+  ]
+}

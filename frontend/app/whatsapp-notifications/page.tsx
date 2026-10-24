@@ -1,3 +1,6 @@
+import { localizedMetadata } from '@/lib/server-language';
+
+import { T } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { MessageSquare, CheckCheck, Shield, Sparkles, Smartphone, ArrowRight } from 'lucide-react';
@@ -5,7 +8,7 @@ import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Sections';
 import { constructMetadata, generateBreadcrumbSchema } from '@/lib/seo';
 
-export const metadata = constructMetadata({
+export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'WhatsApp Delivery Notifications for Businesses | LUMO Track',
   description:
     'Send branded WhatsApp delivery updates to buyers. Include order details, driver info, and a one-click web tracking button.',
@@ -17,7 +20,7 @@ export const metadata = constructMetadata({
     'WhatsApp delivery software',
     'customer WhatsApp tracking Tanzania',
   ],
-});
+})); }
 
 export default function WhatsappNotificationsPage() {
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -35,15 +38,9 @@ export default function WhatsappNotificationsPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-16">
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider">
-            WHATSAPP DISPATCH AUTOMATION
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-            WhatsApp Delivery Notifications for Businesses
-          </h1>
-          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">
-            Enhance customer trust with interactive WhatsApp delivery updates featuring your merchant logo, order items, driver phone connectivity, and live web tracking.
-          </p>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider">{' '}<T k="public.whatsapp_dispatch_automation" />{' '}</span>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">{' '}<T k="public.whatsapp_delivery_notifications_for_businesses" />{' '}</h1>
+          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">{' '}<T k="public.enhance_customer_trust_with_interactive_whatsapp_delivery_updates_featuring_your_merc" />{' '}</p>
         </div>
 
         {/* Mock WhatsApp Card */}
@@ -54,24 +51,22 @@ export default function WhatsappNotificationsPage() {
             </div>
             <div>
               <h3 className="font-bold text-sm text-white flex items-center gap-1.5">
-                <span>LUMO Dispatch</span>
+                <span><T k="public.lumo_dispatch" /></span>
                 <CheckCheck className="w-4 h-4 text-emerald-400" />
               </h3>
-              <p className="text-[10px] text-slate-400">Official Business Account</p>
+              <p className="text-[10px] text-slate-400"><T k="public.official_business_account" /></p>
             </div>
           </div>
 
           <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-xs text-slate-200 space-y-2">
-            <p className="font-bold text-white">🚚 Your order from HOME DECO is on the way!</p>
-            <p className="text-slate-300">
-              Driver <span className="font-bold text-emerald-400">Ado</span> has picked up your package.
-            </p>
-            <p className="text-[10px] text-slate-400 font-mono">Order #1024 • Nike Air Max Shoes</p>
+            <p className="font-bold text-white"><T k="public.your_order_from_home_deco_is_on_the_way" /></p>
+            <p className="text-slate-300">{' '}<T k="common.driver" />{' '}<span className="font-bold text-emerald-400">Ado</span>{' '}<T k="public.has_picked_up_your_package" />{' '}</p>
+            <p className="text-[10px] text-slate-400 font-mono"><T k="public.order_1024_nike_air_max_shoes" /></p>
           </div>
 
           <button className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg">
             <Sparkles className="w-4 h-4" />
-            <span>Track Delivery Web Link</span>
+            <span><T k="public.track_delivery_web_link" /></span>
           </button>
         </div>
 
@@ -81,7 +76,7 @@ export default function WhatsappNotificationsPage() {
             href="/register"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] text-white font-extrabold text-sm shadow-lg shadow-orange-500/20"
           >
-            <span>Enable WhatsApp Delivery Alerts</span>
+            <span><T k="public.enable_whatsapp_delivery_alerts" /></span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

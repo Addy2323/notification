@@ -1,0 +1,1375 @@
+﻿0	, bidhaa zake, historia ya ufuatiliaji, arifa na usafirishaji uliounganishwa. Itaondolewa kwenye jumla za mauzo na ripoti. Rekodi ya ukaguzi wa ufutaji itahifadhiwa.
+3	· Bei ya kununua kwa bidhaa:
+4	· Punguzo:
+5	· Faida ghafi:
+6	· Malipo:
+7	· Idadi
+8	· Marejesho: TZS
+9	· Bei ya kuuza kwa bidhaa:
+10	· TZS
+11	. Malipo ukipokea:
+12	. Mauzo na usafirishaji hupangwa kwa tarehe ya oda na hali yake ya sasa, pamoja na marejesho ya baadaye. Mizigo ya kujitegemea haijumuishi iliyounganishwa na oda. Kiwango cha SMS zilizofika = zilizofika ÷ (zilizotumwa + zilizofika + zilizoshindwa); zilizo foleni hazihesabiwi. Nusu mwaka ni Januari–Juni au Julai–Desemba hadi sasa.
+13	. Hii huongeza kazi kwa wamiliki wa maduka na kuwakatisha tamaa wanunuzi wanaosubiri nyumbani au kazini.
+16	"Uhusiano bora na wateja wako ni msingi wetu. Uwazi wa usafirishaji hujenga uaminifu na kuwafanya wateja warudi kununua."
+17	(Si lazima)
+23	% ya waliokamilisha hatua
+24	← Badilisha simu
+25	← Hariri namba ya simu
+26	+ Ongeza mfanyabiashara mpya
+27	| Arifa na ufuatiliaji wa mizigo ya wateja
+28	● Anapatikana
+29	● Ana kazi
+30	⚪ Hayupo kazini
+31	💬 Tuambie zaidi kuhusu huduma uliyopata
+32	🚚 Taarifa ya usafirishaji
+33	🚚 Anasafirisha
+34	🚚 Oda iko njiani
+35	🚚 Mzigo wako unakaribia kufika!
+36	🚚 Oda yako
+37	🚚 Oda yako kutoka HOME DECO iko njiani!
+38	🟢 Anapatikana
+42	1 — Mbaya sana
+43	1 na 2. Mteja na anwani ya kupeleka
+44	Saa 1 iliyopita
+45	Fungua kwenye skrini ya mwanzo kwa mguso mmoja
+46	Fungua kwenye skrini ya mwanzo kwa mguso mmoja
+47	Oda 1,000 — Platinamu
+48	1. Sajili biashara
+49	1. Sajili mzigo
+50	1. Mfanyabiashara anatuma mzigo
+52	1. Chagua kipindi cha ripoti
+53	Dakika 10 zilizopita
+54	Zaidi ya mizigo 10,000 kwa siku
+55	Oda 100 — Bingwa
+56	Fikia watumiaji wote wa simu
+57	Oda 18 zinasubiri kusafirishwa
+58	2 — Mbaya
+59	Saa 2 zilizopita
+60	2. Sajili mizigo
+61	2. Dereva anapokea SMS
+62	2. Arifa ya papo hapo
+64	Zilizoshindwa ndani ya saa 24:
+65	3 — Wastani
+66	Mpya 3
+67	Mizigo 3 haijapangiwa madereva
+68	Kanuni ya rangi tatu
+69	Mfumo wa rangi tatu
+71	3. Panga dereva
+72	3. Tuma kiungo cha dereva
+73	3. Badilisha dereva aliyepangiwa
+74	3. Mteja anapata arifa papo hapo
+75	3. Ukurasa wa ufuatiliaji wa mtandaoni
+76	3. Bidhaa imenunuliwa
+77	Wasifu kamili
+78	4 — Nzuri
+79	4 na 5. Taarifa za dereva aliyepangiwa
+80	PIN ya uthibitisho ya tarakimu 4 *
+81	OTP ya tarakimu 4
+82	PIN ya kukabidhi ya tarakimu 4
+83	4. Dashibodi ya mfanyabiashara
+85	5 — Bora sana
+86	HATUA TANO ZA USAFIRISHAJI
+87	Siku 7 mfululizo za matumizi
+88	99.8% kwa wakati
+89	Tanzania yenye mafanikio zaidi
+90	Dereva
+92	KUHUSU LOTUSRISE NA LUMO
+93	KUHUSU MFUMO WA LUMO
+95	Kuhusu sisi
+96	Kubali mzigo
+97	Imekubaliwa
+98	Huna ruhusa / Hitilafu ya API
+99	Nenosiri la akaunti *
+100	Mafanikio
+101	Kitendo
+102	Kitendo kimekamilika
+103	Vitendo
+104	Inatumika
+105	INATUMIKA
+106	Wanunuzi wanaotumia mfumo
+107	Waliotumia katika kipindi
+108	Mizigo iliyo njiani
+109	Wafanyabiashara hai
+110	Oda inayoendelea
+111	Vipindi vya matumizi vinavyoendelea
+112	Shughuli
+113	Kipindi cha shughuli
+114	Siku mfululizo za matumizi
+115	Aliyetekeleza:
+116	Ongeza
+117	Ongeza LUMO kwenye skrini ya mwanzo
+118	Ongeza mfanyabiashara mpya
+119	Ongeza kwenye skrini ya mwanzo
+120	Imeongezwa
+121	Msimamizi
+122	Dashibodi ya msimamizi
+123	Arifa za mfumo kwa msimamizi
+124	Mtumiaji msimamizi
+126	Kumbukumbu za usimamizi na usalama
+127	Kumbukumbu za ukaguzi wa usimamizi
+131	Zote
+132	Arifa zote za SMS kwa wateja na madereva zilizotumwa kupitia Meseji API:
+133	Maoni yote ya wateja
+134	Mizigo na shughuli zote
+135	Huduma zote za SMS na hifadhidata zinafanya kazi
+136	Vyanzo vyote
+137	Nyota zote
+138	Hali zote
+139	Hali zote
+140	Mikoa yote ya Tanzania
+141	Muda wote
+142	Ruhusu madereva kubadilisha hali (Njiani, Amefika) kupitia kivinjari cha simu.
+143	Una akaunti tayari?
+144	Kiasi
+145	Kiasi kinachodaiwa:
+146	Uchanganuzi
+150	Mwaka mzima
+155	Kuombwa kupakua programu kwa ajili ya mzigo mmoja huwakera wateja na kupunguza matumizi ya huduma.
+156	Ufuatiliaji bila programu
+157	Ukurasa wa kufuatilia bila programu
+158	hifadhi
+159	Hifadhi akaunti ya mfanyabiashara
+160	Una uhakika?
+167	Amefika
+171	Panga msafirishaji / bodaboda
+172	Panga msafirishaji na tuma oda
+173	Panga dereva
+174	Amepangiwa
+175	Dereva aliyepangiwa
+176	saa
+177	juu kulia ili kukamilisha usakinishaji.
+178	Kumbukumbu za ukaguzi
+179	Inathibitisha utambulisho...
+180	Tengeneza kiotomatiki
+181	Wajulishe wateja kuhusu mizigo kupitia SMS za kuaminika kwenye mitandao ya Vodacom, Tigo, Airtel na Halotel Tanzania.
+182	Tuma arifa za usafirishaji kwa SMS kiotomatiki ukitumia LUMO Track.
+183	Arifa za mizigo kwa wateja kiotomatiki
+184	Arifa za kutuma mizigo kiotomatiki
+185	Kiotomatiki kutoka dukani hadi mlangoni
+186	Beji na tuzo za hatua muhimu kwa wafanyabiashara wanaotumia mfumo mara kwa mara na kusafirisha mizigo mingi.
+187	Arifa za usafirishaji za SMS na WhatsApp kiotomatiki
+188	SMS zilizotumwa kiotomatiki
+189	Watumie wanunuzi kiungo cha kufuatilia mara tu unapomkabidhi dereva mzigo.
+190	Anapatikana
+191	Wastani wa tathmini
+192	Wastani wa muda wa majibu:
+193	Wastani wa alama
+194	Rudi kwenye makala
+195	Rudi kwenye orodha ya wafanyabiashara
+196	Inaungwa mkono na LotusRise Limited, inayojenga miundombinu ya kidijitali na mifumo ya kuaminika kwa biashara.
+197	Foleni ya kazi za mfumo
+198	Ufuatiliaji wa kazi zinazosubiri
+200	Hesabu zinatokana na oda zilizosajiliwa katika kipindi ulichochagua, katika hatua zote za usafirishaji, baada ya marejesho. Bidhaa zilizorejeshewa fedha hazijumuishwi kwenye idadi iliyouzwa.
+285	Makala
+288	Jenga imani ya wateja leo
+307	Rangi za biashara:
+308	Arifa zenye utambulisho wa biashara kwenye njia zote
+309	Ripoti za PDF zenye nembo ya biashara
+310	Kituo cha ripoti na upakuaji wa mfumo
+311	Utambulisho wa biashara
+312	Mipangilio ya utambulisho imehifadhiwa. Mionekano yote imesasishwa.
+313	Tazama mizigo iliyothibitishwa, madereva waliopangiwa na taarifa za SMS kote Tanzania sehemu moja.
+314	Tazama wasifu wa wateja, namba za simu na oda zao kwa kila mfanyabiashara.
+315	Ukurasa wa dereva kwenye kivinjari
+316	Jenga sifa ya biashara
+317	Kuimarisha sifa ya mfanyabiashara
+318	Imeundwa kwa biashara zinazokua na wasafirishaji
+319	Anwani ya biashara
+320	Utambulisho wa biashara na kanuni ya rangi tatu
+321	Mipangilio ya utambulisho wa biashara
+322	Taarifa za biashara
+323	Barua pepe ya biashara
+324	Taarifa za biashara
+325	Jina la biashara
+326	Jina la biashara *
+327	Simu ya biashara
+328	Simu ya biashara *
+329	Namba ya simu ya biashara *
+330	Taarifa za wasifu wa biashara
+331	Bei ya kununua / bidhaa
+332	Gharama ya kununua imebaki
+333	Gharama ya kununua:
+334	Gharama ya kununua: TZS
+335	Bei ya kununua (TZS)
+336	Bei ya kununua (TZS) *
+337	Bei ya kununua / bidhaa: TZS
+338	Bei za kununua, bei za kuuza na hesabu za faida kiotomatiki
+339	Jumla ya manunuzi katika
+340	Inakokotoa viwango vya wafanyabiashara...
+342	Piga simu
+343	Mpigie dereva
+344	Ghairi
+345	Ghairi usafirishaji
+346	Ghairi oda
+347	Imeghairiwa
+348	Badilisha
+350	Wasiliana na timu ya mauzo na msaada wa kiufundi kupitia WhatsApp.
+351	Chagua picha kwenye maktaba au kifaa (hadi MB 5)
+352	Chagua kipindi kilichowekwa au tarehe zako
+353	Chagua picha ya bidhaa
+354	Chagua picha nyingine (hadi MB 5)
+355	Futa kichujio
+356	Bonyeza hapa kutuma oda yako ya kwanza.
+357	Funga
+358	Funga na fungua tena ili ujaribu.
+359	Funga na ujaribu tena kupakia oda hii.
+360	Funga tangazo la kusakinisha programu
+361	Funga taarifa
+362	Muda wa msimbo umeisha
+363	Msimbo unaisha baada ya
+364	Maoni yaliyoandikwa
+365	Mfumo kamili wa arifa na ufuatiliaji wa mizigo
+366	Mwongozo kamili wa kufuatilia mizigo kwa biashara Tanzania
+368	Maoni ya wateja katika mfumo mzima.
+369	Mizigo iliyokamilika
+370	Tathmini za mizigo iliyokamilika
+371	Inafuata mwongozo wa LUMO: bluu bahari, rangi ya chungwa ya nembo na nyeupe safi.
+372	Weka uzito wa alama za matumizi, viwango vya tahadhari na mipangilio ya mfumo.
+373	Thibitisha na tengeneza kiungo kipya
+374	Thibitisha nenosiri jipya *
+375	Thibitisha oda
+376	Imethibitishwa
+377	Unganisha akaunti yako rasmi ya WhatsApp Business kutuma taarifa za mizigo zenye picha na vitufe vya hatua.
+378	Kuunganisha wafanyabiashara na wanunuzi kote Tanzania
+379	Mawasiliano
+381	Wasiliana na msaada wa LUMO Track
+382	Wasiliana na msaada
+383	Wasiliana nasi
+384	Endelea kwenye kivinjari
+385	Endelea kwenye dashibodi
+386	ENDELEA KUTHIBITISHA OTP
+387	ENDELEA KUINGIA
+388	KITUO CHA UDHIBITI
+389	Mipangilio ya udhibiti
+390	IMENAKILIWA
+391	Kiungo kimenakiliwa!
+392	Imenakiliwa!
+393	Nakili
+394	NAKILI
+395	Nakili kiungo
+396	Gharama imebaki
+397	Sajili mzigo
+398	Sajili oda mpya kupanga madereva na kutuma viungo vya ufuatiliaji kwa wateja.
+399	Sajili mizigo na simamia madereva
+400	SAJILI MZIGO NA TUMA SMS
+401	Ongeza dereva
+402	Sajili oda ya kwanza
+403	Fungua akaunti bure
+404	Fungua akaunti ya mfanyabiashara
+405	Sajili mzigo mpya
+406	Weka nenosiri jipya
+407	Sajili oda
+408	Ongeza dereva wako wa kwanza ili uanze kupanga mizigo.
+409	Sajili oda yako ya kwanza ili uanze.
+410	Fungua akaunti ya biashara, pakia nembo ya duka na weka taarifa zako ndani ya dakika mbili.
+411	Sajili, simamia, simamisha, rejesha na kagua wasifu kamili wa wafanyabiashara.
+412	Imesajiliwa
+413	Ilisajiliwa tarehe
+414	Ilisajiliwa:
+415	INASAJILI MZIGO...
+416	Inasajili mfanyabiashara...
+417	Inasajili oda...
+418	INASAJILI...
+420	Utambulisho maalumu wa mfanyabiashara
+421	Mteja
+422	Kumbukumbu na usimamizi wa wateja
+424	Taarifa za mteja
+425	Taarifa za mteja *
+426	HUDUMA KWA MTEJA
+427	Kiungo cha mteja
+428	Jina la mteja
+429	Jina la mteja *
+430	Simu ya mteja *
+431	Namba ya simu ya mteja *
+432	Tathmini za wateja
+433	Kichwa cha ukurasa wa ufuatiliaji wa mteja
+434	Kiungo cha kufuatilia mzigo
+435	Mteja anafuatilia mzigo
+436	Mteja:
+437	wateja
+438	Wateja
+439	Wateja hawahitaji kupakua programu wala kufungua akaunti. Wanabonyeza kiungo cha SMS na kufuatilia kupitia Chrome au Safari.
+440	Wateja wanaona hali ya mzigo, mawasiliano ya dereva na taarifa za oda kwenye ukurasa wenye utambulisho wa biashara.
+441	Wateja wenye kumbukumbu za mizigo
+442	Matumizi ya kila siku
+443	Matumizi ya kila siku (uzito wa siku mfululizo)
+444	Ripoti ya siku
+447	Tarehe
+448	Tarehe na saa
+450	David Sportware amejiunga na LUMO Tracking
+451	Muda wa majibu wa hifadhidata:
+453	Futa
+454	FUTA
+455	Futa oda
+456	Futa oda
+457	Futa oda kabisa
+458	Imefutwa!
+459	Ufutaji umeshindikana!
+460	Wajulishe wateja papo hapo kuhusu hali ya oda kupitia SMS na WhatsApp.
+461	imefikishwa
+462	Imefikishwa
+463	IMEFIKISHWA
+464	Imefikishwa 🎉
+465	Mizigo iliyofikishwa
+466	SMS zilizofika
+467	Mizigo
+468	Muhtasari wa mizigo na usafirishaji
+469	Usafirishaji hujenga
+470	Kituo cha usimamizi wa mizigo
+471	Mizigo inayohitaji ukaguzi wa huduma
+472	Usimamizi wa mizigo
+473	Anasafirisha
+474	Anwani ya kupeleka
+475	Anwani ya kupeleka *
+476	Usafirishaji umekamilika
+477	Risiti ya kuthibitisha mzigo
+478	MZIGO UMESAJILIWA
+479	Taarifa za mizigo hazijapakiwa. Bonyeza Onyesha upya ujaribu tena.
+480	Mahali pa kupeleka mzigo
+481	Taarifa za mzigo
+482	Historia ya matukio ya usafirishaji
+483	Huduma ya usafirishaji
+484	Usafirishaji umeshindikana / umeghairiwa
+485	USIMAMIZI WA MADEREVA
+486	Mfumo wa usimamizi kwa wasafirishaji na kampuni za mizigo
+488	Mzigo haujapatikana.
+489	Chanzo cha mzigo
+490	Hali ya mzigo
+491	Hali ya mzigo
+492	MKAKATI WA USAFIRISHAJI
+493	Ratiba ya usafirishaji
+494	Ufuatiliaji wa mizigo
+495	Makala za ufuatiliaji wa mizigo na mawasiliano ya wateja
+497	Mwongozo wa ufuatiliaji wa mizigo
+498	Mfumo wa kufuatilia mizigo kwa wafanyabiashara
+500	Mfumo wa kufuatilia mizigo kwa biashara Tanzania
+502	UFUATILIAJI WA MIZIGO TANZANIA
+503	Usafirishaji:
+508	Maelezo
+509	Imeundwa kwa namna biashara, simu na usafirishaji vinavyotumika Dar es Salaam, Arusha, Mwanza na maeneo mengine.
+510	Mahali pa kupeleka
+511	Maoni ya kina ya wateja
+512	Taarifa
+513	Daftari la mauzo la kidijitali
+514	Tarakimu pekee (mfano 0627204980)
+515	Moja kwa moja
+516	Wauzaji wa moja kwa moja na mitandaoni
+517	Punguzo (jumla)
+518	Fahamu jinsi arifa za SMS zinavyowafikia wateja na kujenga imani kwa biashara Tanzania.
+519	Ondoa
+520	Tuma oda kwa urahisi kupitia dashibodi au API. Tengeneza viungo vya kipekee vya ufuatiliaji kiotomatiki.
+521	TUMA KWA JUMA (SMS IMETUMWA)
+522	Onyesha jina la biashara, nembo, rangi na mawasiliano ya msaada kwenye kila ukurasa wa ufuatiliaji.
+523	Historia kamili ya usafirishaji
+524	MALIZA NA RUDI KWENYE DASHIBODI
+526	Pakua kitabu cha Excel (.xlsx)
+527	Pakua ripoti ya Excel
+528	Pakua kitabu cha Excel
+529	Pakua programu ya LUMO
+530	Pakua ripoti ya PDF
+531	Pakua ripoti ya PDF
+532	Dereva
+533	Dereva (si lazima)
+534	Vitendo vya dereva kwa mguso mmoja:
+535	Dereva amefika
+536	Arifa ya dereva kufika
+537	Dereva amepangiwa
+538	Dereva amepangiwa
+539	Dereva anathibitisha kukabidhi
+540	Namba ya simu ya dereva *
+541	Marekebisho ya dereva huhifadhiwa kwenye oda na orodha ya madereva. Kubadilisha simu kunabadilisha kiungo cha dereva. Shiriki kiungo kipya kwenye taarifa za oda; kuhifadhi hakutumi SMS.
+542	Orodha ya madereva
+543	Usimamizi wa madereva
+544	Jina kamili la dereva
+545	Dereva yuko umbali wa dakika 5 kutoka ulipo.
+546	Dereva yuko karibu 📍
+547	Kiungo cha dereva
+548	Jina la dereva
+549	Jina la dereva
+550	Jina la dereva *
+551	Dereva yuko karibu
+552	Dereva yuko karibu
+553	Ubora wa huduma ya dereva
+554	Simu ya dereva
+555	Ukurasa wa dereva
+556	Jibu la dereva kupitia SMS au mtandaoni...
+557	Kiungo salama cha dereva (hakihitaji akaunti)
+558	Dereva ameanza safari
+559	Dereva anaanza safari
+560	Matumizi ya madereva
+561	Uzito wa matumizi ya madereva
+562	Dereva:
+563	Madereva
+564	Madereva na wateja
+565	Madereva ·
+566	Madereva hupokea kiungo cha kubadilisha hali (Njiani, Amefika, Amekabidhi) bila programu.
+567	Madereva hupokea viungo salama kubadilisha hali ya mzigo (Anza safari, Nimefika, Nimekabidhi) kupitia kivinjari cha simu.
+568	Madereva hupokea viungo salama vya kubadilisha hali ya mzigo bila kupakua programu.
+569	Mahali pa kupeleka: Sinza Kijiweni
+570	Viwango vya wafanyabiashara kulingana na matumizi, oda, mauzo na ukuaji.
+571	Onyesho la moja kwa moja
+572	UFUATILIAJI WA MIZIGO YA BIASHARA MTANDAONI
+573	Ufuatiliaji wa mizigo ya biashara mtandaoni Tanzania
+575	Mfano: Sofa ya watu 3 / Samsung Smart TV inchi 55
+576	Mfano: 57VJ+M9J, Nungwi
+577	Mfano: David Sportware
+578	Mfano: Hassan Juma
+579	Mfano: iPhone 15, Nike Air Max...
+580	Mfano: Juma Hassan
+581	Mfano: Kariakoo Electronics
+582	Mfano: Lotus Bloom Boutique
+583	Mfano: LUMO-8241 au msimbo wa ufuatiliaji...
+584	Mfano: Mbezi Beach, Dar es Salaam
+585	Mfano: Sam Nujoma Road, Dar es Salaam
+586	Mfano: Ubungo, Dar es Salaam
+587	Mfano: Mzigo ulifika haraka, dereva alikuwa mkarimu na aliutunza vizuri.
+588	Kila mzigo una msimbo salama wa kipekee kulinda faragha ya mteja na taarifa za oda.
+589	Huduma Afrika Mashariki
+590	Tunazingatia Afrika Mashariki
+591	Hariri
+592	Hariri taarifa za mfanyabiashara
+593	Hariri wasifu wa mfanyabiashara
+594	Hariri oda
+595	Hariri oda
+596	Ondoa wasiwasi wa wateja kwa viungo vya kufuatilia bila programu, vinavyotumwa kiotomatiki kupitia SMS na WhatsApp.
+597	Punguza upotevu na migogoro ya mizigo kwa PIN ya tarakimu nne inayowekwa wakati wa kukabidhi.
+598	Barua pepe
+599	Anwani ya barua pepe
+600	Barua pepe (si lazima)
+601	Imarisha biashara yako Tanzania kwa arifa za papo hapo na ufuatiliaji bila programu.
+604	Washa arifa za WhatsApp
+605	Washa arifa za usafirishaji za WhatsApp
+606	Washa taarifa za mizigo za WhatsApp kwa duka lako kupitia LUMO Track.
+607	Kiungo salama cha mzigo kimetengenezwa
+608	Mchakato wa mwanzo hadi mwisho
+609	Wafanyabiashara waliotumia mfumo
+610	Alama za matumizi
+611	Mgawanyo wa alama za matumizi (0–100)
+612	Uzito wa alama za matumizi umesasishwa.
+613	Jenga imani kwa taarifa za WhatsApp zenye nembo, bidhaa, simu ya dereva na kiungo cha kufuatilia.
+614	Thibitisha kukabidhi mzigo kwa PIN salama ya mteja ya tarakimu nne.
+615	Thibitisha kukabidhi mzigo kwa PIN ya mteja ya tarakimu nne.
+616	Weka PIN ya tarakimu 4
+617	Weka msimbo wa SMS wa tarakimu 6
+618	Weka msimbo wa uthibitisho wa tarakimu 6
+619	Weka namba ya oda au msimbo wa ufuatiliaji kufungua taarifa:
+620	Weka bei zote mbili
+621	Weka gharama ya kununua kukokotoa faida
+622	Weka simu ya mteja, anwani ya kupeleka, maelezo ya bidhaa na taarifa za dereva.
+623	Weka taarifa za dereva mpya. Kiungo cha dereva wa awali kitasitishwa mara moja.
+624	Weka bei sahihi za kununua na kuuza.
+625	Weka simu ya biashara iliyosajiliwa kuthibitisha akaunti.
+626	Weka namba yako ya simu ya Tanzania iliyosajiliwa
+627	HUDUMA KWA BIASHARA
+628	Kampuni ya usafirishaji
+629	Mfumo wa usafirishaji wa biashara
+630	Hitilafu
+631	Hitilafu 404
+632	Aina ya hitilafu
+633	Hitilafu!
+634	Kila badiliko la hali hutuma SMS na WhatsApp kwa mteja papo hapo.
+635	Fahamu kuhusu arifa na ufuatiliaji wa mizigo wa LUMO Track Tanzania.
+636	Huduma za kuwapasha habari wateja, kupunguza simu za msaada na kurahisisha kukabidhi mizigo.
+637	Faida ghafi inayotarajiwa:
+638	Jaribu mfano wa usafirishaji kwenye simu tatu
+639	Tazama huduma
+640	Fahamu huduma za LUMO Track: SMS, WhatsApp, ufuatiliaji bila programu, taarifa za dereva na uchanganuzi wa biashara Tanzania.
+641	Pakua daftari la fedha (Excel)
+642	Ina kurasa 8: Muhtasari, Mauzo, Oda, Bidhaa, Wateja, Mizigo, Madereva na Arifa.
+643	Huduma ya Express API
+644	Imeshindikana
+645	Usafirishaji umeshindikana
+646	SMS zilizoshindwa
+647	Imeshindikana kughairi usafirishaji
+648	Imeshindikana kusajili mzigo.
+649	Imeshindikana kusajili mfanyabiashara
+650	Imeshindikana kusajili oda.
+651	Imeshindikana kufuta mfanyabiashara
+652	Imeshindikana kutengeneza Excel
+653	Imeshindikana kutengeneza kitabu cha Excel. Jaribu tena.
+654	Imeshindikana kutengeneza PDF
+655	Imeshindikana kutengeneza ripoti ya PDF. Jaribu tena.
+656	Imeshindikana kupakia uchanganuzi wa tathmini za msimamizi.
+657	Imeshindikana kupakia uchanganuzi
+658	Imeshindikana kupakia tathmini za wateja
+659	Imeshindikana kupakia mizigo
+660	Imeshindikana kupakia usafirishaji
+661	Imeshindikana kupakia wafanyabiashara. Hakiki ruhusa za msimamizi.
+662	Imeshindikana kupakia oda
+663	Imeshindikana kupakia tathmini za mfumo
+664	Imeshindikana kupakia wasifu
+665	Imeshindikana kupakia uchanganuzi wa tathmini.
+666	Imeshindikana kupakia daftari la mauzo
+667	Imeshindikana kubadilisha dereva
+668	Imeshindikana kutuma tena msimbo wa SMS.
+669	Imeshindikana kutuma tena OTP ya SMS.
+670	Imeshindikana kutuma OTP kwenye simu ya biashara.
+671	Imeshindikana kuwasilisha tathmini. Jaribu tena.
+672	Imeshindikana kusasisha utambulisho wa biashara.
+673	Imeshindikana kusasisha mfanyabiashara
+674	Imeshindikana kubadilisha hali ya mfanyabiashara
+675	Imeshindikana kubadilisha nenosiri.
+676	Imeshindikana kubadilisha hali
+677	Maswali ya kawaida
+678	Fungua dashibodi haraka kwenye skrini ya mwanzo
+679	Huduma
+681	Jaza taarifa za kutuma mzigo na kumjulisha mteja kwa SMS
+682	Jaza taarifa tano hapa chini kufuatilia mzigo na kumjulisha mteja kwa SMS
+687	Chuja oda, mauzo, mizigo, arifa na shughuli kwa tarehe ya usajili. Wiki huanza Jumatatu; nusu mwaka ni Januari–Juni au Julai–Desemba hadi sasa. Orodha, alama za matumizi na siku mfululizo ni za muda wote.
+688	Majibu ya maswali kuhusu ufuatiliaji, SMS, WhatsApp, madereva na akaunti za biashara Tanzania.
+689	Oda 10 za kwanza zimekamilika
+690	Kuboresha usafirishaji
+691	Uchanganuzi wa ufanisi wa madereva
+693	Vifurushi vya arifa na ufuatiliaji kwa wafanyabiashara Tanzania. Anza bure, lipia SMS unazotumia, bila ada zilizofichwa.
+694	Kwa wasafirishaji
+695	Kwa biashara mtandaoni
+696	Kwa wafanyabiashara
+697	Kuomba mteja kupakua programu kwa mzigo mmoja kunaongeza usumbufu. Viungo vya SMS na WhatsApp hufunguka mara moja kwenye kivinjari cha simu.
+698	Umesahau nenosiri?
+699	Umesahau nenosiri? Rejesha kwa OTP ya SMS
+700	Umesahau PIN / nenosiri?
+701	BURE
+702	Maswali yanayoulizwa mara kwa mara
+704	Kutoka kusajili oda hadi kukabidhi mlangoni — tukiunganisha biashara, dereva na mteja.
+709	Usafirishaji na SMS
+710	Ufanisi wa usafirishaji
+711	Kiwango cha kukamilisha usafirishaji
+712	Jina kamili *
+713	Tengeneza PDF na vitabu vya Excel vya biashara, mauzo, mizigo na ukaguzi.
+714	Tengeneza ripoti za ukaguzi wa mfanyabiashara
+715	Tengeneza PDF na vitabu vya Excel vya mfanyabiashara
+716	Inatengeneza Excel...
+717	Inatengeneza PDF...
+718	WASILIANA NASI
+720	Wasiliana nasi
+721	Anza bure
+722	Wape wateja uwezo wa kufuatilia mizigo mara moja kupitia LUMO Track.
+723	Oda zote za mfumo
+724	Tafuta kwenye mfumo (biashara, oda, simu, dereva, mteja)...
+725	Nzuri
+726	Bidhaa zimerudishwa dukani (rejesha gharama ya kununua)
+727	Faida ghafi
+728	Faida ghafi
+729	Faida ghafi baada ya gharama za bidhaa na marejesho
+730	Faida ghafi:
+731	Biashara inayokua
+734	amechukua mzigo wako.
+736	Una maswali kuhusu ufuatiliaji, vifurushi vya SMS au kujiunga kwa biashara Tanzania? Tuko tayari kukusaidia.
+737	INAENDELEA VIZURI
+738	Habari Ado, asante kwa kununua kutoka
+739	MSAADA NA MAJIBU
+741	Ficha
+742	Ficha nenosiri
+743	Arifa za usafirishaji za SMS za haraka
+744	Mwenendo wa wafanyabiashara, oda, mauzo, mizigo na wageni wa tovuti.
+745	Mwanzo
+747	Ukurasa wa mwanzo
+748	Elekeza kishale au gusa grafu kuona thamani kamili.
+751	Inavyofanya kazi
+752	Jinsi ufuatiliaji wa LUMO unavyofanya kazi
+754	Jinsi LUMO inavyoboresha mawasiliano ya usafirishaji
+755	Jinsi SMS zinavyojenga imani katika hatua ya mwisho ya usafirishaji
+757	Jinsi ya kufuatilia mizigo bila kuomba wateja wapakue programu
+759	Huduma ya usafirishaji ilikuwaje?
+762	Nimefika karibu
+763	kwenye upau wa Safari.
+764	Kumbukumbu za kudumu za vitendo vya msimamizi, mabadiliko ya hali na mipangilio ya mfumo.
+765	SMS ni njia ya kuaminika Afrika Mashariki kwa simu za kawaida na janja na huwezesha taarifa za mizigo kufika haraka.
+766	Wateja wa Tanzania wanahitaji uwazi wa hali ya oda, muda ilipotumwa na anayewaletea, pamoja na usafirishaji wa haraka.
+767	Tatizo limetatuliwa
+768	Ina kiungo salama cha ukurasa wa ufuatiliaji wenye utambulisho wa biashara.
+769	Tathmini na maoni ya kila mteja kuhusu usafirishaji.
+770	bidhaa zilizouzwa
+775	Taarifa zinazoonyeshwa kwenye kurasa za kufuatilia na risiti
+776	Kagua
+777	Sakinisha / Pakua programu
+778	Sakinisha programu
+779	Sakinisha kufungua haraka kwa mguso mmoja
+780	Sakinisha programu ya LUMO
+781	Sakinisha LUMO Merchant
+782	Sakinisha programu ya LUMO Merchant
+783	Sakinisha LUMO Merchant kufungua dashibodi, arifa na usimamizi wa mizigo haraka.
+784	Sakinisha LUMO Merchant kufungua dashibodi ya mizigo haraka.
+785	Sakinisha kwenye iPhone / iOS
+786	SAKINISHA KUPITIA SAFARI (iOS)
+787	Kutuma oda na kufuatilia papo hapo
+788	Kiungo cha mzigo kupitia SMS
+789	Arifa za SMS kwa mteja papo hapo
+790	Arifa za SMS papo hapo
+791	Inaanza papo hapo
+792	Wajulishe wateja kwa SMS na WhatsApp mara tu mzigo unapotumwa, ukiwa njiani au dereva akikaribia.
+793	Uchanganuzi shirikishi wa biashara
+794	Kiungo cha ufuatiliaji cha WhatsApp
+795	Taarifa za kuingia si sahihi
+796	Kiungo si sahihi au muda umeisha
+797	OTP si sahihi. Hakiki msimbo wa SMS wa tarakimu sita.
+798	PIN si sahihi
+799	Kiungo cha ufuatiliaji si sahihi
+800	Chunguza
+801	amekaribia. Tafadhali jiandae kupokea oda yako.
+802	iko njiani!
+803	bidhaa
+804	Bidhaa
+805	Bidhaa iliyonunuliwa
+812	Jiunge na wafanyabiashara wa Dar es Salaam na Tanzania wanaotumia LUMO Track kuwasiliana na wateja kwa urahisi.
+813	Tarehe ya kujiunga
+815	Sasa hivi
+816	Wape wateja taarifa kutoka kutuma hadi kukabidhi mzigo kwa SMS, WhatsApp na ukurasa wa ufuatiliaji — bila programu.
+817	Madereva hubadilisha hatua za mzigo kwenye kivinjari cha simu, na mteja hupokea SMS papo hapo na kuweza kuwasiliana nao.
+818	Hatua muhimu za kuanza kufuatilia mizigo
+822	Jifunze kuhusu ufuatiliaji
+823	Jifunze hatua tano za LUMO Track: Sajili mzigo, tuma SMS, anza safari, fuatilia mtandaoni na thibitisha kukabidhi.
+824	Fahamu jinsi biashara za Tanzania zinavyopunguza wasiwasi wa wateja kwa SMS na viungo vya ufuatiliaji bila programu.
+825	Fahamu jinsi ujumbe wa WhatsApp wenye utambulisho na viungo vya mguso mmoja unavyoboresha huduma.
+826	Jifunze muundo wa kiufundi →
+827	Fahamu kwa nini viungo vya kufuatilia bila programu vinafaa kwa mawasiliano ya usafirishaji Tanzania.
+828	Acha wazi kutobadilisha
+829	Tuma taarifa za mizigo kupitia WhatsApp
+832	Inasubiri shughuli za mfumo...
+833	Moja kwa moja
+834	MOJA KWA MOJA
+835	Wageni waliopo sasa
+836	Mizigo inayoendelea
+837	Ukurasa wa usafirishaji wa moja kwa moja
+838	Mizigo inayoendelea, madereva na viungo vya ufuatiliaji vya wateja.
+839	Ufuatiliaji wa GPS na ujumbe wa WhatsApp
+840	Ramani ya moja kwa moja
+841	Shughuli zinazoendelea
+842	Shughuli za mfumo zinazoendelea
+843	Hali ya sasa
+844	Usawazishaji wa mfumo
+845	Ufuatiliaji wa moja kwa moja
+846	UFUATILIAJI WA MOJA KWA MOJA
+847	Taarifa papo hapo
+848	Inapakia uchanganuzi wa oda zilizohifadhiwa...
+849	Inapakia kumbukumbu za ukaguzi...
+850	Inapakia kumbukumbu za wateja...
+851	Inapakia orodha ya wateja...
+852	Inapakia mizigo...
+853	Inapakia taarifa za mzigo...
+854	Inapakia madereva...
+855	Inapakia mizigo inayoendelea...
+856	Inapakia mfumo wa LUMO...
+857	Inapakia dashibodi ya LUMO...
+858	Inapakia orodha ya wafanyabiashara...
+859	Inapakia taarifa za oda...
+860	Inapakia oda...
+861	Inapakia oda...
+862	Inapakia uchanganuzi wa mfumo...
+863	Inapakia oda za mfumo...
+864	Inapakia uchanganuzi wa ubora wa mfumo...
+865	Inapakia takwimu za tathmini...
+866	Inapakia kumbukumbu za mauzo...
+867	Inapakia mzigo wako...
+869	Mahali / Anwani
+871	Ingia
+872	Ingia kwenye dashibodi
+874	MAKALA ZA USAFIRISHAJI
+875	Nembo
+876	Rangi ya chungwa ya nembo
+877	Onyesho la nembo
+878	Toka kwenye kituo cha udhibiti
+880	Chini (nyota 1–2)
+881	Tathmini za chini (nyota 1–2)
+882	Mipangilio ya usimamizi wa LUMO
+883	Programu ya LUMO imewezeshwa
+884	KITUO CHA UDHIBITI CHA LUMO
+885	Muhtasari wa kituo cha udhibiti cha LUMO
+887	Arifa za mizigo za LUMO v1.0 · Dashibodi ya biashara
+888	Usafirishaji wa LUMO
+889	MFUMO WA USAFIRISHAJI WA LUMO
+890	Usimamizi wa LUMO · Uchanganuzi wa ubora
+891	LUMO inawezesha wafanyabiashara, maduka ya mtandaoni na wasafirishaji Tanzania kuwapa wateja taarifa wazi kwa SMS, WhatsApp na ramani ya moja kwa moja.
+892	Timu ya usafirishaji ya LUMO
+894	Timu ya masoko ya LUMO
+895	Mfanyabiashara wa LUMO
+896	Programu ya LUMO Merchant
+897	PROGRAMU YA LUMO MERCHANT
+898	Oda ya LUMO
+899	Uchanganuzi wa ukuaji wa LUMO
+900	Timu ya bidhaa ya LUMO
+901	Timu ya LUMO
+902	Timu ya ufundi ya LUMO
+903	LUMO Technologies. Haki zote zimehifadhiwa.
+905	HUDUMA ZA LUMO TRACK
+906	LUMO Track husaidia kusajili biashara, kutuma mizigo, kupanga madereva, kutuma SMS na kufuatilia usafirishaji wa kila siku.
+907	LUMO Track husaidia biashara Tanzania kutuma SMS na WhatsApp na kuwapa wateja ufuatiliaji wa mizigo bila programu.
+909	LUMO Track ni bidhaa ya LotusRise Limited inayoboresha usafirishaji wa hatua ya mwisho na mawasiliano ya wateja Tanzania na Afrika Mashariki.
+910	LUMO Track inatoa mfumo wa usimamizi wa mizigo kwa kampuni za usafirishaji Tanzania, na madereva hubadilisha hali kupitia kivinjari.
+911	LUMO Track ni mfumo wa simu wa kufuatilia mizigo kwa wafanyabiashara Tanzania. Wateja hupata taarifa kwa SMS na WhatsApp bila programu.
+912	LUMO Track iliundwa kuondoa wasiwasi wa mizigo kwa biashara Tanzania kwa viungo vya ufuatiliaji na arifa kiotomatiki.
+914	Ubora wa huduma wa LUMO Tracking
+915	LUMO Tracking. Haki zote zimehifadhiwa.
+922	Simamia madereva na wapangie mizigo.
+923	Simamia taarifa za biashara, mawasiliano na mapendeleo
+924	Simamia oda za wateja na panga usafirishaji.
+925	Simamia mawasiliano ya wateja, historia ya oda na jumla ya mauzo yao
+926	Simamia madereva, rahisisha mawasiliano na punguza migogoro ya mizigo Tanzania.
+927	Simamia oda
+928	Simamia mizigo haraka zaidi
+929	Simamia mizigo yako kwenye programu moja
+931	Uwiano wa faida:
+932	Weka imefikishwa
+933	Weka dereva amefika
+934	Weka oda imefikishwa
+935	Weka iko njiani
+937	kumbukumbu zinazolingana
+938	Baadaye
+939	Mfanyabiashara
+940	Mfanyabiashara / Biashara
+941	Mipangilio ya biashara na akaunti
+942	Mafanikio na tuzo za wafanyabiashara
+943	Viwango vya matumizi na ufanisi wa wafanyabiashara
+944	Dashibodi ya mfanyabiashara
+945	Usimamizi na orodha ya wafanyabiashara
+946	Dashibodi ya usimamizi wa biashara
+947	Mfanyabiashara amesajiliwa!
+948	HUDUMA YA MIZIGO KWA WAFANYABIASHARA
+949	Madereva wa biashara (
+950	Uzito wa alama za matumizi (jumla ya alama 100)
+951	Daftari la fedha la mfanyabiashara
+952	Oda za biashara (zinazoonyeshwa
+953	Ufanisi na viwango vya wafanyabiashara
+954	Dashibodi ya mfanyabiashara
+955	Wasifu wa mfanyabiashara haujakamilika
+956	Viwango vya ubora wa wafanyabiashara
+957	Viwango vya wafanyabiashara
+958	Msaada kwa mfanyabiashara
+959	Mfanyabiashara amesasishwa!
+960	Mtumiaji mfanyabiashara
+961	Mfanyabiashara:
+962	Wafanyabiashara
+963	Wafanyabiashara wanaohitaji msaada
+964	Wafanyabiashara wenye tathmini za wateja
+965	Utumaji wa SMS wa Meseji
+966	Huduma ya SMS ya Meseji
+967	Kumbukumbu za SMS za Meseji
+968	Takwimu (Oda / Mauzo)
+974	Hatua muhimu imefikiwa
+975	Angalau herufi 6
+976	Huduma za dereva kupitia kivinjari cha simu
+977	MATUMIZI YA SIMU
+978	Teknolojia za wavuti huruhusu kurasa za ufuatiliaji kufunguka haraka kwenye simu bila kupakua programu kubwa.
+979	Simamia mizigo, fuatilia madereva, kagua kiwango cha kukamilisha kila siku na mawasiliano ya wateja sehemu moja.
+980	Fuatilia ufanisi wa usafirishaji, kuridhika kwa wateja na ubora wa madereva.
+981	Fuatilia kuridhika kwa wateja, ubora wa biashara na tahadhari za tathmini za chini.
+982	Fuatilia oda za wafanyabiashara wote, ratiba za hali na taarifa za usafirishaji.
+983	Fuatilia madereva wa wafanyabiashara wote, mizigo waliyopangiwa na hali zao.
+984	Fuatilia wageni wa tovuti, vyanzo vya trafiki, matumizi yanayoendelea na hatua za kujiunga.
+985	Mwezi
+986	Ripoti ya mwezi
+988	Zaidi
+989	Inayopendwa zaidi
+995	Kitabu cha Excel chenye kurasa nyingi
+996	Usimamizi wa maduka mengi
+997	Arifa za njia mbalimbali
+998	UTUMAJI KWA NJIA MBALIMBALI
+999	Oda nyingi kutoka kwa mteja
+1003	Jina halijahifadhiwa
+1004	MENYU KUU
+1005	Bluu bahari
+1006	Karibu na TotalEnergies, geti la bluu nyuma ya duka la vyakula
+1008	Karibu
+1009	Unahitaji msaada? Wasiliana na
+1010	Inahitaji kuboreshwa
+1013	Madereva na wateja hawahitaji kusakinisha programu. Kila kitu kinafanya kazi kwenye kivinjari cha simu kwa matumizi madogo ya data.
+1014	Faida ghafi baada ya marejesho
+1015	Mauzo baada ya marejesho:
+1017	Nenosiri jipya la akaunti *
+1018	Oda mpya ya kusafirisha
+1019	Simu ya dereva mpya
+1020	Jina la dereva mpya
+1021	Jina la dereva mpya (si lazima)
+1022	Simu ya dereva mpya (si lazima)
+1023	Biashara mpya?
+1024	Mfanyabiashara mpya amesajiliwa
+1025	Oda mpya
+1026	Nenosiri jipya
+1027	Nenosiri jipya (si lazima)
+1028	PIN mpya (si lazima)
+1029	Waliojiunga leo
+1030	Inayofuata
+1033	Hakuna matatizo ya mfumo yaliyorekodiwa.
+1034	Anwani haijahifadhiwa
+1035	Hakuna kumbukumbu za ukaguzi wa usimamizi bado.
+1036	Hakuna haja ya kupakua programu
+1037	Hakuna haja ya kupakua kutoka duka la programu
+1038	Hakuna ujumbe uliojaribiwa kutumwa
+1039	Hakuna kipindi cha kulinganisha
+1040	Hakuna maoni yanayolingana na vigezo
+1041	Hakuna wateja wanaolingana na utafutaji.
+1042	Hakuna wateja wanaolingana na utafutaji.
+1043	Hakuna mizigo iliyopatikana
+1044	Hakuna mizigo kwa vichujio hivi.
+1045	Hakuna dereva aliyepangiwa
+1046	Hakuna tathmini za madereva zilizorekodiwa.
+1047	Hakuna tathmini za madereva katika kipindi hiki.
+1048	Hakuna tathmini za madereva bado
+1049	Hakuna madereva waliopatikana
+1050	Hakuna madereva. Ongeza dereva kwanza.
+1051	Hakuna madereva wanaolingana na utafutaji.
+1052	Hakuna barua pepe
+1053	Barua pepe haijawekwa
+1054	Hakuna gharama kubwa za kuanzisha wala mikataba. Anza bure na lipia arifa unazotuma pekee.
+1055	Hakuna takwimu za ukuaji katika kipindi hiki.
+1056	Hakuna viwango kwa kipimo ulichochagua.
+1057	Bei za bidhaa za oda hii hazijahifadhiwa.
+1058	Hakuna kumbukumbu zinazolingana na "
+1059	Hakuna tathmini za wafanyabiashara.
+1060	Hakuna wafanyabiashara wanaolingana na vigezo.
+1061	Hakuna arifa zilizorekodiwa bado.
+1062	Hakuna arifa zilizorekodiwa.
+1063	Hakuna arifa zilizotumwa bado
+1064	Hakuna oda zilizopatikana
+1065	Hakuna oda zinazolingana na utafutaji.
+1066	Hakuna oda bado
+1067	Hakuna kuingia Play Store wala kupakua programu kubwa. Inafanya kazi kwenye simu janja za kawaida, 3G/4G na malipo wakati wa kupokea.
+1068	Hakuna kumbukumbu za mauzo ya bidhaa bado
+1069	Hakuna tathmini zinazolingana na utafutaji au kichujio
+1070	Hakuna kumbukumbu katika kipindi hiki.
+1071	Hakuna mauzo yanayolingana na vigezo.
+1072	Hakuna mwenendo wa mauzo kwa chaguo hili
+1073	Hakuna matukio ya ratiba yaliyorekodiwa.
+1074	Hakuna matukio ya hatua za wageni yaliyorekodiwa.
+1075	Hakuna maoni yaliyoandikwa
+1076	Hakuna maoni yaliyoandikwa
+1077	Kiungo cha wavuti kisichohitaji programu kimewashwa
+1078	Haipatikani
+1079	Haijahifadhiwa
+1080	Historia ya arifa
+1081	Uhakika wa arifa
+1082	Arifa zilizofanikiwa
+1083	Arifa
+1084	Arifa zilizotumwa
+1085	Mjulishe mteja
+1087	Aina ya rekodi
+1088	Bluu bahari
+1091	kati ya
+1092	ya mauzo
+1093	Akaunti rasmi ya biashara
+1094	Huduma rasmi ya SMS
+1095	Njiani
+1096	Njiani
+1098	Kiungo cha wavuti cha mguso mmoja
+1099	MTANDAONI
+1100	Oda zilizofikishwa pekee ndizo zinaweza kurejeshewa fedha.
+1111	FUNGUA UFUATILIAJI WA MTEJA
+1112	Fungua kiungo cha mteja cha kufuatilia
+1113	Fungua ramani 📍
+1114	Fungua LUMO Merchant
+1115	Fungua maelekezo ya ramani
+1116	Fungua menyu
+1117	Fungua ukurasa wa ufuatiliaji
+1119	INAFANYA KAZI
+1120	Jina kamili la mtumiaji *
+1121	Si lazima: Badilisha PIN ya tarakimu nne
+1122	au
+1123	oda
+1124	Oda
+1125	Oda #
+1126	Oda #1024 · Viatu vya Nike Air Max
+1127	Oda imeghairiwa
+1128	Uzito wa kiwango cha kukamilisha oda
+1129	Oda imethibitishwa
+1130	Oda imethibitishwa
+1131	Arifa ya oda mpya
+1132	Oda imefutwa.
+1133	Taarifa za oda
+1134	Mzigo wa oda
+1135	Mizigo ya oda
+1136	Mizigo ya oda na ya kujitegemea kwa wafanyabiashara wote. Husasishwa kila sekunde 30.
+1137	Kitambulisho cha oda
+1138	Bidhaa za oda
+1139	Oda haijapatikana
+1140	Namba ya oda
+1141	Oda imesajiliwa
+1142	Bidhaa ya oda
+1143	Oda imepokelewa
+1144	Oda imepokelewa
+1145	Ratiba ya oda
+1146	Ratiba ya oda
+1147	Oda imesasishwa.
+1148	Idadi ya oda
+1149	Uzito wa idadi ya oda
+1150	oda
+1151	Oda
+1152	Oda na bidhaa
+1153	oda ·
+1154	Oda na usafirishaji kwa kipindi cha usajili
+1155	Oda zilizosajiliwa
+1156	oda hazina gharama ya kununua; faida yake haijahesabiwa.
+1157	oda hazina gharama ya kununua. Faida yake haijahesabiwa.
+1158	oda)
+1159	Nyingine
+1160	Uthibitisho wa kukabidhi kwa OTP
+1161	Iko njiani
+1162	Iko njiani 🚚
+1163	Arifa ya mzigo kuanza safari
+1164	Kiwango cha kukamilisha hatua zote
+1165	Muhtasari
+1166	Jina kamili la mmiliki
+1167	Simu ya mmiliki
+1168	Ukurasa
+1169	Ukurasa haujapatikana
+1171	Shughuli za biashara bila karatasi
+1172	Ripoti za mauzo na mizigo bila karatasi
+1173	mshirika
+1175	Nenosiri
+1176	Kuingia kwa nenosiri
+1177	Nenosiri limebadilishwa!
+1180	Simamisha
+1181	Mauzo ya juu: TZS
+1182	Inasubiri
+1183	INASUBIRI
+1184	Inasubiri / Imesajiliwa
+1185	Inafaa kwa biashara Tanzania zinazopokea oda kwa WhatsApp, Instagram, simu au maduka mtandaoni.
+1186	Kipindi
+1187	Jumla ya kipindi
+1188	Kipindi:
+1189	Futa mfanyabiashara kabisa
+1190	Ufute mfanyabiashara kabisa?
+1191	Eneo binafsi la kazi
+1192	Simu
+1193	Simu 1: Dashibodi ya mfanyabiashara
+1194	Simu 2: Dereva (SMS / Wavuti)
+1195	Simu 3: Arifa kwa mteja
+1196	Hakiki simu
+1197	Namba ya simu
+1198	Uthibitisho wa namba kwa OTP
+1199	Msaada kwa simu
+1200	Picha imeongezwa
+1201	Mahali pa kuchukua: Zanzibar Crafts Flagship
+1203	PIN
+1204	Uchanganuzi wa mfumo
+1205	Tathmini za wateja wa mfumo
+1206	Orodha ya wateja wa mfumo
+1207	Madereva wa mfumo
+1208	Viwango vya ufanisi wa madereva
+1209	Madereva wa mfumo
+1210	oda za mfumo
+1211	Ripoti ya muhtasari wa mfumo
+1212	Mfumo umefikisha oda 1,000 zilizokamilika!
+1213	Daftari la mauzo na fedha la mfumo
+1214	Alama za mfumo
+1215	Mgawanyo wa nyota katika mfumo
+1216	Hatua za wageni wa mfumo
+1217	Cheza
+1219	Hakikisha umeingia kama
+1220	Weka jina la dereva na namba yake ya simu.
+1221	Weka jina na simu ya mteja (au chagua mteja aliyesajiliwa).
+1222	Weka anwani ya kupeleka.
+1223	Weka maelezo ya bidhaa / oda.
+1224	Hifadhidata ya PostgreSQL
+1225	Imewezeshwa na
+1226	Imewezeshwa na LUMO Delivery Tracking
+1227	Miongozo na maarifa ya usafirishaji kwa wafanyabiashara na wasafirishaji Tanzania na Afrika Mashariki.
+1228	Inaandaa picha...
+1229	Onyesho
+1230	Iliyotangulia
+1231	Bei zimefungwa kwa sababu oda hii imerejeshewa fedha.
+1232	Bei ni jumla za oda zinazojumuisha idadi na punguzo. Jumla za kuuza zimepunguzwa marejesho; gharama za kununua hupunguzwa kwa bidhaa zilizorudishwa dukani. Hatua zote za usafirishaji zimejumuishwa.
+1233	Bei
+1235	Rangi kuu ya biashara
+1236	Mawasiliano makuu
+1237	Mmiliki mkuu / Taarifa za akaunti
+1238	Mtumiaji mkuu na taarifa za kuingia
+1239	Ukurasa binafsi wa mteja wa kufuatilia mzigo.
+1240	ENDELEA KUINGIA KWA MFANYABIASHARA
+1241	Bidhaa
+1242	Bidhaa za oda
+1243	Maelezo ya bidhaa / oda *
+1244	Picha ya bidhaa / mzigo (si lazima)
+1245	Bidhaa na fedha
+1246	Maelezo ya bidhaa *
+1247	Picha ya bidhaa
+1248	Onyesho la bidhaa
+1249	Bei za bidhaa (TZS)
+1250	Bidhaa:
+1251	Bidhaa
+1252	Wasifu
+1253	Faida (TZS)
+1254	Faida haijakamilika
+1255	Wape wateja ufuatiliaji bila programu leo
+1256	alama
+1257	Kiungo cha wazi na ufuatiliaji
+1259	Nyeupe safi
+1260	Idadi:
+1261	Udhibiti wa ubora na huduma kwa mteja
+1262	Idadi
+1263	Robo mwaka
+1264	Idadi ya foleni:
+1265	Iko foleni
+1266	SMS zilizo foleni
+1267	Kitendo cha haraka
+1268	VITENDO VYA HARAKA VYA MFANYABIASHARA
+1269	Nafasi
+1270	Viwango →
+1271	Imetathminiwa
+1272	tathmini
+1273	Mgawanyo wa tathmini
+1274	tathmini
+1275	Tathmini za wafanyabiashara wote
+1276	rejesha
+1277	Rejesha
+1278	Rejesha mfanyabiashara
+1279	Soma makala
+1280	Soma makala na miongozo ya ufuatiliaji wa mizigo, mawasiliano ya wateja, SMS na usafirishaji Tanzania na Afrika Mashariki.
+1281	Soma SMS na taarifa za programu
+1282	Tayari kufuatiliwa
+1283	Uko tayari kujiendeshea arifa za mizigo?
+1284	Uko tayari kutuma arifa za mizigo kiotomatiki?
+1285	Mizigo na madereva waliopangiwa kwa wakati halisi
+1286	Ufanisi wa fedha, jumla ya mauzo, gharama za bidhaa na mgawanyo wa faida ghafi.
+1287	Ufuatiliaji wa ramani wa moja kwa moja
+1288	Muhtasari wa ufanisi wa mfumo, biashara, mauzo, mizigo na wageni.
+1289	SMS zinazotumwa papo hapo
+1290	Usawazishaji wa SMS wa papo hapo
+1291	Hali ya sasa
+1292	Hali ya hifadhidata ya PostgreSQL, API, huduma za SMS na foleni za kazi.
+1293	Sababu ya kurejesha fedha
+1294	Sababu:
+1295	Pokea taarifa za dereva papo hapo
+1296	Maoni ya karibuni ya wateja
+1297	Simu ya mpokeaji:
+1298	Rekodi marejesho yote
+1299	Rekodi marejesho yote:
+1300	Rekodi marejesho ya oda
+1301	Rekodi marejesho
+1302	oda zilizorekodiwa
+1303	Kurekodi marejesho kunasasisha daftari. Mlipe mteja kando.
+1304	Kupunguza mizigo inayoshindwa kufika
+1305	KUMBUKUMBU:
+1306	Onyesha upya
+1307	Onyesha taarifa upya
+1308	Onyesha uchunguzi upya
+1309	Onyesha uchunguzi wa afya ya mfumo upya
+1310	Onyesha orodha upya
+1311	Onyesha oda upya
+1312	Rejesha fedha
+1313	Kiasi cha kurejesha: TZS
+1314	Sababu ya marejesho
+1315	Marejesho yamerekodiwa ·
+1316	Marejesho:
+1317	Fedha zimerejeshwa
+1318	FEDHA ZIMEREJESHWA
+1319	Marejesho: TZS
+1320	Sajili biashara na taarifa za muda za kuingia zinazotengenezwa kiotomatiki.
+1321	Sajili akaunti ya mfanyabiashara
+1322	Sajili biashara
+1323	Sajili taarifa za oda (simu ya mteja, anwani na muhtasari wa bidhaa).
+1324	Sajili duka, tuma mizigo kwa sekunde, panga madereva na wape wateja uhakika kwa ufuatiliaji wa papo hapo.
+1325	Simu ya biashara iliyosajiliwa
+1326	Simu ya biashara iliyosajiliwa *
+1327	Uthibitisho wa usajili umeshindikana.
+1328	Unakumbuka nenosiri?
+1329	Ondoa picha
+1330	Ondoa picha
+1331	Wateja wanaorudia kununua
+1332	Rudia nenosiri
+1333	Badilisha dereva aliyepangiwa
+1334	Badilisha dereva
+1335	Badala ya madaftari ya oda ya karatasi
+1337	Anza tena hatua ya 1
+1338	Jibu Zanzibar Crafts...
+1339	Ripoti
+1340	BADILISHA NENOSIRI NA SASISHA AKAUNTI
+1341	Tatua
+1342	Inatafuta taarifa za oda...
+1343	Jaribu tena
+1344	Rudi kwenye dashibodi
+1345	Rudi ukurasa wa mwanzo wa LUMO Track
+1346	Zimerudishwa dukani
+1347	Mapato (TZS)
+1348	Picha na utambulisho wa biashara
+1354	Mauzo
+1355	Daftari la mauzo na fedha
+1356	Mauzo baada ya marejesho
+1357	Mauzo baada ya marejesho katika kipindi ulichochagua
+1358	Mauzo na faida ghafi (TZS)
+1359	Daftari la mauzo
+1360	Ufanisi wa mauzo, uwiano wa faida, usafirishaji na ukuaji
+1361	Mapato ya mauzo
+1362	Mapato ya mauzo baada ya marejesho
+1363	MWENENDO WA MAUZO (TZS)
+1364	Mauzo, mizigo ya oda na matokeo ya SMS kutoka kumbukumbu za mfumo.
+1365	Mauzo: TZS
+1367	Kuridhika
+1368	HIFADHI UTAMBULISHO WA BIASHARA
+1369	Hifadhi mabadiliko
+1370	Hifadhi mabadiliko
+1371	HIFADHI DEREVA
+1372	Hifadhi mabadiliko ya mfanyabiashara
+1373	Hifadhi mipangilio
+1374	Akaunti zilizohifadhiwa kwenye kifaa hiki
+1375	Ratiba iliyohifadhiwa
+1376	INAHIFADHI UTAMBULISHO...
+1377	Inahifadhi mabadiliko...
+1378	Inahifadhi...
+1380	Sogeza chini kisha gusa
+1381	Huduma rahisi kwa mteja
+1382	Tafuta
+1383	Tafuta kwa jina, simu, barua pepe, kitambulisho...
+1384	Tafuta mteja kwa jina, simu, anwani...
+1385	Tafuta jina au simu ya mteja...
+1386	Tafuta mizigo
+1387	Tafuta jina au simu ya dereva...
+1388	Tafuta madereva kwa jina au simu...
+1389	Tafuta mteja aliyesajiliwa...
+1390	Tafuta maoni...
+1391	Tafuta kumbukumbu...
+1392	Tafuta oda, simu ya mteja, dereva, bidhaa, anwani...
+1393	Tafuta oda, mteja, dereva...
+1394	Tafuta oda, mteja, simu, bidhaa...
+1395	Tafuta oda, mteja, bidhaa...
+1396	Tafuta kitambulisho cha oda, mteja, simu...
+1397	Tafuta kumbukumbu, mfanyabiashara, mteja, dereva, anwani...
+1398	Inatafuta biashara...
+1399	Thibitisha kukabidhi kwa PIN ya mteja ya tarakimu nne.
+1400	Uthibitisho salama wa kukabidhi kwa OTP
+1401	Misimbosalama ya ufuatiliaji
+1402	Usalama na ukaguzi
+1403	Chagua nyota 1 (Mbaya sana) hadi 5 (Bora sana)
+1404	Chagua aina ya ripoti
+1405	Chagua kipindi cha ripoti
+1406	Kipindi kilichochaguliwa
+1407	Unauza kupitia tovuti, Instagram, Facebook au WhatsApp? LUMO Track huwapa wanunuzi taarifa kutoka kununua hadi kupokea mlangoni.
+1408	Bei ya kuuza / bidhaa
+1409	Bei ya kuuza (TZS)
+1410	Bei ya kuuza (TZS) *
+1411	Bei ya kuuza / bidhaa: TZS
+1412	Jumla ya kuuza baada ya marejesho
+1413	Nusu mwaka
+1414	Tuma SMS na WhatsApp kiotomatiki zenye viungo vya ufuatiliaji — bila programu.
+1415	Tuma arifa za usafirishaji kwa SMS kwa wateja Tanzania. Wajulishe tangu kutuma hadi kukabidhi kupitia viungo vya ufuatiliaji.
+1416	Tuma taarifa za WhatsApp zenye utambulisho wa biashara, oda, dereva na kitufe cha kufuatilia.
+1417	Tuma SMS zenye utambulisho wa duka, mawasiliano ya dereva na viungo salama vya ufuatiliaji.
+1418	Tuma ujumbe wa WhatsApp wenye nembo, muhtasari wa oda na vitufe vya kufuatilia mzigo ili kujenga imani.
+1419	Tuma SMS yenye kiungo cha msimbo wa ufuatiliaji.
+1420	Tuma maswali yako kwa timu yetu.
+1422	MTUMAJI: LUMO-TRACK
+1423	Inatuma OTP ya SMS...
+1424	Imetumwa
+1428	Huduma
+1429	Weka nenosiri salama kwa akaunti yako ya biashara.
+1430	Weka wasifu wa biashara, PIN ya tarakimu nne na ufikiaji wa dashibodi.
+1431	Mipangilio
+1432	Mipangilio imehifadhiwa
+1433	Mipangilio imesasishwa!
+1434	Uzito wa tatizo
+1435	Shiriki
+1436	Shiriki WhatsApp
+1437	Onyesha
+1438	Onyesha nenosiri
+1439	Onyesha utambulisho wa biashara kwenye ukurasa wa kufuatilia kujenga imani ya wanunuzi na mauzo ya kurudia.
+1440	Inaonyesha
+1441	Ingia kwenye mfumo
+1442	Ingia kusimamia arifa za mizigo na oda za biashara.
+1443	INGIA KWA NENOSIRI
+1444	Toka
+1446	Bei rahisi na za wazi
+1447	Oda ya bidhaa moja:
+1450	Ufuatiliaji wa SMS na arifa
+1451	Muunganisho wa SMS na WhatsApp
+1452	SMS na WhatsApp hutumwa kiotomatiki dereva anapobadilisha hali, ili kumjulisha mteja.
+1453	Msimbo wa SMS umetumwa kwa
+1454	Imani ya wateja kupitia SMS
+1456	Arifa za mizigo za SMS kwa biashara Tanzania
+1457	Matokeo ya SMS
+1458	UTARATIBU WA KUTUMA SMS
+1459	SMS ya mteja iko foleni
+1460	Uzito wa mafanikio ya SMS
+1461	Arifa za SMS
+1462	Arifa za SMS hutumwa ndani ya sekunde baada ya dereva au mfanyabiashara kubadilisha hali.
+1463	Orodha ya arifa za SMS
+1464	OTP ya SMS
+1465	Onyesho la SMS
+1466	SMS zimetumwa
+1467	SMS itatumwa kwenye namba hii
+1468	Wasiliana moja kwa moja na timu yetu ya msaada Tanzania.
+1469	Kasi:
+1470	Hatua
+1471	Mizigo ya kujitegemea
+1472	Mzigo wa kujitegemea
+1474	Anza safari (Njiani)
+1475	Anza kutuma mizigo kutoka
+1476	Anza kutuma arifa na viungo vya ramani kwa wateja ndani ya dakika tano.
+1477	Anza kufuatilia oda za mtandaoni
+1478	Anza bure
+1479	Anza bure leo
+1480	Anza majaribio ya bure
+1481	Anza kusimamia madereva
+1482	Anza kuwajulisha wateja Tanzania leo kwa SMS, WhatsApp na ufuatiliaji bila programu.
+1483	Anza kutuma SMS na viungo vya ufuatiliaji kwa wateja Tanzania kupitia LUMO Track.
+1484	Anza kutuma SMS
+1485	Anza kutuma arifa za SMS
+1486	Anza kufuatilia mizigo ya biashara yako
+1487	Mfanyabiashara anayeanza
+1488	Hali
+1489	Hali imesasishwa!
+1490	Una maswali zaidi?
+1491	Duka:
+1493	Maduka
+1494	Inawasilisha tathmini...
+1495	Jumla ndogo: TZS
+1496	Msimamizi mkuu
+1497	Msaada
+1499	Miundo inayokubaliwa: PNG, JPG, nembo ya SVG
+1500	simamisha
+1501	Simamisha
+1502	Simamisha mfanyabiashara
+1505	TOLEO LA KISWAHILI · TANZANIA
+1506	Badilisha kuwa mandhari nyeusi
+1507	Badilisha kuwa mandhari nyeupe
+1508	Mfumo
+1509	Dereva wa mfumo
+1510	Afya ya mfumo
+1511	Afya ya mfumo na uchunguzi wa miundombinu
+1512	Ukaguzi wa afya ya mfumo
+1513	Mfumo unaendelea vizuri
+1514	Kumbukumbu za matatizo ya mfumo
+1515	Tatizo la mfumo limewekwa kuwa limetatuliwa.
+1516	Gusa
+1517	Gusa nyota hapo juu kuweka tathmini
+1518	Gusa
+1519	Mfanyabiashara lengwa
+1520	Nenosiri la muda *
+1563	Asante kwa maoni yako!
+1564	Gharama za wasiwasi wa mizigo
+1565	Ukurasa wa ufuatiliaji, huduma au taarifa ulizoomba hazijapatikana au muda wake umeisha.
+1566	Uhalisia wa matumizi ya simu Afrika
+1567	Namba ya simu uliyoweka haijasajiliwa kwenye mfumo wetu.
+1568	Ukurasa au kiungo cha ufuatiliaji hakijapatikana kwenye LUMO Track.
+1569	Faida ya mfumo wa wavuti
+1573	Kiungo hiki cha mzigo si sahihi au muda umeisha.
+1574	Mwezi huu
+1575	Oda hii imerejeshewa fedha tayari.
+1576	Hii itafuta kabisa
+1577	Picha hii haikuweza kufunguliwa. Chagua JPEG au PNG.
+1578	Robo mwaka hii
+1579	Hii inarekodi marejesho na kusasisha mauzo, faida na ripoti. Mrejeshee mteja fedha kando. Marejesho hayawezi kutenguliwa hapa.
+1580	Wiki hii
+1581	Mwaka huu
+1582	Muda wa tukio
+1583	Ukanda wa saa:
+1584	kuthibitisha
+1585	Kwa:
+1586	Leo
+1587	Leo saa 09:41
+1588	Oda za leo
+1589	Fungua au funga menyu
+1590	Dereva mwenye tathmini bora
+1591	Biashara za usafirishaji zenye tathmini bora
+1592	Bidhaa zinazouzwa zaidi
+1593	Kiwango cha juu
+1594	Jumla ya bei za kununua
+1595	Jumla ya gharama
+1596	Jumla ya maoni ya wateja
+1597	Jumla ya mizigo
+1598	Jumla ya mizigo iliyotumwa
+1599	Jumla ya wafanyabiashara
+1600	Jumla ya oda
+1601	Jumla ya kurasa zilizotazamwa
+1602	Jumla ya gharama za bidhaa
+1603	Jumla ya tathmini
+1604	Jumla ya wateja waliosajiliwa
+1605	Jumla ya mapato / mauzo
+1606	Jumla ya mauzo (TZS)
+1607	Thamani ya mauzo yote
+1608	Jumla ya bei za kuuza
+1609	Jumla ya SMS zilizotumwa
+1610	Fuatilia
+1611	Fuatilia ukamilishaji, mizigo inayoendelea, mapato ya kila siku na maoni ya wateja kwa wakati halisi.
+1612	Fuatilia mzigo wa mteja
+1613	Fuatilia mzigo
+1614	Kiungo cha kufuatilia mzigo
+1615	Fuatilia oda yangu:
+1616	Fuatilia kufika kwa SMS, foleni, hali ya mpokeaji na muda wa majibu ya mtoa huduma.
+1617	Taarifa za ufuatiliaji
+1618	Kiungo cha ufuatiliaji si sahihi au muda umeisha.
+1619	Uchanganuzi wa wageni na hatua za kujiunga
+1620	Wageni na ukuaji
+1621	ARIFA ZA SMS ZA MIAMALA
+1622	Boresha usafirishaji wa biashara yako leo
+1623	Kuboresha mahusiano ya usafirishaji na wateja kote Tanzania
+1624	BEI ZA WAZI
+1625	Jaribu mwenyewe bure
+1626	Jaribu kubadilisha kichujio au kipindi
+1629	Aina
+1630	Klabu ya mauzo ya TZS 10,000,000
+1633	Imeshindikana kupakia taarifa za mzigo kwa tathmini.
+1634	Picha haikufunguka. Chagua JPEG au PNG.
+1635	Imeshindikana kuandaa picha.
+1636	Imeshindikana kuandaa picha yako. Jaribu tena.
+1637	Haiwezekani kutathmini oda
+1638	Imeshindikana kusoma picha. Jaribu picha nyingine.
+1639	Imeshindikana kubadilisha hali. Jaribu tena.
+1640	Mizigo isiyotangazwa huwafikia wateja wasipokuwepo. SMS dereva anapoanza safari au kukaribia huwapa muda wa kujiandaa au kupanga mtu apokee.
+1641	Hajapangiwa
+1642	Wasifu wa kipekee wa simu za wateja
+1643	Wageni wa kipekee
+1644	bidhaa zilizouzwa
+1645	Ujumbe wa WhatsApp una nembo, majina ya bidhaa, vitufe vya kumpigia dereva na viungo vya kufuatilia haraka.
+1646	Sasisha taarifa za biashara, mawasiliano, hali au taarifa za kuingia.
+1647	Imesasishwa!
+1648	Inasasisha taarifa za kuingia...
+1649	Pakia nembo
+1650	Pakia picha ya nembo
+1651	Inapakia...
+1652	Simu ya mtumiaji *
+1653	PDF yenye nembo ya biashara, utambulisho wa Tanzania, muhtasari na jedwali la mauzo.
+1654	SMS ya uthibitisho imetumwa
+1655	imethibitishwa
+1656	MFUMO ULIOTHIBITISHWA
+1657	mizigo iliyothibitishwa
+1658	Jina la mtumaji lililothibitishwa
+1659	THIBITISHA MSIMBO
+1660	THIBITISHA OTP NA KAMILISHA USAJILI
+1661	THIBITISHA SIMU NA TUMA OTP
+1662	Inathibitisha na kusajili...
+1663	Inahakiki simu iliyosajiliwa...
+1664	Inathibitisha...
+1665	Tazama
+1666	Tazama wasifu kamili
+1667	Tazama data za grafu
+1668	Tazama arifa
+1669	Tazama wageni →
+1672	ikilinganishwa na kipindi kilichopita
+1678	Ufikiaji kupitia wavuti
+1679	Wageni wa tovuti
+1680	Wiki
+1681	Ripoti ya wiki
+1682	WHATSAPP KIOTOMATIKI
+1683	WhatsApp Business
+1684	WHATSAPP BUSINESS
+1685	WHATSAPP BUSINESS API
+1686	Arifa za usafirishaji za WhatsApp kwa biashara
+1688	UTUMAJI WA WHATSAPP KIOTOMATIKI
+1689	WhatsApp dereva
+1690	WhatsApp inatumika sana Afrika Mashariki. Taarifa za mizigo kupitia WhatsApp huwafikia wateja kwenye njia wanayotumia tayari.
+1691	Arifa za WhatsApp
+1692	Mwongozo wa arifa za WhatsApp
+1693	Namba ya msaada ya WhatsApp
+1694	WhatsApp nasi (+255711788830)
+1695	SMS ya kuthibitisha kutuma mzigo yenye kiungo salama hujenga imani na kuonyesha uaminifu wa biashara.
+1696	Kwa nini wafanyabiashara Tanzania wanatumia SMS za LUMO
+1697	Kwa nini arifa za mizigo za WhatsApp zinafaa zaidi
+1699	Kwa nini ufuatiliaji bila programu unafaa zaidi
+1701	Bila ufuatiliaji wa kiotomatiki, wafanyabiashara hupokea simu nyingi kila siku zikiuliza:
+1702	Tazama jinsi kubonyeza kutuma mzigo kunavyowasilisha taarifa kwa mfanyabiashara, dereva na mpokeaji papo hapo.
+1703	Inafanya kazi kwenye simu za kawaida (kitochi) na simu janja kote Tanzania.
+1704	Mwaka
+1705	Ndiyo, futa kabisa
+1706	Jana
+1707	Umetathmini huduma hii tayari.
+1708	Hujaunganishwa na intaneti. Baadhi ya vitendo vya mizigo huenda visipatikane.
+1709	Nenosiri limebadilishwa. Sasa unaweza kuingia kwa taarifa zako mpya.
+1710	Dereva wako
+1711	Maoni yako hutusaidia kuboresha ubora wa usafirishaji.
+1712	Akaunti yako ya LUMO Merchant iko tayari.
+1713	Tathmini yako
+1714	Tathmini yako imehifadhiwa na kushirikiwa na mfanyabiashara na dereva.
+1718	Bila kupakua programu
+1719	Bila usumbufu wa programu
+1720	Bila kusakinisha programu
+1721	Hakuna kusakinisha programu
+1722	Ukurasa wa dereva usiohitaji kuandika · LUMO

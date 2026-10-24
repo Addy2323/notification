@@ -1,13 +1,18 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Store, ShieldCheck, ArrowRight, XCircle, CheckCircle2, Phone, KeyRound, Sparkles, Eye, EyeOff } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
+import LanguageSelector from '@/components/LanguageSelector';
 import { OtpInput } from '@/app/components/OtpInput';
 
 export default function RegisterPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const router = useRouter();
 
   // Registration Form State
@@ -53,43 +58,43 @@ export default function RegisterPage() {
 
     // Business Name
     if (!form.business_name.trim()) {
-      errors.business_name = 'Business name is required.';
+      errors.business_name = t("validation.business_name_is_required");
     } else if (form.business_name.trim().length < 2) {
-      errors.business_name = 'Business name must be at least 2 characters.';
+      errors.business_name = t("validation.business_name_must_be_at_least_2_characters");
     }
 
     // Business Phone
     const phoneClean = form.business_phone.replace(/\s+/g, '');
     if (!phoneClean) {
-      errors.business_phone = 'Phone number is required.';
+      errors.business_phone = t("validation.phone_number_is_required");
     } else if (!/^(?:\+?255|0)[67]\d{8}$/.test(phoneClean) && !/^\+?\d{9,13}$/.test(phoneClean)) {
-      errors.business_phone = 'Please enter a valid phone number (e.g. 0627204980 or 0744963858).';
+      errors.business_phone = t("validation.please_enter_a_valid_phone_number_e_g_0627204980_or_0744963858");
     }
 
     // Operator Name
     if (!form.name.trim()) {
-      errors.name = 'Operator name is required.';
+      errors.name = t("validation.operator_name_is_required");
     } else if (form.name.trim().length < 2) {
-      errors.name = 'Operator name must be at least 2 characters.';
+      errors.name = t("validation.operator_name_must_be_at_least_2_characters");
     }
 
     // Email (Optional)
     if (form.email && form.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
-      errors.email = 'Please enter a valid email address.';
+      errors.email = t("validation.please_enter_a_valid_email_address");
     }
 
     // Password
     if (!form.password) {
-      errors.password = 'Account password is required.';
+      errors.password = t("validation.account_password_is_required");
     } else if (form.password.length < 6) {
-      errors.password = 'Password must be at least 6 characters long.';
+      errors.password = t("validation.password_must_be_at_least_6_characters_long");
     }
 
     // PIN
     if (!form.pin) {
-      errors.pin = '4-digit PIN is required.';
+      errors.pin = t("validation.4_digit_pin_is_required");
     } else if (!/^\d{4}$/.test(form.pin)) {
-      errors.pin = 'PIN must be exactly 4 numeric digits.';
+      errors.pin = t("validation.pin_must_be_exactly_4_numeric_digits");
     }
 
     setFieldErrors(errors);
@@ -103,7 +108,7 @@ export default function RegisterPage() {
     setSuccessMessage(null);
 
     if (!validateForm()) {
-      setErrorMessage('Please fix the highlighted errors before continuing.');
+      setErrorMessage(t("interactions.please_fix_the_highlighted_errors_before_continuing"));
       return;
     }
 
@@ -118,9 +123,9 @@ export default function RegisterPage() {
 
       setStep('OTP');
       setOtpTimerKey((prev) => prev + 1);
-      setSuccessMessage(`A 6-digit verification SMS code has been sent to ${form.business_phone}.`);
+      setSuccessMessage(t('auth.otp_sent_to_phone', { phone: form.business_phone }));
     } catch (err: any) {
-      setErrorMessage(err.message || 'Failed to send SMS OTP to business phone.');
+      setErrorMessage(err.message || t("auth.failed_to_send_sms_otp_to_business_phone"));
     } finally {
       setLoading(false);
     }
@@ -140,7 +145,7 @@ export default function RegisterPage() {
       setOtpTimerKey((prev) => prev + 1);
       setSuccessMessage('A new 6-digit SMS verification code has been dispatched.');
     } catch (err: any) {
-      setErrorMessage(err.message || 'Failed to resend SMS code.');
+      setErrorMessage(err.message || t("auth.failed_to_resend_sms_code"));
     } finally {
       setLoading(false);
     }
@@ -176,7 +181,7 @@ export default function RegisterPage() {
       // Show PWA Onboarding step before navigating to dashboard
       setStep('ONBOARDING');
     } catch (err: any) {
-      setErrorMessage(err.message || 'Registration verification failed.');
+      setErrorMessage(err.message || t("auth.registration_verification_failed"));
     } finally {
       setLoading(false);
     }
@@ -189,6 +194,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-slate-100/90 text-slate-900 font-sans flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden selection:bg-emerald-600 selection:text-white">
+      <div className="flex justify-end p-3"><LanguageSelector /></div>
       {/* Liquid Ambient Orbs */}
       <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-teal-400/25 rounded-full blur-[120px] pointer-events-none animate-liquid-1" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[550px] h-[550px] bg-cyan-400/20 rounded-full blur-[140px] pointer-events-none animate-liquid-2" />
@@ -238,17 +244,17 @@ export default function RegisterPage() {
 
             <h1 className="text-2xl font-black text-slate-900 font-serif tracking-tight">
               {step === 'INFO'
-                ? 'Register Operator Business'
+                ? t("auth.register_operator_business")
                 : step === 'OTP'
-                ? 'Phone Number OTP Verification'
-                : 'Your LUMO Merchant account is ready.'}
+                ? t("auth.phone_number_otp_verification")
+                : t("auth.your_lumo_merchant_account_is_ready")}
             </h1>
             <p className="text-xs font-medium text-slate-500 mt-1">
               {step === 'INFO'
-                ? 'Set up your merchant profile, 4-digit PIN, and workspace access.'
+                ? t("auth.set_up_your_merchant_profile_4_digit_pin_and_workspace_access")
                 : step === 'OTP'
-                ? `Enter the 6-digit SMS code sent to ${form.business_phone} to verify business ownership.`
-                : 'Install LUMO Merchant for faster access to your delivery dashboard.'}
+                ? t("interactions.enter_the_6_digit_sms_code_sent_to_value0_to_verify_business_ownership", { value0: (form.business_phone) ?? '' })
+                : t("auth.install_lumo_merchant_for_faster_access_to_your_delivery_dashboard")}
             </p>
           </div>
 
@@ -257,9 +263,7 @@ export default function RegisterPage() {
             <form onSubmit={handleInitiateRegistration} className="space-y-4 animate-in fade-in duration-200">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Business Name *
-                  </label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">{' '}<T k="auth.business_name" />{' '}</label>
                   <input
                     type="text"
                     required
@@ -273,7 +277,7 @@ export default function RegisterPage() {
                         ? 'border-rose-500 focus:ring-rose-500/20 bg-rose-50/30'
                         : 'border-slate-200/90 focus:ring-emerald-600/20'
                     }`}
-                    placeholder="e.g. Lotus Bloom Boutique"
+                    placeholder={t("auth.e_g_lotus_bloom_boutique")}
                   />
                   {fieldErrors.business_name && (
                     <p className="text-[11px] font-semibold text-rose-600 mt-1">{fieldErrors.business_name}</p>
@@ -281,9 +285,7 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Business Phone Number *
-                  </label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">{' '}<T k="auth.business_phone_number" />{' '}</label>
                   <input
                     type="text"
                     required
@@ -304,16 +306,14 @@ export default function RegisterPage() {
                   {fieldErrors.business_phone ? (
                     <p className="text-[11px] font-semibold text-rose-600 mt-1">{fieldErrors.business_phone}</p>
                   ) : (
-                    <p className="text-[10px] font-medium text-slate-400 mt-1">Digits only (e.g. 0627204980)</p>
+                    <p className="text-[10px] font-medium text-slate-400 mt-1"><T k="auth.digits_only_e_g_0627204980" /></p>
                   )}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Operator Full Name *
-                  </label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">{' '}<T k="auth.operator_full_name" />{' '}</label>
                   <input
                     type="text"
                     required
@@ -327,7 +327,7 @@ export default function RegisterPage() {
                         ? 'border-rose-500 focus:ring-rose-500/20 bg-rose-50/30'
                         : 'border-slate-200/90 focus:ring-emerald-600/20'
                     }`}
-                    placeholder="e.g. Hassan Juma"
+                    placeholder={t("auth.e_g_hassan_juma")}
                   />
                   {fieldErrors.name && (
                     <p className="text-[11px] font-semibold text-rose-600 mt-1">{fieldErrors.name}</p>
@@ -335,9 +335,7 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Email Address (Optional)
-                  </label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">{' '}<T k="auth.email_address_optional" />{' '}</label>
                   <input
                     type="email"
                     value={form.email}
@@ -360,9 +358,7 @@ export default function RegisterPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Account Password *
-                  </label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">{' '}<T k="auth.account_password" />{' '}</label>
                   <div className="relative">
                     <input
                       type={showPassword ? 'text' : 'password'}
@@ -378,13 +374,13 @@ export default function RegisterPage() {
                           ? 'border-rose-500 focus:ring-rose-500/20 bg-rose-50/30'
                           : 'border-slate-200/90 focus:ring-emerald-600/20'
                       }`}
-                      placeholder="Min 6 characters"
+                      placeholder={t("auth.min_6_characters")}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors p-1"
-                      title={showPassword ? 'Hide Password' : 'Show Password'}
+                      title={showPassword ? t("auth.hide_password") : t("auth.show_password")}
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -395,9 +391,7 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    4-Digit Authorization PIN *
-                  </label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">{' '}<T k="auth.4_digit_authorization_pin" />{' '}</label>
                   <input
                     type="text"
                     required
@@ -426,7 +420,7 @@ export default function RegisterPage() {
                 disabled={loading || !form.business_name || !form.business_phone || !form.name || !form.password}
                 className="w-full h-11 rounded-xl bg-slate-900 hover:bg-slate-800 active:bg-black text-white font-semibold text-xs shadow-md transition-all disabled:opacity-50 flex items-center justify-center gap-2 mt-3"
               >
-                {loading ? 'Sending SMS OTP...' : 'CONTINUE TO OTP VERIFICATION'}
+                {loading ? t("auth.sending_sms_otp") : t("auth.continue_to_otp_verification")}
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </form>
@@ -437,14 +431,12 @@ export default function RegisterPage() {
             <form onSubmit={handleCompleteRegistration} className="space-y-4 animate-in fade-in duration-200">
               <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-center space-y-1">
                 <Phone className="w-5 h-5 text-emerald-700 mx-auto" />
-                <p className="text-xs font-bold text-slate-800">Verification SMS Dispatched</p>
+                <p className="text-xs font-bold text-slate-800"><T k="auth.verification_sms_dispatched" /></p>
                 <p className="text-[11px] text-slate-600 font-mono font-bold">{form.business_phone}</p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-2 text-center">
-                  Enter 6-Digit Verification Code
-                </label>
+                <label className="block text-xs font-semibold text-slate-700 mb-2 text-center">{' '}<T k="auth.enter_6_digit_verification_code" />{' '}</label>
                 <OtpInput
                   key={otpTimerKey}
                   value={otpCode}
@@ -464,9 +456,7 @@ export default function RegisterPage() {
                   type="button"
                   onClick={() => setStep('INFO')}
                   className="text-slate-500 hover:text-slate-800 font-semibold underline"
-                >
-                  ← Edit Phone Number
-                </button>
+                >{' '}<T k="auth.edit_phone_number" />{' '}</button>
               </div>
 
               <button
@@ -474,7 +464,7 @@ export default function RegisterPage() {
                 disabled={loading || otpCode.length !== 6}
                 className="w-full h-11 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
               >
-                {loading ? 'Verifying & Registering...' : 'VERIFY OTP & COMPLETE REGISTRATION'}
+                {loading ? t("auth.verifying_registering") : t("auth.verify_otp_complete_registration")}
                 <ShieldCheck className="w-4 h-4" />
               </button>
             </form>
@@ -489,18 +479,18 @@ export default function RegisterPage() {
                     ⚡
                   </div>
                   <div>
-                    <h3 className="text-sm font-black text-white">LUMO Merchant App</h3>
-                    <p className="text-[11px] text-slate-300">Fast home screen access to dashboard</p>
+                    <h3 className="text-sm font-black text-white"><T k="auth.lumo_merchant_app" /></h3>
+                    <p className="text-[11px] text-slate-300"><T k="auth.fast_home_screen_access_to_dashboard" /></p>
                   </div>
                 </div>
                 <div className="space-y-1.5 pt-2 border-t border-white/10 text-xs text-slate-300">
                   <p className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Instant dispatch & order tracking</span>
+                    <span><T k="auth.instant_dispatch_order_tracking" /></span>
                   </p>
                   <p className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Receive real-time driver updates</span>
+                    <span><T k="auth.receive_real_time_driver_updates" /></span>
                   </p>
                 </div>
               </div>
@@ -511,7 +501,7 @@ export default function RegisterPage() {
                   onClick={() => router.push('/dashboard')}
                   className="w-full py-3.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-extrabold text-xs shadow-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
                 >
-                  <span>Install App</span>
+                  <span><T k="auth.install_app" /></span>
                   <Sparkles className="w-4 h-4" />
                 </button>
 
@@ -520,23 +510,18 @@ export default function RegisterPage() {
                   onClick={() => router.push('/dashboard')}
                   className="w-full py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-2"
                 >
-                  <span>Continue to Dashboard</span>
+                  <span><T k="auth.continue_to_dashboard" /></span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
           )}
 
-          <div className="mt-5 pt-4 border-t border-slate-200/60 text-center text-xs font-medium text-slate-500">
-            Already have an account?{' '}
-            <Link href="/login" className="text-emerald-700 font-bold hover:underline">
-              Sign In to Gateway
-            </Link>
+          <div className="mt-5 pt-4 border-t border-slate-200/60 text-center text-xs font-medium text-slate-500">{' '}<T k="auth.already_have_an_account" />{' '}
+            <Link href="/login" className="text-emerald-700 font-bold hover:underline">{' '}<T k="auth.sign_in_to_gateway" />{' '}</Link>
           </div>
 
-          <div className="mt-4 text-center text-[10px] text-slate-400 font-medium">
-            LUMO Delivery Notifications v1.0 · Merchant Portal
-          </div>
+          <div className="mt-4 text-center text-[10px] text-slate-400 font-medium">{' '}<T k="auth.lumo_delivery_notifications_v1_0_merchant_portal" />{' '}</div>
         </div>
       </div>
     </div>

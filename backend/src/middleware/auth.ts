@@ -10,6 +10,7 @@ export interface AuthUser {
   name: string;
   phone: string;
   email?: string | null;
+  language?: 'en' | 'sw';
   role: 'MERCHANT' | 'STAFF' | 'ADMIN';
 }
 
@@ -58,6 +59,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
       phone: user.phone,
       email: user.email,
       role: user.role as any,
+      language: user.language === 'sw' ? 'sw' : 'en',
     };
 
     next();

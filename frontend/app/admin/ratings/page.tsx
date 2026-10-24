@@ -1,5 +1,7 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useEffect, useState } from 'react';
 import {
   Star,
@@ -64,6 +66,8 @@ interface AdminRatingsData {
 }
 
 export default function AdminRatingsPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<AdminRatingsData | null>(null);
@@ -79,7 +83,7 @@ export default function AdminRatingsPage() {
       const res = await fetchApi(`/ratings/admin?period=${period}`);
       setData(res);
     } catch (err: any) {
-      setError(err.message || 'Failed to load admin rating analytics.');
+      setError(err.message || t("admin.failed_to_load_admin_rating_analytics"));
     } finally {
       setLoading(false);
     }
@@ -114,13 +118,9 @@ export default function AdminRatingsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-800/80">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">
-            <Shield className="w-4 h-4 text-amber-400" />
-            LUMO Executive Control • Quality Diagnostics
-          </div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Platform Customer Ratings</h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Monitor ecosystem satisfaction, merchant quality benchmarks, and low-score alerts.
-          </p>
+            <Shield className="w-4 h-4 text-amber-400" />{' '}<T k="admin.lumo_executive_control_quality_diagnostics" />{' '}</div>
+          <h1 className="text-2xl font-black text-white tracking-tight"><T k="admin.platform_customer_ratings" /></h1>
+          <p className="text-xs text-slate-400 mt-0.5">{' '}<T k="admin.monitor_ecosystem_satisfaction_merchant_quality_benchmarks_and_low_score_alerts" />{' '}</p>
         </div>
 
         {/* Period Filter Tabs & Refresh */}
@@ -140,12 +140,12 @@ export default function AdminRatingsPage() {
                   : 'text-slate-400 hover:text-white hover:bg-slate-800'
               }`}
             >
-              {tab.label}
+              {uiLabel(tab.label)}
             </button>
           ))}
           <button
             onClick={loadAdminRatings}
-            title="Refresh Diagnostics"
+            title={t("admin.refresh_diagnostics")}
             className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg ml-1"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
@@ -156,14 +156,14 @@ export default function AdminRatingsPage() {
       {loading && !data && (
         <div className="py-20 text-center">
           <Loader2 className="w-8 h-8 text-amber-500 animate-spin mx-auto mb-3" />
-          <p className="text-xs font-bold text-slate-400">Loading platform quality diagnostics...</p>
+          <p className="text-xs font-bold text-slate-400"><T k="admin.loading_platform_quality_diagnostics" /></p>
         </div>
       )}
 
       {error && !data && (
         <div className="p-6 rounded-2xl bg-rose-950/40 border border-rose-800/60 text-rose-200 text-center">
           <AlertCircle className="w-8 h-8 text-rose-500 mx-auto mb-2" />
-          <h3 className="font-bold text-sm">Failed to Load Platform Ratings</h3>
+          <h3 className="font-bold text-sm"><T k="admin.failed_to_load_platform_ratings" /></h3>
           <p className="text-xs text-rose-300 mt-1">{error}</p>
         </div>
       )}
@@ -177,9 +177,7 @@ export default function AdminRatingsPage() {
               <div className="absolute top-0 right-0 p-4 opacity-15">
                 <Star className="w-24 h-24 fill-slate-950" />
               </div>
-              <span className="text-xs font-black uppercase tracking-wider text-slate-900/80">
-                Platform Score
-              </span>
+              <span className="text-xs font-black uppercase tracking-wider text-slate-900/80">{' '}<T k="admin.platform_score" />{' '}</span>
               <div className="flex items-baseline gap-2 mt-2">
                 <span className="text-4xl font-black text-slate-950">{data.overall_rating.toFixed(1)}</span>
                 <span className="text-slate-900/70 font-bold text-sm">/ 5.0</span>
@@ -194,7 +192,7 @@ export default function AdminRatingsPage() {
                   />
                 ))}
                 <span className="text-xs font-bold ml-1 text-slate-900">
-                  ({data.total_ratings} {data.total_ratings === 1 ? 'rating' : 'ratings'})
+                  ({data.total_ratings} {data.total_ratings === 1 ? t("admin.rating") : t("admin.ratings")})
                 </span>
               </div>
             </div>
@@ -202,43 +200,37 @@ export default function AdminRatingsPage() {
             {/* Total Ratings Logged */}
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xs">
               <div className="flex items-center justify-between text-slate-400 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider">Total Ratings</span>
+                <span className="text-xs font-bold uppercase tracking-wider"><T k="admin.total_ratings" /></span>
                 <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
                   <Users className="w-4 h-4" />
                 </div>
               </div>
               <div className="text-3xl font-black text-white">{data.total_ratings}</div>
-              <p className="text-xs text-slate-400 mt-1">
-                Ratings collected across all merchants
-              </p>
+              <p className="text-xs text-slate-400 mt-1">{' '}<T k="admin.ratings_collected_across_all_merchants" />{' '}</p>
             </div>
 
             {/* Low Rating Flags Alert Card */}
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xs">
               <div className="flex items-center justify-between text-slate-400 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-rose-400">Low Ratings (1-2★)</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-rose-400"><T k="admin.low_ratings_1_2" /></span>
                 <div className="p-2 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20">
                   <AlertTriangle className="w-4 h-4" />
                 </div>
               </div>
               <div className="text-3xl font-black text-rose-400">{data.low_ratings_count}</div>
-              <p className="text-xs text-slate-400 mt-1">
-                Deliveries flagged for service review
-              </p>
+              <p className="text-xs text-slate-400 mt-1">{' '}<T k="admin.deliveries_flagged_for_service_review" />{' '}</p>
             </div>
 
             {/* Rated Merchants Count */}
             <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xs">
               <div className="flex items-center justify-between text-slate-400 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider">Active Merchants</span>
+                <span className="text-xs font-bold uppercase tracking-wider"><T k="admin.active_merchants" /></span>
                 <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                   <Store className="w-4 h-4" />
                 </div>
               </div>
               <div className="text-3xl font-black text-white">{data.merchant_performance.length}</div>
-              <p className="text-xs text-slate-400 mt-1">
-                Merchants with customer ratings
-              </p>
+              <p className="text-xs text-slate-400 mt-1">{' '}<T k="admin.merchants_with_customer_ratings" />{' '}</p>
             </div>
           </div>
 
@@ -247,9 +239,7 @@ export default function AdminRatingsPage() {
             {/* Rating Breakdown */}
             <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-xs space-y-4">
               <h2 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
-                <Filter className="w-4 h-4 text-amber-400" />
-                Platform Star Distribution
-              </h2>
+                <Filter className="w-4 h-4 text-amber-400" />{' '}<T k="admin.platform_star_distribution" />{' '}</h2>
 
               <div className="space-y-3">
                 {[5, 4, 3, 2, 1].map((stars) => {
@@ -282,27 +272,21 @@ export default function AdminRatingsPage() {
             <div className="lg:col-span-2 p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-xs space-y-4">
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
-                  <Store className="w-4 h-4 text-amber-400" />
-                  Merchant Quality Leaderboard
-                </h2>
-                <span className="text-xs font-bold text-slate-500">
-                  Top Rated Logistics Businesses
-                </span>
+                  <Store className="w-4 h-4 text-amber-400" />{' '}<T k="admin.merchant_quality_leaderboard" />{' '}</h2>
+                <span className="text-xs font-bold text-slate-500">{' '}<T k="admin.top_rated_logistics_businesses" />{' '}</span>
               </div>
 
               {data.merchant_performance.length === 0 ? (
-                <div className="text-center py-8 text-xs text-slate-500">
-                  No merchant rating records available.
-                </div>
+                <div className="text-center py-8 text-xs text-slate-500">{' '}<T k="admin.no_merchant_rating_records_available" />{' '}</div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     <thead>
                       <tr className="border-b border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
-                        <th className="pb-3">Merchant</th>
-                        <th className="pb-3 text-center">Total Ratings</th>
-                        <th className="pb-3 text-center">Satisfaction</th>
-                        <th className="pb-3 text-right">Avg Score</th>
+                        <th className="pb-3"><T k="common.merchant" /></th>
+                        <th className="pb-3 text-center"><T k="admin.total_ratings" /></th>
+                        <th className="pb-3 text-center"><T k="admin.satisfaction" /></th>
+                        <th className="pb-3 text-right"><T k="admin.avg_score" /></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-800/60">
@@ -325,7 +309,7 @@ export default function AdminRatingsPage() {
                                   : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
                               }`}
                             >
-                              {m.average_rating >= 4.5 ? 'Top Tier' : m.average_rating >= 3.5 ? 'Good' : 'Needs Work'}
+                              {m.average_rating >= 4.5 ? t("admin.top_tier") : m.average_rating >= 3.5 ? t("admin.good") : t("admin.needs_work")}
                             </span>
                           </td>
                           <td className="py-3 text-right">
@@ -346,14 +330,10 @@ export default function AdminRatingsPage() {
           {/* Driver Quality Performance Section */}
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-xs space-y-4">
             <h2 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
-              <Truck className="w-4 h-4 text-amber-400" />
-              Platform Driver Performance Rankings
-            </h2>
+              <Truck className="w-4 h-4 text-amber-400" />{' '}<T k="admin.platform_driver_performance_rankings" />{' '}</h2>
 
             {data.driver_performance.length === 0 ? (
-              <div className="text-center py-6 text-xs text-slate-500">
-                No driver ratings logged.
-              </div>
+              <div className="text-center py-6 text-xs text-slate-500">{' '}<T k="admin.no_driver_ratings_logged" />{' '}</div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {data.driver_performance.slice(0, 6).map((driver) => (
@@ -377,8 +357,7 @@ export default function AdminRatingsPage() {
                         <span>{driver.average_rating.toFixed(1)}</span>
                       </div>
                       <span className="text-[10px] text-slate-500 font-mono">
-                        {driver.total_ratings} ratings
-                      </span>
+                        {driver.total_ratings}{' '}<T k="admin.ratings" />{' '}</span>
                     </div>
                   </div>
                 ))}
@@ -391,12 +370,8 @@ export default function AdminRatingsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h2 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-amber-400" />
-                  All Customer Feedback Logs
-                </h2>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  Complete real-time feed of customer reviews across the platform.
-                </p>
+                  <MessageSquare className="w-4 h-4 text-amber-400" />{' '}<T k="admin.all_customer_feedback_logs" />{' '}</h2>
+                <p className="text-xs text-slate-400 mt-0.5">{' '}<T k="admin.complete_real_time_feed_of_customer_reviews_across_the_platform" />{' '}</p>
               </div>
 
               {/* Filters & Search */}
@@ -407,7 +382,7 @@ export default function AdminRatingsPage() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search logs..."
+                    placeholder={t("admin.search_logs")}
                     className="pl-8 pr-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                   />
                 </div>
@@ -418,9 +393,7 @@ export default function AdminRatingsPage() {
                     className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                       ratingFilter === 'ALL' ? 'bg-amber-500 text-slate-950' : 'text-slate-400 hover:text-white'
                     }`}
-                  >
-                    All
-                  </button>
+                  >{' '}<T k="admin.all" />{' '}</button>
                   <button
                     onClick={() => setRatingFilter('5')}
                     className={`px-2 py-1 rounded-lg text-xs font-bold transition-all ${
@@ -435,9 +408,7 @@ export default function AdminRatingsPage() {
                       ratingFilter === 'LOW' ? 'bg-rose-500 text-white' : 'text-rose-400 hover:text-rose-300'
                     }`}
                   >
-                    <AlertTriangle className="w-3 h-3" />
-                    Low (1-2★)
-                  </button>
+                    <AlertTriangle className="w-3 h-3" />{' '}<T k="admin.low_1_2" />{' '}</button>
                 </div>
               </div>
             </div>
@@ -445,7 +416,7 @@ export default function AdminRatingsPage() {
             {filteredLogs.length === 0 ? (
               <div className="text-center py-12 border border-dashed border-slate-800 rounded-xl">
                 <MessageSquare className="w-10 h-10 text-slate-600 mx-auto mb-2" />
-                <p className="text-xs font-bold text-slate-400">No rating logs match your search or filter</p>
+                <p className="text-xs font-bold text-slate-400"><T k="admin.no_rating_logs_match_your_search_or_filter" /></p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -469,7 +440,7 @@ export default function AdminRatingsPage() {
                             <span className="px-2 py-0.5 rounded bg-slate-900 text-amber-400 border border-slate-800 text-[10px] font-bold">
                               {log.merchant_name}
                             </span>
-                            <span>Order #{log.order_number}</span>
+                            <span><T k="common.order_2" />{log.order_number}</span>
                           </div>
                         </div>
 
@@ -494,16 +465,15 @@ export default function AdminRatingsPage() {
                           "{log.comment}"
                         </div>
                       ) : (
-                        <div className="mt-2 text-[11px] text-slate-500 italic">No written comment left</div>
+                        <div className="mt-2 text-[11px] text-slate-500 italic"><T k="admin.no_written_comment_left" /></div>
                       )}
                     </div>
 
                     <div className="pt-2 border-t border-slate-900 flex items-center justify-between text-[11px] text-slate-400">
                       <span className="flex items-center gap-1">
-                        <Truck className="w-3 h-3 text-slate-500" />
-                        Driver: <strong className="text-slate-200">{log.driver_name || 'Unassigned'}</strong>
+                        <Truck className="w-3 h-3 text-slate-500" />{' '}<T k="common.driver_2" />{' '}<strong className="text-slate-200">{log.driver_name || t("common.unassigned")}</strong>
                       </span>
-                      <span>{new Date(log.created_at).toLocaleDateString()}</span>
+                      <span>{new Date(log.created_at).toLocaleDateString(locale)}</span>
                     </div>
                   </div>
                 ))}

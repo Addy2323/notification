@@ -1,5 +1,7 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -40,6 +42,8 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; 
 };
 
 export default function DeliveriesPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const router = useRouter();
   const [dispatches, setDispatches] = useState<UnifiedDispatch[]>([]);
   const [loading, setLoading] = useState(true);
@@ -87,7 +91,7 @@ export default function DeliveriesPage() {
               id: d.id,
               tracking_token: d.tracking_token,
               order_number: d.tracking_token ? `#${d.tracking_token.slice(0, 8).toUpperCase()}` : 'DEL-101',
-              customer_name: d.recipient_name || 'Customer',
+              customer_name: d.recipient_name || t("common.customer"),
               customer_phone: d.customer_phone || '—',
               delivery_address: d.delivery_address,
               product_description: d.product_description,
@@ -107,7 +111,7 @@ export default function DeliveriesPage() {
       unifiedList.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
       setDispatches(unifiedList);
     } catch (err: any) {
-      setError(err.message || 'Failed to load dispatches');
+      setError(err.message || t("merchant.failed_to_load_dispatches"));
     } finally {
       setLoading(false);
     }
@@ -157,18 +161,16 @@ export default function DeliveriesPage() {
         <div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
             <Truck className="w-6 h-6 text-[#FF5500]" />
-            <span>Deliveries Management</span>
+            <span><T k="merchant.deliveries_management" /></span>
           </h1>
-          <p className="text-sm text-slate-500 font-medium mt-0.5">
-            Live dispatches, fleet drivers, and customer tracking link registry.
-          </p>
+          <p className="text-sm text-slate-500 font-medium mt-0.5">{' '}<T k="merchant.live_dispatches_fleet_drivers_and_customer_tracking_link_registry" />{' '}</p>
         </div>
         <Link
           href="/dashboard/orders"
           className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-extrabold text-xs shadow-xs transition-all"
         >
           <Plus className="w-4 h-4 stroke-[3]" />
-          <span>New Delivery Order</span>
+          <span><T k="merchant.new_delivery_order" /></span>
         </Link>
       </div>
 
@@ -179,7 +181,7 @@ export default function DeliveriesPage() {
             <Truck className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Total Dispatches</p>
+            <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider"><T k="merchant.total_dispatches" /></p>
             <p className="text-2xl font-black text-slate-900 tracking-tight">{totalCount}</p>
           </div>
         </div>
@@ -189,7 +191,7 @@ export default function DeliveriesPage() {
             <Clock className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Active In-Transit</p>
+            <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider"><T k="merchant.active_in_transit" /></p>
             <p className="text-2xl font-black text-[#FF5500] tracking-tight">{activeCount}</p>
           </div>
         </div>
@@ -199,7 +201,7 @@ export default function DeliveriesPage() {
             <CheckCircle2 className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Completed Deliveries</p>
+            <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider"><T k="merchant.completed_deliveries" /></p>
             <p className="text-2xl font-black text-emerald-700 tracking-tight">{deliveredCount}</p>
           </div>
         </div>
@@ -211,7 +213,7 @@ export default function DeliveriesPage() {
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
           <input
             type="text"
-            placeholder="Search Order #, customer phone, driver, product, address..."
+            placeholder={t("merchant.search_order_customer_phone_driver_product_address")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#FF5500] shadow-xs"
@@ -222,19 +224,19 @@ export default function DeliveriesPage() {
           onChange={(e) => setStatusFilter(e.target.value)}
           className="px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-extrabold text-slate-700 shadow-xs focus:outline-none focus:border-[#FF5500] min-w-[160px]"
         >
-          <option value="ALL">All Statuses</option>
-          <option value="PENDING">Pending / Created</option>
-          <option value="CONFIRMED">Confirmed</option>
-          <option value="DRIVER_ASSIGNED">Driver Assigned</option>
-          <option value="OUT_FOR_DELIVERY">Out for Delivery</option>
-          <option value="ARRIVED">Driver Arrived</option>
-          <option value="DELIVERED">Delivered</option>
-          <option value="CANCELLED">Cancelled</option>
+          <option value="ALL"><T k="merchant.all_statuses" /></option>
+          <option value="PENDING"><T k="merchant.pending_created" /></option>
+          <option value="CONFIRMED"><T k="common.confirmed" /></option>
+          <option value="DRIVER_ASSIGNED"><T k="common.driver_assigned" /></option>
+          <option value="OUT_FOR_DELIVERY"><T k="common.out_for_delivery" /></option>
+          <option value="ARRIVED"><T k="merchant.driver_arrived" /></option>
+          <option value="DELIVERED"><T k="common.delivered" /></option>
+          <option value="CANCELLED"><T k="common.cancelled" /></option>
         </select>
         <button
           onClick={loadAllDispatches}
           className="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-slate-900 shadow-xs transition-colors active:scale-90"
-          title="Refresh List"
+          title={t("merchant.refresh_list")}
         >
           <RefreshCw className="w-4 h-4" />
         </button>
@@ -253,21 +255,19 @@ export default function DeliveriesPage() {
         {loading ? (
           <div className="p-12 text-center">
             <div className="w-8 h-8 rounded-xl bg-orange-100 animate-pulse mx-auto mb-3" />
-            <p className="text-xs font-bold text-slate-400">Loading live dispatches...</p>
+            <p className="text-xs font-bold text-slate-400"><T k="merchant.loading_live_dispatches" /></p>
           </div>
         ) : filteredDispatches.length === 0 ? (
           <div className="p-12 text-center space-y-3">
             <Truck className="w-10 h-10 text-slate-300 mx-auto" />
-            <p className="text-sm font-black text-slate-700">No deliveries found</p>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto font-medium">
-              Create a new order to dispatch drivers and send real-time customer tracking links.
-            </p>
+            <p className="text-sm font-black text-slate-700"><T k="merchant.no_deliveries_found" /></p>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto font-medium">{' '}<T k="merchant.create_a_new_order_to_dispatch_drivers_and_send_real_time_customer_tracking_links" />{' '}</p>
             <Link
               href="/dashboard/orders"
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] text-white font-extrabold text-xs shadow-xs"
             >
               <Plus className="w-4 h-4 stroke-[3]" />
-              <span>Create First Order</span>
+              <span><T k="merchant.create_first_order" /></span>
             </Link>
           </div>
         ) : (
@@ -275,13 +275,13 @@ export default function DeliveriesPage() {
             <table className="w-full text-xs">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider text-[10px] font-extrabold">
-                  <th className="text-left px-4 py-3.5 font-extrabold">Order #</th>
-                  <th className="text-left px-4 py-3.5 font-extrabold">Product</th>
-                  <th className="text-left px-4 py-3.5 font-extrabold">Destination</th>
-                  <th className="text-left px-4 py-3.5 font-extrabold">Status</th>
-                  <th className="text-left px-4 py-3.5 font-extrabold">Driver</th>
-                  <th className="text-left px-4 py-3.5 font-extrabold">Customer</th>
-                  <th className="text-right px-4 py-3.5 font-extrabold">Actions</th>
+                  <th className="text-left px-4 py-3.5 font-extrabold"><T k="common.order_2" /></th>
+                  <th className="text-left px-4 py-3.5 font-extrabold"><T k="common.product" /></th>
+                  <th className="text-left px-4 py-3.5 font-extrabold"><T k="merchant.destination" /></th>
+                  <th className="text-left px-4 py-3.5 font-extrabold"><T k="common.status" /></th>
+                  <th className="text-left px-4 py-3.5 font-extrabold"><T k="common.driver" /></th>
+                  <th className="text-left px-4 py-3.5 font-extrabold"><T k="common.customer" /></th>
+                  <th className="text-right px-4 py-3.5 font-extrabold"><T k="common.actions" /></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -302,12 +302,12 @@ export default function DeliveriesPage() {
                       <td className="px-4 py-3.5">
                         <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[10px] font-extrabold ${statusCfg.bg} ${statusCfg.color}`}>
                           <StatusIcon className="w-3 h-3" />
-                          {statusCfg.label}
+                          {uiLabel(statusCfg.label)}
                         </span>
                       </td>
-                      <td className="px-4 py-3.5 font-extrabold text-slate-800">{d.driver_name || 'Unassigned'}</td>
+                      <td className="px-4 py-3.5 font-extrabold text-slate-800">{d.driver_name || t("common.unassigned")}</td>
                       <td className="px-4 py-3.5">
-                        <p className="font-extrabold text-slate-900">{d.customer_name || 'Customer'}</p>
+                        <p className="font-extrabold text-slate-900">{d.customer_name || t("common.customer")}</p>
                         <p className="text-slate-400 font-mono text-[10px]">{d.customer_phone}</p>
                       </td>
                       <td className="px-4 py-3.5 text-right">
@@ -316,9 +316,7 @@ export default function DeliveriesPage() {
                             <Link
                               href={`/dashboard/orders/${d.id}`}
                               className="px-3.5 py-1.5 bg-[#0F172A] hover:bg-slate-800 text-white rounded-xl font-black text-[10px] transition-colors"
-                            >
-                              Manage Order
-                            </Link>
+                            >{' '}<T k="merchant.manage_order" />{' '}</Link>
                           ) : (
                             <a
                               href={`/track/${d.tracking_token}`}
@@ -326,7 +324,7 @@ export default function DeliveriesPage() {
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-orange-50 border border-orange-200 text-[#FF5500] hover:bg-orange-100 font-extrabold text-[10px] transition-colors"
                             >
-                              <span>Track</span>
+                              <span><T k="merchant.track" /></span>
                               <ExternalLink className="w-3 h-3 text-[#FF5500]" />
                             </a>
                           )}

@@ -1,5 +1,7 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
@@ -30,6 +32,8 @@ import {
 import { fetchApi } from '@/lib/api';
 
 export default function MerchantManagementPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const [merchants, setMerchants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -69,7 +73,7 @@ export default function MerchantManagementPage() {
       setMerchants(res || []);
     } catch (err: any) {
       console.error('Failed to load merchants:', err);
-      setErrorMsg(err.message || 'Failed to load merchants. Please check Admin credentials.');
+      setErrorMsg(err.message || t("admin.failed_to_load_merchants_please_check_admin_credentials"));
     } finally {
       setLoading(false);
     }
@@ -89,16 +93,16 @@ export default function MerchantManagementPage() {
 
   const handleStatusToggle = async (merchant: any, targetStatus: 'ACTIVE' | 'SUSPENDED' | 'ARCHIVED') => {
     const actionText =
-      targetStatus === 'SUSPENDED' ? 'suspend' : targetStatus === 'ARCHIVED' ? 'archive' : 'reactivate';
+      targetStatus === 'SUSPENDED' ? t("admin.suspend") : targetStatus === 'ARCHIVED' ? t("admin.archive") : t("admin.reactivate");
 
     const confirm = await Swal.fire({
-      title: `Are you sure?`,
-      text: `Do you want to ${actionText} merchant "${merchant.business_name}"?`,
+      title: t("admin.are_you_sure"),
+      text: t("interactions.do_you_want_to_value0_merchant_value1", { value0: uiLabel(String(actionText ?? '')), value1: (merchant.business_name) ?? '' }),
       icon: targetStatus === 'SUSPENDED' ? 'warning' : 'info',
       showCancelButton: true,
       confirmButtonColor: targetStatus === 'SUSPENDED' ? '#EF4444' : '#F59E0B',
       cancelButtonColor: '#334155',
-      confirmButtonText: `Yes, ${actionText} merchant`,
+      confirmButtonText: t("interactions.yes_value0_merchant", { value0: uiLabel(String(actionText ?? '')) }),
       background: '#0F172A',
       color: '#FFFFFF',
     });
@@ -111,8 +115,8 @@ export default function MerchantManagementPage() {
         });
 
         Swal.fire({
-          title: 'Updated!',
-          text: `Merchant status changed to ${targetStatus}`,
+          title: t("admin.updated"),
+          text: t("interactions.merchant_status_changed_to_value0", { value0: uiLabel(String(targetStatus ?? '')) }),
           icon: 'success',
           background: '#0F172A',
           color: '#FFFFFF',
@@ -123,8 +127,8 @@ export default function MerchantManagementPage() {
         loadMerchants();
       } catch (err: any) {
         Swal.fire({
-          title: 'Error!',
-          text: err.message || 'Failed to update merchant status',
+          title: t("admin.error_2"),
+          text: err.message || t("admin.failed_to_update_merchant_status"),
           icon: 'error',
           background: '#0F172A',
           color: '#FFFFFF',
@@ -152,8 +156,8 @@ export default function MerchantManagementPage() {
       });
 
       Swal.fire({
-        title: 'Merchant Created!',
-        text: `Merchant ${formData.businessName} created successfully with temporary password.`,
+        title: t("admin.merchant_created"),
+        text: t("interactions.merchant_value0_created_successfully_with_temporary_password", { value0: (formData.businessName) ?? '' }),
         icon: 'success',
         background: '#0F172A',
         color: '#FFFFFF',
@@ -178,8 +182,8 @@ export default function MerchantManagementPage() {
       loadMerchants();
     } catch (err: any) {
       Swal.fire({
-        title: 'Error!',
-        text: err.message || 'Failed to create merchant',
+        title: t("admin.error_2"),
+        text: err.message || t("admin.failed_to_create_merchant"),
         icon: 'error',
         background: '#0F172A',
         color: '#FFFFFF',
@@ -234,8 +238,8 @@ export default function MerchantManagementPage() {
       });
 
       Swal.fire({
-        title: 'Merchant Updated!',
-        text: `Merchant "${formData.businessName}" details updated successfully.`,
+        title: t("admin.merchant_updated"),
+        text: t("interactions.merchant_value0_details_updated_successfully", { value0: (formData.businessName) ?? '' }),
         icon: 'success',
         background: '#0F172A',
         color: '#FFFFFF',
@@ -248,8 +252,8 @@ export default function MerchantManagementPage() {
       loadMerchants();
     } catch (err: any) {
       Swal.fire({
-        title: 'Error!',
-        text: err.message || 'Failed to update merchant',
+        title: t("admin.error_2"),
+        text: err.message || t("admin.failed_to_update_merchant"),
         icon: 'error',
         background: '#0F172A',
         color: '#FFFFFF',
@@ -261,14 +265,14 @@ export default function MerchantManagementPage() {
 
   const handleDeleteMerchant = async (merchant: any) => {
     const confirm = await Swal.fire({
-      title: 'Permanently Delete Merchant?',
-      text: `Are you sure you want to delete "${merchant.business_name}"? This action CANNOT be undone and will delete all associated orders, deliveries, and drivers.`,
+      title: t("admin.permanently_delete_merchant_2"),
+      text: t("interactions.are_you_sure_you_want_to_delete_value0_this_action_cannot_be_undone_and_will_delete_all_as", { value0: (merchant.business_name) ?? '' }),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#DC2626',
       cancelButtonColor: '#334155',
-      confirmButtonText: 'Yes, Delete Permanently',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: t("admin.yes_delete_permanently"),
+      cancelButtonText: t("common.cancel"),
       background: '#0F172A',
       color: '#FFFFFF',
     });
@@ -280,8 +284,8 @@ export default function MerchantManagementPage() {
         });
 
         Swal.fire({
-          title: 'Deleted!',
-          text: `Merchant "${merchant.business_name}" has been permanently deleted.`,
+          title: t("admin.deleted"),
+          text: t("interactions.merchant_value0_has_been_permanently_deleted", { value0: (merchant.business_name) ?? '' }),
           icon: 'success',
           background: '#0F172A',
           color: '#FFFFFF',
@@ -292,8 +296,8 @@ export default function MerchantManagementPage() {
         loadMerchants();
       } catch (err: any) {
         Swal.fire({
-          title: 'Deletion Failed!',
-          text: err.message || 'Failed to delete merchant',
+          title: t("admin.deletion_failed"),
+          text: err.message || t("admin.failed_to_delete_merchant"),
           icon: 'error',
           background: '#0F172A',
           color: '#FFFFFF',
@@ -308,12 +312,8 @@ export default function MerchantManagementPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div>
           <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-            <Users className="w-6 h-6 text-amber-400" />
-            Merchant Control & Directory
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Create, manage, suspend, reactivate, and inspect complete 360° merchant profiles.
-          </p>
+            <Users className="w-6 h-6 text-amber-400" />{' '}<T k="admin.merchant_control_directory" />{' '}</h1>
+          <p className="text-xs text-slate-400 mt-1">{' '}<T k="admin.create_manage_suspend_reactivate_and_inspect_complete_360_merchant_profiles" />{' '}</p>
         </div>
 
         <button
@@ -324,7 +324,7 @@ export default function MerchantManagementPage() {
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-lg shadow-amber-500/20 transition-all self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
-          <span>+ Add New Merchant</span>
+          <span><T k="admin.add_new_merchant" /></span>
         </button>
       </div>
 
@@ -352,7 +352,7 @@ export default function MerchantManagementPage() {
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search by name, phone, email, ID..."
+            placeholder={t("admin.search_by_name_phone_email_id")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-all"
@@ -366,40 +366,35 @@ export default function MerchantManagementPage() {
           <table className="w-full text-left text-xs text-slate-300">
             <thead className="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider text-[10px] border-b border-slate-800">
               <tr>
-                <th className="p-4">Merchant / Business</th>
-                <th className="p-4">Primary Contact</th>
-                <th className="p-4">Metrics (Orders / Sales)</th>
-                <th className="p-4">Drivers & Customers</th>
-                <th className="p-4">Status</th>
-                <th className="p-4">Joined Date</th>
-                <th className="p-4 text-right">Actions</th>
+                <th className="p-4"><T k="admin.merchant_business" /></th>
+                <th className="p-4"><T k="admin.primary_contact" /></th>
+                <th className="p-4"><T k="admin.metrics_orders_sales" /></th>
+                <th className="p-4"><T k="admin.drivers_customers" /></th>
+                <th className="p-4"><T k="common.status" /></th>
+                <th className="p-4"><T k="admin.joined_date" /></th>
+                <th className="p-4 text-right"><T k="common.actions" /></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 font-medium">
               {loading ? (
                 <tr>
                   <td colSpan={7} className="text-center py-12 text-slate-500">
-                    <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-amber-400" />
-                    Loading merchants directory...
-                  </td>
+                    <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-amber-400" />{' '}<T k="admin.loading_merchants_directory" />{' '}</td>
                 </tr>
               ) : errorMsg ? (
                 <tr>
                   <td colSpan={7} className="text-center py-10 px-4">
                     <div className="max-w-md mx-auto p-4 rounded-2xl bg-rose-950/40 border border-rose-900/60 text-rose-300 text-center space-y-2">
-                      <p className="font-bold text-sm text-rose-400">Access Restricted / API Error</p>
+                      <p className="font-bold text-sm text-rose-400"><T k="admin.access_restricted_api_error" /></p>
                       <p className="text-xs text-slate-300">{errorMsg}</p>
-                      <p className="text-[11px] text-slate-400">
-                        Please ensure you are logged in as an <strong>Admin User</strong> (e.g. <code>+255600000000</code> / <code>admin@lumo.co.tz</code>).
+                      <p className="text-[11px] text-slate-400">{' '}<T k="admin.please_ensure_you_are_logged_in_as_an" />{' '}<strong><T k="admin.admin_user" /></strong> (e.g. <code>+255600000000</code> / <code>admin@lumo.co.tz</code>).
                       </p>
                     </div>
                   </td>
                 </tr>
               ) : merchants.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-center py-12 text-slate-500">
-                    No merchants match the selected criteria.
-                  </td>
+                  <td colSpan={7} className="text-center py-12 text-slate-500">{' '}<T k="admin.no_merchants_match_the_selected_criteria" />{' '}</td>
                 </tr>
               ) : (
                 merchants.map((m) => {
@@ -427,23 +422,22 @@ export default function MerchantManagementPage() {
 
                       <td className="p-4">
                         <p className="font-bold text-slate-200">{owner?.name || 'N/A'}</p>
-                        <p className="text-[10px] text-slate-400 font-mono">{owner?.email || m.email || 'No email'}</p>
+                        <p className="text-[10px] text-slate-400 font-mono">{owner?.email || m.email || t("admin.no_email")}</p>
                       </td>
 
                       <td className="p-4">
                         <div className="space-y-0.5">
-                          <span className="font-bold text-white text-xs block">{m.ordersCount || 0} Orders</span>
+                          <span className="font-bold text-white text-xs block">{m.ordersCount || 0}{' '}<T k="common.orders" /></span>
                           <span className="text-[10px] text-emerald-400 font-mono font-bold">
-                            TZS {(m.totalSales || 0).toLocaleString()}
+                            TZS {(m.totalSales || 0).toLocaleString(locale)}
                           </span>
                         </div>
                       </td>
 
                       <td className="p-4">
                         <div className="text-[11px] text-slate-300">
-                          <span className="font-bold">{m.driversCount || 0}</span> Drivers •{' '}
-                          <span className="font-bold">{m.customersCount || 0}</span> Customers
-                        </div>
+                          <span className="font-bold">{m.driversCount || 0}</span>{' '}<T k="admin.drivers" />{' '}
+                          <span className="font-bold">{m.customersCount || 0}</span>{' '}<T k="common.customers" />{' '}</div>
                       </td>
 
                       <td className="p-4">
@@ -461,19 +455,19 @@ export default function MerchantManagementPage() {
                               m.status === 'ACTIVE' ? 'bg-emerald-400' : 'bg-rose-400'
                             }`}
                           ></span>
-                          {m.status}
+                          {uiLabel(m.status)}
                         </span>
                       </td>
 
                       <td className="p-4 text-slate-400 font-mono text-[11px]">
-                        {new Date(m.created_at).toLocaleDateString()}
+                        {new Date(m.created_at).toLocaleDateString(locale)}
                       </td>
 
                       <td className="p-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <Link
                             href={`/admin/merchants/${m.id}`}
-                            title="View 360° Profile"
+                            title={t("admin.view_360_profile")}
                             className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
                           >
                             <Eye className="w-3.5 h-3.5 text-amber-400" />
@@ -481,7 +475,7 @@ export default function MerchantManagementPage() {
 
                           <button
                             onClick={() => handleOpenEditModal(m)}
-                            title="Edit Merchant Details"
+                            title={t("admin.edit_merchant_details")}
                             className="p-1.5 rounded-lg bg-blue-950/40 border border-blue-900/60 text-blue-400 hover:bg-blue-900/60 transition-colors"
                           >
                             <Pencil className="w-3.5 h-3.5" />
@@ -490,7 +484,7 @@ export default function MerchantManagementPage() {
                           {m.status === 'ACTIVE' ? (
                             <button
                               onClick={() => handleStatusToggle(m, 'SUSPENDED')}
-                              title="Suspend Merchant"
+                              title={t("admin.suspend_merchant")}
                               className="p-1.5 rounded-lg bg-amber-950/40 border border-amber-900/60 text-amber-400 hover:bg-amber-900/60 transition-colors"
                             >
                               <Ban className="w-3.5 h-3.5" />
@@ -498,7 +492,7 @@ export default function MerchantManagementPage() {
                           ) : (
                             <button
                               onClick={() => handleStatusToggle(m, 'ACTIVE')}
-                              title="Reactivate Merchant"
+                              title={t("admin.reactivate_merchant")}
                               className="p-1.5 rounded-lg bg-emerald-950/40 border border-emerald-900/60 text-emerald-400 hover:bg-emerald-900/60 transition-colors"
                             >
                               <CheckCircle2 className="w-3.5 h-3.5" />
@@ -507,7 +501,7 @@ export default function MerchantManagementPage() {
 
                           <button
                             onClick={() => handleStatusToggle(m, 'ARCHIVED')}
-                            title="Archive Merchant"
+                            title={t("admin.archive_merchant")}
                             className="p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors"
                           >
                             <Archive className="w-3.5 h-3.5" />
@@ -515,7 +509,7 @@ export default function MerchantManagementPage() {
 
                           <button
                             onClick={() => handleDeleteMerchant(m)}
-                            title="Permanently Delete Merchant"
+                            title={t("admin.permanently_delete_merchant")}
                             className="p-1.5 rounded-lg bg-rose-950/40 border border-rose-900/60 text-rose-400 hover:bg-rose-900/60 transition-colors"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -537,10 +531,8 @@ export default function MerchantManagementPage() {
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-6 my-8">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
-                <h3 className="text-lg font-black text-white">Add New Platform Merchant</h3>
-                <p className="text-xs text-slate-400">
-                  Register a merchant business with auto-generated temporary admin credentials.
-                </p>
+                <h3 className="text-lg font-black text-white"><T k="admin.add_new_platform_merchant" /></h3>
+                <p className="text-xs text-slate-400">{' '}<T k="admin.register_a_merchant_business_with_auto_generated_temporary_admin_credentials" />{' '}</p>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
@@ -553,17 +545,15 @@ export default function MerchantManagementPage() {
             <form onSubmit={handleCreateMerchant} className="space-y-4">
               {/* Business Section */}
               <div className="space-y-3">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
-                  Business Information
-                </span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">{' '}<T k="admin.business_information" />{' '}</span>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Business Name *</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="auth.business_name" /></label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Kariakoo Electronics"
+                      placeholder={t("admin.e_g_kariakoo_electronics")}
                       value={formData.businessName}
                       onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:border-amber-500 focus:outline-none"
@@ -571,7 +561,7 @@ export default function MerchantManagementPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Business Phone *</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.business_phone" /></label>
                     <input
                       type="text"
                       required
@@ -583,7 +573,7 @@ export default function MerchantManagementPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Business Email</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.business_email" /></label>
                     <input
                       type="email"
                       placeholder="info@business.co.tz"
@@ -594,7 +584,7 @@ export default function MerchantManagementPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Location / Address</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.location_address" /></label>
                     <input
                       type="text"
                       placeholder="Dar es Salaam, Tanzania"
@@ -608,13 +598,11 @@ export default function MerchantManagementPage() {
 
               {/* Owner Account Section */}
               <div className="space-y-3 pt-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
-                  Primary User & Access Credentials
-                </span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">{' '}<T k="admin.primary_user_access_credentials" />{' '}</span>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Full Name *</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.full_name" /></label>
                     <input
                       type="text"
                       required
@@ -626,7 +614,7 @@ export default function MerchantManagementPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">User Phone *</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.user_phone" /></label>
                     <input
                       type="text"
                       required
@@ -638,7 +626,7 @@ export default function MerchantManagementPage() {
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Temporary Password *</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.temporary_password" /></label>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
                         <input
@@ -653,7 +641,7 @@ export default function MerchantManagementPage() {
                           onClick={() => setShowTempPassword(!showTempPassword)}
                           className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-[10px]"
                         >
-                          {showTempPassword ? 'Hide' : 'Show'}
+                          {showTempPassword ? t("admin.hide") : t("admin.show")}
                         </button>
                       </div>
 
@@ -661,9 +649,7 @@ export default function MerchantManagementPage() {
                         type="button"
                         onClick={handleGeneratePassword}
                         className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700"
-                      >
-                        Auto-Generate
-                      </button>
+                      >{' '}<T k="admin.auto_generate" />{' '}</button>
                     </div>
                   </div>
                 </div>
@@ -675,15 +661,13 @@ export default function MerchantManagementPage() {
                   type="button"
                   onClick={() => setShowAddModal(false)}
                   className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white"
-                >
-                  Cancel
-                </button>
+                >{' '}<T k="common.cancel" />{' '}</button>
                 <button
                   type="submit"
                   disabled={submitting}
                   className="px-6 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-lg shadow-amber-500/20"
                 >
-                  {submitting ? 'Creating Merchant...' : 'Create Merchant Account'}
+                  {submitting ? t("admin.creating_merchant") : t("admin.create_merchant_account")}
                 </button>
               </div>
             </form>
@@ -697,10 +681,8 @@ export default function MerchantManagementPage() {
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-6 my-8">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
-                <h3 className="text-lg font-black text-white">Edit Merchant Profile</h3>
-                <p className="text-xs text-slate-400">
-                  Update merchant business details, contact information, status, or credentials.
-                </p>
+                <h3 className="text-lg font-black text-white"><T k="admin.edit_merchant_profile" /></h3>
+                <p className="text-xs text-slate-400">{' '}<T k="admin.update_merchant_business_details_contact_information_status_or_credentials" />{' '}</p>
               </div>
               <button
                 onClick={() => {
@@ -716,13 +698,11 @@ export default function MerchantManagementPage() {
             <form onSubmit={handleUpdateMerchant} className="space-y-4">
               {/* Business Section */}
               <div className="space-y-3">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400">
-                  Business Details
-                </span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400">{' '}<T k="admin.business_details" />{' '}</span>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Business Name *</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="auth.business_name" /></label>
                     <input
                       type="text"
                       required
@@ -733,7 +713,7 @@ export default function MerchantManagementPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Business Phone *</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.business_phone" /></label>
                     <input
                       type="text"
                       required
@@ -744,7 +724,7 @@ export default function MerchantManagementPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Business Email</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.business_email" /></label>
                     <input
                       type="email"
                       value={formData.businessEmail}
@@ -754,10 +734,10 @@ export default function MerchantManagementPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Location / Address</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.location_address" /></label>
                     <input
                       type="text"
-                      placeholder="e.g. Ubungo, Dar es Salaam"
+                      placeholder={t("admin.e_g_ubungo_dar_es_salaam")}
                       value={formData.businessLocation}
                       onChange={(e) => setFormData({ ...formData, businessLocation: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:border-blue-500 focus:outline-none"
@@ -768,13 +748,11 @@ export default function MerchantManagementPage() {
 
               {/* Primary User Section */}
               <div className="space-y-3 pt-3 border-t border-slate-800">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
-                  Primary Owner / Account Credentials
-                </span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">{' '}<T k="admin.primary_owner_account_credentials" />{' '}</span>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Owner Full Name</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.owner_full_name" /></label>
                     <input
                       type="text"
                       value={formData.fullName}
@@ -784,7 +762,7 @@ export default function MerchantManagementPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">Owner Phone</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.owner_phone" /></label>
                     <input
                       type="text"
                       value={formData.phone}
@@ -794,10 +772,10 @@ export default function MerchantManagementPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">New Password (Optional)</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.new_password_optional" /></label>
                     <input
                       type="password"
-                      placeholder="Leave blank to keep unchanged"
+                      placeholder={t("admin.leave_blank_to_keep_unchanged")}
                       value={formData.temporaryPassword}
                       onChange={(e) => setFormData({ ...formData, temporaryPassword: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:border-blue-500 focus:outline-none font-mono"
@@ -805,11 +783,11 @@ export default function MerchantManagementPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1">New PIN Code (Optional)</label>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1"><T k="admin.new_pin_code_optional" /></label>
                     <input
                       type="text"
                       maxLength={4}
-                      placeholder="Leave blank to keep unchanged"
+                      placeholder={t("admin.leave_blank_to_keep_unchanged")}
                       value={formData.pinCode}
                       onChange={(e) => setFormData({ ...formData, pinCode: e.target.value })}
                       className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:border-blue-500 focus:outline-none font-mono"
@@ -827,15 +805,13 @@ export default function MerchantManagementPage() {
                     setEditingMerchantId(null);
                   }}
                   className="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white"
-                >
-                  Cancel
-                </button>
+                >{' '}<T k="common.cancel" />{' '}</button>
                 <button
                   type="submit"
                   disabled={submitting}
                   className="px-6 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-500/20"
                 >
-                  {submitting ? 'Saving Changes...' : 'Save Merchant Changes'}
+                  {submitting ? t("admin.saving_changes") : t("admin.save_merchant_changes")}
                 </button>
               </div>
             </form>

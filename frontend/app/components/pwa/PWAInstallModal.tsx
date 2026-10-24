@@ -1,5 +1,7 @@
 'use client';
 
+
+import { T } from '@/components/LanguageProvider';
 import React from 'react';
 import { X, Share, PlusSquare, Smartphone, Download, CheckCircle2 } from 'lucide-react';
 import { LumoLogo } from '@/components/landing/LumoLogo';
@@ -37,23 +39,23 @@ export function PWAInstallModal({ isOpen, onClose, onInstall, isIOS = false }: P
               ⚡
             </div>
             <div>
-              <h3 className="text-base font-black text-white leading-tight">LUMO Merchant</h3>
-              <p className="text-xs text-slate-300 font-medium">Manage your deliveries faster</p>
+              <h3 className="text-base font-black text-white leading-tight"><T k="common.lumo_merchant" /></h3>
+              <p className="text-xs text-slate-300 font-medium"><T k="public.manage_your_deliveries_faster" /></p>
             </div>
           </div>
 
           <div className="space-y-1.5 pt-2 border-t border-white/10 text-xs text-slate-300 font-medium">
             <p className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>Create deliveries & track driver fleet</span>
+              <span><T k="public.create_deliveries_track_driver_fleet" /></span>
             </p>
             <p className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>Instant SMS customer notification updates</span>
+              <span><T k="public.instant_sms_customer_notification_updates" /></span>
             </p>
             <p className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>1-Tap launch from home screen</span>
+              <span><T k="public.1_tap_launch_from_home_screen" /></span>
             </p>
           </div>
         </div>
@@ -61,21 +63,19 @@ export function PWAInstallModal({ isOpen, onClose, onInstall, isIOS = false }: P
         {/* iOS Step-by-Step Instructions OR Native Install Action */}
         {isIOS ? (
           <div className="space-y-3 bg-white/5 p-4 rounded-2xl border border-white/10">
-            <p className="text-xs font-black uppercase text-[#FF5500] tracking-wider">
-              INSTALL ON SAFARI (iOS)
-            </p>
+            <p className="text-xs font-black uppercase text-[#FF5500] tracking-wider">{' '}<T k="public.install_on_safari_ios" />{' '}</p>
             <ol className="space-y-2.5 text-xs text-slate-200 font-medium">
               <li className="flex items-start gap-2.5">
                 <span className="w-5 h-5 rounded-full bg-[#FF5500] text-white text-[11px] font-black flex items-center justify-center shrink-0">1</span>
-                <span>Tap the <Share className="w-4 h-4 inline text-blue-400 mx-1" /> <strong>Share</strong> icon in your Safari toolbar.</span>
+                <span><T k="public.tap_the" />{' '}<Share className="w-4 h-4 inline text-blue-400 mx-1" /> <strong><T k="public.share" /></strong>{' '}<T k="public.icon_in_your_safari_toolbar" /></span>
               </li>
               <li className="flex items-start gap-2.5">
                 <span className="w-5 h-5 rounded-full bg-[#FF5500] text-white text-[11px] font-black flex items-center justify-center shrink-0">2</span>
-                <span>Scroll down and tap <PlusSquare className="w-4 h-4 inline text-emerald-400 mx-1" /> <strong>Add to Home Screen</strong>.</span>
+                <span><T k="public.scroll_down_and_tap" />{' '}<PlusSquare className="w-4 h-4 inline text-emerald-400 mx-1" /> <strong><T k="public.add_to_home_screen" /></strong>.</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <span className="w-5 h-5 rounded-full bg-[#FF5500] text-white text-[11px] font-black flex items-center justify-center shrink-0">3</span>
-                <span>Tap <strong>Add</strong> at top right to complete installation.</span>
+                <span><T k="public.tap" />{' '}<strong><T k="public.add" /></strong>{' '}<T k="public.at_top_right_to_complete_installation" /></span>
               </li>
             </ol>
           </div>
@@ -89,7 +89,7 @@ export function PWAInstallModal({ isOpen, onClose, onInstall, isIOS = false }: P
               className="w-full py-3.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-extrabold text-sm shadow-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
             >
               <Download className="w-5 h-5" />
-              <span>Install LUMO Merchant</span>
+              <span><T k="public.install_lumo_merchant" /></span>
             </button>
           </div>
         )}
@@ -97,9 +97,7 @@ export function PWAInstallModal({ isOpen, onClose, onInstall, isIOS = false }: P
         <button
           onClick={onClose}
           className="w-full py-2.5 text-xs font-bold text-slate-400 hover:text-white transition-colors"
-        >
-          Maybe later
-        </button>
+        >{' '}<T k="public.maybe_later" />{' '}</button>
       </div>
     </div>
   );

@@ -120,6 +120,7 @@ export async function registerMerchant(data: {
       phone: user.phone,
       email: user.email,
       role: user.role,
+      language: user.language === 'sw' ? 'sw' : 'en',
     },
     merchant: {
       id: merchant.id,
@@ -270,6 +271,7 @@ export async function verifyOtp(phone: string, otp: string) {
       phone: user.phone,
       email: user.email,
       role: user.role,
+      language: user.language === 'sw' ? 'sw' : 'en',
     },
     merchant: {
       id: user.merchant.id,
@@ -473,6 +475,7 @@ export async function verifyPin(phone: string, pin: string) {
       phone: user.phone,
       email: user.email,
       role: user.role,
+      language: user.language === 'sw' ? 'sw' : 'en',
     },
     merchant: {
       id: user.merchant.id,
@@ -535,6 +538,7 @@ export async function verifyPassword(identifier: string, password: string) {
       phone: user.phone,
       email: user.email,
       role: user.role,
+      language: user.language === 'sw' ? 'sw' : 'en',
     },
     merchant: {
       id: user.merchant.id,

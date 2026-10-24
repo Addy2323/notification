@@ -1,0 +1,167 @@
+[
+  {
+    "file": "app/(auth)/forgot-password/page.tsx",
+    "start": 2904,
+    "end": 2984,
+    "text": "Registered phone number verified! 6-digit SMS OTP code dispatched to {value0}.",
+    "expressions": [
+      "phone"
+    ]
+  },
+  {
+    "file": "app/(auth)/register/page.tsx",
+    "start": 4053,
+    "end": 4127,
+    "text": "A 6-digit verification SMS code has been sent to {value0}.",
+    "expressions": [
+      "form.business_phone"
+    ]
+  },
+  {
+    "file": "app/admin/merchants/page.tsx",
+    "start": 2752,
+    "end": 2820,
+    "text": "Do you want to {value0} merchant \"{value1}\"?",
+    "expressions": [
+      "actionText",
+      "merchant.business_name"
+    ]
+  },
+  {
+    "file": "app/admin/merchants/page.tsx",
+    "start": 3061,
+    "end": 3090,
+    "text": "Yes, {value0} merchant",
+    "expressions": [
+      "actionText"
+    ]
+  },
+  {
+    "file": "app/admin/merchants/page.tsx",
+    "start": 3449,
+    "end": 3493,
+    "text": "Merchant status changed to {value0}",
+    "expressions": [
+      "targetStatus"
+    ]
+  },
+  {
+    "file": "app/admin/merchants/page.tsx",
+    "start": 4633,
+    "end": 4714,
+    "text": "Merchant {value0} created successfully with temporary password.",
+    "expressions": [
+      "formData.businessName"
+    ]
+  },
+  {
+    "file": "app/admin/merchants/page.tsx",
+    "start": 7222,
+    "end": 7289,
+    "text": "Merchant \"{value0}\" details updated successfully.",
+    "expressions": [
+      "formData.businessName"
+    ]
+  },
+  {
+    "file": "app/admin/merchants/page.tsx",
+    "start": 8008,
+    "end": 8163,
+    "text": "Are you sure you want to delete \"{value0}\"? This action CANNOT be undone and will delete all associated orders, deliveries, and drivers.",
+    "expressions": [
+      "merchant.business_name"
+    ]
+  },
+  {
+    "file": "app/admin/merchants/page.tsx",
+    "start": 8693,
+    "end": 8761,
+    "text": "Merchant \"{value0}\" has been permanently deleted.",
+    "expressions": [
+      "merchant.business_name"
+    ]
+  },
+  {
+    "file": "app/admin/merchants/[id]/page.tsx",
+    "start": 2139,
+    "end": 2217,
+    "text": "Do you want to {value0} merchant \"{value1}\"?",
+    "expressions": [
+      "actionText",
+      "profile?.merchant?.business_name"
+    ]
+  },
+  {
+    "file": "app/admin/merchants/[id]/page.tsx",
+    "start": 2458,
+    "end": 2487,
+    "text": "Yes, {value0} merchant",
+    "expressions": [
+      "actionText"
+    ]
+  },
+  {
+    "file": "app/admin/merchants/[id]/page.tsx",
+    "start": 2852,
+    "end": 2892,
+    "text": "Merchant status is now {value0}",
+    "expressions": [
+      "targetStatus"
+    ]
+  },
+  {
+    "file": "app/admin/orders/page.tsx",
+    "start": 8303,
+    "end": 8333,
+    "text": "View order {value0}",
+    "expressions": [
+      "o.order_number"
+    ]
+  },
+  {
+    "file": "app/dashboard/orders/[id]/page.tsx",
+    "start": 5617,
+    "end": 5696,
+    "text": "Status updated to {value0}. SMS sent automatically.",
+    "expressions": [
+      "STATUS_CONFIG[newStatus]?.label"
+    ]
+  },
+  {
+    "file": "app/dashboard/sales/page.tsx",
+    "start": 18895,
+    "end": 18927,
+    "text": "Edit order {value0}",
+    "expressions": [
+      "ord.order_number"
+    ]
+  },
+  {
+    "file": "app/dashboard/sales/page.tsx",
+    "start": 19189,
+    "end": 19272,
+    "text": "{value0} details for {value1}",
+    "expressions": [
+      "isExpanded ? t(\"admin.hide\") : t(\"admin.show\")",
+      "ord.order_number"
+    ]
+  },
+  {
+    "file": "app/rate/[token]/page.tsx",
+    "start": 12954,
+    "end": 12973,
+    "text": "Rate {value0} star",
+    "expressions": [
+      "star"
+    ]
+  },
+  {
+    "file": "components/landing/Hero.tsx",
+    "start": 8801,
+    "end": 8827,
+    "text": "Go to slide {value0}",
+    "expressions": [
+      "index + 1"
+    ]
+  }
+]

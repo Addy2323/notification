@@ -186,3 +186,12 @@ export async function uploadAvatar(req: Request, res: Response) {
   }
 }
 
+
+export async function updateLanguage(req: Request, res: Response) {
+  const body = req.body;
+  if (!body || Object.keys(body).some(key => key !== 'language') || !['en', 'sw'].includes(body.language)) return sendError(res, 'VALIDATION_ERROR', 'Invalid language preference', 400);
+  try {
+    const user = await prisma.merchantUser.update({ where: { id: req.user!.id }, data: { language: body.language }, select: { language: true } });
+    return sendSuccess(res, user);
+  } catch { return sendError(res, 'PREFERENCE_SAVE_FAILED', 'Unable to save language preference', 500); }
+}

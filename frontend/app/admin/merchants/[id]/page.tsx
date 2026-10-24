@@ -1,5 +1,7 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -33,6 +35,8 @@ import {
 import { fetchApi } from '@/lib/api';
 
 export default function Merchant360ProfilePage() {
+  const { t, label: uiLabel, locale, language } = useLanguage();
+
   const params = useParams();
   const router = useRouter();
   const merchantId = params.id as string;
@@ -51,7 +55,7 @@ export default function Merchant360ProfilePage() {
       const data = await fetchApi(`/admin/merchants/${merchantId}/profile?period=${period}`);
       if (request === requestId.current) setProfile(data);
     } catch (err: any) {
-      if (request === requestId.current) { setError(err.message || 'Failed to load profile'); setProfile(null); }
+      if (request === requestId.current) { setError(err.message || t("admin.failed_to_load_profile")); setProfile(null); }
     } finally {
       if (request === requestId.current) setLoading(false);
     }
@@ -63,16 +67,16 @@ export default function Merchant360ProfilePage() {
   }, [merchantId, period]);
 
   const handleStatusToggle = async (targetStatus: 'ACTIVE' | 'SUSPENDED' | 'ARCHIVED') => {
-    const actionText = targetStatus === 'SUSPENDED' ? 'suspend' : targetStatus === 'ARCHIVED' ? 'archive' : 'reactivate';
+    const actionText = targetStatus === 'SUSPENDED' ? t("admin.suspend") : targetStatus === 'ARCHIVED' ? t("admin.archive") : t("admin.reactivate");
 
     const confirm = await Swal.fire({
-      title: `Are you sure?`,
-      text: `Do you want to ${actionText} merchant "${profile?.merchant?.business_name}"?`,
+      title: t("admin.are_you_sure"),
+      text: t("interactions.do_you_want_to_value0_merchant_value1", { value0: uiLabel(String(actionText ?? '')), value1: (profile?.merchant?.business_name) ?? '' }),
       icon: targetStatus === 'SUSPENDED' ? 'warning' : 'info',
       showCancelButton: true,
       confirmButtonColor: targetStatus === 'SUSPENDED' ? '#EF4444' : '#F59E0B',
       cancelButtonColor: '#334155',
-      confirmButtonText: `Yes, ${actionText} merchant`,
+      confirmButtonText: t("interactions.yes_value0_merchant", { value0: uiLabel(String(actionText ?? '')) }),
       background: '#0F172A',
       color: '#FFFFFF',
     });
@@ -85,8 +89,8 @@ export default function Merchant360ProfilePage() {
         });
 
         Swal.fire({
-          title: 'Status Updated!',
-          text: `Merchant status is now ${targetStatus}`,
+          title: t("admin.status_updated"),
+          text: t("interactions.merchant_status_is_now_value0", { value0: uiLabel(String(targetStatus ?? '')) }),
           icon: 'success',
           background: '#0F172A',
           color: '#FFFFFF',
@@ -97,8 +101,8 @@ export default function Merchant360ProfilePage() {
         loadProfile();
       } catch (err: any) {
         Swal.fire({
-          title: 'Error',
-          text: err.message || 'Failed to update status',
+          title: t("admin.error"),
+          text: err.message || t("admin.failed_to_update_status"),
           icon: 'error',
           background: '#0F172A',
           color: '#FFFFFF',
@@ -107,7 +111,7 @@ export default function Merchant360ProfilePage() {
     }
   };
 
-  if (!loading && error) return <div className="space-y-4 text-rose-300"><p role="alert">{error}</p><button onClick={loadProfile} className="text-amber-400">Retry</button></div>;
+  if (!loading && error) return <div className="space-y-4 text-rose-300"><p role="alert">{error}</p><button onClick={loadProfile} className="text-amber-400"><T k="common.retry" /></button></div>;
   if (loading || !profile) {
     return (
       <div className="space-y-6 animate-pulse">
@@ -144,17 +148,17 @@ export default function Merchant360ProfilePage() {
           className="flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white transition-colors"
         >
           <ChevronLeft className="w-4 h-4" />
-          <span>Back to Merchants Directory</span>
+          <span><T k="admin.back_to_merchants_directory" /></span>
         </Link>
       </div>
 
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-        <p className="text-xs font-bold text-slate-300">Activity period</p>
+        <p className="text-xs font-bold text-slate-300"><T k="admin.activity_period" /></p>
         <div className="flex flex-wrap gap-2">
-          {[['ALL', 'All Time'], ['TODAY', 'Today'], ['THIS_WEEK', 'This Week'], ['THIS_MONTH', 'This Month'], ['SEMI_ANNUAL', 'Semiannual']].map(([value, label]) => <button key={value} onClick={() => setPeriod(value)} aria-pressed={period === value} className={`px-4 py-2 rounded-xl text-xs font-bold ${period === value ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300'}`}>{label}</button>)}
+          {[['ALL', 'All Time'], ['TODAY', 'Today'], ['THIS_WEEK', 'This Week'], ['THIS_MONTH', 'This Month'], ['SEMI_ANNUAL', 'Semiannual']].map(([value, label]) => <button key={value} onClick={() => setPeriod(value)} aria-pressed={period === value} className={`px-4 py-2 rounded-xl text-xs font-bold ${period === value ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300'}`}>{uiLabel(label)}</button>)}
         </div>
-        <p className="text-xs text-slate-400">Filters orders, sales, deliveries, notifications and activity by creation date. Weeks start Monday; semiannual means January?June or July?December to date. Directory records, engagement score and streak remain all-time.</p>
-        {!!summary?.missingCostCount && <p className="text-xs text-amber-400">{summary.missingCostCount} orders have no buying cost recorded; their profit is excluded.</p>}
+        <p className="text-xs text-slate-400"><T k="admin.filters_orders_sales_deliveries_notifications_and_activity_by_creation_date_weeks_sta" /></p>
+        {!!summary?.missingCostCount && <p className="text-xs text-amber-400">{summary.missingCostCount}{' '}<T k="admin.orders_have_no_buying_cost_recorded_their_profit_is_excluded" /></p>}
       </div>
       {/* Header Banner & Merchant Profile Summary */}
       <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 relative overflow-hidden shadow-2xl">
@@ -179,7 +183,7 @@ export default function Merchant360ProfilePage() {
                       : 'bg-slate-800 text-slate-400'
                   }`}
                 >
-                  {merchant.status}
+                  {uiLabel(merchant.status)}
                 </span>
               </div>
 
@@ -205,9 +209,7 @@ export default function Merchant360ProfilePage() {
           <div className="flex items-center gap-4 self-start md:self-auto">
             {/* Score Badge */}
             <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 text-center min-w-[100px]">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
-                Engagement Score
-              </span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">{' '}<T k="admin.engagement_score" />{' '}</span>
               <span className="text-2xl font-black text-amber-400 font-mono">
                 {score?.totalScore || 0} / 100
               </span>
@@ -215,9 +217,7 @@ export default function Merchant360ProfilePage() {
 
             {/* Streak Badge */}
             <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 text-center min-w-[100px]">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
-                Activity Streak
-              </span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">{' '}<T k="admin.activity_streak" />{' '}</span>
               <span className="text-2xl font-black text-emerald-400 font-mono">
                 🔥 {streak?.currentStreak || 0}d
               </span>
@@ -229,16 +229,12 @@ export default function Merchant360ProfilePage() {
                 <button
                   onClick={() => handleStatusToggle('SUSPENDED')}
                   className="px-3.5 py-2 rounded-xl bg-rose-950/40 border border-rose-900 text-rose-400 hover:bg-rose-900/60 font-bold text-xs transition-all"
-                >
-                  Suspend
-                </button>
+                >{' '}<T k="admin.suspend_2" />{' '}</button>
               ) : (
                 <button
                   onClick={() => handleStatusToggle('ACTIVE')}
                   className="px-3.5 py-2 rounded-xl bg-emerald-950/40 border border-emerald-900 text-emerald-400 hover:bg-emerald-900/60 font-bold text-xs transition-all"
-                >
-                  Reactivate
-                </button>
+                >{' '}<T k="admin.reactivate_2" />{' '}</button>
               )}
             </div>
           </div>
@@ -253,7 +249,7 @@ export default function Merchant360ProfilePage() {
 
           return (
             <button
-              key={tab.label}
+              key={uiLabel(tab.label)}
               onClick={() => setActiveTab(tab.label)}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
                 isActive
@@ -262,7 +258,7 @@ export default function Merchant360ProfilePage() {
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
-              <span>{tab.label}</span>
+              <span>{uiLabel(tab.label)}</span>
               {tab.count !== undefined && (
                 <span
                   className={`text-[9px] px-1.5 py-0.5 rounded-full font-mono font-bold ${
@@ -284,28 +280,28 @@ export default function Merchant360ProfilePage() {
             {/* Overview Summary Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                <span className="text-[10px] font-bold uppercase text-slate-500">Total Sales Value</span>
+                <span className="text-[10px] font-bold uppercase text-slate-500"><T k="admin.total_sales_value" /></span>
                 <p className="text-xl font-black text-emerald-400 font-mono mt-1">
-                  TZS {(summary?.totalSales || 0).toLocaleString()}
+                  TZS {(summary?.totalSales || 0).toLocaleString(locale)}
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                <span className="text-[10px] font-bold uppercase text-slate-500">Total Product Cost</span>
+                <span className="text-[10px] font-bold uppercase text-slate-500"><T k="admin.total_product_cost" /></span>
                 <p className="text-xl font-black text-rose-400 font-mono mt-1">
-                  TZS {(summary?.totalCost || 0).toLocaleString()}
+                  TZS {(summary?.totalCost || 0).toLocaleString(locale)}
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                <span className="text-[10px] font-bold uppercase text-slate-500">Gross Profit</span>
+                <span className="text-[10px] font-bold uppercase text-slate-500"><T k="common.gross_profit" /></span>
                 <p className="text-xl font-black text-amber-400 font-mono mt-1">
-                  TZS {(summary?.grossProfit || 0).toLocaleString()}
+                  TZS {(summary?.grossProfit || 0).toLocaleString(locale)}
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                <span className="text-[10px] font-bold uppercase text-slate-500">Total Orders</span>
+                <span className="text-[10px] font-bold uppercase text-slate-500"><T k="common.total_orders" /></span>
                 <p className="text-xl font-black text-white mt-1">{summary?.totalOrders || 0}</p>
               </div>
             </div>
@@ -313,29 +309,27 @@ export default function Merchant360ProfilePage() {
             {/* Score Breakdown Table */}
             <div className="space-y-3">
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Award className="w-4 h-4 text-amber-400" />
-                Engagement Score Breakdown (0 - 100)
-              </h3>
+                <Award className="w-4 h-4 text-amber-400" />{' '}<T k="admin.engagement_score_breakdown_0_100" />{' '}</h3>
 
               <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
                 <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800">
-                  <span className="text-[10px] text-slate-400 block font-semibold">Order Volume</span>
+                  <span className="text-[10px] text-slate-400 block font-semibold"><T k="admin.order_volume" /></span>
                   <span className="text-lg font-bold text-white font-mono">{score?.breakdown?.orderVolumeScore || 0} / 25</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800">
-                  <span className="text-[10px] text-slate-400 block font-semibold">Fulfillment Rate</span>
+                  <span className="text-[10px] text-slate-400 block font-semibold"><T k="admin.fulfillment_rate" /></span>
                   <span className="text-lg font-bold text-white font-mono">{score?.breakdown?.completionRateScore || 0} / 25</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800">
-                  <span className="text-[10px] text-slate-400 block font-semibold">Daily Consistency</span>
+                  <span className="text-[10px] text-slate-400 block font-semibold"><T k="admin.daily_consistency" /></span>
                   <span className="text-lg font-bold text-white font-mono">{score?.breakdown?.streakScore || 0} / 20</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800">
-                  <span className="text-[10px] text-slate-400 block font-semibold">Driver Usage</span>
+                  <span className="text-[10px] text-slate-400 block font-semibold"><T k="admin.driver_usage" /></span>
                   <span className="text-lg font-bold text-white font-mono">{score?.breakdown?.driverUsageScore || 0} / 15</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800">
-                  <span className="text-[10px] text-slate-400 block font-semibold">Notification Success</span>
+                  <span className="text-[10px] text-slate-400 block font-semibold"><T k="admin.notification_success" /></span>
                   <span className="text-lg font-bold text-white font-mono">{score?.breakdown?.notificationScore || 0} / 15</span>
                 </div>
               </div>
@@ -345,17 +339,17 @@ export default function Merchant360ProfilePage() {
 
         {activeTab === 'Orders' && (
           <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white">Merchant Orders (showing {orders.length} of {summary.totalOrders})</h3>
+            <h3 className="text-sm font-bold text-white"><T k="admin.merchant_orders_showing" />{' '}{orders.length}{' '}<T k="common.of" />{' '}{summary.totalOrders})</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs text-slate-300">
                 <thead className="bg-slate-950 text-slate-400 font-bold uppercase text-[10px]">
                   <tr>
-                    <th className="p-3">Order #</th>
-                    <th className="p-3">Customer</th>
-                    <th className="p-3">Product</th>
-                    <th className="p-3">Amount</th>
-                    <th className="p-3">Status</th>
-                    <th className="p-3">Date</th>
+                    <th className="p-3"><T k="common.order_2" /></th>
+                    <th className="p-3"><T k="common.customer" /></th>
+                    <th className="p-3"><T k="common.product" /></th>
+                    <th className="p-3"><T k="admin.amount" /></th>
+                    <th className="p-3"><T k="common.status" /></th>
+                    <th className="p-3"><T k="admin.date" /></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800">
@@ -365,10 +359,10 @@ export default function Merchant360ProfilePage() {
                       <td className="p-3">{o.customer_name} ({o.customer_phone})</td>
                       <td className="p-3">{o.product_name}</td>
                       <td className="p-3 font-mono font-bold text-amber-400">
-                        TZS {Number(o.total_revenue || o.amount || 0).toLocaleString()}
+                        TZS {Number(o.total_revenue || o.amount || 0).toLocaleString(locale)}
                       </td>
-                      <td className="p-3 font-bold">{o.status}</td>
-                      <td className="p-3 font-mono text-[10px]">{new Date(o.created_at).toLocaleString()}</td>
+                      <td className="p-3 font-bold">{uiLabel(o.status)}</td>
+                      <td className="p-3 font-mono text-[10px]">{new Date(o.created_at).toLocaleString(locale)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -379,24 +373,24 @@ export default function Merchant360ProfilePage() {
 
         {activeTab === 'Sales' && (
           <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white">Merchant Financial Ledger</h3>
+            <h3 className="text-sm font-bold text-white"><T k="admin.merchant_financial_ledger" /></h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                <span className="text-xs text-slate-400">Total Sales Value</span>
+                <span className="text-xs text-slate-400"><T k="admin.total_sales_value" /></span>
                 <p className="text-2xl font-black text-emerald-400 font-mono mt-1">
-                  TZS {summary?.totalSales.toLocaleString()}
+                  TZS {summary?.totalSales.toLocaleString(locale)}
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                <span className="text-xs text-slate-400">Total Cost</span>
+                <span className="text-xs text-slate-400"><T k="admin.total_cost" /></span>
                 <p className="text-2xl font-black text-rose-400 font-mono mt-1">
-                  TZS {summary?.totalCost.toLocaleString()}
+                  TZS {summary?.totalCost.toLocaleString(locale)}
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-                <span className="text-xs text-slate-400">Gross Profit</span>
+                <span className="text-xs text-slate-400"><T k="common.gross_profit" /></span>
                 <p className="text-2xl font-black text-amber-400 font-mono mt-1">
-                  TZS {summary?.grossProfit.toLocaleString()}
+                  TZS {summary?.grossProfit.toLocaleString(locale)}
                 </p>
               </div>
             </div>
@@ -405,7 +399,7 @@ export default function Merchant360ProfilePage() {
 
         {activeTab === 'Drivers' && (
           <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white">Merchant Drivers ({merchant.drivers?.length || 0})</h3>
+            <h3 className="text-sm font-bold text-white"><T k="admin.merchant_drivers" />{merchant.drivers?.length || 0})</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {(merchant.drivers || []).map((d: any) => (
                 <div key={d.id} className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
@@ -414,7 +408,7 @@ export default function Merchant360ProfilePage() {
                     <p className="text-[10px] text-slate-400 font-mono">{d.phone}</p>
                   </div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
-                    {d.status}
+                    {uiLabel(d.status)}
                   </span>
                 </div>
               ))}
@@ -424,25 +418,21 @@ export default function Merchant360ProfilePage() {
 
         {activeTab === 'Reports' && (
           <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white">Generate Merchant Audit Reports</h3>
+            <h3 className="text-sm font-bold text-white"><T k="admin.generate_merchant_audit_reports" /></h3>
             <div className="flex gap-3">
               <a
-                href={`/api/admin/reports/pdf?merchantId=${merchantId}`}
+                href={`/api/admin/reports/pdf?merchantId=${merchantId}&language=${language}`}
                 target="_blank"
                 className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md flex items-center gap-2"
               >
-                <Download className="w-4 h-4" />
-                Download PDF Report
-              </a>
+                <Download className="w-4 h-4" />{' '}<T k="admin.download_pdf_report" />{' '}</a>
 
               <a
-                href={`/api/admin/reports/excel?merchantId=${merchantId}`}
+                href={`/api/admin/reports/excel?merchantId=${merchantId}&language=${language}`}
                 target="_blank"
                 className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-md flex items-center gap-2"
               >
-                <Download className="w-4 h-4" />
-                Download Excel Report
-              </a>
+                <Download className="w-4 h-4" />{' '}<T k="admin.download_excel_report" />{' '}</a>
             </div>
           </div>
         )}

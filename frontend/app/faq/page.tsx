@@ -1,3 +1,6 @@
+import { localizedMetadata } from '@/lib/server-language';
+
+import { T, TLabel } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { HelpCircle, ChevronDown, ArrowRight } from 'lucide-react';
@@ -5,7 +8,7 @@ import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Sections';
 import { constructMetadata, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/seo';
 
-export const metadata = constructMetadata({
+export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'Frequently Asked Questions (FAQ) | LUMO Track Tanzania',
   description:
     'Find answers to common questions about LUMO Track delivery tracking, SMS notifications, WhatsApp integration, driver workflows, and merchant accounts in Tanzania.',
@@ -16,7 +19,7 @@ export const metadata = constructMetadata({
     'delivery tracking questions Tanzania',
     'SMS delivery FAQ Tanzania',
   ],
-});
+})); }
 
 export default function FAQPage() {
   const faqData = [
@@ -68,15 +71,9 @@ export default function FAQPage() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-12">
         <div className="text-center space-y-4">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">
-            HELP & ANSWERS
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-            Frequently Asked Questions
-          </h1>
-          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">
-            Everything you need to know about LUMO Track delivery notifications and web tracking in Tanzania.
-          </p>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">{' '}<T k="public.help_answers" />{' '}</span>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">{' '}<T k="public.frequently_asked_questions" />{' '}</h1>
+          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">{' '}<T k="public.everything_you_need_to_know_about_lumo_track_delivery_notifications_and_web_tracking_" />{' '}</p>
         </div>
 
         <div className="space-y-4">
@@ -84,20 +81,20 @@ export default function FAQPage() {
             <div key={idx} className="p-6 rounded-2xl bg-[#112239] border border-[#1F3654] space-y-2">
               <h2 className="text-base sm:text-lg font-bold text-white flex items-start gap-3">
                 <HelpCircle className="w-5 h-5 text-[#FF5500] shrink-0 mt-0.5" />
-                <span>{item.question}</span>
+                <span><TLabel value={item.question} /></span>
               </h2>
-              <p className="text-xs sm:text-sm text-[#A0B8D0] leading-relaxed pl-8">{item.answer}</p>
+              <p className="text-xs sm:text-sm text-[#A0B8D0] leading-relaxed pl-8"><TLabel value={item.answer} /></p>
             </div>
           ))}
         </div>
 
         <div className="text-center space-y-4 pt-6">
-          <p className="text-xs text-[#A0B8D0]">Still have questions?</p>
+          <p className="text-xs text-[#A0B8D0]"><T k="public.still_have_questions" /></p>
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] text-white font-extrabold text-sm shadow-lg shadow-orange-500/20"
           >
-            <span>Contact Support</span>
+            <span><T k="public.contact_support" /></span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

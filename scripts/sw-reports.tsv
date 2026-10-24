@@ -1,0 +1,127 @@
+﻿0	Mfumo wa ukaguzi wa fedha na usafirishaji
+1	Ripoti: {value0}
+2	Imetengenezwa: {value0}
+3	Hali: RIPOTI IMETENGENEZWA
+4	MUHTASARI WA SHUGHULI
+5	MIAMALA
+6	Idadi yote:
+8	Jumla / Mauzo:
+10	Mauzo yaliyofikishwa:
+12	Yanayosubiri:
+13	FEDHA
+14	Mapato ya mauzo:
+15	Gharama za bidhaa:
+17	Faida ghafi:
+18	SMS za mfumo:
+19	{value0} zimetumwa
+20	Faida ghafi baada ya marejesho
+22	Haijahifadhiwa
+23	Kipindi: {value0} - {value1}
+24	Marejesho: TZS {value0} | Oda zisizo na gharama ya kununua: {value1}
+25	Hesabu zinajumuisha hatua zote za usafirishaji kwa oda zilizosajiliwa katika kipindi hiki, baada ya marejesho. Faida ya oda zisizo na gharama ya kununua haijahesabiwa. Gharama inarejeshwa tu bidhaa zinaporudishwa dukani.
+26	Hakuna kumbukumbu katika kipindi hiki.
+27	DAFTARI LA MAUZO (TZS)
+28	Oda / Tarehe
+29	Mteja / Bidhaa
+30	Mauzo halisi
+31	Gharama halisi
+32	Faida ghafi
+33	Hali
+34	BEI ZA BIDHAA WAKATI WA MAUZO (TZS)
+35	Oda / Bidhaa
+36	Idadi
+37	Kununua / bidhaa
+38	Kuuza / bidhaa
+39	Punguzo
+40	Faida ya mauzo
+41	Zimerudishwa dukani
+42	Gharama imebaki
+43	KUMBUKUMBU ZA MAREJESHO (TZS)
+44	Oda
+45	Tarehe ya marejesho
+46	Kiasi
+47	Sababu
+48	Bidhaa
+49	Muhtasari
+50	Kipimo
+51	Thamani
+52	Jina la biashara
+53	Aina ya ripoti
+54	Tarehe ya kuanza
+55	Tarehe ya mwisho
+56	Jumla ya oda
+57	Jumla ya mapato ya mauzo (TZS)
+58	Jumla ya gharama za bidhaa (TZS)
+59	Faida ghafi (TZS)
+60	Marejesho (TZS)
+61	Oda zisizo na gharama ya kununua
+62	Jumla ya bidhaa zilizouzwa
+63	Oda zilizofikishwa
+64	Mizigo inayosubiri
+65	Oda zilizoshindwa / zilizoghairiwa
+66	Arifa zilizotumwa
+67	Daftari la mauzo
+68	Kitambulisho cha oda
+69	Tarehe ya oda
+70	Jina la mteja
+71	Simu ya mteja
+72	Jina la bidhaa
+73	SKU
+74	Aina ya bidhaa
+75	Idadi
+76	Bei ya kuuza
+77	Bei ya kununua kwa bidhaa
+78	Mapato ya mauzo
+79	Jumla ya gharama
+80	Faida ghafi
+81	Jina la dereva
+82	Wateja
+83	Namba ya simu
+84	Barua pepe
+85	Anwani ya kupeleka
+86	Tarehe ya usajili
+87	Madereva
+88	Taarifa za chombo cha usafiri
+89	Jumla ya mizigo
+90	Arifa
+91	Aina ya mpokeaji
+92	Ujumbe
+93	Muda wa kutuma
+94	LUMO TRACKING
+95	RIPOTI YA SHUGHULI ZA USIMAMIZI
+96	Kipindi cha ripoti: {value0}
+97	Imetengenezwa: {value0}
+98	Aliyetengeneza: {value0}
+99	MUHTASARI WA MFUMO
+100	WAFANYABIASHARA WOTE
+101	ODA ZOTE
+102	MAUZO YOTE (TZS)
+103	FAIDA GHAFI (TZS)
+104	ODA ZA KARIBUNI
+105	ODA #
+106	MFANYABIASHARA
+107	MTEJA
+108	BIDHAA
+109	HALI
+110	MAPATO (TZS)
+111	LUMO Tracking — Ripoti ya siri ya usimamizi
+112	Muhtasari wa mfumo
+113	Kipindi cha ripoti
+114	Jumla ya wafanyabiashara
+115	Oda zilizoshindwa / zilizoghairiwa
+116	Jumla ya mauzo (TZS)
+117	Jumla ya madereva
+118	Jumla ya arifa za SMS
+119	Wafanyabiashara
+120	Kitambulisho
+121	Jina la biashara
+122	Simu
+123	Tarehe ya kujiunga
+124	Oda
+125	Namba ya oda
+126	Mfanyabiashara
+127	Mteja
+128	Bidhaa
+129	Mapato (TZS)
+130	Gharama (TZS)
+131	Tarehe

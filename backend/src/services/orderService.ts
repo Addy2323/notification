@@ -201,7 +201,8 @@ export async function listOrders(merchantId: string, options: {
   const where: any = { merchant_id: merchantId };
 
   if (options.status && options.status !== 'ALL') {
-    where.status = options.status;
+    if (options.status === 'REFUNDED') where.payment_status = 'REFUNDED';
+    else where.status = options.status;
   }
 
   if (options.driverId) {
@@ -473,13 +474,14 @@ export async function getOrderMetrics(merchantId: string) {
 }
 
 // A conditional update ensures concurrent/repeated requests cannot refund twice.
-export async function refundOrder(merchantId: string, userId: string, orderId: string, input: { reason: string; restocked: boolean }) {
+export async function refundOrder(merchantId: string, userId: string, orderId: string, input: { reason: string; restocked: boolean; updatedAt?: string }) {
   return prisma.$transaction(async tx => {
     const order = await tx.order.findFirst({ where: { id: orderId, merchant_id: merchantId } });
     if (!order) throw new Error('Order not found');
     if (order.status !== 'DELIVERED') throw new Error('Only delivered orders can be refunded');
-    const changed = await tx.order.updateMany({ where: { id: orderId, merchant_id: merchantId, status: 'DELIVERED', payment_status: { not: 'REFUNDED' } }, data: { payment_status: 'REFUNDED' } });
-    if (changed.count !== 1) throw new Error('This order has already been refunded');
+    if (input.updatedAt && new Date(input.updatedAt).getTime() !== order.updated_at.getTime()) throw new Error('This order changed. Close and reopen the refund form to review it.');
+    const changed = await tx.order.updateMany({ where: { id: orderId, merchant_id: merchantId, status: 'DELIVERED', updated_at: order.updated_at, payment_status: { not: 'REFUNDED' } }, data: { payment_status: 'REFUNDED' } });
+    if (changed.count !== 1) throw new Error('This order has already been refunded or changed. Refresh and review it.');
     await tx.orderEvent.create({ data: { order_id: orderId, event_type: 'ORDER_REFUNDED', actor_type: 'MERCHANT', actor_reference: userId, metadata: JSON.stringify({ reason: input.reason, restocked: input.restocked, amount: Number(order.total_revenue ?? order.amount ?? 0) }) } });
     return tx.order.findUnique({ where: { id: orderId } });
   });

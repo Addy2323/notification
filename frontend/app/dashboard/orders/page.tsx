@@ -1,8 +1,12 @@
 'use client';
 
+
+import { useLanguage, T } from '@/components/LanguageProvider';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchApi } from '@/lib/api';
+import OrderEditor from '@/components/OrderEditor';
+import OrderRefundDialog from '@/components/OrderRefundDialog';
 import {
   Search, Plus, Filter, ChevronDown, Package, Clock, CheckCircle2, Truck, MapPin, XCircle,
   ArrowRight, RefreshCw, ShoppingBag, User, Phone, AlertCircle, X, Users, Check, Camera, Image as ImageIcon, Trash2, Upload
@@ -17,6 +21,7 @@ interface Order {
   image_url?: string | null;
   amount: string | null;
   status: string;
+  payment_status: string;
   driver_name: string | null;
   driver_phone: string | null;
   delivery_address: string;
@@ -39,12 +44,16 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; 
 };
 
 export default function OrdersPage() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [meta, setMeta] = useState<any>({});
+  const [refundId, setRefundId] = useState<string | null>(null);
+  const [editor, setEditor] = useState<{ id: string; mode: 'edit' | 'delete' } | null>(null);
   const [showCreate, setShowCreate] = useState(false);
 
   // Create Order State
@@ -70,11 +79,11 @@ export default function OrdersPage() {
     if (!file) return;
     setModalError(null);
     if (file.size > 5 * 1024 * 1024) {
-      setModalError('Photo must be 5 MB or smaller. Please choose a smaller image.');
+      setModalError(t("interactions.photo_must_be_5_mb_or_smaller_please_choose_a_smaller_image"));
       return;
     }
     if (file.type && !file.type.startsWith('image/')) {
-      setModalError('Please choose an image from your photo library.');
+      setModalError(t("interactions.please_choose_an_image_from_your_photo_library"));
       return;
     }
     setImageProcessing(true);
@@ -83,7 +92,7 @@ export default function OrdersPage() {
       const img = await new Promise<HTMLImageElement>((resolve, reject) => {
         const image = new Image();
         image.onload = () => resolve(image);
-        image.onerror = () => reject(new Error('This photo could not be opened. Please choose a JPEG or PNG image.'));
+        image.onerror = () => reject(new Error(t("merchant.this_photo_could_not_be_opened_please_choose_a_jpeg_or_png_image")));
         image.src = previewUrl;
       });
       const scale = Math.min(1, 800 / Math.max(img.naturalWidth, img.naturalHeight));
@@ -91,12 +100,12 @@ export default function OrdersPage() {
       canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
       canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
       const ctx = canvas.getContext('2d');
-      if (!ctx) throw new Error('Unable to prepare your photo. Please try again.');
+      if (!ctx) throw new Error(t("merchant.unable_to_prepare_your_photo_please_try_again"));
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       const imageUrl = canvas.toDataURL('image/jpeg', 0.8);
       setOrderForm(f => ({ ...f, imageUrl }));
     } catch (err: any) {
-      setModalError(err.message || 'Unable to read your photo. Please try another image.');
+      setModalError(err.message || t("merchant.unable_to_read_your_photo_please_try_another_image"));
     } finally {
       URL.revokeObjectURL(previewUrl);
       setImageProcessing(false);
@@ -149,7 +158,7 @@ export default function OrdersPage() {
     setCreating(true);
 
     try {
-      if (orderForm.amount === '' || orderForm.buyingPrice === '' || !Number.isFinite(Number(orderForm.amount)) || !Number.isFinite(Number(orderForm.buyingPrice)) || Number(orderForm.amount) < 0 || Number(orderForm.buyingPrice) < 0) throw new Error('Enter valid buying and selling prices.');
+      if (orderForm.amount === '' || orderForm.buyingPrice === '' || !Number.isFinite(Number(orderForm.amount)) || !Number.isFinite(Number(orderForm.buyingPrice)) || Number(orderForm.amount) < 0 || Number(orderForm.buyingPrice) < 0) throw new Error(t("merchant.enter_valid_buying_and_selling_prices"));
       let cust = selectedCustomer;
       let drv = selectedDriver;
 
@@ -160,7 +169,7 @@ export default function OrdersPage() {
         const custAddress = orderForm.deliveryAddress || newCustomer.delivery_address;
 
         if (!custName || !custPhone) {
-          throw new Error('Please enter Customer Name and Phone Number (or select an existing customer).');
+          throw new Error(t("merchant.please_enter_customer_name_and_phone_number_or_select_an_existing_customer"));
         }
 
         const savedCust = await fetchApi('/customers', {
@@ -176,16 +185,16 @@ export default function OrdersPage() {
 
       // Validate product & address
       if (!orderForm.productName.trim()) {
-        throw new Error('Please enter Product / Order Description.');
+        throw new Error(t("merchant.please_enter_product_order_description"));
       }
       if (!orderForm.deliveryAddress.trim()) {
-        throw new Error('Please enter Delivery Address.');
+        throw new Error(t("merchant.please_enter_delivery_address"));
       }
 
       // Auto-create driver if typed
       if (!drv && (newDriver.name || newDriver.phone)) {
         if (!newDriver.name || !newDriver.phone) {
-          throw new Error('Please enter both Driver Name and Phone Number.');
+          throw new Error(t("merchant.please_enter_both_driver_name_and_phone_number"));
         }
         const savedDrv = await fetchApi('/drivers', {
           method: 'POST',
@@ -195,7 +204,7 @@ export default function OrdersPage() {
       }
 
       if (!cust) {
-        throw new Error('Please enter Customer Name and Phone Number (or select an existing customer).');
+        throw new Error(t("merchant.please_enter_customer_name_and_phone_number_or_select_an_existing_customer"));
       }
 
       await fetchApi('/orders', {
@@ -214,13 +223,13 @@ export default function OrdersPage() {
         }),
       });
 
-      setSuccess('Order created successfully! Customer SMS sent automatically.');
+      setSuccess(t("interactions.order_created_successfully_customer_sms_sent_automatically"));
       setShowCreate(false);
       resetCreateForm();
       loadOrders();
       setTimeout(() => setSuccess(null), 4000);
     } catch (err: any) {
-      setModalError(err.message || 'Failed to create order.');
+      setModalError(err.message || t("merchant.failed_to_create_order"));
     } finally {
       setCreating(false);
     }
@@ -241,11 +250,11 @@ export default function OrdersPage() {
   const timeAgo = (date: string) => {
     const diff = Date.now() - new Date(date).getTime();
     const mins = Math.floor(diff / 60000);
-    if (mins < 1) return 'Just now';
-    if (mins < 60) return `${mins} min ago`;
+    if (mins < 1) return t('common.time_just_now');
+    if (mins < 60) return t('common.minutes_ago', { count: mins });
     const hrs = Math.floor(mins / 60);
-    if (hrs < 24) return `${hrs}h ago`;
-    return `${Math.floor(hrs / 24)}d ago`;
+    if (hrs < 24) return t('common.hours_ago', { count: hrs });
+    return t('common.days_ago', { count: Math.floor(hrs / 24) });
   };
 
   return (
@@ -269,15 +278,15 @@ export default function OrdersPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Orders</h1>
-          <p className="text-sm text-slate-500 font-medium">Manage customer orders and assign deliveries.</p>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight"><T k="common.orders" /></h1>
+          <p className="text-sm text-slate-500 font-medium"><T k="merchant.manage_customer_orders_and_assign_deliveries" /></p>
         </div>
         <button
           onClick={() => { setShowCreate(true); loadAllDrivers(); searchCustomers(''); }}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs shadow-sm transition-all"
         >
           <Plus className="w-4 h-4" />
-          <span>Create Order</span>
+          <span><T k="common.create_order" /></span>
         </button>
       </div>
 
@@ -287,7 +296,7 @@ export default function OrdersPage() {
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
           <input
             type="text"
-            placeholder="Search order ID, customer, phone..."
+            placeholder={t("merchant.search_order_id_customer_phone")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 shadow-sm"
@@ -298,9 +307,10 @@ export default function OrdersPage() {
           onChange={(e) => setStatusFilter(e.target.value)}
           className="px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 min-w-[140px]"
         >
-          <option value="ALL">All Status</option>
+          <option value="ALL"><T k="merchant.all_status" /></option>
+          <option value="REFUNDED"><T k="common.refunded" /></option>
           {Object.entries(STATUS_CONFIG).map(([k, v]) => (
-            <option key={k} value={k}>{v.label}</option>
+            <option key={k} value={k}>{uiLabel(v.label)}</option>
           ))}
         </select>
         <button onClick={loadOrders} className="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-slate-800 shadow-sm transition-colors active:scale-90">
@@ -313,26 +323,26 @@ export default function OrdersPage() {
         {loading ? (
           <div className="p-12 text-center">
             <div className="w-8 h-8 rounded-xl bg-teal-100 animate-pulse mx-auto mb-3" />
-            <p className="text-xs font-semibold text-slate-400">Loading orders...</p>
+            <p className="text-xs font-semibold text-slate-400"><T k="merchant.loading_orders" /></p>
           </div>
         ) : orders.length === 0 ? (
           <div className="p-12 text-center">
             <ShoppingBag className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-            <p className="text-sm font-bold text-slate-500">No orders yet</p>
-            <p className="text-xs text-slate-400 mt-1">Create your first order to get started.</p>
+            <p className="text-sm font-bold text-slate-500"><T k="merchant.no_orders_yet" /></p>
+            <p className="text-xs text-slate-400 mt-1"><T k="merchant.create_your_first_order_to_get_started" /></p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
                 <tr className="bg-slate-50/80 border-b border-slate-200">
-                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider">Order ID</th>
-                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider">Customer</th>
-                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider">Product</th>
-                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider">Status</th>
-                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider">Driver</th>
-                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider">Created</th>
-                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider">Action</th>
+                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider"><T k="merchant.order_id" /></th>
+                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider"><T k="common.customer" /></th>
+                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider"><T k="common.product" /></th>
+                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider"><T k="common.status" /></th>
+                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider"><T k="common.driver" /></th>
+                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider"><T k="common.created" /></th>
+                  <th className="text-left px-4 py-3 font-bold text-slate-600 uppercase tracking-wider"><T k="admin.action" /></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -368,8 +378,9 @@ export default function OrdersPage() {
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg border text-[10px] font-bold ${statusCfg.bg} ${statusCfg.color}`}>
                           <StatusIcon className="w-3 h-3" />
-                          {statusCfg.label}
+                          {uiLabel(statusCfg.label)}
                         </span>
+                        {order.payment_status === 'REFUNDED' && <span className="block text-[10px] text-rose-700 font-bold mt-1"><T k="common.refunded" /></span>}
                       </td>
                       <td className="px-4 py-3 font-semibold text-slate-600">{order.driver_name || '—'}</td>
                       <td className="px-4 py-3 text-slate-500 font-medium">{timeAgo(order.created_at)}</td>
@@ -377,9 +388,10 @@ export default function OrdersPage() {
                         <button
                           onClick={() => router.push(`/dashboard/orders/${order.id}`)}
                           className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[10px] transition-colors"
-                        >
-                          View
-                        </button>
+                        >{' '}<T k="admin.view" />{' '}</button>
+                        {order.status === 'DELIVERED' && order.payment_status !== 'REFUNDED' && <button onClick={() => setRefundId(order.id)} className="ml-2 px-3 py-1.5 rounded-lg bg-amber-50 text-amber-800 font-bold text-[10px]"><T k="merchant.refund" /></button>}
+                        <button onClick={() => setEditor({ id: order.id, mode: 'edit' })} className="ml-2 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 font-bold text-[10px]"><T k="merchant.edit" /></button>
+                        <button onClick={() => setEditor({ id: order.id, mode: 'delete' })} className="ml-2 px-3 py-1.5 rounded-lg bg-rose-50 text-rose-700 font-bold text-[10px]"><T k="auth.delete" /></button>
                       </td>
                     </tr>
                   );
@@ -393,10 +405,12 @@ export default function OrdersPage() {
       {/* Pagination */}
       {meta.totalPages > 1 && (
         <div className="flex justify-center gap-2 text-xs font-bold text-slate-500">
-          <span>Page {meta.page} of {meta.totalPages}</span>
+          <span><T k="common.page" />{' '}{meta.page}{' '}<T k="common.of" />{' '}{meta.totalPages}</span>
         </div>
       )}
 
+      {refundId && <OrderRefundDialog orderId={refundId} onClose={() => setRefundId(null)} onSaved={() => { setRefundId(null); setSuccess(t("interactions.refund_recorded_sales_and_profit_have_been_updated")); loadOrders(); }} />}
+      {editor && <OrderEditor orderId={editor.id} mode={editor.mode} onClose={() => setEditor(null)} onSaved={message => { setEditor(null); setSuccess(message); loadOrders(); }} />}
       {/* CREATE ORDER MODAL */}
       {showCreate && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -404,8 +418,8 @@ export default function OrdersPage() {
             {/* Header */}
             <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between shrink-0 bg-white">
               <div>
-                <h2 className="text-lg font-black text-slate-900 tracking-tight">Create Order</h2>
-                <p className="text-[11px] font-semibold text-slate-400">Fill in dispatch details for instant SMS tracking</p>
+                <h2 className="text-lg font-black text-slate-900 tracking-tight"><T k="common.create_order" /></h2>
+                <p className="text-[11px] font-semibold text-slate-400"><T k="merchant.fill_in_dispatch_details_for_instant_sms_tracking" /></p>
               </div>
               <button
                 onClick={() => { setShowCreate(false); resetCreateForm(); }}
@@ -427,7 +441,7 @@ export default function OrdersPage() {
 
               {/* CUSTOMER SECTION */}
               <div className="space-y-2">
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Customer Details *</label>
+                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider"><T k="merchant.customer_details" /></label>
 
                 {selectedCustomer ? (
                   <div className="flex items-center justify-between p-3 rounded-xl bg-teal-50 border border-teal-200">
@@ -435,7 +449,7 @@ export default function OrdersPage() {
                       <p className="text-xs font-bold text-teal-800">{selectedCustomer.name}</p>
                       <p className="text-[10px] text-teal-600 font-medium">{selectedCustomer.phone}</p>
                     </div>
-                    <button onClick={() => setSelectedCustomer(null)} className="text-teal-600 hover:text-teal-800 text-[10px] font-bold">Change</button>
+                    <button onClick={() => setSelectedCustomer(null)} className="text-teal-600 hover:text-teal-800 text-[10px] font-bold"><T k="auth.change" /></button>
                   </div>
                 ) : (
                   <div className="space-y-2.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
@@ -443,7 +457,7 @@ export default function OrdersPage() {
                     <div className="relative">
                       <input
                         type="text"
-                        placeholder="Search existing customer..."
+                        placeholder={t("merchant.search_existing_customer")}
                         value={customerSearch}
                         onChange={e => searchCustomers(e.target.value)}
                         className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/20"
@@ -464,14 +478,14 @@ export default function OrdersPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                       <input
                         type="text"
-                        placeholder="Customer Name *"
+                        placeholder={t("merchant.customer_name")}
                         value={newCustomer.name}
                         onChange={e => setNewCustomer(p => ({ ...p, name: e.target.value }))}
                         className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/20"
                       />
                       <input
                         type="text"
-                        placeholder="Customer Phone *"
+                        placeholder={t("merchant.customer_phone")}
                         value={newCustomer.phone}
                         onChange={e => setNewCustomer(p => ({ ...p, phone: e.target.value }))}
                         className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/20 font-mono"
@@ -483,10 +497,10 @@ export default function OrdersPage() {
 
               {/* PRODUCT */}
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Product / Order Description *</label>
+                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1"><T k="merchant.product_order_description" /></label>
                 <input
                   type="text"
-                  placeholder="e.g. iPhone 15, Nike Air Max..."
+                  placeholder={t("merchant.e_g_iphone_15_nike_air_max")}
                   value={orderForm.productName}
                   onChange={e => setOrderForm(f => ({ ...f, productName: e.target.value }))}
                   className="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/20"
@@ -495,30 +509,27 @@ export default function OrdersPage() {
 
               {/* PRODUCT PHOTO UPLOAD SECTION */}
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
-                  Product / Parcel Photo (Optional)
-                </label>
+                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">{' '}<T k="merchant.product_parcel_photo_optional" />{' '}</label>
 
                 {orderForm.imageUrl ? (
                   <div className="relative rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3 overflow-hidden">
                       <img
                         src={orderForm.imageUrl}
-                        alt="Product preview"
+                        alt={t("merchant.product_preview")}
                         className="w-14 h-14 rounded-lg object-cover border border-emerald-300 shadow-sm shrink-0"
                       />
                       <div>
                         <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
-                          <Check className="w-3 h-3" /> Photo Attached
-                        </span>
-                        <p className="text-[11px] font-semibold text-slate-600 mt-0.5 truncate">Ready for dispatch tracking</p>
+                          <Check className="w-3 h-3" />{' '}<T k="merchant.photo_attached" />{' '}</span>
+                        <p className="text-[11px] font-semibold text-slate-600 mt-0.5 truncate"><T k="merchant.ready_for_dispatch_tracking" /></p>
                       </div>
                     </div>
                     <button
                       type="button"
                       onClick={() => setOrderForm(f => ({ ...f, imageUrl: '' }))}
                       className="p-2 rounded-lg bg-white hover:bg-rose-50 border border-slate-200 text-slate-400 hover:text-rose-600 transition-colors shrink-0"
-                      title="Remove image"
+                      title={t("merchant.remove_image")}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -530,11 +541,9 @@ export default function OrdersPage() {
                     </div>
                     <div>
                       <p className="text-xs font-bold text-slate-700 group-hover:text-teal-700">
-                        {imageProcessing ? 'Preparing photo...' : 'Choose Product Photo'}
+                        {imageProcessing ? t("merchant.preparing_photo") : t("merchant.choose_product_photo")}
                       </p>
-                      <p className="text-[10px] text-slate-400 font-medium">
-                        Choose from photo library or device (up to 5 MB)
-                      </p>
+                      <p className="text-[10px] text-slate-400 font-medium">{' '}<T k="merchant.choose_from_photo_library_or_device_up_to_5_mb" />{' '}</p>
                     </div>
                     <input
                       type="file"
@@ -549,7 +558,7 @@ export default function OrdersPage() {
 
               {/* AMOUNT */}
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Selling Price (TZS) *</label>
+                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1"><T k="merchant.selling_price_tzs_2" /></label>
                 <input
                   type="number"
                   placeholder="e.g. 2400000"
@@ -560,16 +569,16 @@ export default function OrdersPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold mb-1">Buying Price (TZS) *</label>
+                <label className="block text-xs font-bold mb-1"><T k="merchant.buying_price_tzs_2" /></label>
                 <input type="number" min="0" step="0.01" value={orderForm.buyingPrice} onChange={e => setOrderForm(f => ({ ...f, buyingPrice: e.target.value }))} className="w-full px-3 py-2.5 rounded-xl border border-slate-200" />
-                <p className="text-sm font-bold mt-2">Expected gross profit: {orderForm.amount !== '' && orderForm.buyingPrice !== '' ? `TZS ${(Number(orderForm.amount) - Number(orderForm.buyingPrice)).toLocaleString()}` : 'Enter both prices'}</p>
+                <p className="text-sm font-bold mt-2"><T k="merchant.expected_gross_profit" />{' '}{orderForm.amount !== '' && orderForm.buyingPrice !== '' ? `TZS ${(Number(orderForm.amount) - Number(orderForm.buyingPrice)).toLocaleString(locale)}` : t("merchant.enter_both_prices")}</p>
               </div>
               {/* DELIVERY ADDRESS */}
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Delivery Address *</label>
+                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1"><T k="merchant.delivery_address_2" /></label>
                 <input
                   type="text"
-                  placeholder="e.g. 57VJ+M9J, Nungwi"
+                  placeholder={t("merchant.e_g_57vj_m9j_nungwi")}
                   value={orderForm.deliveryAddress}
                   onChange={e => setOrderForm(f => ({ ...f, deliveryAddress: e.target.value }))}
                   className="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/20"
@@ -578,14 +587,14 @@ export default function OrdersPage() {
 
               {/* DRIVER SELECTION */}
               <div className="space-y-2">
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Driver (Optional)</label>
+                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider"><T k="merchant.driver_optional" /></label>
                 {selectedDriver ? (
                   <div className="flex items-center justify-between p-3 rounded-xl bg-indigo-50 border border-indigo-200">
                     <div>
                       <p className="text-xs font-bold text-indigo-800">{selectedDriver.name}</p>
                       <p className="text-[10px] text-indigo-600 font-medium">{selectedDriver.phone}</p>
                     </div>
-                    <button onClick={() => setSelectedDriver(null)} className="text-indigo-600 hover:text-indigo-800 text-[10px] font-bold">Change</button>
+                    <button onClick={() => setSelectedDriver(null)} className="text-indigo-600 hover:text-indigo-800 text-[10px] font-bold"><T k="auth.change" /></button>
                   </div>
                 ) : (
                   <div className="space-y-2 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
@@ -598,7 +607,7 @@ export default function OrdersPage() {
                               <p className="text-[10px] text-slate-500">{d.phone}</p>
                             </div>
                             <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${d.status === 'AVAILABLE' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
-                              {d.status === 'AVAILABLE' ? '● Available' : '● Busy'}
+                              {d.status === 'AVAILABLE' ? t("merchant.available") : t("merchant.busy")}
                             </span>
                           </button>
                         ))}
@@ -607,14 +616,14 @@ export default function OrdersPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <input
                         type="text"
-                        placeholder="New Driver Name (Optional)"
+                        placeholder={t("merchant.new_driver_name_optional")}
                         value={newDriver.name}
                         onChange={e => setNewDriver(p => ({ ...p, name: e.target.value }))}
                         className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/20"
                       />
                       <input
                         type="text"
-                        placeholder="New Driver Phone (Optional)"
+                        placeholder={t("merchant.new_driver_phone_optional")}
                         value={newDriver.phone}
                         onChange={e => setNewDriver(p => ({ ...p, phone: e.target.value }))}
                         className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/20 font-mono"
@@ -632,7 +641,7 @@ export default function OrdersPage() {
                 disabled={creating || imageProcessing}
                 className="w-full py-3.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-extrabold text-sm shadow-md transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-wide"
               >
-                {imageProcessing ? 'Preparing photo...' : creating ? 'Creating Order...' : 'Create Order'}
+                {imageProcessing ? t("merchant.preparing_photo") : creating ? t("merchant.creating_order") : t("common.create_order")}
                 <ArrowRight className="w-4 h-4 stroke-[3]" />
               </button>
             </div>

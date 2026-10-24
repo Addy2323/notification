@@ -1,3 +1,6 @@
+import { localizedMetadata } from '@/lib/server-language';
+
+import { T, TLabel } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { Check, Zap, Shield, HelpCircle, ArrowRight } from 'lucide-react';
@@ -5,7 +8,7 @@ import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Sections';
 import { constructMetadata, generateBreadcrumbSchema } from '@/lib/seo';
 
-export const metadata = constructMetadata({
+export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'Pricing Plans & Packages | LUMO Track Tanzania',
   description:
     'Flexible delivery notification and tracking plans for Tanzanian merchants. Start free with pay-as-you-go SMS credits and zero hidden fees.',
@@ -16,7 +19,7 @@ export const metadata = constructMetadata({
     'delivery software cost Tanzania',
     'SMS delivery notification credits',
   ],
-});
+})); }
 
 export default function PricingPage() {
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -83,15 +86,9 @@ export default function PricingPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-16">
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">
-            TRANSPARENT PRICING
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-            Simple, Transparent Pricing Plans
-          </h1>
-          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">
-            No expensive setup fees or contracts. Start free and pay only for the notifications you send.
-          </p>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">{' '}<T k="public.transparent_pricing" />{' '}</span>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">{' '}<T k="public.simple_transparent_pricing_plans" />{' '}</h1>
+          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">{' '}<T k="public.no_expensive_setup_fees_or_contracts_start_free_and_pay_only_for_the_notifications_yo" />{' '}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -103,23 +100,21 @@ export default function PricingPage() {
               }`}
             >
               {p.popular && (
-                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#FF5500] text-white text-[10px] font-black uppercase tracking-widest">
-                  Most Popular
-                </span>
+                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#FF5500] text-white text-[10px] font-black uppercase tracking-widest">{' '}<T k="public.most_popular" />{' '}</span>
               )}
 
               <div className="space-y-4">
-                <h2 className="text-xl font-bold text-white">{p.name}</h2>
+                <h2 className="text-xl font-bold text-white"><TLabel value={p.name} /></h2>
                 <div>
-                  <span className="text-3xl sm:text-4xl font-black text-white">{p.price}</span>
-                  <span className="text-xs text-[#A0B8D0] block mt-1">{p.period}</span>
+                  <span className="text-3xl sm:text-4xl font-black text-white"><TLabel value={p.price} /></span>
+                  <span className="text-xs text-[#A0B8D0] block mt-1"><TLabel value={p.period} /></span>
                 </div>
-                <p className="text-xs text-[#A0B8D0] leading-relaxed">{p.desc}</p>
+                <p className="text-xs text-[#A0B8D0] leading-relaxed"><TLabel value={p.desc} /></p>
                 <div className="space-y-2 pt-2">
                   {p.features.map((f, fIdx) => (
                     <div key={fIdx} className="flex items-center gap-2 text-xs text-slate-300">
                       <Check className="w-4 h-4 text-[#FF5500] shrink-0" />
-                      <span>{f}</span>
+                      <span><TLabel value={f} /></span>
                     </div>
                   ))}
                 </div>
@@ -133,7 +128,7 @@ export default function PricingPage() {
                     : 'bg-[#162C4A] hover:bg-[#1F3E68] text-white border border-[#2D4D77]'
                 }`}
               >
-                {p.cta}
+                <TLabel value={p.cta} />
               </Link>
             </div>
           ))}

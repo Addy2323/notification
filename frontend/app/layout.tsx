@@ -1,3 +1,4 @@
+import { localizedMetadata } from '@/lib/server-language';
 import type { Metadata } from 'next';
 import './globals.css';
 import {
@@ -6,21 +7,26 @@ import {
   generateSoftwareApplicationSchema,
 } from '@/lib/seo';
 import PageTracker from '@/components/PageTracker';
+import { cookies } from 'next/headers';
+import { LanguageProvider } from '@/components/LanguageProvider';
+import { validLanguage } from '@/lib/language';
 
-export const metadata: Metadata = constructMetadata({
+export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'LUMO Track | Delivery Tracking & SMS Notifications in Tanzania',
   description:
     'LUMO Track helps Tanzanian businesses send SMS and WhatsApp delivery notifications and give customers simple real-time web delivery tracking without an app.',
   canonicalUrl: '/',
   alternateSwahiliUrl: '/sw',
-});
+})); }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const savedLanguage = cookies().get('lumo_language')?.value;
+  const language = validLanguage(savedLanguage) ? savedLanguage : 'en';
   const orgSchema = generateOrganizationSchema();
   const appSchema = generateSoftwareApplicationSchema();
 
   return (
-    <html lang="en" className="h-full">
+    <html lang={language} className="h-full">
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0B192C" />
@@ -49,8 +55,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="h-full bg-surface font-body-md text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
-        <PageTracker />
-        {children}
+        <LanguageProvider initialLanguage={language}>
+          <PageTracker />
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

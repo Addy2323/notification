@@ -1,3 +1,6 @@
+import { localizedMetadata } from '@/lib/server-language';
+
+import { T } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { MessageSquare, Bell, ArrowRight } from 'lucide-react';
@@ -5,7 +8,7 @@ import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Sections';
 import { constructMetadata, generateBreadcrumbSchema } from '@/lib/seo';
 
-export const metadata = constructMetadata({
+export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'Arifa za SMS na Delivery Tanzania | LUMO Track',
   description:
     'Tuma arifa za SMS na WhatsApp kwa wateja wako Tanzania pindi mzigo unaposafirishwa. Boresha mawasiliano ya biashara yako leo.',
@@ -16,7 +19,7 @@ export const metadata = constructMetadata({
     'SMS za delivery Tanzania',
     'mawasiliano ya mizigo Dar es Salaam',
   ],
-});
+})); }
 
 export default function SwahiliArifaZaDeliveryPage() {
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -34,15 +37,9 @@ export default function SwahiliArifaZaDeliveryPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-16">
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">
-            ARIFA ZA SMS & WHATSAPP
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-            Arifa za SMS na Delivery kwa Wafanyabiashara
-          </h1>
-          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">
-            Punguza simu za wateja za "Mzigo wangu uko wapi?". Tuma SMS za kiotomatiki zenye link ya tracking kwa kila oda.
-          </p>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">{' '}<T k="public.legacy_sms_whatsapp_alerts" />{' '}</span>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">{' '}<T k="public.legacy_sms_and_delivery_alerts_for_merchants" />{' '}</h1>
+          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">{' '}<T k="public.legacy_reduce_calls_asking_where_is_my_package_send_automatic_sms_tracking_links_f" />{' '}</p>
         </div>
 
         <div className="text-center space-y-4">
@@ -50,7 +47,7 @@ export default function SwahiliArifaZaDeliveryPage() {
             href="/register"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] text-white font-extrabold text-sm shadow-lg shadow-orange-500/20"
           >
-            <span>Anza Kutuma Arifa za SMS</span>
+            <span><T k="public.legacy_start_sending_sms_alerts" /></span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

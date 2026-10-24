@@ -1,5 +1,7 @@
 'use client';
 
+
+import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState } from 'react';
 import { Download, ExternalLink, Smartphone } from 'lucide-react';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
@@ -11,6 +13,8 @@ interface PWAInstallButtonProps {
 }
 
 export function PWAInstallButton({ className = '', variant = 'sidebar' }: PWAInstallButtonProps) {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const { isInstalled, canInstall, isIOS, promptInstall } = usePWAInstall();
   const [showModal, setShowModal] = useState(false);
 
@@ -33,7 +37,7 @@ export function PWAInstallButton({ className = '', variant = 'sidebar' }: PWAIns
       return (
         <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-emerald-500/10 text-emerald-400 text-xs font-bold">
           <Smartphone className="w-4 h-4 text-emerald-400" />
-          <span>LUMO App Active</span>
+          <span><T k="public.lumo_app_active" /></span>
         </div>
       );
     }
@@ -51,10 +55,10 @@ export function PWAInstallButton({ className = '', variant = 'sidebar' }: PWAIns
             ? 'bg-[#FF5500] hover:bg-[#E04B00] text-white px-3 py-1.5 rounded-lg text-[11px]'
             : 'text-[#FF5500] hover:bg-[#FF5500]/10 w-full text-left'
         } ${className}`}
-        title="Install LUMO Merchant App"
+        title={t("public.install_lumo_merchant_app")}
       >
         <Download className="w-4 h-4 stroke-[2.5]" />
-        <span>Install LUMO App</span>
+        <span><T k="public.install_lumo_app" /></span>
       </button>
 
       <PWAInstallModal

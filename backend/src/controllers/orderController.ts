@@ -1,3 +1,4 @@
+import * as orderEditService from '../services/orderEditService';
 import { Request, Response } from 'express';
 import { z } from 'zod';
 
@@ -119,11 +120,24 @@ export async function getOrderMetrics(req: Request, res: Response) {
 }
 
 export async function refundOrder(req: Request, res: Response) {
-  const input = z.object({ reason: z.string().trim().min(1).max(500), restocked: z.boolean() }).safeParse(req.body);
+  const input = z.object({ reason: z.string().trim().min(1).max(500), restocked: z.boolean(), updatedAt: z.string().datetime().optional() }).safeParse(req.body);
   if (!input.success) return sendError(res, 'VALIDATION_ERROR', 'Provide a refund reason and whether goods were returned to stock', 400);
   try {
     return sendSuccess(res, await orderService.refundOrder(req.user!.merchant_id, req.user!.id, req.params.id, input.data));
   } catch (err: any) {
     return sendError(res, 'REFUND_ERROR', err.message, err.message === 'Order not found' ? 404 : 400);
   }
+}
+
+export async function editOrder(req: Request, res: Response) {
+  const parsed = orderEditService.orderEditSchema.safeParse(req.body);
+  if (!parsed.success) return sendError(res, 'VALIDATION_ERROR', parsed.error.issues[0].message, 400);
+  try { return sendSuccess(res, await orderEditService.editOrder(req.user!.merchant_id, req.user!.id, req.params.id, parsed.data)); }
+  catch (err: any) { return sendError(res, 'ORDER_EDIT_ERROR', err.message, err instanceof orderEditService.OrderEditError ? err.status : 500); }
+}
+export async function deleteOrder(req: Request, res: Response) {
+  const parsed = z.object({ updatedAt: z.string().datetime() }).strict().safeParse(req.body);
+  if (!parsed.success) return sendError(res, 'VALIDATION_ERROR', 'Order version is required. Reopen the order and try again.', 400);
+  try { return sendSuccess(res, await orderEditService.deleteOrder(req.user!.merchant_id, req.user!.id, req.params.id, parsed.data.updatedAt)); }
+  catch (err: any) { return sendError(res, 'ORDER_DELETE_ERROR', err.message, err instanceof orderEditService.OrderEditError ? err.status : 500); }
 }

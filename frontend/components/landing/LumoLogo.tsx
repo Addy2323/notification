@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from '@/components/LanguageProvider';
 
 interface LumoLogoProps {
   className?: string;
@@ -15,12 +16,13 @@ export function LumoLogo({
   showText = true,
   textColor = "text-slate-900",
 }: LumoLogoProps) {
+  const { t } = useLanguage();
   return (
     <div className={`inline-flex items-center gap-2.5 ${className}`}>
       {/* Official LUMO Brand Logo Image directly from /LOGO.png */}
       <img
         src="/LOGO.png"
-        alt="LUMO Logo"
+        alt={t('common.lumo_logo')}
         width={size}
         height={size}
         style={{ width: size, height: size }}

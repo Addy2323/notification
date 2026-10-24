@@ -1,5 +1,7 @@
 'use client';
 
+
+import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Smartphone, Download, ArrowRight, ExternalLink, ShieldCheck, Zap } from 'lucide-react';
@@ -7,6 +9,8 @@ import { usePWAInstall } from '@/hooks/usePWAInstall';
 import { PWAInstallModal } from '@/app/components/pwa/PWAInstallModal';
 
 export function PWAInstallBanner() {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const { isInstalled, canInstall, isIOS, isDismissed, promptInstall } = usePWAInstall();
   const [showModal, setShowModal] = useState(false);
 
@@ -38,25 +42,17 @@ export function PWAInstallBanner() {
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="space-y-4 max-w-2xl text-center lg:text-left">
             <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#FF5500] text-white text-[11px] font-black uppercase tracking-wider shadow-sm">
-              <Zap className="w-3.5 h-3.5" />
-              LUMO MERCHANT APP
-            </span>
+              <Zap className="w-3.5 h-3.5" />{' '}<T k="public.lumo_merchant_app" />{' '}</span>
 
-            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-              Manage Your Deliveries From One App
-            </h2>
+            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">{' '}<T k="public.manage_your_deliveries_from_one_app" />{' '}</h2>
 
-            <p className="text-sm sm:text-base text-slate-300 font-medium leading-relaxed">
-              Install LUMO Merchant for faster access to your delivery dashboard, notifications and delivery management tools.
-            </p>
+            <p className="text-sm sm:text-base text-slate-300 font-medium leading-relaxed">{' '}<T k="public.install_lumo_merchant_for_faster_access_to_your_delivery_dashboard_notifications_and_" />{' '}</p>
 
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2 text-xs text-slate-300 font-semibold">
               <span className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 border border-white/10">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" /> No App Store Download Required
-              </span>
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />{' '}<T k="public.no_app_store_download_required" />{' '}</span>
               <span className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 border border-white/10">
-                <Smartphone className="w-4 h-4 text-[#FF5500]" /> 1-Tap Home Screen Access
-              </span>
+                <Smartphone className="w-4 h-4 text-[#FF5500]" />{' '}<T k="public.1_tap_home_screen_access" />{' '}</span>
             </div>
           </div>
 
@@ -67,7 +63,7 @@ export function PWAInstallBanner() {
                 href="/dashboard"
                 className="px-6 py-4 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-extrabold text-sm shadow-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wider"
               >
-                <span>Open LUMO Merchant</span>
+                <span><T k="public.open_lumo_merchant" /></span>
                 <ArrowRight className="w-4 h-4 stroke-[3]" />
               </Link>
             ) : (
@@ -76,7 +72,7 @@ export function PWAInstallBanner() {
                 className="px-6 py-4 rounded-xl bg-[#FF5500] hover:bg-[#E04B00] active:scale-95 text-white font-extrabold text-sm shadow-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wider"
               >
                 <Download className="w-5 h-5" />
-                <span>{isIOS ? 'Add LUMO to Home Screen' : 'Install LUMO Merchant'}</span>
+                <span>{isIOS ? t("public.add_lumo_to_home_screen") : t("public.install_lumo_merchant")}</span>
               </button>
             )}
 
@@ -84,7 +80,7 @@ export function PWAInstallBanner() {
               href="/dashboard"
               className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-slate-200 font-bold text-xs transition-all flex items-center justify-center gap-2"
             >
-              <span>Continue in Browser</span>
+              <span><T k="public.continue_in_browser" /></span>
               <ExternalLink className="w-4 h-4 text-slate-400" />
             </Link>
           </div>

@@ -28,6 +28,7 @@ router.post('/reset-password', authRateLimiter, authController.resetPassword);
 router.post('/verify-password', authRateLimiter, authController.verifyPassword);
 router.get('/operators', authController.getOperators);
 router.get('/me', requireAuth, authController.getMe);
+router.patch('/preferences/language', requireAuth, authController.updateLanguage);
 router.post('/logout', authController.logout);
 router.post('/avatar', requireAuth, upload.single('avatar'), authController.uploadAvatar);
 

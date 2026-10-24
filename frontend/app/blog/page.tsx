@@ -1,3 +1,6 @@
+import { localizedMetadata } from '@/lib/server-language';
+
+import { T, TLabel } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { BookOpen, Clock, User, ArrowRight } from 'lucide-react';
@@ -5,13 +8,13 @@ import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Sections';
 import { constructMetadata, generateBreadcrumbSchema } from '@/lib/seo';
 
-export const metadata = constructMetadata({
+export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'Logistics & Delivery Tracking Insights Blog | LUMO Track',
   description:
     'Read expert articles, guides, and insights on delivery tracking, customer communication, SMS notifications, and last-mile logistics in Tanzania and East Africa.',
   canonicalUrl: '/blog',
   alternateSwahiliUrl: '/sw',
-});
+})); }
 
 export default function BlogIndexPage() {
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -72,15 +75,9 @@ export default function BlogIndexPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-16">
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">
-            LOGISTICS & DISPATCH INSIGHTS
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-            Delivery Tracking & Customer Communication Blog
-          </h1>
-          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">
-            Practical guides, logistics strategies, and technical insights for merchants and delivery operators in Tanzania and East Africa.
-          </p>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF5500]/10 border border-[#FF5500]/30 text-[#FF5500] text-xs font-mono font-bold uppercase tracking-wider">{' '}<T k="public.logistics_dispatch_insights" />{' '}</span>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">{' '}<T k="public.delivery_tracking_customer_communication_blog" />{' '}</h1>
+          <p className="text-base sm:text-lg text-[#A0B8D0] leading-relaxed">{' '}<T k="public.practical_guides_logistics_strategies_and_technical_insights_for_merchants_and_delive" />{' '}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -98,7 +95,7 @@ export default function BlogIndexPage() {
                   </span>
                 </div>
                 <h2 className="text-xl font-bold text-white hover:text-[#FF5500] transition-colors">
-                  <Link href={`/blog/${art.slug}`}>{art.title}</Link>
+                  <Link href={`/blog/${art.slug}`}><TLabel value={art.title} /></Link>
                 </h2>
                 <p className="text-xs sm:text-sm text-[#A0B8D0] leading-relaxed">{art.excerpt}</p>
               </div>
@@ -112,7 +109,7 @@ export default function BlogIndexPage() {
                   href={`/blog/${art.slug}`}
                   className="text-xs font-extrabold text-[#FF5500] hover:underline flex items-center gap-1"
                 >
-                  <span>Read Article</span>
+                  <span><T k="public.read_article" /></span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>

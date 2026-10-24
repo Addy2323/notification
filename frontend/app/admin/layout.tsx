@@ -1,5 +1,7 @@
 'use client';
 
+
+import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -37,6 +39,7 @@ import {
   Star,
 } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
+import LanguageSelector from '@/components/LanguageSelector';
 import { MobileBottomNav } from '@/app/components/MobileBottomNav';
 
 interface NavItem {
@@ -67,6 +70,8 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const { t, label: uiLabel, locale } = useLanguage();
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -131,8 +136,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [searchQuery]);
 
   const handleLogout = () => {
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    router.push('/login');
+    fetchApi('/auth/logout', { method: 'POST' }).finally(() => router.push('/login'));
   };
 
   return (
@@ -167,11 +171,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <span className={`font-black text-lg tracking-tight ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                   LUMO
                 </span>
-                <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/30">
-                  CONTROL CENTRE
-                </span>
+                <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/30">{' '}<T k="admin.control_centre" />{' '}</span>
               </div>
-              <p className="text-[10px] text-slate-400 font-medium">Enterprise Logistics Platform</p>
+              <p className="text-[10px] text-slate-400 font-medium"><T k="admin.enterprise_logistics_platform" /></p>
             </div>
           </Link>
         </div>
@@ -182,7 +184,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Global Search (Merchant, Order ID, Phone, Driver, Customer)..."
+              placeholder={t("admin.global_search_merchant_order_id_phone_driver_customer")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => searchQuery.trim() && setShowSearchDropdown(true)}
@@ -204,7 +206,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="absolute top-full left-0 right-0 mt-2 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-3 z-50 max-h-[80vh] overflow-y-auto space-y-3">
               {searchResults.merchants?.length > 0 && (
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 px-2">Merchants</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 px-2"><T k="admin.merchants" /></span>
                   <div className="mt-1 space-y-1">
                     {searchResults.merchants.map((m: any) => (
                       <Link
@@ -215,10 +217,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       >
                         <div>
                           <p className="font-bold text-white">{m.business_name}</p>
-                          <p className="text-[10px] text-slate-400">{m.business_phone} • {m.email || 'No email'}</p>
+                          <p className="text-[10px] text-slate-400">{m.business_phone} • {m.email || t("admin.no_email")}</p>
                         </div>
                         <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
-                          {m.status}
+                          {uiLabel(m.status)}
                         </span>
                       </Link>
                     ))}
@@ -228,7 +230,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
               {searchResults.orders?.length > 0 && (
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 px-2">Orders</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 px-2"><T k="common.orders" /></span>
                   <div className="mt-1 space-y-1">
                     {searchResults.orders.map((o: any) => (
                       <Link
@@ -238,11 +240,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         className="flex items-center justify-between p-2 rounded-xl hover:bg-slate-800/80 transition-colors text-xs"
                       >
                         <div>
-                          <p className="font-bold text-white">Order #{o.order_number}</p>
+                          <p className="font-bold text-white"><T k="common.order_2" />{o.order_number}</p>
                           <p className="text-[10px] text-slate-400">{o.merchant?.business_name} • {o.customer_name}</p>
                         </div>
                         <span className="text-[10px] font-mono text-amber-400 font-bold">
-                          TZS {Number(o.total_revenue || o.amount || 0).toLocaleString()}
+                          TZS {Number(o.total_revenue || o.amount || 0).toLocaleString(locale)}
                         </span>
                       </Link>
                     ))}
@@ -252,7 +254,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
               {searchResults.drivers?.length > 0 && (
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400 px-2">Drivers</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400 px-2"><T k="common.drivers" /></span>
                   <div className="mt-1 space-y-1">
                     {searchResults.drivers.map((d: any) => (
                       <Link
@@ -265,7 +267,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                           <p className="font-bold text-white">{d.name}</p>
                           <p className="text-[10px] text-slate-400">{d.phone} ({d.merchant?.business_name})</p>
                         </div>
-                        <span className="text-[10px] text-slate-400 font-medium">{d.status}</span>
+                        <span className="text-[10px] text-slate-400 font-medium">{uiLabel(d.status)}</span>
                       </Link>
                     ))}
                   </div>
@@ -275,7 +277,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               {searchResults.merchants?.length === 0 &&
                 searchResults.orders?.length === 0 &&
                 searchResults.drivers?.length === 0 && (
-                  <p className="text-xs text-slate-400 text-center py-4">No matching records found for "{searchQuery}"</p>
+                  <p className="text-xs text-slate-400 text-center py-4"><T k="admin.no_matching_records_found_for" />{searchQuery}"</p>
                 )}
             </div>
           )}
@@ -286,7 +288,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Light / Dark Mode Toggle Button */}
           <button
             onClick={toggleTheme}
-            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            title={theme === 'dark' ? t("admin.switch_to_light_mode") : t("admin.switch_to_dark_mode")}
             className={`p-2 rounded-xl border transition-all flex items-center justify-center ${
               theme === 'light'
                 ? 'bg-slate-100 border-slate-300 text-amber-600 hover:bg-slate-200'
@@ -302,7 +304,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/20 transition-all text-xs font-semibold"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>System Healthy</span>
+            <span><T k="admin.system_healthy" /></span>
           </Link>
 
           {/* Admin Notifications Bell */}
@@ -322,26 +324,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {showNotifications && (
               <div className="absolute right-0 top-full mt-2 w-80 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-4 z-50 space-y-3">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                  <span className="text-xs font-bold text-white">Admin System Alerts</span>
-                  <span className="text-[10px] font-semibold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">
-                    3 New
-                  </span>
+                  <span className="text-xs font-bold text-white"><T k="admin.admin_system_alerts" /></span>
+                  <span className="text-[10px] font-semibold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">{' '}<T k="admin.3_new" />{' '}</span>
                 </div>
                 <div className="space-y-2 text-xs">
                   <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80">
-                    <p className="font-bold text-white text-[11px]">New Merchant Registered</p>
-                    <p className="text-[10px] text-slate-400 mt-0.5">David Sportware joined LUMO Tracking</p>
-                    <span className="text-[9px] font-mono text-slate-500 mt-1 block">10 mins ago</span>
+                    <p className="font-bold text-white text-[11px]"><T k="admin.new_merchant_registered" /></p>
+                    <p className="text-[10px] text-slate-400 mt-0.5"><T k="admin.david_sportware_joined_lumo_tracking" /></p>
+                    <span className="text-[9px] font-mono text-slate-500 mt-1 block"><T k="admin.10_mins_ago" /></span>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80">
-                    <p className="font-bold text-amber-400 text-[11px]">Milestone Achieved</p>
-                    <p className="text-[10px] text-slate-400 mt-0.5">Platform reached 1,000 completed orders!</p>
-                    <span className="text-[9px] font-mono text-slate-500 mt-1 block">1 hour ago</span>
+                    <p className="font-bold text-amber-400 text-[11px]"><T k="admin.milestone_achieved" /></p>
+                    <p className="text-[10px] text-slate-400 mt-0.5"><T k="admin.platform_reached_1_000_completed_orders" /></p>
+                    <span className="text-[9px] font-mono text-slate-500 mt-1 block"><T k="admin.1_hour_ago" /></span>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80">
-                    <p className="font-bold text-emerald-400 text-[11px]">System Health Check</p>
-                    <p className="text-[10px] text-slate-400 mt-0.5">All SMS gateways & DB nodes operating at 100%</p>
-                    <span className="text-[9px] font-mono text-slate-500 mt-1 block">2 hours ago</span>
+                    <p className="font-bold text-emerald-400 text-[11px]"><T k="admin.system_health_check" /></p>
+                    <p className="text-[10px] text-slate-400 mt-0.5"><T k="admin.all_sms_gateways_db_nodes_operating_at_100" /></p>
+                    <span className="text-[9px] font-mono text-slate-500 mt-1 block"><T k="admin.2_hours_ago" /></span>
                   </div>
                 </div>
               </div>
@@ -359,15 +359,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="w-7 h-7 rounded-lg bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-xs">
                 A
               </div>
-              <span className={`hidden sm:inline text-xs font-bold pr-1 ${theme === 'light' ? 'text-slate-800' : 'text-slate-200'}`}>
-                Admin
-              </span>
+              <span className={`hidden sm:inline text-xs font-bold pr-1 ${theme === 'light' ? 'text-slate-800' : 'text-slate-200'}`}>{' '}<T k="admin.admin" />{' '}</span>
             </button>
 
             {showProfileMenu && (
               <div className="absolute right-0 top-full mt-2 w-52 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 space-y-1">
                 <div className="px-3 py-2 border-b border-slate-800">
-                  <p className="text-xs font-bold text-white">Super Administrator</p>
+                  <p className="text-xs font-bold text-white"><T k="admin.super_administrator" /></p>
                   <p className="text-[10px] text-slate-400 font-mono">admin@lumo.co.tz</p>
                 </div>
                 <Link
@@ -376,7 +374,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800 transition-colors"
                 >
                   <Settings className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Control Settings</span>
+                  <span><T k="admin.control_settings" /></span>
                 </Link>
                 <Link
                   href="/admin/audit-logs"
@@ -384,19 +382,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800 transition-colors"
                 >
                   <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
-                  <span>Security & Audit</span>
+                  <span><T k="admin.security_audit" /></span>
                 </Link>
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-rose-400 hover:bg-rose-950/40 transition-colors text-left"
                 >
                   <LogOut className="w-3.5 h-3.5" />
-                  <span>Logout Control Centre</span>
+                  <span><T k="admin.logout_control_centre" /></span>
                 </button>
               </div>
             )}
           </div>
         </div>
+        <LanguageSelector />
       </header>
 
       {/* Main Body - Fixed Sidebar & Independent Main Content Scroll */}
@@ -410,9 +409,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Sidebar Header Toggle */}
           <div className="p-4 flex items-center justify-between border-b border-slate-800/60">
             {!collapsed && (
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                NAVIGATION CENTRE
-              </span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{' '}<T k="admin.navigation_centre" />{' '}</span>
             )}
             <button
               onClick={() => setCollapsed(!collapsed)}
@@ -440,7 +437,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   }`}
                 >
                   <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-slate-950' : 'text-slate-400'}`} />
-                  {!collapsed && <span className="truncate">{item.label}</span>}
+                  {!collapsed && <span className="truncate">{uiLabel(item.label)}</span>}
                 </Link>
               );
             })}
@@ -465,7 +462,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <Shield className="w-5 h-5 text-amber-400" />
-                  <span className="font-bold text-white text-sm">LUMO CONTROL CENTRE</span>
+                  <span className="font-bold text-white text-sm"><T k="admin.lumo_control_centre" /></span>
                 </div>
                 <button onClick={() => setMobileOpen(false)} className="text-slate-400 hover:text-white">
                   <X className="w-5 h-5" />
@@ -489,7 +486,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       }`}
                     >
                       <Icon className="w-4 h-4" />
-                      <span>{item.label}</span>
+                      <span>{uiLabel(item.label)}</span>
                     </Link>
                   );
                 })}

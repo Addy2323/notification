@@ -1,0 +1,4598 @@
+[
+  {
+    "text": "&copy;",
+    "files": [
+      "app/rate/[token]/page.tsx",
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "#1E40AF",
+    "files": [
+      "app/admin/merchants/page.tsx",
+      "app/admin/merchants/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "#EF4444",
+    "files": [
+      "app/admin/merchants/page.tsx",
+      "app/admin/merchants/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "#LM-84912",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "#LUMO-8241",
+    "files": [
+      "app/dashboard/branding/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "0.8 MB",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "0627204980 or 255...",
+    "files": [
+      "app/(auth)/register/page.tsx"
+    ],
+    "kinds": [
+      "attribute"
+    ]
+  },
+  {
+    "text": "07XXXXXXXX",
+    "files": [
+      "app/deliveries/[id]/page.tsx",
+      "components/OrderEditor.tsx"
+    ],
+    "kinds": [
+      "attribute"
+    ]
+  },
+  {
+    "text": "1 — Very Poor",
+    "files": [
+      "app/rate/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "1,000 Orders Platinum",
+    "files": [
+      "app/admin/achievements/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "1. Create Delivery",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "10,000+ Daily Dispatches",
+    "files": [
+      "components/landing/MarqueeTicker.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "100 Orders Centurion",
+    "files": [
+      "app/admin/achievements/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "2 — Poor",
+    "files": [
+      "app/rate/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "2. Instant Notification",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "3 — Average",
+    "files": [
+      "app/rate/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "3. Direct Web Tracking Portal",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "4 — Good",
+    "files": [
+      "app/rate/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "4-Digit OTP",
+    "files": [
+      "components/landing/MarqueeTicker.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "5 — Excellent",
+    "files": [
+      "app/rate/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "7-Day Activity Streak",
+    "files": [
+      "app/admin/achievements/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "99.8% On-Time",
+    "files": [
+      "components/landing/MarqueeTicker.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "ABC Electronics",
+    "files": [
+      "app/admin/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "About LUMO Track | East Africa Delivery Communication Platform",
+    "files": [
+      "app/about/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "About Us",
+    "files": [
+      "app/about/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Accepted",
+    "files": [
+      "app/driver/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Achievements",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "ACTIVE",
+    "files": [
+      "app/admin/merchants/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Activity",
+    "files": [
+      "app/admin/merchants/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "admin@lumo.co.tz",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/merchants/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Ado",
+    "files": [
+      "app/whatsapp-notifications/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Agizo Jipya / New Dispatch: #LM-84912",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Airtel TZ 4G",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "All Time",
+    "files": [
+      "app/admin/ratings/page.tsx",
+      "app/dashboard/analytics/page.tsx",
+      "app/dashboard/ratings/page.tsx",
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Analytics",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/components/MobileBottomNav.tsx",
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "animate-spin",
+    "files": [
+      "app/admin/analytics/page.tsx",
+      "app/admin/deliveries/page.tsx",
+      "app/admin/health/page.tsx",
+      "app/admin/ratings/page.tsx",
+      "app/dashboard/analytics/page.tsx",
+      "app/dashboard/customers/page.tsx",
+      "app/dashboard/ratings/page.tsx",
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "animate-spin text-amber-400",
+    "files": [
+      "app/admin/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "animate-spin-slow",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Annual",
+    "files": [
+      "app/dashboard/reports/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "App-Free Tracking",
+    "files": [
+      "app/blog/track-deliveries-without-app/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "App-Free Web Tracking Portal",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Arifa za Delivery",
+    "files": [
+      "app/sw/arifa-za-delivery/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Arifa za SMS na Delivery Tanzania | LUMO Track",
+    "files": [
+      "app/sw/arifa-za-delivery/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Arrived",
+    "files": [
+      "app/dashboard/orders/page.tsx",
+      "app/dashboard/orders/[id]/page.tsx",
+      "app/delivery-tracking/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "arrow_back_ios",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "arrow_upward",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Assigned",
+    "files": [
+      "app/driver/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Audit Logs",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Automated Dispatch Alerts",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Automated SMS & WhatsApp Delivery Alerts",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Bajaj Boxer • MC-449",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "battery_charging_full",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "battery_full",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "battery_std",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "bg-[#0F172A] text-white",
+    "files": [
+      "app/dashboard/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-[#0F172A] text-white shadow-xs",
+    "files": [
+      "app/dashboard/layout.tsx",
+      "app/dashboard/page.tsx",
+      "app/dashboard/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-[#162C4A] hover:bg-[#1F3E68] text-white border border-[#2D4D77]",
+    "files": [
+      "app/pricing/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-[#FF5500]",
+    "files": [
+      "app/components/MobileBottomNav.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-[#FF5500] hover:bg-[#E04B00] text-white px-3 py-1.5 rounded-lg text-[11px]",
+    "files": [
+      "app/components/pwa/PWAInstallButton.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-[#FF5500] hover:bg-[#E04B00] text-white shadow-md w-full justify-center",
+    "files": [
+      "app/components/pwa/PWAInstallButton.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-[#FF5500] hover:bg-[#E04B00] text-white shadow-orange-500/20",
+    "files": [
+      "app/pricing/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-[#FF5500] text-white shadow-sm",
+    "files": [
+      "app/dashboard/analytics/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-100 border-2 border-amber-400 text-amber-600",
+    "files": [
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-100 text-amber-700",
+    "files": [
+      "app/dashboard/orders/page.tsx",
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-100 text-amber-800",
+    "files": [
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-400",
+    "files": [
+      "app/admin/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500",
+    "files": [
+      "app/admin/ratings/page.tsx",
+      "app/components/MobileBottomNav.tsx",
+      "app/dashboard/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500 text-slate-950",
+    "files": [
+      "app/admin/analytics/page.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500 text-slate-950 border-amber-500 shadow-md",
+    "files": [
+      "app/admin/reports/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20 font-bold",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/30",
+    "files": [
+      "app/admin/rankings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500 text-slate-950 shadow-md",
+    "files": [
+      "app/admin/rankings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500 text-slate-950 shadow-md font-bold",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20",
+    "files": [
+      "app/admin/merchants/[id]/page.tsx",
+      "app/admin/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500 text-slate-950 shadow-sm",
+    "files": [
+      "app/admin/merchants/page.tsx",
+      "app/admin/orders/page.tsx",
+      "app/admin/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500 text-white",
+    "files": [
+      "app/dashboard/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500/10 text-amber-400",
+    "files": [
+      "app/admin/health/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500/10 text-amber-400 border border-amber-500/30",
+    "files": [
+      "app/admin/orders/page.tsx",
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-500/10 text-amber-400 border-amber-500/30",
+    "files": [
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-amber-700 text-white",
+    "files": [
+      "app/admin/rankings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-blue-400",
+    "files": [
+      "app/admin/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-100 text-emerald-700",
+    "files": [
+      "app/dashboard/orders/page.tsx",
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-100 text-emerald-800",
+    "files": [
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-400",
+    "files": [
+      "app/admin/merchants/page.tsx",
+      "app/admin/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-50 border-emerald-500 text-emerald-800 shadow-md shadow-emerald-500/15 scale-105",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-50 text-emerald-800 border border-emerald-200",
+    "files": [
+      "app/dashboard/drivers/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-500",
+    "files": [
+      "app/admin/ratings/page.tsx",
+      "app/dashboard/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-500 text-white",
+    "files": [
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30",
+    "files": [
+      "app/admin/merchants/page.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/admin/orders/page.tsx",
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+    "files": [
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-600",
+    "files": [
+      "components/OrderEditor.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-600 text-white",
+    "files": [
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-600 text-white shadow-md",
+    "files": [
+      "app/(auth)/forgot-password/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-emerald-800 text-white border-emerald-900 shadow-md ring-2 ring-emerald-500/20 scale-[1.02]",
+    "files": [
+      "app/(auth)/login/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-orange-50 text-[#FF5500] border border-orange-200",
+    "files": [
+      "app/dashboard/drivers/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-primary text-on-primary",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-rose-100 text-rose-700",
+    "files": [
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-rose-100 text-rose-800",
+    "files": [
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-rose-400",
+    "files": [
+      "app/admin/merchants/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-rose-500",
+    "files": [
+      "app/admin/ratings/page.tsx",
+      "app/dashboard/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-rose-500 text-white",
+    "files": [
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-rose-500/10 text-rose-400 border border-rose-500/30",
+    "files": [
+      "app/admin/health/page.tsx",
+      "app/admin/merchants/page.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-rose-500/10 text-rose-400 border-rose-500/30",
+    "files": [
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-rose-600",
+    "files": [
+      "components/OrderEditor.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-secondary text-on-secondary",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-100 border border-slate-200 text-slate-400",
+    "files": [
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-100 border border-slate-300 text-slate-400",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-400 focus:border-amber-500",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-100 border-slate-300 text-amber-600 hover:bg-slate-200",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-100 hover:bg-slate-200 text-slate-600",
+    "files": [
+      "app/dashboard/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-100 text-slate-600 border border-slate-200",
+    "files": [
+      "app/dashboard/drivers/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-200 text-slate-400",
+    "files": [
+      "app/(auth)/forgot-password/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-300 text-slate-950",
+    "files": [
+      "app/admin/rankings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-800 ring-4 ring-slate-400/20 scale-110",
+    "files": [
+      "app/(auth)/login/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-800 text-slate-300",
+    "files": [
+      "app/admin/analytics/page.tsx",
+      "app/admin/merchants/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-800 text-slate-400",
+    "files": [
+      "app/admin/merchants/[id]/page.tsx",
+      "app/admin/orders/page.tsx",
+      "app/admin/rankings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-800 text-slate-400 border border-slate-700",
+    "files": [
+      "app/admin/merchants/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-800 text-white",
+    "files": [
+      "app/admin/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-900 border-slate-800 text-amber-400 hover:bg-slate-800",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-900 text-white ring-4 ring-emerald-500/20 scale-105",
+    "files": [
+      "app/(auth)/forgot-password/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-900 text-white shadow-sm",
+    "files": [
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-900/90 border-slate-800/80 text-white backdrop-blur-md",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-950 border border-slate-800 text-white placeholder-slate-500 focus:border-amber-500",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-950 text-amber-400",
+    "files": [
+      "app/admin/merchants/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-slate-950 text-slate-400 border-slate-800 hover:text-white",
+    "files": [
+      "app/admin/reports/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-surface-dim text-on-surface-variant",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-teal-700 text-white shadow-md scale-105",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-tertiary",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-tertiary animate-pulse",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-tertiary text-on-tertiary",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-white border-slate-200 text-slate-900 shadow-sm",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-white border-slate-900 text-slate-900 shadow-lg ring-4 ring-slate-900/10 scale-105",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-white text-slate-900 shadow-sm border border-slate-200/60",
+    "files": [
+      "app/(auth)/login/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-white/80 border-slate-200 text-slate-400 shadow-sm hover:border-slate-300",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "bg-white/80 text-slate-700 border-slate-200 hover:bg-white hover:border-slate-300",
+    "files": [
+      "app/(auth)/login/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Blog",
+    "files": [
+      "app/blog/delivery-tracking-tanzania-guide/page.tsx",
+      "app/blog/page.tsx",
+      "app/blog/sms-notifications-customer-communication/page.tsx",
+      "app/blog/track-deliveries-without-app/page.tsx",
+      "app/blog/whatsapp-delivery-notifications-guide/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "bolt",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "border-[#1F3654]",
+    "files": [
+      "app/pricing/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-[#FF5500] bg-orange-50/50 ring-2 ring-[#FF5500]/20",
+    "files": [
+      "app/dashboard/reports/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-[#FF5500] shadow-2xl shadow-orange-500/10",
+    "files": [
+      "app/pricing/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-2 border-slate-300 bg-transparent",
+    "files": [
+      "app/(auth)/login/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-primary bg-primary/10 text-on-surface shadow-sm",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-rose-500 focus:ring-rose-500/20 bg-rose-50/30",
+    "files": [
+      "app/(auth)/register/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-rose-800/60 bg-rose-950/20",
+    "files": [
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-secondary bg-secondary/10 text-on-surface shadow-sm",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50",
+    "files": [
+      "app/dashboard/reports/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-slate-200 focus:ring-emerald-600/20",
+    "files": [
+      "app/(auth)/register/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-slate-200/90 focus:ring-emerald-600/20",
+    "files": [
+      "app/(auth)/register/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-slate-300 hover:bg-slate-100",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-slate-300 text-slate-600 hover:bg-slate-100",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-slate-800 hover:bg-slate-800",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-slate-800 hover:border-slate-700",
+    "files": [
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-tertiary bg-tertiary/10 text-on-surface shadow-sm",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "border-transparent bg-surface-container-high/60 text-on-surface-variant hover:bg-surface-container-high",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Branding",
+    "files": [
+      "app/admin/merchants/[id]/page.tsx",
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "call",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Cancel Order",
+    "files": [
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Cancelled",
+    "files": [
+      "app/dashboard/deliveries/page.tsx",
+      "app/dashboard/orders/page.tsx",
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "chat",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Complete Guide to Delivery Tracking for Tanzanian Businesses",
+    "files": [
+      "app/blog/delivery-tracking-tanzania-guide/page.tsx",
+      "app/blog/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Complete Guide to Delivery Tracking for Tanzanian Businesses | LUMO Blog",
+    "files": [
+      "app/blog/delivery-tracking-tanzania-guide/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Confirm Order",
+    "files": [
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Confirmed",
+    "files": [
+      "app/dashboard/deliveries/page.tsx",
+      "app/dashboard/orders/page.tsx",
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Contact LUMO Support | Tanzania Sales & Customer Care",
+    "files": [
+      "app/contact/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Contact Us",
+    "files": [
+      "app/contact/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "COPIED",
+    "files": [
+      "app/dashboard/deliveries/new/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "COPY",
+    "files": [
+      "app/dashboard/deliveries/new/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Create a Delivery",
+    "files": [
+      "app/how-it-works/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Created",
+    "files": [
+      "app/dashboard/deliveries/page.tsx",
+      "app/delivery-tracking/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "cursor-text",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Custom Merchant Branding",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Customer Delivery Tracking Portal | LUMO Track",
+    "files": [
+      "app/track/[token]/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Customer Ratings",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Customer Tracks Delivery",
+    "files": [
+      "app/how-it-works/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Customers",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Customers view real-time delivery status updates, driver contact details, and order details on a branded web page.",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Daily Report",
+    "files": [
+      "app/dashboard/reports/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Dar es Salaam, Tanzania",
+    "files": [
+      "app/admin/merchants/page.tsx",
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "attribute",
+      "jsx"
+    ]
+  },
+  {
+    "text": "dark",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "David Sportware",
+    "files": [
+      "app/admin/page.tsx",
+      "app/dashboard/branding/page.tsx"
+    ],
+    "kinds": [
+      "jsx",
+      "expression"
+    ]
+  },
+  {
+    "text": "DEL-101",
+    "files": [
+      "app/dashboard/deliveries/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "DELETE",
+    "files": [
+      "components/OrderEditor.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Delivered",
+    "files": [
+      "app/dashboard/deliveries/page.tsx",
+      "app/dashboard/orders/page.tsx",
+      "app/dashboard/orders/[id]/page.tsx",
+      "app/delivery-tracking/page.tsx",
+      "app/driver/[token]/page.tsx",
+      "app/track/[token]/page.tsx",
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Delivered 🎉",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Delivered dispatches",
+    "files": [
+      "app/admin/analytics/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Delivered SMS",
+    "files": [
+      "app/admin/analytics/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Deliveries",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/components/MobileBottomNav.tsx",
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Delivery Confirmation Receipt",
+    "files": [
+      "app/sms-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Delivery Management Software for Delivery Businesses | LUMO Track",
+    "files": [
+      "app/for-delivery-businesses/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Delivery Tracking",
+    "files": [
+      "app/delivery-tracking/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Delivery tracking for online stores, Instagram sellers, WhatsApp shops, and e-commerce businesses in Tanzania. Notify buyers with live SMS and web tracking.",
+    "files": [
+      "app/for-ecommerce/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Delivery Tracking Guide",
+    "files": [
+      "app/blog/delivery-tracking-tanzania-guide/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Delivery Tracking Software for Merchants in Tanzania | LUMO Track",
+    "files": [
+      "app/for-merchants/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Delivery Tracking System for Businesses in Tanzania | LUMO Track",
+    "files": [
+      "app/delivery-tracking/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Dereva Anaanza Safari",
+    "files": [
+      "app/sw/jinsi-inavyofanya-kazi/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Dereva wako amewasili karibu na eneo lako! Tafadhali kuwa tayari kupokea mzigo.",
+    "files": [
+      "app/sms-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Discover why SMS delivery notifications boast a 98% open rate in Tanzania and build customer trust for retail & e-commerce brands.",
+    "files": [
+      "app/blog/sms-notifications-customer-communication/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Dispatch orders seamlessly via Web Dashboard or API. Generate unique customer tracking links automatically.",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Display your business name, shop logo, brand colors, and support contact details on every customer tracking page.",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "done_all",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Driver Arrived",
+    "files": [
+      "app/dashboard/deliveries/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Driver Arrived Alert",
+    "files": [
+      "app/sms-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Driver assigned",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Driver Assigned",
+    "files": [
+      "app/dashboard/deliveries/page.tsx",
+      "app/dashboard/orders/page.tsx",
+      "app/dashboard/orders/[id]/page.tsx",
+      "app/track/[token]/page.tsx",
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Driver Confirms Delivery",
+    "files": [
+      "app/how-it-works/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Driver is Nearby 📍",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Driver nearby",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Driver Nearby",
+    "files": [
+      "app/dashboard/deliveries/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Driver started delivery",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Driver Starts Delivery",
+    "files": [
+      "app/how-it-works/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Drivers",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Drivers receive secure action links to update delivery lifecycle states (Start Delivery, Arrived, Delivered) directly from their phone browser.",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "E-commerce Delivery Tracking in Tanzania | LUMO Track",
+    "files": [
+      "app/for-ecommerce/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "East Africa Coverage",
+    "files": [
+      "components/landing/MarqueeTicker.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Eliminate lost packages and dispute claims with 4-digit PIN verification codes entered by the driver upon delivery handover.",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "en",
+    "files": [
+      "app/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Ensure 100% successful handovers. Drivers confirm delivery completion on-site using secure customer 4-digit PIN verification codes.",
+    "files": [
+      "components/landing/Hero.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Enterprise Fleet",
+    "files": [
+      "app/pricing/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Explore LUMO Track features: automated SMS & WhatsApp delivery alerts, zero-install customer web tracking portal, driver status updates, and merchant analytics in Tanzania.",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Failed",
+    "files": [
+      "app/driver/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Failed SMS",
+    "files": [
+      "app/admin/analytics/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "FAQ",
+    "files": [
+      "app/faq/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Features",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Features | Delivery Tracking & SMS Notification Platform",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "fill-amber-400",
+    "files": [
+      "app/rate/[token]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "fill-amber-400 text-amber-400",
+    "files": [
+      "app/dashboard/ratings/page.tsx",
+      "app/rate/[token]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "fill-slate-950",
+    "files": [
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "fill-white",
+    "files": [
+      "app/dashboard/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Find answers to common questions about LUMO Track delivery tracking, SMS notifications, WhatsApp integration, driver workflows, and merchant accounts in Tanzania.",
+    "files": [
+      "app/faq/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "First 10 Orders Completed",
+    "files": [
+      "app/admin/achievements/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Fleet Optimization",
+    "files": [
+      "components/landing/MarqueeTicker.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Fleet Performance Analytics",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "flex",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Flexible delivery notification and tracking plans for Tanzanian merchants. Start free with pay-as-you-go SMS credits and zero hidden fees.",
+    "files": [
+      "app/pricing/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "For Delivery Businesses",
+    "files": [
+      "app/for-delivery-businesses/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "For E-commerce",
+    "files": [
+      "app/for-ecommerce/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "For Merchants",
+    "files": [
+      "app/for-merchants/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Frequently Asked Questions (FAQ) | LUMO Track Tanzania",
+    "files": [
+      "app/faq/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Fuatilia Mizigo",
+    "files": [
+      "app/sw/fuatilia-mizigo/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Fuatilia mizigo yako ya biashara au wateja kwa urahisi nchini Tanzania. Pata taarifa za utoaji wa mzigo kuanzia duka mpaka mlangoni.",
+    "files": [
+      "app/sw/fuatilia-mizigo/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Get in touch with LUMO Track support team in Dar es Salaam, Tanzania. Phone: +255 711 788 830, Email: support@lumo.co.tz.",
+    "files": [
+      "app/contact/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Gross profit",
+    "files": [
+      "app/admin/analytics/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Growth Business",
+    "files": [
+      "app/pricing/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "hidden",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Home",
+    "files": [
+      "app/about/page.tsx",
+      "app/blog/delivery-tracking-tanzania-guide/page.tsx",
+      "app/blog/page.tsx",
+      "app/blog/sms-notifications-customer-communication/page.tsx",
+      "app/blog/track-deliveries-without-app/page.tsx",
+      "app/blog/whatsapp-delivery-notifications-guide/page.tsx",
+      "app/contact/page.tsx",
+      "app/delivery-tracking/page.tsx",
+      "app/faq/page.tsx",
+      "app/features/page.tsx",
+      "app/for-delivery-businesses/page.tsx",
+      "app/for-ecommerce/page.tsx",
+      "app/for-merchants/page.tsx",
+      "app/how-it-works/page.tsx",
+      "app/pricing/page.tsx",
+      "app/sms-notifications/page.tsx",
+      "app/whatsapp-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "HOME DECO",
+    "files": [
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "hover:bg-emerald-700",
+    "files": [
+      "app/(auth)/login/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "hover:bg-slate-200",
+    "files": [
+      "app/(auth)/login/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "How It Works",
+    "files": [
+      "app/how-it-works/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "How LUMO Track Works | 5-Step Delivery Communication Process",
+    "files": [
+      "app/how-it-works/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "How SMS Notifications Improve Customer Trust in Last-Mile Logistics",
+    "files": [
+      "app/blog/page.tsx",
+      "app/blog/sms-notifications-customer-communication/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "How SMS Notifications Improve Customer Trust in Last-Mile Logistics | LUMO Blog",
+    "files": [
+      "app/blog/sms-notifications-customer-communication/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "How to Track Deliveries Without Forcing App Downloads",
+    "files": [
+      "app/blog/page.tsx",
+      "app/blog/track-deliveries-without-app/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "How to Track Deliveries Without Forcing App Downloads | LUMO Blog",
+    "files": [
+      "app/blog/track-deliveries-without-app/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "http://localhost:5000/api",
+    "files": [
+      "app/dashboard/reports/page.tsx",
+      "components/PageTracker.tsx",
+      "components/ProfileDropdown.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "https://lumo.to/d/tz-91a",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "info",
+    "files": [
+      "app/admin/merchants/page.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression",
+      "jsx"
+    ]
+  },
+  {
+    "text": "info@business.co.tz",
+    "files": [
+      "app/admin/merchants/page.tsx"
+    ],
+    "kinds": [
+      "attribute"
+    ]
+  },
+  {
+    "text": "info@business.com",
+    "files": [
+      "app/(auth)/register/page.tsx"
+    ],
+    "kinds": [
+      "attribute"
+    ]
+  },
+  {
+    "text": "info@davidsportware.co.tz",
+    "files": [
+      "app/dashboard/branding/page.tsx"
+    ],
+    "kinds": [
+      "expression",
+      "attribute"
+    ]
+  },
+  {
+    "text": "Instantly notify your customers via transactional SMS and WhatsApp as soon as their package is dispatched, on the way, or nearby.",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "JH",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Jifunze jinsi LUMO Track inavyofanya kazi kwa hatua 5 rahisi: Sajili mzigo, tuma SMS, dereva anaanza safari, mteja anafuatilia, na kukabidhi mzigo.",
+    "files": [
+      "app/sw/jinsi-inavyofanya-kazi/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Jinsi Inavyofanya Kazi",
+    "files": [
+      "app/sw/jinsi-inavyofanya-kazi/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Jinsi LUMO Track Inavyofanya Kazi | Hatua 5 za Utoaji wa Mzigo",
+    "files": [
+      "app/sw/jinsi-inavyofanya-kazi/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "John Doe",
+    "files": [
+      "app/admin/merchants/page.tsx"
+    ],
+    "kinds": [
+      "attribute"
+    ]
+  },
+  {
+    "text": "Juma Hassan",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Keep customers informed from dispatch to delivery with automated SMS, WhatsApp updates and a simple web tracking portal — no customer app required.",
+    "files": [
+      "components/landing/Hero.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Keep customers updated effortlessly. Drivers update delivery progress right from their mobile browser, triggering instant SMS notifications and direct phone connectivity.",
+    "files": [
+      "components/landing/Hero.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "LanguageProvider is required",
+    "files": [
+      "components/LanguageProvider.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Learn how LUMO Track works in 5 simple steps: Create delivery, notify customer via SMS, driver starts delivery, customer tracks online, and driver confirms handover.",
+    "files": [
+      "app/how-it-works/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Learn how Tanzanian e-commerce and retail merchants eliminate customer delivery anxiety using automated SMS alerts and app-free web tracking links.",
+    "files": [
+      "app/blog/delivery-tracking-tanzania-guide/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Learn how WhatsApp messaging cards with merchant branding and one-tap web links drive customer satisfaction.",
+    "files": [
+      "app/blog/whatsapp-delivery-notifications-guide/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Learn why zero-install web tracking links outperform mobile applications for last-mile customer communication in Tanzania.",
+    "files": [
+      "app/blog/track-deliveries-without-app/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "light",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Live Tracking",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Loading your delivery...",
+    "files": [
+      "app/loading.tsx"
+    ],
+    "kinds": [
+      "attribute"
+    ]
+  },
+  {
+    "text": "local_shipping",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "location_on",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Logistics & Delivery Tracking Insights Blog | LUMO Track",
+    "files": [
+      "app/blog/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Logo Orange",
+    "files": [
+      "app/dashboard/branding/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "LotusRise Excellence",
+    "files": [
+      "app/about/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "LUMO Control v2.5 • Prod",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "LUMO Track | Delivery Tracking & SMS Notifications in Tanzania",
+    "files": [
+      "app/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "LUMO Track helps merchants register businesses, create deliveries, assign drivers, send customer SMS alerts, and track daily fulfillment.",
+    "files": [
+      "app/for-merchants/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "LUMO Track helps Tanzanian businesses send SMS and WhatsApp delivery notifications and give customers simple real-time web delivery tracking without an app.",
+    "files": [
+      "app/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "LUMO Track inasaidia wafanyabiashara wa Tanzania kutuma arifa za SMS na WhatsApp kwa wateja na kuwapa uwezo wa kufuatilia mizigo yao live bila kudownload app.",
+    "files": [
+      "app/sw/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "LUMO Track is a product of LotusRise Limited dedicated to modernizing last-mile delivery tracking and customer communication in Tanzania and East Africa.",
+    "files": [
+      "app/about/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "LUMO Track offers mobile delivery management software for delivery fleets and couriers in Tanzania. Empower drivers with browser-based delivery status updates.",
+    "files": [
+      "app/for-delivery-businesses/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "LUMO Track provides a mobile delivery tracking system for Tanzanian merchants. Give customers real-time delivery status updates via SMS and WhatsApp without an app.",
+    "files": [
+      "app/delivery-tracking/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "LUMO Tracking",
+    "files": [
+      "app/rate/[token]/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "LUMO v2.5",
+    "files": [
+      "app/not-found.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "LUMO-DISPATCH",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "lumo.co.tz/t/8821",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "lumo.co.tz/track/LUMO-8241",
+    "files": [
+      "app/dashboard/branding/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "lumo.to/t/neema-92a",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Makumbusho Village Walk, Shop #14",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "map",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Mark Driver Arrived",
+    "files": [
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Mark Order Delivered",
+    "files": [
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Mark Out for Delivery",
+    "files": [
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "mark_email_read",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Merchant Control Dashboard",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Merchant Rankings",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Merchants",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Mfumo wa Kufuatilia Mizigo na Arifa za SMS Tanzania | LUMO Track",
+    "files": [
+      "app/sw/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Mfumo wa Kufuatilia Mizigo Tanzania | LUMO Track",
+    "files": [
+      "app/sw/fuatilia-mizigo/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "mic",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Mobile Browser Driver Workflow",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Monitor active dispatches, track driver locations, review daily delivery completion rates, and manage customer communications in one central ledger.",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Month",
+    "files": [
+      "app/dashboard/analytics/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Monthly Report",
+    "files": [
+      "app/dashboard/reports/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "moped",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "More",
+    "files": [
+      "app/components/MobileBottomNav.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Motorbike: Bajaj Boxer #MC-449",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "ms",
+    "files": [
+      "app/admin/health/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Mteja Anafuatilia Live",
+    "files": [
+      "app/sw/jinsi-inavyofanya-kazi/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Multi-Store Management",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Multichannel Alerts",
+    "files": [
+      "components/landing/MarqueeTicker.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Mzigo wako umewasilishwa kikamilifu. Ahsante kwa kununua kutoka HOME DECO!",
+    "files": [
+      "app/sms-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Navy Blue (Blue Bahari)",
+    "files": [
+      "app/dashboard/branding/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "near_me",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Nearby",
+    "files": [
+      "app/driver/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Neema",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Neema Mwamba",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "network_cell",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "New Password",
+    "files": [
+      "app/(auth)/forgot-password/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Notifications",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Notify the Customer",
+    "files": [
+      "app/how-it-works/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Nyumbani",
+    "files": [
+      "app/sw/arifa-za-delivery/page.tsx",
+      "app/sw/fuatilia-mizigo/page.tsx",
+      "app/sw/jinsi-inavyofanya-kazi/page.tsx",
+      "app/sw/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Ocean Blue",
+    "files": [
+      "app/dashboard/branding/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "October 1, 2026",
+    "files": [
+      "app/blog/delivery-tracking-tanzania-guide/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "On the Way",
+    "files": [
+      "app/delivery-tracking/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "On The Way",
+    "files": [
+      "app/driver/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "opacity-0 -translate-y-1 blur-[1px]",
+    "files": [
+      "components/landing/Hero.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "opacity-0 pointer-events-none",
+    "files": [
+      "components/common/LumoStartupLoader.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "opacity-0 scale-[0.97] blur-[2px]",
+    "files": [
+      "components/landing/Hero.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "opacity-100 animate-pulse",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "opacity-100 pointer-events-auto",
+    "files": [
+      "components/common/LumoStartupLoader.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "opacity-100 scale-100 blur-0",
+    "files": [
+      "components/landing/Hero.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "opacity-100 translate-y-0 blur-0",
+    "files": [
+      "components/landing/Hero.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "opacity-30",
+    "files": [
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "opacity-40",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "opacity-50 cursor-not-allowed",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "open_in_browser",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Order Cancelled",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Order confirmed",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Order Confirmed",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Order Created Alert",
+    "files": [
+      "app/sms-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Order Placed",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Order received",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Order Received",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Orders",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/components/MobileBottomNav.tsx",
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Orders created",
+    "files": [
+      "app/admin/analytics/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "OTP Delivery Confirmation",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Out for Delivery",
+    "files": [
+      "app/dashboard/deliveries/page.tsx",
+      "app/dashboard/orders/page.tsx",
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Out for Delivery 🚚",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Out for Delivery Alert",
+    "files": [
+      "app/sms-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Overview",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/components/MobileBottomNav.tsx",
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Page Not Found | LUMO Track",
+    "files": [
+      "app/not-found.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "password",
+    "files": [
+      "app/(auth)/forgot-password/page.tsx",
+      "app/(auth)/login/page.tsx",
+      "app/(auth)/register/page.tsx",
+      "app/admin/merchants/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "PATCH",
+    "files": [
+      "components/OrderEditor.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "pause",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Pending",
+    "files": [
+      "app/dashboard/deliveries/page.tsx",
+      "app/dashboard/orders/page.tsx",
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "PENDING",
+    "files": [
+      "app/driver/[token]/page.tsx",
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Phone Check",
+    "files": [
+      "app/(auth)/forgot-password/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "play_arrow",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Pricing",
+    "files": [
+      "app/pricing/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Pricing Plans & Packages | LUMO Track Tanzania",
+    "files": [
+      "app/pricing/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Private customer delivery tracking portal.",
+    "files": [
+      "app/track/[token]/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Products",
+    "files": [
+      "app/admin/merchants/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Pure White",
+    "files": [
+      "app/dashboard/branding/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Quarterly",
+    "files": [
+      "app/dashboard/reports/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Read expert articles, guides, and insights on delivery tracking, customer communication, SMS notifications, and last-mile logistics in Tanzania and East Africa.",
+    "files": [
+      "app/blog/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Real-Time Map Tracking",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Real-Time Status",
+    "files": [
+      "components/landing/MarqueeTicker.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "REFUNDED",
+    "files": [
+      "app/admin/orders/page.tsx",
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "replay",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Reports",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "ring-2 ring-transparent opacity-85",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "ring-4 ring-primary ring-offset-4 ring-offset-surface-container opacity-100",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "ring-4 ring-secondary ring-offset-4 ring-offset-surface-container opacity-100",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "ring-4 ring-tertiary ring-offset-4 ring-offset-surface-container opacity-100",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Sajili Mzigo",
+    "files": [
+      "app/sw/jinsi-inavyofanya-kazi/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Sales",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/merchants/[id]/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Sales after refunds",
+    "files": [
+      "app/admin/analytics/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Sales Ledger",
+    "files": [
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Sam Nujoma Road, Dar es Salaam",
+    "files": [
+      "app/dashboard/branding/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "scale-100",
+    "files": [
+      "app/components/MobileBottomNav.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Secure OTP Handover Verification",
+    "files": [
+      "app/features/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Semi-Annual",
+    "files": [
+      "app/admin/page.tsx",
+      "app/dashboard/reports/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Send automated SMS and WhatsApp alerts to customers with live tracking links — no app install needed.",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Send automated transactional SMS delivery notifications to customers in Tanzania. Keep buyers informed from dispatch to handover with live tracking links.",
+    "files": [
+      "app/sms-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Send branded WhatsApp delivery updates to buyers. Include order details, driver info, and a one-click web tracking button.",
+    "files": [
+      "app/whatsapp-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Send rich WhatsApp notification cards with your merchant shop logo, order summary, and dynamic \"Track Package\" buttons for maximum trust.",
+    "files": [
+      "components/landing/Hero.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "send_to_mobile",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "September 20, 2026",
+    "files": [
+      "app/blog/track-deliveries-without-app/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "September 25, 2026",
+    "files": [
+      "app/blog/whatsapp-delivery-notifications-guide/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "September 28, 2026",
+    "files": [
+      "app/blog/sms-notifications-customer-communication/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Settings",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/components/MobileBottomNav.tsx",
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "signal_cellular_4_bar",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Sinza Kijiweni",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "SKU:",
+    "files": [
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "SMS Customer Trust",
+    "files": [
+      "app/blog/sms-notifications-customer-communication/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "SMS Delivery Notifications for Businesses in Tanzania | LUMO Track",
+    "files": [
+      "app/sms-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "SMS Notifications",
+    "files": [
+      "app/sms-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "SMS OTP",
+    "files": [
+      "app/(auth)/forgot-password/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "SMS Sent",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "star",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Starter Merchant",
+    "files": [
+      "app/pricing/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "storefront",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Stores",
+    "files": [
+      "app/components/MobileBottomNav.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "support@lumo.co.tz",
+    "files": [
+      "app/contact/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "System Health",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "text",
+    "files": [
+      "app/(auth)/forgot-password/page.tsx",
+      "app/(auth)/login/page.tsx",
+      "app/(auth)/register/page.tsx",
+      "app/admin/merchants/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-[#FF5500]",
+    "files": [
+      "app/components/MobileBottomNav.tsx",
+      "app/dashboard/layout.tsx",
+      "app/dashboard/reports/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-[#FF5500] hover:bg-[#FF5500]/10 w-full text-left",
+    "files": [
+      "app/components/pwa/PWAInstallButton.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-amber-400",
+    "files": [
+      "app/components/MobileBottomNav.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-amber-400 drop-shadow-[0_0_12px_rgba(251,191,36,0.5)]",
+    "files": [
+      "app/rate/[token]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-amber-500",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-amber-600",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-amber-700",
+    "files": [
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-emerald-300",
+    "files": [
+      "app/(auth)/login/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-emerald-500",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-emerald-600",
+    "files": [
+      "app/dashboard/analytics/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-emerald-700",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-emerald-700 hover:text-emerald-800 hover:underline active:scale-95",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-on-surface",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-primary",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-rose-400 hover:text-rose-300",
+    "files": [
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-rose-500",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-rose-600",
+    "files": [
+      "app/components/OtpInput.tsx",
+      "app/dashboard/analytics/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-200",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-300 cursor-not-allowed",
+    "files": [
+      "app/components/OtpInput.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-300 hover:text-white hover:bg-slate-800/80",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-400",
+    "files": [
+      "app/(auth)/forgot-password/page.tsx",
+      "app/(auth)/login/page.tsx",
+      "app/admin/layout.tsx",
+      "app/components/MobileBottomNav.tsx",
+      "app/dashboard/layout.tsx",
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-400 font-medium",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-400 hover:text-slate-200",
+    "files": [
+      "app/components/MobileBottomNav.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-400 hover:text-white",
+    "files": [
+      "app/admin/merchants/page.tsx",
+      "app/admin/orders/page.tsx",
+      "app/admin/page.tsx",
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-400 hover:text-white hover:bg-slate-700/60",
+    "files": [
+      "app/dashboard/analytics/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-400 hover:text-white hover:bg-slate-800",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/admin/merchants/[id]/page.tsx",
+      "app/admin/page.tsx",
+      "app/admin/rankings/page.tsx",
+      "app/admin/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-500 hover:text-slate-300",
+    "files": [
+      "app/admin/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-500 hover:text-slate-800",
+    "files": [
+      "app/(auth)/login/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+    "files": [
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-600 hover:text-slate-400",
+    "files": [
+      "app/rate/[token]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-600 hover:text-slate-900",
+    "files": [
+      "app/dashboard/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-600 hover:text-slate-900 hover:bg-slate-200",
+    "files": [
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60",
+    "files": [
+      "app/dashboard/ratings/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-700",
+    "files": [
+      "app/dashboard/ratings/page.tsx",
+      "app/rate/[token]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-800",
+    "files": [
+      "app/(auth)/forgot-password/page.tsx",
+      "app/admin/layout.tsx",
+      "app/dashboard/orders/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-800 hover:bg-slate-100",
+    "files": [
+      "app/dashboard/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-900",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/dashboard/branding/page.tsx",
+      "app/dashboard/reports/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-900 font-bold",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-slate-950",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-teal-800 font-black scale-[1.02]",
+    "files": [
+      "app/track/[token]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "text-white",
+    "files": [
+      "app/admin/layout.tsx",
+      "app/components/MobileBottomNav.tsx",
+      "app/dashboard/branding/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "The requested page or delivery tracking link could not be found on LUMO Track.",
+    "files": [
+      "app/not-found.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "theme-dark bg-slate-950 text-slate-100",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "theme-light bg-slate-50 text-slate-900",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Thibitisha Kukabidhi",
+    "files": [
+      "app/sw/jinsi-inavyofanya-kazi/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "This Month",
+    "files": [
+      "app/admin/page.tsx",
+      "app/admin/ratings/page.tsx",
+      "app/dashboard/ratings/page.tsx",
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "This Quarter",
+    "files": [
+      "app/admin/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "This Week",
+    "files": [
+      "app/admin/page.tsx",
+      "app/admin/ratings/page.tsx",
+      "app/dashboard/ratings/page.tsx",
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "This Year",
+    "files": [
+      "app/admin/page.tsx",
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Today",
+    "files": [
+      "app/admin/page.tsx",
+      "app/admin/ratings/page.tsx",
+      "app/dashboard/analytics/page.tsx",
+      "app/dashboard/ratings/page.tsx",
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Traffic & Growth",
+    "files": [
+      "app/admin/layout.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Tuma Arifa",
+    "files": [
+      "app/sw/jinsi-inavyofanya-kazi/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Tuma arifa za SMS na WhatsApp kwa wateja wako Tanzania pindi mzigo unaposafirishwa. Boresha mawasiliano ya biashara yako leo.",
+    "files": [
+      "app/sw/arifa-za-delivery/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "TZS 10,000,000 Sales Club",
+    "files": [
+      "app/admin/achievements/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "TZS 65,000",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "TZS 65,000 (COD)",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Vodacom 5G",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Vodacom TZ",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "w-2.5 bg-[#1E3654] hover:bg-[#FF5500]/60 hover:w-5",
+    "files": [
+      "components/landing/Hero.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "w-8 bg-[#FF5500] shadow-md shadow-orange-500/50",
+    "files": [
+      "components/landing/Hero.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "warning",
+    "files": [
+      "app/admin/merchants/page.tsx",
+      "app/admin/merchants/[id]/page.tsx"
+    ],
+    "kinds": [
+      "expression"
+    ]
+  },
+  {
+    "text": "Week",
+    "files": [
+      "app/dashboard/analytics/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Weekly Report",
+    "files": [
+      "app/dashboard/reports/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "WhatsApp Delivery Notifications for Businesses | LUMO Track",
+    "files": [
+      "app/whatsapp-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "WhatsApp Notifications",
+    "files": [
+      "app/whatsapp-notifications/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "WhatsApp Notifications Guide",
+    "files": [
+      "app/blog/whatsapp-delivery-notifications-guide/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Why WhatsApp Delivery Notifications Outperform Traditional Tracking",
+    "files": [
+      "app/blog/page.tsx",
+      "app/blog/whatsapp-delivery-notifications-guide/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Why WhatsApp Delivery Notifications Outperform Traditional Tracking | LUMO Blog",
+    "files": [
+      "app/blog/whatsapp-delivery-notifications-guide/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "wifi",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Year",
+    "files": [
+      "app/dashboard/analytics/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Yesterday",
+    "files": [
+      "app/dashboard/analytics/page.tsx",
+      "app/dashboard/sales/page.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Zanzibar Crafts",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Zanzibar Fashion",
+    "files": [
+      "app/admin/page.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "ZC",
+    "files": [
+      "components/landing/Simulator.tsx"
+    ],
+    "kinds": [
+      "jsx"
+    ]
+  },
+  {
+    "text": "Zero App Download",
+    "files": [
+      "components/landing/MarqueeTicker.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  },
+  {
+    "text": "Zero App Installation",
+    "files": [
+      "components/landing/Sections.tsx"
+    ],
+    "kinds": [
+      "config"
+    ]
+  }
+]

@@ -1,5 +1,7 @@
 'use client';
 
+
+import { T } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Trophy, Award, TrendingUp, ShoppingBag, DollarSign, RefreshCw, Eye } from 'lucide-react';
@@ -32,12 +34,8 @@ export default function MerchantRankingsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div>
           <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-            <Trophy className="w-6 h-6 text-amber-400" />
-            Merchant Activity & Performance Rankings
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Dynamic platform leaderboards ranking merchants by activity engagement score, orders, revenue, and growth.
-          </p>
+            <Trophy className="w-6 h-6 text-amber-400" />{' '}<T k="admin.merchant_activity_performance_rankings" />{' '}</h1>
+          <p className="text-xs text-slate-400 mt-1">{' '}<T k="admin.dynamic_platform_leaderboards_ranking_merchants_by_activity_engagement_score_orders_r" />{' '}</p>
         </div>
 
         {/* Metric Switcher */}
@@ -64,28 +62,24 @@ export default function MerchantRankingsPage() {
           <table className="w-full text-left text-xs text-slate-300">
             <thead className="bg-slate-950 text-slate-400 font-bold uppercase text-[10px] border-b border-slate-800">
               <tr>
-                <th className="p-4">Rank</th>
-                <th className="p-4">Merchant / Business</th>
-                <th className="p-4">Engagement Score</th>
-                <th className="p-4">Total Orders</th>
-                <th className="p-4">Total Sales (TZS)</th>
-                <th className="p-4">Fulfillment Rate</th>
-                <th className="p-4 text-right">360° Profile</th>
+                <th className="p-4"><T k="admin.rank" /></th>
+                <th className="p-4"><T k="admin.merchant_business" /></th>
+                <th className="p-4"><T k="admin.engagement_score" /></th>
+                <th className="p-4"><T k="common.total_orders" /></th>
+                <th className="p-4"><T k="admin.total_sales_tzs" /></th>
+                <th className="p-4"><T k="admin.fulfillment_rate" /></th>
+                <th className="p-4 text-right"><T k="admin.360_profile" /></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800">
               {loading ? (
                 <tr>
                   <td colSpan={7} className="text-center py-12 text-slate-500">
-                    <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-amber-400" />
-                    Calculating merchant leaderboards...
-                  </td>
+                    <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-amber-400" />{' '}<T k="admin.calculating_merchant_leaderboards" />{' '}</td>
                 </tr>
               ) : rankings.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-center py-12 text-slate-500">
-                    No leaderboard data available for selected metric.
-                  </td>
+                  <td colSpan={7} className="text-center py-12 text-slate-500">{' '}<T k="admin.no_leaderboard_data_available_for_selected_metric" />{' '}</td>
                 </tr>
               ) : (
                 rankings.map((r) => (
