@@ -6,6 +6,9 @@ const money = z.number().finite().min(0).max(9999999999.99);
 const itemSchema = z.object({ productName: z.string().trim().min(1), unitSellingPrice: money, unitCostPrice: money.optional(), quantity: z.number().int().min(1).max(100000).optional(), discount: money.optional() }).refine(it => (it.discount || 0) <= it.unitSellingPrice * (it.quantity || 1), 'Discount exceeds selling total');
 import * as orderService from '../services/orderService';
 import { sendSuccess, sendError } from '../utils/response';
+import { prisma } from '../database/prisma';
+import { MesejiSMSAdapter } from '../notifications/adapter';
+import { smsManagementService } from '../services/smsManagementService';
 
 export async function createOrder(req: Request, res: Response) {
   try {
@@ -140,4 +143,69 @@ export async function deleteOrder(req: Request, res: Response) {
   if (!parsed.success) return sendError(res, 'VALIDATION_ERROR', 'Order version is required. Reopen the order and try again.', 400);
   try { return sendSuccess(res, await orderEditService.deleteOrder(req.user!.merchant_id, req.user!.id, req.params.id, parsed.data.updatedAt)); }
   catch (err: any) { return sendError(res, 'ORDER_DELETE_ERROR', err.message, err instanceof orderEditService.OrderEditError ? err.status : 500); }
+}
+
+export async function retryNotification(req: Request, res: Response) {
+  try {
+    const { id, notificationId } = req.params;
+    const notification = await prisma.orderNotification.findFirst({
+      where: { id: notificationId, order_id: id },
+      include: { order: true },
+    });
+
+    if (!notification) {
+      return sendError(res, 'NOT_FOUND', 'Notification not found', 404);
+    }
+
+    if (req.user!.role !== 'ADMIN' && notification.order.merchant_id !== req.user!.merchant_id) {
+      return sendError(res, 'FORBIDDEN', 'Access denied', 403);
+    }
+
+    // Deduct credits
+    const deductRes = await smsManagementService.deductCredits({
+      merchantId: notification.order.merchant_id,
+      messageBody: notification.message_body,
+      reason: `Retry Order #${notification.order.order_number} ${notification.event_type} SMS`,
+      reference: notification.order_id,
+    });
+
+    if (!deductRes.allowed) {
+      return sendError(
+        res,
+        'INSUFFICIENT_CREDITS',
+        `Insufficient SMS credits (${deductRes.remainingCredits} available, needed ${deductRes.units}). Please top up your balance.`,
+        400
+      );
+    }
+
+    const adapter = new MesejiSMSAdapter();
+    const result = await adapter.sendSMS(notification.recipient_phone, notification.message_body);
+
+    if (result.success) {
+      const updated = await prisma.orderNotification.update({
+        where: { id: notification.id },
+        data: {
+          status: 'SENT',
+          provider_message_id: result.messageId,
+          sent_at: new Date(),
+          delivered_at: new Date(),
+          failure_reason: null,
+          failed_at: null,
+        },
+      });
+      return sendSuccess(res, { notification: updated, message: 'SMS sent successfully!' });
+    } else {
+      await prisma.orderNotification.update({
+        where: { id: notification.id },
+        data: {
+          status: 'FAILED',
+          failed_at: new Date(),
+          failure_reason: result.error || 'Provider dispatch failed',
+        },
+      });
+      return sendError(res, 'SMS_DISPATCH_FAILED', result.error || 'SMS dispatch failed', 502);
+    }
+  } catch (err: any) {
+    return sendError(res, 'RETRY_ERROR', err.message, 500);
+  }
 }

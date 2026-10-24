@@ -35,7 +35,12 @@ export class MesejiSMSAdapter implements INotificationAdapter {
   }
 
   private getApiKey(): string {
-    return process.env.MESEJI_API_KEY || process.env.SMS_PROVIDER_API_KEY || '';
+    return (
+      process.env.MESEJI_API_KEY ||
+      process.env.SMS_PROVIDER_API_KEY ||
+      config.smsApiKey ||
+      'zs_f6ae2a4a1f321d11b1a3e296f377f070bacae5a212b456fd'
+    );
   }
 
   private isMockMode(): boolean {
@@ -62,7 +67,7 @@ export class MesejiSMSAdapter implements INotificationAdapter {
       }
 
       const apiUrl = this.getApiUrl();
-      const senderId = process.env.MESEJI_SENDER_ID || 'MESEJI';
+      const senderId = process.env.MESEJI_SENDER_ID || 'LUMO';
       const payload = {
         contacts: formattedRecipient,
         message: message,
@@ -81,7 +86,7 @@ export class MesejiSMSAdapter implements INotificationAdapter {
           'x-api-key': apiKey,
         };
 
-        if (process.env.MESEJI_AUTH_TYPE === 'bearer') {
+        if (apiKey.startsWith('eyJ') || process.env.MESEJI_AUTH_TYPE === 'bearer') {
           headers['Authorization'] = `Bearer ${apiKey}`;
         }
 

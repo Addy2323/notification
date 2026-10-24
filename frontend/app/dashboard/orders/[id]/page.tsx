@@ -8,7 +8,7 @@ import { fetchApi } from '@/lib/api';
 import OrderRefundDialog from '@/components/OrderRefundDialog';
 import {
   ArrowLeft, CheckCircle2, Clock, Truck, MapPin, XCircle, Users, Package,
-  Phone, User, ShoppingBag, Send, AlertCircle, X, ChevronRight, Copy, Share2, Check, ExternalLink, MessageSquare
+  Phone, User, ShoppingBag, Send, AlertCircle, X, ChevronRight, Copy, Share2, Check, ExternalLink, MessageSquare, RotateCw
 } from 'lucide-react';
 
 interface OrderDetail {
@@ -36,7 +36,7 @@ interface OrderDetail {
   cancelled_at: string | null;
   merchant: { business_name: string; logo_url: string | null; brand_color: string | null };
   events: { id: string; event_type: string; actor_type: string; timestamp: string; metadata: string | null }[];
-  notifications: { id: string; event_type: string; recipient_type: string; recipient_phone: string; message_body: string; status: string; sent_at: string | null; created_at: string }[];
+  notifications: { id: string; event_type: string; recipient_type: string; recipient_phone: string; message_body: string; status: string; sent_at: string | null; created_at: string; failure_reason?: string | null }[];
 }
 
 interface Driver { id: string; name: string; phone: string; status: string; }
@@ -98,10 +98,33 @@ export default function OrderDetailPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // Assign driver state
   const [showRefund, setShowRefund] = useState(false);
   const [showAssignDriver, setShowAssignDriver] = useState(false);
   const [drivers, setDrivers] = useState<Driver[]>([]);
+  const [retryingId, setRetryingId] = useState<string | null>(null);
+
+  const handleRetryNotification = async (notificationId: string) => {
+    if (!order || retryingId) return;
+    setRetryingId(notificationId);
+    setError(null);
+    try {
+      const res: any = await fetchApi(`/orders/${order.id}/notifications/${notificationId}/retry`, {
+        method: 'POST',
+      });
+      setSuccess(res?.message || 'SMS sent successfully!');
+      setOrder(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          notifications: prev.notifications.map(n => n.id === notificationId ? { ...n, ...(res?.notification || {}), status: 'SENT' } : n)
+        };
+      });
+    } catch (err: any) {
+      setError(err.message || 'Failed to resend SMS');
+    } finally {
+      setRetryingId(null);
+    }
+  };
 
   const loadOrder = useCallback(async () => {
     try {
@@ -326,15 +349,37 @@ export default function OrderDetailPage() {
             ) : (
               <div className="space-y-2">
                 {order.notifications.map(n => (
-                  <div key={n.id} className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <div className="flex items-center justify-between mb-1.5">
+                  <div key={n.id} className="p-3 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5">
+                    <div className="flex items-center justify-between">
                       <span className="text-[10px] font-bold text-slate-500 uppercase">{uiLabel(EVENT_LABELS[n.event_type] || n.event_type)} → {uiLabel(n.recipient_type)}</span>
-                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${n.status === 'SENT' || n.status === 'DELIVERED' ? 'bg-emerald-100 text-emerald-700' : n.status === 'FAILED' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-700'}`}>
-                        {uiLabel(n.status)}
-                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${n.status === 'SENT' || n.status === 'DELIVERED' ? 'bg-emerald-100 text-emerald-700' : n.status === 'FAILED' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-700'}`}>
+                          {uiLabel(n.status)}
+                        </span>
+                        {n.status === 'FAILED' && (
+                          <button
+                            onClick={() => handleRetryNotification(n.id)}
+                            disabled={retryingId === n.id}
+                            className="px-2 py-0.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 text-[10px] font-bold flex items-center gap-1 transition-all disabled:opacity-50"
+                            title="Retry sending SMS"
+                          >
+                            <RotateCw className={`w-3 h-3 ${retryingId === n.id ? 'animate-spin' : ''}`} />
+                            <span>Retry</span>
+                          </button>
+                        )}
+                      </div>
                     </div>
                     <p className="text-[11px] text-slate-600 font-medium leading-relaxed">{n.message_body}</p>
-                    <p className="text-[10px] text-slate-400 font-medium mt-1">{n.recipient_phone} • {n.sent_at ? new Date(n.sent_at).toLocaleString(locale) : t("admin.queued")}</p>
+                    <div className="flex items-center justify-between text-[10px] text-slate-400 font-medium">
+                      <span>{n.recipient_phone}</span>
+                      <span>{n.sent_at ? new Date(n.sent_at).toLocaleString(locale) : n.status === 'FAILED' ? 'Failed' : t("admin.queued")}</span>
+                    </div>
+                    {n.failure_reason && (
+                      <div className="text-[10px] text-rose-700 bg-rose-50/80 border border-rose-200/60 p-2 rounded-lg flex items-start gap-1.5 leading-snug">
+                        <AlertCircle className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
+                        <span>{n.failure_reason}</span>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

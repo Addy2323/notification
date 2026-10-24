@@ -266,16 +266,27 @@ export class SmsManagementService {
     });
 
     if (!account) {
+      const welcomeCredits = 25;
       account = await prisma.merchantSmsAccount.create({
         data: {
           merchant_id: merchantId,
-          available_credits: 0,
+          available_credits: welcomeCredits,
           total_purchased: 0,
           total_consumed: 0,
-          total_extended: 0,
-          balance_reference_units: 0,
+          total_extended: welcomeCredits,
+          balance_reference_units: welcomeCredits,
         },
       });
+      await prisma.smsCreditLedger.create({
+        data: {
+          merchant_id: merchantId,
+          amount: welcomeCredits,
+          type: 'ADMIN_EXTENSION',
+          balance_before: 0,
+          balance_after: welcomeCredits,
+          reason: 'Welcome Starter SMS Grant',
+        },
+      }).catch(() => {});
     }
 
     return account;
@@ -835,14 +846,48 @@ export class SmsManagementService {
       });
 
       if (!account) {
+        const welcomeCredits = 25;
         account = await tx.merchantSmsAccount.create({
           data: {
             merchant_id: merchantId,
-            available_credits: 0,
+            available_credits: welcomeCredits,
             total_purchased: 0,
             total_consumed: 0,
-            total_extended: 0,
-            balance_reference_units: 0,
+            total_extended: welcomeCredits,
+            balance_reference_units: welcomeCredits,
+          },
+        });
+        await tx.smsCreditLedger.create({
+          data: {
+            merchant_id: merchantId,
+            amount: welcomeCredits,
+            type: 'ADMIN_EXTENSION',
+            balance_before: 0,
+            balance_after: welcomeCredits,
+            reason: 'Welcome Starter SMS Grant',
+          },
+        });
+      }
+
+      // If merchant has 0 credits and has never received any extension or purchase, grant the starter 25 SMS credits
+      if (account.available_credits < units && account.total_extended === 0 && account.total_purchased === 0) {
+        const welcomeCredits = 25;
+        account = await tx.merchantSmsAccount.update({
+          where: { id: account.id },
+          data: {
+            available_credits: welcomeCredits,
+            total_extended: welcomeCredits,
+            balance_reference_units: welcomeCredits,
+          },
+        });
+        await tx.smsCreditLedger.create({
+          data: {
+            merchant_id: merchantId,
+            amount: welcomeCredits,
+            type: 'ADMIN_EXTENSION',
+            balance_before: 0,
+            balance_after: welcomeCredits,
+            reason: 'Welcome Starter SMS Grant',
           },
         });
       }

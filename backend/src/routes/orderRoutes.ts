@@ -15,5 +15,6 @@ router.delete('/:id', orderController.deleteOrder);
 router.patch('/:id/status', orderController.updateOrderStatus);
 router.post('/:id/refund', orderController.refundOrder);
 router.post('/:id/assign-driver', orderController.assignDriver);
+router.post('/:id/notifications/:notificationId/retry', orderController.retryNotification);
 
 export default router;
