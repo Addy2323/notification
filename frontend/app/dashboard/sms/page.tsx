@@ -64,6 +64,9 @@ export default function MerchantSmsPage() {
   const [submitting, setSubmitting] = useState(false);
   const [topupError, setTopupError] = useState<string | null>(null);
   const [activeSession, setActiveSession] = useState<any>(null);
+  const [pollingStatus, setPollingStatus] = useState<'IDLE' | 'PENDING' | 'COMPLETED' | 'FAILED'>('IDLE');
+  const [repushing, setRepushing] = useState(false);
+  const [repushMsg, setRepushMsg] = useState<string | null>(null);
 
   const isSw = locale === 'sw';
 
@@ -135,6 +138,7 @@ export default function MerchantSmsPage() {
     }
 
     setSubmitting(true);
+    setTopupError(null);
     try {
       const res = await fetchApi('/sms/topup', {
         method: 'POST',
@@ -145,15 +149,63 @@ export default function MerchantSmsPage() {
       });
 
       setActiveSession(res);
-
-      if (res.checkoutUrl) {
-        // Open checkout URL or redirect
-        window.location.href = res.checkoutUrl;
-      }
+      setPollingStatus('PENDING');
+      setRepushMsg(null);
     } catch (err: any) {
       setTopupError(err.message || 'Failed to initiate payment');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  // Poll transaction status when awaiting mobile USSD PIN confirmation
+  useEffect(() => {
+    if (!activeSession?.reference || pollingStatus !== 'PENDING') return;
+    let timer: any;
+    let isMounted = true;
+
+    const poll = async () => {
+      try {
+        const res = await fetchApi(`/sms/status/${encodeURIComponent(activeSession.reference)}`);
+        if (res && res.payment_status === 'COMPLETED') {
+          if (isMounted) {
+            setPollingStatus('COMPLETED');
+            await loadSmsData();
+          }
+          return;
+        } else if (res && (res.payment_status === 'FAILED' || res.payment_status === 'CANCELLED' || res.payment_status === 'EXPIRED')) {
+          if (isMounted) {
+            setPollingStatus('FAILED');
+          }
+          return;
+        }
+      } catch (e) {
+        // network retry
+      }
+      if (isMounted && pollingStatus === 'PENDING') {
+        timer = setTimeout(poll, 2500);
+      }
+    };
+
+    timer = setTimeout(poll, 2000);
+    return () => {
+      isMounted = false;
+      if (timer) clearTimeout(timer);
+    };
+  }, [activeSession, pollingStatus, loadSmsData]);
+
+  const handleRepushUssd = async () => {
+    if (!activeSession?.reference) return;
+    setRepushing(true);
+    setRepushMsg(null);
+    try {
+      await fetchApi(`/sms/repush/${encodeURIComponent(activeSession.reference)}`, { method: 'POST' });
+      setRepushMsg(isSw ? 'Ujumbe wa USSD umetumwa tena kwenye simu yako!' : 'USSD prompt re-sent to your mobile handset!');
+      setTimeout(() => setRepushMsg(null), 5000);
+    } catch (e: any) {
+      setRepushMsg(e.message || 'Failed to re-send USSD prompt');
+    } finally {
+      setRepushing(false);
     }
   };
 
@@ -301,25 +353,25 @@ export default function MerchantSmsPage() {
             />
           </div>
 
-          <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-400 pt-1">
+          <div className="hidden sm:flex flex-wrap items-center justify-between text-[11px] text-slate-400 pt-1">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
-              <span>{isSw ? '61%–100% Salio la Kutosha (Kijani)' : '61%–100% Healthy (Green)'}</span>
+              <span>{isSw ? '61%–100% Kijani' : '61%–100% Healthy'}</span>
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />
-              <span>{isSw ? '26%–60% Linapungua (Manjano)' : '26%–60% Low Balance (Amber)'}</span>
+              <span>{isSw ? '26%–60% Manjano' : '26%–60% Low'}</span>
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-red-500 inline-block" />
-              <span>{isSw ? '0%–25% Hatari / Tupu (Nyekundu)' : '0%–25% Critical (Red)'}</span>
+              <span>{isSw ? '0%–25% Nyekundu' : '0%–25% Critical'}</span>
             </span>
           </div>
 
-          <p className="text-[11px] text-slate-400 italic pt-1">
+          <p className="text-[11px] text-slate-400 italic pt-1 hidden sm:block">
             {isSw
-              ? '* Kila ukiongeza salio jipya au kupokea ongezeko kutoka kwa Admin, kigezo kinasasishwa na kurudi 100% (Kijani kibichi).'
-              : '* Whenever you complete a top-up or receive an authorized admin extension, your balance reference updates immediately back to 100% Green.'}
+              ? '* Kila ukiongeza salio jipya au kupokea ongezeko, kigezo kinasasishwa na kurudi 100% (Kijani kibichi).'
+              : '* Whenever you complete a top-up, your balance reference updates immediately back to 100% Green.'}
           </p>
         </div>
       </div>
@@ -372,146 +424,270 @@ export default function MerchantSmsPage() {
       </div>
 
       {/* Custom SMS Top-Up Section */}
-      <div id="topup-section" className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 sm:p-8">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2.5 rounded-xl bg-orange-50 text-[#FF5500]">
-            <CreditCard className="w-6 h-6" />
-          </div>
-          <div>
-            <h2 className="text-lg font-black text-slate-900">
-              {isSw ? 'Ongeza Salio la SMS (Self-Service)' : 'Custom SMS Top-Up'}
-            </h2>
-            <p className="text-xs text-slate-500">
-              {isSw
-                ? 'Weka idadi yoyote ya SMS unazohitaji. Malipo hufanywa kwa njia ya simu (Snippe Mobile Money).'
-                : 'Enter your desired SMS quantity. Instant USSD push & automatic verified credit allocation.'}
-            </p>
-          </div>
-        </div>
-
-        {topupError && (
-          <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{topupError}</span>
-          </div>
-        )}
-
-        <form onSubmit={handleInitiateTopup} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Quantity Input */}
-            <div>
-              <label className="block text-xs font-black uppercase text-slate-700 tracking-wider mb-2">
-                {isSw ? 'Idadi ya SMS (Vitengo)' : 'Requested SMS Units'}
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  min={minUnits}
-                  max={maxUnits}
-                  step="1"
-                  value={quantity || ''}
-                  onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 0)}
-                  placeholder="1000"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 font-black text-slate-900 text-lg focus:outline-none focus:ring-2 focus:ring-[#FF5500] focus:border-transparent"
-                  required
-                />
-                <span className="absolute right-4 top-3.5 text-xs font-bold text-slate-400">
-                  {isSw ? 'Vitengo' : 'Units'}
-                </span>
+      <div id="topup-section" className="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-7">
+        {activeSession ? (
+          /* Live USSD PIN Prompt Waiting State */
+          <div className="space-y-5 animate-in fade-in duration-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-xl bg-orange-100 text-[#FF5500]">
+                  <Smartphone className="w-5 h-5 animate-bounce" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-slate-900">
+                    {pollingStatus === 'COMPLETED'
+                      ? (isSw ? 'Malipo Yamethibitishwa!' : 'Payment Confirmed!')
+                      : pollingStatus === 'FAILED'
+                      ? (isSw ? 'Malipo Hayakukamilika' : 'Payment Incomplete')
+                      : (isSw ? 'Weka PIN kwenye Simu Yako' : 'Enter PIN on Your Handset')}
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    {isSw ? 'Ref ya Malipo:' : 'Payment Ref:'} <span className="font-mono font-bold">{activeSession.reference}</span>
+                  </p>
+                </div>
               </div>
 
-              {/* Quick Select Buttons */}
-              <div className="flex flex-wrap items-center gap-2 mt-3">
-                <span className="text-[11px] font-bold text-slate-400">{isSw ? 'Chagua haraka:' : 'Quick Select:'}</span>
-                {quickAmounts.map((amt) => (
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveSession(null);
+                  setPollingStatus('IDLE');
+                }}
+                className="text-xs font-bold text-slate-400 hover:text-slate-600 px-2 py-1"
+              >
+                {isSw ? 'Funga' : 'Close'}
+              </button>
+            </div>
+
+            {pollingStatus === 'COMPLETED' ? (
+              <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-3">
+                <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-7 h-7" />
+                </div>
+                <div className="text-lg font-black text-emerald-950">
+                  +{activeSession.requestedUnits.toLocaleString()} SMS {isSw ? 'Zimeongezwa Kikamilifu!' : 'Credits Added!'}
+                </div>
+                <p className="text-xs text-emerald-700 font-bold max-w-sm mx-auto">
+                  {isSw
+                    ? 'Salio lako jipya limeongezwa na mfumo umesasisha takwimu zako papo hapo.'
+                    : 'Your new SMS balance is updated and immediately ready for order notifications.'}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveSession(null);
+                    setPollingStatus('IDLE');
+                  }}
+                  className="mt-2 px-6 py-2.5 rounded-xl bg-emerald-600 text-white font-black text-xs hover:bg-emerald-700"
+                >
+                  {isSw ? 'Endelea' : 'Continue'}
+                </button>
+              </div>
+            ) : pollingStatus === 'FAILED' ? (
+              <div className="p-5 rounded-2xl bg-red-50 border border-red-200 text-center space-y-3">
+                <AlertCircle className="w-10 h-10 text-red-500 mx-auto" />
+                <div className="text-sm font-black text-red-900">
+                  {isSw ? 'Malipo Yamekataliwa au Muda Umeisha' : 'Payment Cancelled or Timed Out'}
+                </div>
+                <p className="text-xs text-red-700">
+                  {isSw ? 'Tafadhali jaribu tena au tumia namba nyingine ya simu.' : 'Please try again or use another mobile money number.'}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveSession(null);
+                    setPollingStatus('IDLE');
+                  }}
+                  className="px-5 py-2 rounded-xl bg-slate-900 text-white font-black text-xs"
+                >
+                  {isSw ? 'Jaribu Tena' : 'Try Again'}
+                </button>
+              </div>
+            ) : (
+              /* Waiting for PIN authorization */
+              <div className="space-y-4">
+                <div className="p-4 rounded-xl bg-amber-50/80 border border-amber-200 flex items-start gap-3 text-xs text-amber-900">
+                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping mt-1 shrink-0" />
+                  <div>
+                    <p className="font-bold">
+                      {isSw
+                        ? `Ujumbe wa USSD (M-Pesa / Tigo / Airtel) umetumwa kwa ${activeSession.customerPhone || phone}.`
+                        : `USSD push prompt dispatched to ${activeSession.customerPhone || phone}.`}
+                    </p>
+                    <p className="text-amber-800 mt-1">
+                      {isSw
+                        ? `Tafadhali weka PIN ya simu yako sasa ili kuidhinisha malipo ya TZS ${(activeSession.totalAmount || calculatedPayable).toLocaleString()}.`
+                        : `Authorize the payment of TZS ${(activeSession.totalAmount || calculatedPayable).toLocaleString()} with your mobile PIN.`}
+                    </p>
+                  </div>
+                </div>
+
+                {repushMsg && (
+                  <div className="p-3 rounded-lg bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold text-center">
+                    {repushMsg}
+                  </div>
+                )}
+
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
                   <button
-                    key={amt}
                     type="button"
-                    onClick={() => setQuantity(amt)}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                      quantity === amt
-                        ? 'bg-[#0F172A] text-white shadow-xs'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
+                    onClick={handleRepushUssd}
+                    disabled={repushing}
+                    className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5"
                   >
-                    +{amt.toLocaleString()}
+                    <RefreshCw className={`w-3.5 h-3.5 ${repushing ? 'animate-spin text-[#FF5500]' : ''}`} />
+                    <span>{repushing ? (isSw ? 'Inatuma...' : 'Re-sending...') : (isSw ? 'Tuma USSD Tena' : 'Resend USSD Prompt')}</span>
                   </button>
-                ))}
-              </div>
-            </div>
 
-            {/* Mobile Money Phone Input */}
-            <div>
-              <label className="block text-xs font-black uppercase text-slate-700 tracking-wider mb-2">
-                {isSw ? 'Namba ya Simu kwa Malipo (M-Pesa, Airtel, Mixx, Halotel)' : 'Mobile Money Phone Number'}
-              </label>
-              <div className="relative">
-                <Smartphone className="w-5 h-5 absolute left-3.5 top-3.5 text-slate-400" />
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="255711788830 au 0711788830"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-300 font-bold text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF5500] focus:border-transparent"
-                />
+                  {activeSession.checkoutUrl && (
+                    <a
+                      href={activeSession.checkoutUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 text-center"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>{isSw ? 'Lipa kwa Tovuti' : 'Pay via Web Checkout'}</span>
+                    </a>
+                  )}
+                </div>
               </div>
-              <p className="text-[11px] text-slate-500 mt-2">
-                {isSw
-                  ? 'Ukibonyeza lipa, utapokea USSD Push kwenye simu yako kuweka PIN.'
-                  : 'Customer receives a USSD prompt on their phone to authorize payment with PIN.'}
-              </p>
-            </div>
+            )}
           </div>
-
-          {/* Pricing Preview Box */}
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <div className="text-xs text-slate-500">
-                <span>{isSw ? 'Hesabu ya Malipo:' : 'Payable Breakdown:'} </span>
-                <span className="font-bold text-slate-700">
-                  {quantity.toLocaleString()} SMS × TSh {unitPrice}
-                </span>
+        ) : (
+          /* Responsive Form View */
+          <>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 rounded-xl bg-orange-50 text-[#FF5500]">
+                <CreditCard className="w-5 h-5" />
               </div>
-              <div className="text-xs text-emerald-600 font-bold flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>{isSw ? 'SMS hazina muda wa kuisha kila mwezi' : 'No monthly expiration — credits carry forward'}</span>
-              </div>
-            </div>
-
-            <div className="text-right">
-              <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                {isSw ? 'Jumla ya Kulipwa' : 'Total Payable'}
-              </div>
-              <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                TZS {calculatedPayable.toLocaleString()}
+              <div>
+                <h2 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                  {isSw ? 'Ongeza Salio la SMS (Self-Service)' : 'Custom SMS Top-Up'}
+                </h2>
+                <p className="text-xs text-slate-500 hidden sm:block">
+                  {isSw
+                    ? 'Weka idadi yoyote ya SMS. Malipo ya simu yanafanyika papo hapo kwa USSD.'
+                    : 'Instant mobile USSD push & automatic verified credit allocation.'}
+                </p>
               </div>
             </div>
-          </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-2">
-            <button
-              type="submit"
-              disabled={submitting || quantity < minUnits}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#FF5500] to-orange-600 hover:brightness-105 active:scale-95 disabled:opacity-50 text-white font-black text-sm transition-all shadow-md flex items-center justify-center gap-2"
-            >
-              {submitting ? (
-                <>
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>{isSw ? 'Inatayarisha Malipo...' : 'Creating Payment Session...'}</span>
-                </>
-              ) : (
-                <>
-                  <Zap className="w-4 h-4" />
-                  <span>
+            {topupError && (
+              <div className="mb-4 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{topupError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleInitiateTopup} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Quantity Input */}
+                <div>
+                  <label className="block text-xs font-black uppercase text-slate-700 tracking-wider mb-1.5">
+                    {isSw ? 'Idadi ya SMS' : 'Requested SMS Units'}
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      min={minUnits}
+                      max={maxUnits}
+                      step="1"
+                      value={quantity || ''}
+                      onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 0)}
+                      placeholder="1000"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-black text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-[#FF5500]"
+                      required
+                    />
+                    <span className="absolute right-3.5 top-3 text-xs font-bold text-slate-400">
+                      {isSw ? 'Vitengo' : 'Units'}
+                    </span>
+                  </div>
+
+                  {/* Compact Quick Select Buttons (Single row grid on mobile) */}
+                  <div className="grid grid-cols-5 gap-1.5 mt-2">
+                    {quickAmounts.map((amt) => (
+                      <button
+                        key={amt}
+                        type="button"
+                        onClick={() => setQuantity(amt)}
+                        className={`py-1.5 px-1 text-center rounded-lg text-xs font-bold transition-all ${
+                          quantity === amt
+                            ? 'bg-[#0F172A] text-white shadow-xs'
+                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                        }`}
+                      >
+                        +{amt >= 1000 ? `${amt / 1000}k` : amt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Mobile Money Phone Input */}
+                <div>
+                  <label className="block text-xs font-black uppercase text-slate-700 tracking-wider mb-1.5">
+                    {isSw ? 'Namba ya Simu ya Malipo' : 'Mobile Money Phone Number'}
+                  </label>
+                  <div className="relative">
+                    <Smartphone className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="07XXXXXXXX au 2557XXXXXXXX"
+                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-300 font-bold text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#FF5500]"
+                      required
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-1 hidden sm:block">
                     {isSw
-                      ? `Lipa TZS ${calculatedPayable.toLocaleString()} kwa Simu`
-                      : `Proceed to Pay TZS ${calculatedPayable.toLocaleString()}`}
-                  </span>
-                </>
-              )}
-            </button>
-          </div>
-        </form>
+                      ? 'Utapokea USSD Push kwenye simu yako kuweka PIN ya M-Pesa / Tigo / Airtel.'
+                      : 'You will receive an instant USSD PIN authorization prompt on this handset.'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Compact Pricing Preview Bar */}
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 sm:p-4 flex items-center justify-between gap-2">
+                <div className="text-xs text-slate-600">
+                  <span className="font-bold text-slate-900">{quantity.toLocaleString()} SMS</span> × TSh {unitPrice}
+                </div>
+                <div className="text-right">
+                  <div className="text-xs text-slate-400 font-bold uppercase tracking-wider hidden sm:block">
+                    {isSw ? 'Jumla' : 'Total'}
+                  </div>
+                  <div className="text-lg sm:text-xl font-black text-slate-900">
+                    TZS {calculatedPayable.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-1">
+                <button
+                  type="submit"
+                  disabled={submitting || quantity < minUnits}
+                  className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-[#FF5500] to-orange-600 hover:brightness-105 active:scale-95 disabled:opacity-50 text-white font-black text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2"
+                >
+                  {submitting ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      <span>{isSw ? 'Inatuma USSD Push...' : 'Sending USSD Prompt...'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-4 h-4" />
+                      <span>
+                        {isSw
+                          ? `Lipa TZS ${calculatedPayable.toLocaleString()} (USSD Push)`
+                          : `Pay TZS ${calculatedPayable.toLocaleString()} via USSD Push`}
+                      </span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </>
+        )}
       </div>
 
       {/* Top-Up Transactions History */}

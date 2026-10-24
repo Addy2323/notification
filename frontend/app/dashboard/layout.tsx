@@ -43,6 +43,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   };
 
+  const getItemLabel = (name: string) => {
+    if (name === 'Receipt Confirmations') return locale === 'sw' ? 'Uthibitisho wa Kupokea' : 'Receipt Confirmations';
+    if (name === 'SMS Management') return locale === 'sw' ? 'Usimamizi wa SMS' : 'SMS Management';
+    return uiLabel(name);
+  };
+
   const navItems = [
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Orders', href: '/dashboard/orders', icon: ShoppingBag },
@@ -89,7 +95,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             const active = pathname === item.href || (item.href === '/dashboard/orders' && pathname.startsWith('/dashboard/orders/'));
             return (
               <Link
-                key={uiLabel(item.name)}
+                key={item.href}
                 href={item.href}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-extrabold text-xs active:scale-95 hover:scale-[1.01] transition-all duration-150 ${
                   active
@@ -98,7 +104,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 }`}
               >
                 <Icon className={`w-4 h-4 ${active ? 'text-[#FF5500]' : 'text-slate-400'}`} />
-                <span>{uiLabel(item.name)}</span>
+                <span>{getItemLabel(item.name)}</span>
               </Link>
             );
           })}
@@ -212,7 +218,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             const active = pathname === item.href;
             return (
               <Link
-                key={uiLabel(item.name)}
+                key={item.href}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold active:scale-95 transition-all duration-150 ${
@@ -220,7 +226,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 }`}
               >
                 <Icon className={`w-4 h-4 ${active ? 'text-[#FF5500]' : 'text-slate-400'}`} />
-                <span>{uiLabel(item.name)}</span>
+                <span>{getItemLabel(item.name)}</span>
               </Link>
             );
           })}

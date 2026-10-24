@@ -8,7 +8,7 @@ export function sendSuccess(res: Response, data: any, statusCode: number = 200) 
   });
 }
 
-export function sendError(res: Response, code: string, message: string, statusCode: number = 400) {
+export function sendError(res: Response, code: string, message: string, statusCode: number = 400, details?: any) {
   const translationKey = errorTranslationKey(message, statusCode);
   const localizedMessage = reportTranslator(res.req ? resolveLanguage(res.req) : 'en')(translationKey);
   return res.status(statusCode).json({
@@ -17,6 +17,8 @@ export function sendError(res: Response, code: string, message: string, statusCo
       code,
       message: localizedMessage,
       translationKey,
+      ...(details ? { details } : {}),
     },
   });
 }
+

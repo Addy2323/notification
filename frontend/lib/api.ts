@@ -5,8 +5,22 @@ import keys from '@/locales/source-keys.json';
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 function errorMessage(message: string, code: string, status: number, translationKey?: string) {
   const language = browserLanguage();
-  const key = translationKey || (keys as Record<string, string>)[message] || `errors.${status === 401 ? 'unauthorized' : status === 403 ? 'forbidden' : status === 413 ? 'upload_size' : code === 'NETWORK_ERROR' ? 'network' : status >= 500 ? 'server' : 'request'}`;
-  const read = (messages: any) => key.split('.').reduce((obj, part) => obj?.[part], messages);
+  if (translationKey) {
+    const read = (messages: any) => translationKey.split('.').reduce((obj, part) => obj?.[part], messages);
+    const translated = read(language === 'sw' ? sw : en) || read(en);
+    if (translated) return translated;
+  }
+  const key = (keys as Record<string, string>)[message];
+  if (key) {
+    const read = (messages: any) => key.split('.').reduce((obj, part) => obj?.[part], messages);
+    const translated = read(language === 'sw' ? sw : en) || read(en);
+    if (translated) return translated;
+  }
+  if (message && typeof message === 'string' && message.trim().length > 0) {
+    return message;
+  }
+  const defaultKey = `errors.${status === 401 ? 'unauthorized' : status === 403 ? 'forbidden' : status === 413 ? 'upload_size' : code === 'NETWORK_ERROR' ? 'network' : status >= 500 ? 'server' : 'request'}`;
+  const read = (messages: any) => defaultKey.split('.').reduce((obj, part) => obj?.[part], messages);
   return read(language === 'sw' ? sw : en) || read(en) || 'An unexpected error occurred. Please try again.';
 }
 export async function fetchApi(endpoint: string, options: RequestInit = {}) {

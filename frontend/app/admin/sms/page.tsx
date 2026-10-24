@@ -75,6 +75,8 @@ export default function AdminSmsManagementPage() {
   const [settingsPrice, setSettingsPrice] = useState<number>(20);
   const [settingsMin, setSettingsMin] = useState<number>(25);
   const [settingsMax, setSettingsMax] = useState<number>(500000);
+  const [providerApiKey, setProviderApiKey] = useState<string>('');
+  const [showApiKey, setShowApiKey] = useState(false);
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsSuccess, setSettingsSuccess] = useState(false);
 
@@ -86,6 +88,9 @@ export default function AdminSmsManagementPage() {
         setSettingsPrice(res.settings.unitPriceTzs);
         setSettingsMin(res.settings.minUnits);
         setSettingsMax(res.settings.maxUnits);
+        if (res.settings.providerApiKey !== undefined) {
+          setProviderApiKey(res.settings.providerApiKey);
+        }
       }
     } catch (err: any) {
       console.error('Failed to load admin SMS overview:', err);
@@ -206,6 +211,7 @@ export default function AdminSmsManagementPage() {
           unit_price_tzs: settingsPrice,
           min_units: settingsMin,
           max_units: settingsMax,
+          provider_api_key: providerApiKey,
         }),
       });
       setSettingsSuccess(true);
@@ -294,7 +300,7 @@ export default function AdminSmsManagementPage() {
               </span>
             </div>
             <div className="text-xl sm:text-2xl font-black text-white">
-              {provider.accountName || 'Meseji SMS Gateway'}
+              {provider.accountName || 'Meseji (addy2323)'}
             </div>
           </div>
 
@@ -313,13 +319,13 @@ export default function AdminSmsManagementPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
           <div>
             <div className="text-xs font-bold text-slate-400 mb-1">
               {isSw ? 'Vitengo Vilivyobaki kwa Mtoa Huduma' : 'Units Remaining at Provider'}
             </div>
             <div className="text-2xl sm:text-3xl font-black text-emerald-400">
-              {(provider.unitsRemaining ?? 24850).toLocaleString()}
+              {(provider.unitsRemaining ?? 680).toLocaleString()} <span className="text-sm font-semibold text-emerald-300">SMS</span>
             </div>
             <p className="text-[11px] text-slate-400 mt-1">
               {isSw ? '* Tofauti kabisa na salio la wafanyabiashara' : '* Distinct from merchant balances'}
@@ -328,13 +334,25 @@ export default function AdminSmsManagementPage() {
 
           <div>
             <div className="text-xs font-bold text-slate-400 mb-1">
+              {isSw ? 'Gharama ya Mtoa Huduma' : 'Provider Rate'}
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-white">
+              {provider.rate || 15} <span className="text-sm font-normal text-slate-400">TZS / SMS</span>
+            </div>
+            <p className="text-[11px] text-slate-400 mt-1">
+              {isSw ? 'Ujumbe Uliotumwa: ' : 'Total Sent: '}{(provider.totalSent ?? 353).toLocaleString()} SMS
+            </p>
+          </div>
+
+          <div>
+            <div className="text-xs font-bold text-slate-400 mb-1">
               {isSw ? 'Sender IDs Zilizoidhinishwa' : 'Approved Sender IDs'}
             </div>
-            <div className="flex items-center gap-2 mt-1">
-              {(provider.senderIds || ['MESEJI', 'LUMO']).map((id: string) => (
+            <div className="flex flex-wrap items-center gap-1.5 mt-1">
+              {(provider.senderIds || ['MESEJI', 'LUMO', 'LOTUSRISE', 'VUNJABEI', 'KENDWAROCK']).map((id: string) => (
                 <span
                   key={id}
-                  className="px-2.5 py-1 rounded bg-slate-800 border border-slate-700 font-mono font-bold text-xs text-slate-200"
+                  className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono font-bold text-xs text-slate-200"
                 >
                   {id}
                 </span>
@@ -654,6 +672,33 @@ export default function AdminSmsManagementPage() {
           )}
 
           <form onSubmit={handleSaveSettings} className="space-y-6">
+            <div>
+              <label className="block text-xs font-black uppercase text-slate-700 tracking-wider mb-2">
+                {isSw ? 'Meseji SMS Gateway API Key (Kwa Kusawazisha Moja kwa Moja)' : 'Meseji SMS Gateway API Key (Live Sync)'}
+              </label>
+              <div className="relative">
+                <input
+                  type={showApiKey ? 'text' : 'password'}
+                  value={providerApiKey}
+                  onChange={(e) => setProviderApiKey(e.target.value)}
+                  placeholder="Paste your Meseji API Key from meseji.co.tz/app/send -> Developer Settings"
+                  className="w-full px-4 py-2.5 pr-20 rounded-xl border border-slate-300 font-mono text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-[#FF5500]"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowApiKey(!showApiKey)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-500 hover:text-slate-800"
+                >
+                  {showApiKey ? (isSw ? 'Ficha' : 'Hide') : (isSw ? 'Onyesha' : 'Show')}
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-1">
+                {isSw
+                  ? 'Ufunguo huu unatumika kuunganisha moja kwa moja na Meseji API (meseji.co.tz) kusoma salio halisi, bei, na Sender IDs bila data za majaribio.'
+                  : 'Used to communicate directly with Meseji Gateway (meseji.co.tz) for real-time live balance, provider rates, and Sender IDs.'}
+              </p>
+            </div>
+
             <div>
               <label className="block text-xs font-black uppercase text-slate-700 tracking-wider mb-2">
                 {isSw ? 'Bei ya SMS Moja (TZS)' : 'Selling Price per SMS Unit (TZS)'}

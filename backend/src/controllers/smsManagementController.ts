@@ -99,6 +99,31 @@ export class SmsManagementController {
     }
   }
 
+  /**
+   * Merchant/Admin: Re-dispatch USSD prompt to phone.
+   */
+  async repushUssd(req: Request, res: Response) {
+    try {
+      const reference = req.params.reference;
+      const tx = await (prisma as any).smsTopupTransaction.findUnique({
+        where: { reference },
+      });
+      if (!tx) {
+        return sendError(res, 'NOT_FOUND', 'Transaction not found', 404);
+      }
+      if (req.user?.role !== 'ADMIN' && req.user?.merchant_id !== tx.merchant_id) {
+        return sendError(res, 'FORBIDDEN', 'Access denied', 403);
+      }
+      if (tx.gateway_session_id && tx.gateway_session_id.startsWith('SN')) {
+        await snippePaymentService.pushPayment(tx.gateway_session_id);
+      }
+      return sendSuccess(res, { success: true, message: 'USSD prompt re-dispatched to mobile handset' });
+    } catch (err: any) {
+      return sendError(res, 'SERVER_ERROR', err.message, 500);
+    }
+  }
+
+
   // ================= Admin Endpoints =================
 
   /**

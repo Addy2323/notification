@@ -1,3 +1,4 @@
+import { prisma } from '../database/prisma';
 import { resolveLanguage } from '../localization';
 import { getPlatformAnalytics } from '../services/adminAnalyticsService';
 import * as adminDeliveryService from '../services/adminDeliveryService';

@@ -11,6 +11,8 @@ router.post('/webhook/snippe', (req, res) => smsManagementController.handleSnipp
 router.get('/overview', requireAuth, (req, res) => smsManagementController.getMerchantOverview(req, res));
 router.post('/topup', requireAuth, (req, res) => smsManagementController.initiateTopup(req, res));
 router.get('/status/:reference', requireAuth, (req, res) => smsManagementController.getTopupStatus(req, res));
+router.post('/repush/:reference', requireAuth, (req, res) => smsManagementController.repushUssd(req, res));
+
 
 // Admin Protected Endpoints
 router.get('/admin/overview', requireAuth, requireRole(['ADMIN']), (req, res) =>

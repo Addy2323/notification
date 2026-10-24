@@ -193,14 +193,153 @@ export class SnippePaymentService {
   }
 
   /**
-   * Direct status check for a session reference.
+   * Dispatches a direct Mobile Money payment, instantly triggering a USSD PIN prompt on the customer's phone handset.
+   * Endpoint: POST /api/v1/payments
+   */
+  async createPayment(params: {
+    amount: number;
+    currency?: string;
+    phoneNumber: string;
+    customer: {
+      name: string;
+      phone?: string;
+      email?: string;
+    };
+    webhookUrl?: string;
+    metadata?: Record<string, any>;
+  }): Promise<{
+    reference: string;
+    status: string;
+    amount: number;
+    currency: string;
+    paymentType: string;
+  }> {
+    const apiKey = this.getApiKey();
+    const apiUrl = this.getApiUrl();
+
+    const isMock = process.env.ENABLE_SNIPPE_MOCK === 'true';
+    if (isMock) {
+      return {
+        reference: `SN_mock_${Date.now()}`,
+        status: 'pending',
+        amount: params.amount,
+        currency: params.currency || 'TZS',
+        paymentType: 'mobile',
+      };
+    }
+
+    const nameParts = (params.customer.name || 'Merchant User').trim().split(/\s+/);
+    const firstname = nameParts[0] || 'Merchant';
+    const lastname = nameParts.slice(1).join(' ') || 'Partner';
+
+    let cleanPhone = params.phoneNumber.replace(/[^0-9]/g, '');
+    if (cleanPhone.startsWith('255') && cleanPhone.length === 12) {
+      cleanPhone = '0' + cleanPhone.substring(3);
+    } else if (cleanPhone.length === 9) {
+      cleanPhone = '0' + cleanPhone;
+    }
+
+    const webhookUrl = params.webhookUrl || `${config.frontendUrl}/api/sms/webhook/snippe`;
+
+    const payload = {
+      webhook_url: webhookUrl,
+      phone_number: cleanPhone,
+      details: {
+        amount: Math.round(params.amount),
+        currency: params.currency || 'TZS',
+      },
+      customer: {
+        firstname,
+        lastname,
+        email: params.customer.email || 'billing@lumotrack.co.tz',
+      },
+      metadata: params.metadata || {},
+    };
+
+    console.log(`[SNIPPE] Dispatching mobile USSD push payment to ${cleanPhone} for ${payload.details.amount} TZS`);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+
+    try {
+      const res = await fetch(`${apiUrl}/api/v1/payments`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeout);
+      const text = await res.text();
+      let data: any = {};
+      try {
+        data = JSON.parse(text);
+      } catch {
+        data = { raw: text };
+      }
+
+      console.log(`[SNIPPE PAYMENTS HTTP ${res.status}]:`, text.substring(0, 300));
+
+      if (res.ok && (data.code === 201 || data.status === 'success' || data.data)) {
+        const paymentData = data.data || data;
+        return {
+          reference: paymentData.reference,
+          status: paymentData.status || 'pending',
+          amount: paymentData.amount?.value || paymentData.amount || payload.details.amount,
+          currency: paymentData.currency || 'TZS',
+          paymentType: paymentData.payment_type || 'mobile',
+        };
+      } else {
+        const errMsg = data.message || data.error_code || `HTTP error ${res.status}`;
+        console.warn(`[SNIPPE PAYMENT WARNING] API returned error: ${errMsg}`);
+        throw new Error(errMsg);
+      }
+    } catch (err: any) {
+      clearTimeout(timeout);
+      console.error(`[SNIPPE PAYMENT ERROR]:`, err.message);
+      throw err;
+    }
+  }
+
+  /**
+   * Re-pushes the USSD prompt to the customer's handset.
+   * Endpoint: POST /api/v1/payments/{reference}/push
+   */
+  async pushPayment(reference: string): Promise<boolean> {
+    const apiKey = this.getApiKey();
+    const apiUrl = this.getApiUrl();
+
+    try {
+      const res = await fetch(`${apiUrl}/api/v1/payments/${encodeURIComponent(reference)}/push`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+      });
+      return res.ok;
+    } catch (err: any) {
+      console.warn(`[SNIPPE RE-PUSH ERROR]`, err.message);
+      return false;
+    }
+  }
+
+  /**
+   * Direct status check for a payment or session reference.
    */
   async getSessionStatus(reference: string): Promise<any> {
     const apiKey = this.getApiKey();
     const apiUrl = this.getApiUrl();
 
     try {
-      const res = await fetch(`${apiUrl}/api/v1/sessions/${encodeURIComponent(reference)}`, {
+      const isPayment = reference.startsWith('SN') || reference.startsWith('PAY');
+      const endpoint = isPayment
+        ? `${apiUrl}/api/v1/payments/${encodeURIComponent(reference)}`
+        : `${apiUrl}/api/v1/sessions/${encodeURIComponent(reference)}`;
+
+      const res = await fetch(endpoint, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${apiKey}`,
@@ -213,10 +352,11 @@ export class SnippePaymentService {
       const data = await res.json();
       return data.data || data;
     } catch (err) {
-      console.error(`[SNIPPE GET SESSION ERROR]`, err);
+      console.error(`[SNIPPE GET STATUS ERROR]`, err);
       return null;
     }
   }
 }
 
 export const snippePaymentService = new SnippePaymentService();
+

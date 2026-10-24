@@ -75,6 +75,12 @@ const NAV_ITEMS: NavItem[] = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { t, label: uiLabel, locale } = useLanguage();
 
+  const getItemLabel = (name: string) => {
+    if (name === 'Receipt Confirmations') return locale === 'sw' ? 'Uthibitisho wa Kupokea' : 'Receipt Confirmations';
+    if (name === 'SMS Management') return locale === 'sw' ? 'Usimamizi wa SMS' : 'SMS Management';
+    return uiLabel(name);
+  };
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -440,7 +446,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   }`}
                 >
                   <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-slate-950' : 'text-slate-400'}`} />
-                  {!collapsed && <span className="truncate">{uiLabel(item.label)}</span>}
+                  {!collapsed && <span className="truncate">{getItemLabel(item.label)}</span>}
                 </Link>
               );
             })}
@@ -489,7 +495,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       }`}
                     >
                       <Icon className="w-4 h-4" />
-                      <span>{uiLabel(item.label)}</span>
+                      <span>{getItemLabel(item.label)}</span>
                     </Link>
                   );
                 })}

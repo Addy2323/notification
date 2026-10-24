@@ -582,6 +582,7 @@ model SmsGlobalSetting {
   admin_alert_phones         String    @default("[\"0768828247\",\"0711788830\"]")
   auto_sync_enabled          Boolean   @default(true)
   last_provider_sync_at      DateTime?
+  provider_api_key           String?
   provider_account_name      String?   @default("Meseji SMS")
   provider_balance_raw       String?
   provider_balance_units     Int?
