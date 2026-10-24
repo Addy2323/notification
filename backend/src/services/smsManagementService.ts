@@ -1049,6 +1049,20 @@ export class SmsManagementService {
     const rate = providerMetrics.rate || 15;
     const totalSent = providerMetrics.totalSubmitted || 353;
 
+    // Ensure all registered merchants in the platform are enrolled in the SMS pool
+    const allMerchants = await prisma.merchant.findMany({
+      include: {
+        sms_account: true,
+      },
+      orderBy: { created_at: 'desc' },
+    });
+
+    for (const m of allMerchants) {
+      if (!m.sms_account) {
+        await this.getOrCreateMerchantAccount(m.id);
+      }
+    }
+
     // Merchant balances aggregation
     const accounts = await prisma.merchantSmsAccount.findMany({
       include: {

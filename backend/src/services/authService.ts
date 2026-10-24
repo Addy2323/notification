@@ -4,6 +4,7 @@ import { prisma } from '../database/prisma';
 import { config } from '../config';
 import { generateSecureToken } from '../utils/token';
 import { notificationService } from '../notifications/adapter';
+import { smsManagementService } from './smsManagementService';
 
 export async function registerMerchant(data: {
   business_name: string;
@@ -110,6 +111,13 @@ export async function registerMerchant(data: {
     );
   } catch (err) {
     console.error('[Welcome SMS Failed]', err);
+  }
+
+  // Auto-enroll merchant in SMS pool with starter credits
+  try {
+    await smsManagementService.getOrCreateMerchantAccount(merchant.id);
+  } catch (err) {
+    console.error('[Merchant SMS Account Init Failed]', err);
   }
 
   return {
