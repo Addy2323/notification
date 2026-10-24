@@ -890,7 +890,7 @@ export class SmsManagementService {
     const startTime = Date.now();
     try {
       const currentSetting = await prisma.smsGlobalSetting.findUnique({ where: { id: 'default' } });
-      const live = await this.fetchLiveMesejiData(currentSetting?.provider_api_key || undefined);
+      const live = await this.fetchLiveMesejiData((currentSetting as any)?.provider_api_key || undefined);
 
       const balanceUnits = live.balance ?? 680;
       const accountName = `Meseji (${live.username || 'addy2323'})`;
@@ -1060,7 +1060,7 @@ export class SmsManagementService {
         maxUnits: settings.max_units,
         adminAlertPhones: JSON.parse(settings.admin_alert_phones || '[]'),
         autoSyncEnabled: settings.auto_sync_enabled,
-        providerApiKey: settings.provider_api_key || '',
+        providerApiKey: (settings as any)?.provider_api_key || '',
       },
       provider: {
         accountName: settings.provider_account_name || 'Meseji (addy2323)',
