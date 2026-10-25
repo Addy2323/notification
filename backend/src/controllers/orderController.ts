@@ -12,7 +12,7 @@ import { smsManagementService } from '../services/smsManagementService';
 
 export async function createOrder(req: Request, res: Response) {
   try {
-    const { customerName, customerPhone, deliveryAddress, productName, imageUrl, amount, customerId, driverId, driverName, driverPhone } = req.body;
+    const { customerName, customerPhone, deliveryAddress, productName, imageUrl, amount, customerId, driverId, driverName, driverPhone, vehicleInfo, transportType } = req.body;
 
     if (!customerName || !customerPhone || !deliveryAddress || !productName) {
       return sendError(res, 'VALIDATION_ERROR', 'Customer name, phone, delivery address, and product name are required', 400);
@@ -34,6 +34,7 @@ export async function createOrder(req: Request, res: Response) {
       driverId,
       driverName,
       driverPhone,
+      vehicleInfo: vehicleInfo || transportType || 'BODA',
     });
 
     return sendSuccess(res, result, 201);

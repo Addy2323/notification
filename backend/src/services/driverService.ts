@@ -34,7 +34,7 @@ export async function getDriverById(merchantId: string, driverId: string) {
   });
 }
 
-export async function createDriver(merchantId: string, data: { name: string; phone: string }) {
+export async function createDriver(merchantId: string, data: { name: string; phone: string; vehicle_info?: string }) {
   // Check for existing driver with same phone for this merchant
   const existing = await prisma.driver.findUnique({
     where: { merchant_id_phone: { merchant_id: merchantId, phone: data.phone } },
@@ -43,7 +43,11 @@ export async function createDriver(merchantId: string, data: { name: string; pho
   if (existing) {
     return prisma.driver.update({
       where: { id: existing.id },
-      data: { name: data.name, status: 'AVAILABLE' },
+      data: {
+        name: data.name,
+        status: 'AVAILABLE',
+        ...(data.vehicle_info ? { vehicle_info: data.vehicle_info } : {}),
+      },
     });
   }
 
@@ -52,6 +56,7 @@ export async function createDriver(merchantId: string, data: { name: string; pho
       merchant_id: merchantId,
       name: data.name,
       phone: data.phone,
+      vehicle_info: data.vehicle_info || 'BODA',
       status: 'AVAILABLE',
     },
   });

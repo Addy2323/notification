@@ -55,7 +55,11 @@ export async function getCustomerTracking(req: Request, res: Response) {
           name: order.driver_name,
           masked_phone: maskedDriverPhone,
           raw_phone: order.driver_phone,
+          vehicle_info: order.vehicle_info || 'BODA',
+          transport_type: order.vehicle_info || 'BODA',
         } : null,
+        vehicle_info: order.vehicle_info || 'BODA',
+        transport_type: order.vehicle_info || 'BODA',
         merchant: order.merchant,
         timeline: order.events.map((e: any) => ({
           event_type: e.event_type,
@@ -110,7 +114,11 @@ export async function getCustomerTracking(req: Request, res: Response) {
         name: delivery.driver_name,
         masked_phone: maskedDriverPhone,
         raw_phone: delivery.driver_phone,
+        vehicle_info: 'BODA',
+        transport_type: 'BODA',
       } : null,
+      vehicle_info: 'BODA',
+      transport_type: 'BODA',
       merchant: delivery.merchant,
       timeline: delivery.events.map((e: any) => ({
         event_type: e.event_type,

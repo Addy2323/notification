@@ -1,11 +1,10 @@
 'use client';
 
-
 import { TLabel } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, ShoppingBag, Truck, Bell, Settings, Users, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Truck, Settings, Users, BarChart3 } from 'lucide-react';
 
 interface MobileBottomNavProps {
   type?: 'merchant' | 'admin';
@@ -43,8 +42,11 @@ export function MobileBottomNav({ type = 'merchant', unreadCount = 0 }: MobileBo
   const activeIconColor = type === 'admin' ? 'text-amber-400' : 'text-[#FF5500]';
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0F172A]/95 text-white backdrop-blur-xl border-t border-slate-800/80 shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.4)] pb-[env(safe-area-inset-bottom)] transition-all">
-      <div className="flex items-center justify-around h-16 px-2 max-w-md mx-auto">
+    <nav 
+      aria-label="Mobile Navigation"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0F172A]/95 text-white backdrop-blur-xl border-t border-slate-800/80 shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.4)] pb-[env(safe-area-inset-bottom)] transition-all"
+    >
+      <div className="flex items-center justify-around h-16 px-1 sm:px-2 max-w-md mx-auto">
         {items.map((item) => {
           const Icon = item.icon;
           const isActive =
@@ -55,7 +57,8 @@ export function MobileBottomNav({ type = 'merchant', unreadCount = 0 }: MobileBo
             <Link
               key={item.name}
               href={item.href}
-              className={`relative flex flex-col items-center justify-center flex-1 h-full py-1 transition-all duration-200 active:scale-90 select-none ${
+              aria-current={isActive ? 'page' : undefined}
+              className={`relative flex flex-col items-center justify-center flex-1 h-full min-w-0 py-1 transition-all duration-200 active:scale-95 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5500] rounded-xl ${
                 isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -82,7 +85,7 @@ export function MobileBottomNav({ type = 'merchant', unreadCount = 0 }: MobileBo
 
               {/* Label */}
               <span
-                className={`text-[10px] font-bold mt-1 tracking-tight transition-colors ${
+                className={`text-[10px] font-bold mt-1 tracking-tight truncate transition-colors ${
                   isActive ? 'text-white' : 'text-slate-400'
                 }`}
               >

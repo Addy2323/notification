@@ -36,6 +36,8 @@ export interface CreateOrderDTO {
   driverId?: string;
   driverName?: string;
   driverPhone?: string;
+  vehicleInfo?: string;
+  transportType?: string;
   items?: OrderItemInput[];
 }
 
@@ -137,6 +139,7 @@ export async function createOrder(data: CreateOrderDTO) {
         driver_id: data.driverId || null,
         driver_name: data.driverName || null,
         driver_phone: data.driverPhone || null,
+        vehicle_info: data.vehicleInfo || data.transportType || 'BODA',
         status: initialStatus,
         tracking_token: trackingToken,
         driver_token: driverToken,
@@ -179,6 +182,7 @@ export async function createOrder(data: CreateOrderDTO) {
       deliveryAddress: data.deliveryAddress,
       trackingUrl,
       driverUrl,
+      vehicleInfo: data.vehicleInfo || data.transportType || 'BODA',
     },
   });
 
@@ -230,7 +234,7 @@ export async function listOrders(merchantId: string, options: {
       take: limit,
       include: {
         customer: { select: { id: true, name: true, phone: true } },
-        driver: { select: { id: true, name: true, phone: true, status: true } },
+        driver: { select: { id: true, name: true, phone: true, status: true, vehicle_info: true } },
       },
     }),
   ]);
@@ -367,6 +371,7 @@ export async function updateOrderStatus(
       trackingUrl,
       driverUrl,
       ratingUrl,
+      vehicleInfo: order.vehicle_info || order.driver?.vehicle_info || 'BODA',
     },
   });
 
@@ -416,6 +421,7 @@ export async function assignDriver(
         driver_name: driver.name,
         driver_phone: driver.phone,
         driver_token: driverToken,
+        vehicle_info: driver.vehicle_info || order.vehicle_info || 'BODA',
         status: 'DRIVER_ASSIGNED',
         assigned_at: new Date(),
       },
@@ -458,6 +464,7 @@ export async function assignDriver(
       deliveryAddress: order.delivery_address,
       trackingUrl,
       driverUrl,
+      vehicleInfo: driver.vehicle_info || order.vehicle_info || 'BODA',
     },
   });
 

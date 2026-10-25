@@ -17,9 +17,9 @@ const CUSTOMER_TEMPLATES: Record<string, string> = {
   ORDER_CONFIRMED:
     'Hello {{customerName}}, {{merchantName}} has confirmed order {{orderNumber}}. We will let you know when it is ready for delivery.',
   DRIVER_ASSIGNED:
-    'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} will be delivered by {{driverName}}, {{driverPhone}}. Delivery: {{deliveryAddress}}. Thank you for shopping with us!',
+    'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} will be delivered via {{transportMethod}} by {{driverName}}, {{driverPhone}}. Delivery: {{deliveryAddress}}. Thank you for shopping with us!',
   OUT_FOR_DELIVERY:
-    'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} is now out for delivery with {{driverName}}. Please be ready to receive your order. Thank you for shopping with us!',
+    'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} is now out for delivery via {{transportMethod}} with {{driverName}}. Please be ready to receive your order. Thank you for shopping with us!',
   DRIVER_ARRIVED:
     '🚚 Your delivery is almost here! Your driver {{driverName}} is nearby. Please be ready to receive your order for {{merchantName}} (Order #{{orderNumber}}).',
   DRIVER_NEARBY:
@@ -45,8 +45,8 @@ const DRIVER_TEMPLATES: Record<string, string> = {
 export const SW_CUSTOMER_TEMPLATES: Record<string, string> = {
   ORDER_CREATED: 'Habari {{customerName}}, asante kwa kununua kutoka {{merchantName}}! Oda {{orderNumber}} imepokelewa na inasubiri. Tutakupa taarifa zaidi.',
   ORDER_CONFIRMED: 'Habari {{customerName}}, {{merchantName}} amethibitisha oda {{orderNumber}}. Tutakujulisha ikiwa tayari kusafirishwa.',
-  DRIVER_ASSIGNED: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} italetwa na {{driverName}}, {{driverPhone}}. Anwani: {{deliveryAddress}}. Asante kwa kununua kwetu!',
-  OUT_FOR_DELIVERY: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} iko njiani na {{driverName}}. Tafadhali jiandae kuipokea. Asante kwa kununua kwetu!',
+  DRIVER_ASSIGNED: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} italetwa kwa {{transportMethod}} na {{driverName}}, {{driverPhone}}. Anwani: {{deliveryAddress}}. Asante kwa kununua kwetu!',
+  OUT_FOR_DELIVERY: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} iko njiani kwa {{transportMethod}} na {{driverName}}. Tafadhali jiandae kuipokea. Asante kwa kununua kwetu!',
   DRIVER_ARRIVED: 'Mzigo wako unakaribia kufika! Dereva {{driverName}} yuko karibu. Jiandae kupokea oda {{orderNumber}} kutoka {{merchantName}}.',
   DRIVER_NEARBY: 'Mzigo wako unakaribia kufika! Dereva {{driverName}} yuko karibu. Jiandae kupokea oda {{orderNumber}} kutoka {{merchantName}}.',
   ORDER_DELIVERED: 'Oda yako {{orderNumber}} imefikishwa. Asante kwa kununua kutoka {{merchantName}}. Tafadhali tathmini huduma: {{ratingUrl}}',
@@ -64,6 +64,20 @@ export function orderMessageTemplate(eventType: string, recipientType: 'CUSTOMER
   return (language === 'sw' ? swahili[eventType] : undefined) ?? english[eventType];
 }
 
+export function formatTransportMethod(vehicleInfo?: string | null, language: Language = 'en'): string {
+  const code = (vehicleInfo || 'BODA').toUpperCase();
+  if (code.includes('BAJAJI')) {
+    return 'Bajaji';
+  }
+  if (code.includes('BUS') || code.includes('BASI')) {
+    return language === 'sw' ? 'Basi' : 'Bus';
+  }
+  if (code.includes('PERSONAL') || code.includes('BINAFSI')) {
+    return language === 'sw' ? 'Uwasilishaji Binafsi' : 'Personal Delivery';
+  }
+  return 'Boda Boda';
+}
+
 interface TemplateVars {
   merchantName: string;
   customerName: string;
@@ -76,9 +90,11 @@ interface TemplateVars {
   trackingUrl: string;
   driverUrl: string;
   ratingUrl?: string;
+  transportMethod?: string;
+  vehicleInfo?: string | null;
 }
 
-function replaceVariables(template: string, vars: TemplateVars): string {
+function replaceVariables(template: string, vars: TemplateVars, language: Language = 'en'): string {
   let result = template;
   result = result.replace(/\{\{merchantName\}\}/g, vars.merchantName || 'LUMO');
   result = result.replace(/\{\{customerName\}\}/g, vars.customerName || 'Customer');
@@ -91,6 +107,8 @@ function replaceVariables(template: string, vars: TemplateVars): string {
   result = result.replace(/\{\{trackingUrl\}\}/g, vars.trackingUrl || '');
   result = result.replace(/\{\{driverUrl\}\}/g, vars.driverUrl || '');
   result = result.replace(/\{\{ratingUrl\}\}/g, vars.ratingUrl || '');
+  const transportMethod = vars.transportMethod || formatTransportMethod(vars.vehicleInfo, language);
+  result = result.replace(/\{\{transportMethod\}\}/g, transportMethod);
   return result;
 }
 
@@ -132,7 +150,7 @@ export async function dispatchOrderNotification(params: {
       return;
     }
 
-    const messageBody = replaceVariables(template, vars);
+    const messageBody = replaceVariables(template, vars, params.language || 'en');
 
     // Create notification record
     const notification = await prisma.orderNotification.create({
@@ -242,6 +260,21 @@ export async function dispatchOrderEvent(params: {
       language = user?.language === 'sw' ? 'sw' : 'en';
     }
   }
+  // Populate vehicleInfo if missing
+  if (!vars.vehicleInfo && orderId) {
+    try {
+      const orderRec = await prisma.order.findUnique({
+        where: { id: orderId },
+        select: { vehicle_info: true, driver: { select: { vehicle_info: true } } },
+      });
+      if (orderRec) {
+        vars.vehicleInfo = orderRec.vehicle_info || orderRec.driver?.vehicle_info || 'BODA';
+      }
+    } catch {
+      // Ignore lookup error if database disconnected or mocked
+    }
+  }
+
   // Customer notification
   if (CUSTOMER_TEMPLATES[eventType]) {
     await dispatchOrderNotification({

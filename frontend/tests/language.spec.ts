@@ -3,6 +3,9 @@ import { test, expect, Page } from '@playwright/test';
 async function mockApi(page: Page, initial: { authenticated?: boolean; language?: 'en' | 'sw' } = {}) {
   let authenticated = initial.authenticated ?? true;
   let language = initial.language ?? 'en';
+  if (initial.language) {
+    await page.context().addCookies([{ name: 'lumo_language', value: initial.language, domain: 'localhost', path: '/' }]);
+  }
   const saved: string[] = [];
   const user = () => ({ id: 'test-user', name: 'Asha Orders', role: 'ADMIN', merchant_id: 'merchant', language });
   const merchant = { id: 'merchant', business_name: 'Orders Shop', business_phone: '0712345678', brand_color: '#1E40AF' };

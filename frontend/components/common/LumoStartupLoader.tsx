@@ -13,8 +13,12 @@ export function LumoStartupLoader({
   subtext = 'Track deliveries. Stay connected.',
   visible = true
 }: LumoStartupLoaderProps) {
+  if (!visible) return null;
+
   return (
     <div
+      aria-live="polite"
+      aria-busy={visible}
       className={`fixed inset-0 z-50 flex flex-col justify-between bg-[#050D1A] text-white select-none font-sans overflow-hidden transition-all duration-700 ease-in-out ${
         visible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
@@ -49,9 +53,9 @@ export function LumoStartupLoader({
 
           {/* LUMO TRACK Brand Title */}
           <div className="pt-4 text-center space-y-1">
-            <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-none">
+            <span className="block text-4xl sm:text-5xl font-black text-white tracking-tight leading-none">
               LUMO
-            </h1>
+            </span>
             <p className="text-xs sm:text-sm font-black tracking-[0.45em] text-white/95 uppercase pt-0.5">
               T R A C K
             </p>

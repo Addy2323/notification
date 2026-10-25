@@ -136,6 +136,7 @@ model Order {
   driver_id           String?
   driver_name         String?
   driver_phone        String?
+  vehicle_info        String?
   status              String          @default("PENDING")
   delivery_id         String?         @unique
   tracking_token      String?         @unique

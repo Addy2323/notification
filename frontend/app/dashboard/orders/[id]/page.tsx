@@ -10,6 +10,7 @@ import {
   ArrowLeft, CheckCircle2, Clock, Truck, MapPin, XCircle, Users, Package,
   Phone, User, ShoppingBag, Send, AlertCircle, X, ChevronRight, Copy, Share2, Check, ExternalLink, MessageSquare, RotateCw
 } from 'lucide-react';
+import { getTransportMeta } from '@/lib/transport';
 
 interface OrderDetail {
   id: string;
@@ -34,12 +35,14 @@ interface OrderDetail {
   arrived_at: string | null;
   delivered_at: string | null;
   cancelled_at: string | null;
+  vehicle_info?: string | null;
+  transport_type?: string | null;
   merchant: { business_name: string; logo_url: string | null; brand_color: string | null };
   events: { id: string; event_type: string; actor_type: string; timestamp: string; metadata: string | null }[];
   notifications: { id: string; event_type: string; recipient_type: string; recipient_phone: string; message_body: string; status: string; sent_at: string | null; created_at: string; failure_reason?: string | null }[];
 }
 
-interface Driver { id: string; name: string; phone: string; status: string; }
+interface Driver { id: string; name: string; phone: string; status: string; vehicle_info?: string; }
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; icon: any }> = {
   PENDING: { label: 'Pending', color: 'text-amber-700', bg: 'bg-amber-50 border-amber-200', icon: Clock },
@@ -317,11 +320,19 @@ export default function OrderDetailPage() {
 
           {/* Driver Info */}
           <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3"><T k="common.driver" /></h3>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider"><T k="common.driver" /></h3>
+              {order.driver_name && (
+                <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${getTransportMeta(order.vehicle_info).bg}`}>
+                  <span>{getTransportMeta(order.vehicle_info).icon}</span>
+                  <span>{getTransportMeta(order.vehicle_info).label}</span>
+                </span>
+              )}
+            </div>
             {order.driver_name ? (
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center">
-                  <Truck className="w-4 h-4 text-emerald-700" />
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-xl">
+                  {getTransportMeta(order.vehicle_info).icon}
                 </div>
                 <div>
                   <p className="text-sm font-bold text-slate-900">{order.driver_name}</p>
@@ -471,9 +482,12 @@ export default function OrderDetailPage() {
                     disabled={actionLoading}
                     className="w-full text-left px-4 py-3 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-all flex items-center justify-between disabled:opacity-50"
                   >
-                    <div>
-                      <p className="text-xs font-bold text-slate-800">{d.name}</p>
-                      <p className="text-[10px] text-slate-500">{d.phone}</p>
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-lg">{getTransportMeta(d.vehicle_info).icon}</span>
+                      <div>
+                        <p className="text-xs font-bold text-slate-800">{d.name}</p>
+                        <p className="text-[10px] text-slate-500">{d.phone}</p>
+                      </div>
                     </div>
                     <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${d.status === 'AVAILABLE' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
                       {d.status === 'AVAILABLE' ? t("merchant.available") : t("merchant.busy")}

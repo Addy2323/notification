@@ -1,5 +1,5 @@
 import { localizedMetadata } from '@/lib/server-language';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import {
   constructMetadata,
@@ -10,6 +10,14 @@ import PageTracker from '@/components/PageTracker';
 import { cookies } from 'next/headers';
 import { LanguageProvider } from '@/components/LanguageProvider';
 import { validLanguage } from '@/lib/language';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#0B192C',
+  viewportFit: 'cover',
+};
 
 export function generateMetadata() { return localizedMetadata(constructMetadata({
   title: 'LUMO Track | Delivery Tracking & SMS Notifications in Tanzania',

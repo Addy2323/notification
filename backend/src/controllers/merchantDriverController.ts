@@ -33,13 +33,17 @@ export async function getDriver(req: Request, res: Response) {
 
 export async function createMerchantDriver(req: Request, res: Response) {
   try {
-    const { name, phone } = req.body;
+    const { name, phone, vehicle_info, vehicleInfo } = req.body;
 
     if (!name || !phone) {
       return sendError(res, 'VALIDATION_ERROR', 'Driver name and phone are required', 400);
     }
 
-    const driver = await driverSvc.createDriver(req.user!.merchant_id, { name, phone });
+    const driver = await driverSvc.createDriver(req.user!.merchant_id, {
+      name,
+      phone,
+      vehicle_info: vehicle_info || vehicleInfo || 'BODA',
+    });
     return sendSuccess(res, driver, 201);
   } catch (err: any) {
     return sendError(res, 'CREATE_DRIVER_ERROR', err.message, 500);

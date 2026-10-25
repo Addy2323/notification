@@ -328,42 +328,82 @@ export default function PublicCustomerTrackingPortal() {
         </div>
 
         {/* Driver Card (if assigned) */}
-        {driver && (
-          <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold">
-                  <Truck className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider"><T k="public.assigned_driver" /></p>
-                  <h4 className="font-extrabold text-sm text-slate-900">{driver.name}</h4>
-                </div>
-              </div>
-            </div>
+        {driver && (() => {
+          const rawTransport = (delivery?.transport_type || delivery?.vehicle_info || driver?.transport_type || driver?.vehicle_info || 'BODA').toUpperCase();
+          const isBus = rawTransport.includes('BUS') || rawTransport.includes('BASI');
+          const isPersonal = rawTransport.includes('PERSONAL') || rawTransport.includes('BINAFSI');
+          const isBajaji = rawTransport.includes('BAJAJI');
 
-            {driver.raw_phone && (
-              <div className="flex gap-2 pt-2">
-                <a
-                  href={`tel:${driver.raw_phone}`}
-                  className="flex-1 py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95"
-                >
-                  <Phone className="w-4 h-4 text-emerald-400" />
-                  <span><T k="public.call_driver" /></span>
-                </a>
-                <a
-                  href={`https://wa.me/${driver.raw_phone?.replace('+', '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95"
-                >
-                  <MessageSquare className="w-4 h-4 text-white" />
-                  <span><T k="public.whatsapp_driver" /></span>
-                </a>
+          const transportMeta = isBus ? {
+            icon: '🚌',
+            badgeLabel: locale === 'sw' ? 'Basi la Mikoani' : 'Bus Delivery',
+            title: t('public.bus_courier_details'),
+            callLabel: t('public.call_bus_contact'),
+            whatsappLabel: t('public.whatsapp_bus_contact'),
+            badgeColor: 'bg-blue-50 text-blue-800 border-blue-200',
+          } : isPersonal ? {
+            icon: '👤',
+            badgeLabel: locale === 'sw' ? 'Uwasilishaji Binafsi' : 'Personal Delivery',
+            title: t('public.personal_delivery_details'),
+            callLabel: t('public.call_representative'),
+            whatsappLabel: t('public.whatsapp_representative'),
+            badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+          } : isBajaji ? {
+            icon: '🛺',
+            badgeLabel: 'Bajaji',
+            title: locale === 'sw' ? 'Dereva wa Bajaji' : 'Bajaji Driver',
+            callLabel: t('public.call_driver'),
+            whatsappLabel: t('public.whatsapp_driver'),
+            badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
+          } : {
+            icon: '🏍️',
+            badgeLabel: 'Boda Boda',
+            title: t('public.assigned_driver'),
+            callLabel: t('public.call_driver'),
+            whatsappLabel: t('public.whatsapp_driver'),
+            badgeColor: 'bg-orange-50 text-orange-800 border-orange-200',
+          };
+
+          return (
+            <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-xl">
+                    {transportMeta.icon}
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{transportMeta.title}</p>
+                    <h4 className="font-extrabold text-sm text-slate-900">{driver.name}</h4>
+                  </div>
+                </div>
+                <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border ${transportMeta.badgeColor}`}>
+                  {transportMeta.badgeLabel}
+                </span>
               </div>
-            )}
-          </div>
-        )}
+
+              {driver.raw_phone && (
+                <div className="flex gap-2 pt-2">
+                  <a
+                    href={`tel:${driver.raw_phone}`}
+                    className="flex-1 py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95"
+                  >
+                    <Phone className="w-4 h-4 text-emerald-400" />
+                    <span>{transportMeta.callLabel}</span>
+                  </a>
+                  <a
+                    href={`https://wa.me/${driver.raw_phone?.replace('+', '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95"
+                  >
+                    <MessageSquare className="w-4 h-4 text-white" />
+                    <span>{transportMeta.whatsappLabel}</span>
+                  </a>
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         {/* Merchant Support Section */}
         {merchant?.business_phone && (

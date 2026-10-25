@@ -12,6 +12,7 @@ export default function OrderEditor({ orderId, mode, onClose, onSaved }: { order
   const [order, setOrder] = useState<any>(null);
   const [driverName, setDriverName] = useState('');
   const [driverPhone, setDriverPhone] = useState('');
+  const [transportMethod, setTransportMethod] = useState<'BODA' | 'BAJAJI' | 'BUS' | 'PERSONAL'>('BODA');
   const [lines, setLines] = useState<Line[]>([]);
   const [image, setImage] = useState<string | null>(null);
   const [imageChanged, setImageChanged] = useState(false);
@@ -24,7 +25,11 @@ export default function OrderEditor({ orderId, mode, onClose, onSaved }: { order
     let active = true;
     fetchApi(`/orders/${encodeURIComponent(orderId)}`).then(data => {
       if (!active) return;
-      setOrder(data); setDriverName(data.driver_name || ''); setDriverPhone(data.driver_phone || ''); setImage(data.image_url || null);
+      setOrder(data);
+      setDriverName(data.driver_name || '');
+      setDriverPhone(data.driver_phone || '');
+      setTransportMethod((data.vehicle_info || 'BODA').toUpperCase() as any);
+      setImage(data.image_url || null);
       setLines(data.items?.length ? data.items.map((item: any) => ({ id: item.id, name: item.product_name_snapshot, price: String(item.unit_selling_price), cost: item.unit_cost_price === null ? '' : String(item.unit_cost_price), quantity: String(item.quantity), discount: String(item.discount || 0) })) : [{ name: data.product_name, price: String(data.total_revenue ?? data.amount ?? 0), cost: data.total_cost === null ? '' : String(data.total_cost), quantity: '1', discount: '0' }]);
     }).catch(err => { if (active) setError(err.message); });
     return () => { active = false; };
@@ -52,6 +57,7 @@ export default function OrderEditor({ orderId, mode, onClose, onSaved }: { order
       const body: any = { updatedAt: order.updated_at };
       if (mode === 'edit') {
         if (driverName !== (order.driver_name || '') || driverPhone !== (order.driver_phone || '')) { body.driverName = driverName; body.driverPhone = driverPhone; }
+        if (transportMethod !== (order.vehicle_info || 'BODA')) { body.vehicleInfo = transportMethod; }
         if (imageChanged) body.imageUrl = image;
         if (priceChanged) body.items = lines.map(line => ({ id: line.id, unitSellingPrice: Number(line.price), unitCostPrice: line.cost === '' ? null : Number(line.cost), quantity: Number(line.quantity), discount: Number(line.discount) }));
       }
@@ -73,6 +79,31 @@ export default function OrderEditor({ orderId, mode, onClose, onSaved }: { order
         <label className="block text-sm font-semibold"><T k="public.type" />{' '}{order.order_number}{' '}<T k="public.to_confirm" /><input autoFocus value={confirm} onChange={e => setConfirm(e.target.value)} className={field} /></label>
       </> : <>
         <fieldset disabled={saving || processing} className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold block text-slate-700 uppercase tracking-wider"><T k="merchant.transport_method" /></label>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {[
+                { id: 'BODA', label: 'Boda Boda', icon: '🏍️' },
+                { id: 'BAJAJI', label: 'Bajaji', icon: '🛺' },
+                { id: 'BUS', label: 'Bus Delivery', icon: '🚌' },
+                { id: 'PERSONAL', label: 'Personal Delivery', icon: '👤' },
+              ].map(m => (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => setTransportMethod(m.id as any)}
+                  className={`p-2 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                    transportMethod === m.id
+                      ? 'bg-orange-50 border-[#FF5500] text-[#FF5500] ring-1 ring-[#FF5500]'
+                      : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300'
+                  }`}
+                >
+                  <span>{m.icon}</span>
+                  <span>{m.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="grid sm:grid-cols-2 gap-3">
             <label className="text-sm font-semibold"><T k="public.driver_name" /><input value={driverName} maxLength={150} onChange={e => setDriverName(e.target.value)} className={field} /></label>
             <label className="text-sm font-semibold"><T k="public.driver_phone" /><input type="tel" placeholder="07XXXXXXXX" value={driverPhone} onChange={e => setDriverPhone(e.target.value)} className={field} /></label>

@@ -23,10 +23,14 @@ export default function LanguageSelector({ compact = false, className = '' }: Pr
     <div className={`inline-flex flex-col gap-1 shrink-0 ${className}`}>
       <label
         title={t('common.current_language', { language: current.name })}
-        className="group relative inline-flex items-center gap-1.5 rounded-xl border border-slate-300/60 dark:border-slate-700/60 bg-white/10 dark:bg-slate-800/40 backdrop-blur-sm px-2.5 py-1.5 text-xs font-semibold text-inherit transition-all hover:border-orange-500/70 hover:bg-orange-500/10 focus-within:ring-2 focus-within:ring-orange-500 focus-within:border-orange-500 shadow-sm cursor-pointer"
+        className={`group relative inline-flex items-center rounded-xl border border-slate-300/60 dark:border-slate-700/60 bg-white/10 dark:bg-slate-800/40 backdrop-blur-sm font-semibold text-inherit transition-all hover:border-orange-500/70 hover:bg-orange-500/10 focus-within:ring-2 focus-within:ring-orange-500 focus-within:border-orange-500 shadow-xs cursor-pointer ${
+          compact ? 'gap-1 px-2 py-1.5 text-xs' : 'gap-1.5 px-2.5 py-1.5 text-xs'
+        }`}
       >
         <Globe
-          className="w-4 h-4 text-orange-500 shrink-0 transition-transform duration-500 group-hover:rotate-[20deg]"
+          className={`text-orange-500 shrink-0 transition-transform duration-500 group-hover:rotate-[20deg] ${
+            compact ? 'w-3.5 h-3.5' : 'w-4 h-4'
+          }`}
           aria-hidden="true"
         />
         <select
@@ -37,7 +41,9 @@ export default function LanguageSelector({ compact = false, className = '' }: Pr
               setLanguage(e.target.value);
             }
           }}
-          className="appearance-none bg-transparent pr-4 font-semibold text-inherit focus:outline-none cursor-pointer max-w-[7.5rem] truncate"
+          className={`appearance-none bg-transparent font-bold text-inherit focus:outline-none cursor-pointer truncate ${
+            compact ? 'pr-3 max-w-[2.8rem] text-[11px]' : 'pr-4 max-w-[7.5rem] text-xs'
+          }`}
         >
           {supportedLanguages.map((lang) => (
             <option
@@ -50,7 +56,9 @@ export default function LanguageSelector({ compact = false, className = '' }: Pr
           ))}
         </select>
         <ChevronDown
-          className="w-3.5 h-3.5 text-inherit/60 pointer-events-none absolute right-2 transition-transform duration-200 group-hover:translate-y-0.5"
+          className={`text-inherit/60 pointer-events-none absolute transition-transform duration-200 group-hover:translate-y-0.5 ${
+            compact ? 'w-3 h-3 right-1.5' : 'w-3.5 h-3.5 right-2'
+          }`}
           aria-hidden="true"
         />
       </label>

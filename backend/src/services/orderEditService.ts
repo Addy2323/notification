@@ -8,6 +8,7 @@ export const orderEditSchema = z.object({
   updatedAt: z.string().datetime(),
   driverName: z.string().trim().max(150).optional(),
   driverPhone: z.string().trim().max(30).optional(),
+  vehicleInfo: z.string().trim().max(100).optional(),
   imageUrl: z.string().max(7 * 1024 * 1024).nullable().optional().refine(v => !v || /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(v) || /^https?:\/\//.test(v), 'Choose a valid product image'),
   items: z.array(z.object({ id: z.string().optional(), unitSellingPrice: money, unitCostPrice: money.nullable(), quantity: z.number().int().min(1).max(100000), discount: money }).refine(item => item.discount <= item.unitSellingPrice * item.quantity, 'Discount exceeds selling total')).min(1).max(100).optional()
 }).strict().refine(v => (v.driverName === undefined && v.driverPhone === undefined) || (!!v.driverName && !!v.driverPhone && isValidPhone(v.driverPhone)), 'Enter both driver name and a valid Tanzanian phone number');
@@ -44,10 +45,12 @@ export async function editOrder(merchantId: string, userId: string, id: string, 
     if (claim.count !== 1) throw new OrderEditError('This order changed. Close the editor and reopen it before saving.', 409);
     const data: any = {};
     if (input.imageUrl !== undefined) data.image_url = input.imageUrl || null;
+    if (input.vehicleInfo !== undefined) data.vehicle_info = input.vehicleInfo;
     if (input.driverName && input.driverPhone) {
       const phone = normalizePhone(input.driverPhone);
-      const driver = await tx.driver.upsert({ where: { merchant_id_phone: { merchant_id: merchantId, phone } }, create: { merchant_id: merchantId, name: input.driverName, phone }, update: { name: input.driverName } });
+      const driver = await tx.driver.upsert({ where: { merchant_id_phone: { merchant_id: merchantId, phone } }, create: { merchant_id: merchantId, name: input.driverName, phone, ...(input.vehicleInfo ? { vehicle_info: input.vehicleInfo } : {}) }, update: { name: input.driverName, ...(input.vehicleInfo ? { vehicle_info: input.vehicleInfo } : {}) } });
       data.driver_id = driver.id; data.driver_name = input.driverName; data.driver_phone = phone;
+      if (input.vehicleInfo) data.vehicle_info = input.vehicleInfo;
       if (!order.driver_token || phone !== normalizePhone(order.driver_phone || '')) data.driver_token = generateDriverToken();
       if (activeStatuses.includes(order.status)) await tx.driver.update({ where: { id: driver.id }, data: { status: 'ON_DELIVERY' } });
     }

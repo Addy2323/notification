@@ -27,11 +27,15 @@ interface Order {
   delivery_address: string;
   created_at: string;
   customer?: { id: string; name: string; phone: string };
-  driver?: { id: string; name: string; phone: string; status: string };
+  vehicle_info?: string | null;
+  transport_type?: string | null;
+  driver?: { id: string; name: string; phone: string; status: string; vehicle_info?: string };
 }
 
 interface Customer { id: string; name: string; phone: string; delivery_address?: string; }
-interface Driver { id: string; name: string; phone: string; status: string; _count?: { orders: number }; }
+interface Driver { id: string; name: string; phone: string; status: string; vehicle_info?: string; _count?: { orders: number }; }
+
+import { TRANSPORT_METHODS, getTransportMeta } from '@/lib/transport';
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; icon: any }> = {
   PENDING: { label: 'Pending', color: 'text-amber-700', bg: 'bg-amber-50 border-amber-200', icon: Clock },
@@ -67,10 +71,13 @@ export default function OrdersPage() {
   const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', delivery_address: '' });
   const [newDriver, setNewDriver] = useState({ name: '', phone: '' });
   const [orderForm, setOrderForm] = useState({ productName: '', imageUrl: '', amount: '', buyingPrice: '', deliveryAddress: '' });
+  const [transportMethod, setTransportMethod] = useState<'BODA' | 'BAJAJI' | 'BUS' | 'PERSONAL'>('BODA');
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [modalError, setModalError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const currentTransport = TRANSPORT_METHODS.find(m => m.id === transportMethod) || TRANSPORT_METHODS[0];
 
   const [imageProcessing, setImageProcessing] = useState(false);
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,7 +205,7 @@ export default function OrdersPage() {
         }
         const savedDrv = await fetchApi('/drivers', {
           method: 'POST',
-          body: JSON.stringify(newDriver),
+          body: JSON.stringify({ ...newDriver, vehicle_info: transportMethod }),
         });
         drv = savedDrv;
       }
@@ -220,6 +227,8 @@ export default function OrdersPage() {
           driverId: drv?.id,
           driverName: drv?.name,
           driverPhone: drv?.phone,
+          vehicleInfo: transportMethod,
+          transportType: transportMethod,
         }),
       });
 
@@ -238,6 +247,7 @@ export default function OrdersPage() {
   const resetCreateForm = () => {
     setSelectedCustomer(null);
     setSelectedDriver(null);
+    setTransportMethod('BODA');
     setOrderForm({ productName: '', imageUrl: '', amount: '', buyingPrice: '', deliveryAddress: '' });
     setCustomerSearch('');
     setNewCustomer({ name: '', phone: '', delivery_address: '' });
@@ -382,7 +392,19 @@ export default function OrdersPage() {
                         </span>
                         {order.payment_status === 'REFUNDED' && <span className="block text-[10px] text-rose-700 font-bold mt-1"><T k="common.refunded" /></span>}
                       </td>
-                      <td className="px-4 py-3 font-semibold text-slate-600">{order.driver_name || '—'}</td>
+                      <td className="px-4 py-3">
+                        {order.driver_name ? (
+                          <div>
+                            <p className="font-bold text-slate-800 text-xs">{order.driver_name}</p>
+                            <span className={`inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded border mt-0.5 ${getTransportMeta(order.vehicle_info || order.driver?.vehicle_info).bg}`}>
+                              <span>{getTransportMeta(order.vehicle_info || order.driver?.vehicle_info).icon}</span>
+                              <span>{getTransportMeta(order.vehicle_info || order.driver?.vehicle_info).label}</span>
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-slate-400 font-medium text-xs">—</span>
+                        )}
+                      </td>
                       <td className="px-4 py-3 text-slate-500 font-medium">{timeAgo(order.created_at)}</td>
                       <td className="px-4 py-3">
                         <button
@@ -585,14 +607,49 @@ export default function OrdersPage() {
                 />
               </div>
 
-              {/* DRIVER SELECTION */}
+              {/* TRANSPORT METHOD SELECTION */}
+              <div className="space-y-1.5">
+                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                  <T k="merchant.transport_method" />
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {TRANSPORT_METHODS.map((m) => {
+                    const isSelected = transportMethod === m.id;
+                    return (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => {
+                          setTransportMethod(m.id as any);
+                          setSelectedDriver(null);
+                        }}
+                        className={`flex flex-col items-center justify-center p-2.5 rounded-xl border text-center transition-all ${
+                          isSelected
+                            ? 'bg-orange-50/80 border-[#FF5500] text-[#FF5500] shadow-sm ring-2 ring-[#FF5500]/20'
+                            : 'bg-white border-slate-200 hover:border-slate-300 text-slate-700'
+                        }`}
+                      >
+                        <span className="text-xl mb-1">{m.icon}</span>
+                        <span className="text-xs font-bold leading-tight"><T k={m.labelKey} /></span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* DRIVER / TRANSPORT DETAILS SELECTION */}
               <div className="space-y-2">
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider"><T k="merchant.driver_optional" /></label>
+                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                  <T k={currentTransport.sectionLabel} />
+                </label>
                 {selectedDriver ? (
                   <div className="flex items-center justify-between p-3 rounded-xl bg-indigo-50 border border-indigo-200">
-                    <div>
-                      <p className="text-xs font-bold text-indigo-800">{selectedDriver.name}</p>
-                      <p className="text-[10px] text-indigo-600 font-medium">{selectedDriver.phone}</p>
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-lg">{currentTransport.icon}</span>
+                      <div>
+                        <p className="text-xs font-bold text-indigo-800">{selectedDriver.name}</p>
+                        <p className="text-[10px] text-indigo-600 font-medium">{selectedDriver.phone}</p>
+                      </div>
                     </div>
                     <button onClick={() => setSelectedDriver(null)} className="text-indigo-600 hover:text-indigo-800 text-[10px] font-bold"><T k="auth.change" /></button>
                   </div>
@@ -602,9 +659,12 @@ export default function OrdersPage() {
                       <div className="max-h-28 overflow-y-auto rounded-lg border border-slate-200 divide-y divide-slate-100 bg-white">
                         {drivers.map(d => (
                           <button key={d.id} onClick={() => setSelectedDriver(d)} className="w-full text-left px-3 py-1.5 hover:bg-indigo-50 transition-colors flex items-center justify-between">
-                            <div>
-                              <p className="text-xs font-bold text-slate-800">{d.name}</p>
-                              <p className="text-[10px] text-slate-500">{d.phone}</p>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs">{getTransportMeta(d.vehicle_info).icon}</span>
+                              <div>
+                                <p className="text-xs font-bold text-slate-800">{d.name}</p>
+                                <p className="text-[10px] text-slate-500">{d.phone}</p>
+                              </div>
                             </div>
                             <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${d.status === 'AVAILABLE' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
                               {d.status === 'AVAILABLE' ? t("merchant.available") : t("merchant.busy")}
@@ -616,19 +676,22 @@ export default function OrdersPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <input
                         type="text"
-                        placeholder={t("merchant.new_driver_name_optional")}
+                        placeholder={t(currentTransport.namePlaceholder)}
                         value={newDriver.name}
                         onChange={e => setNewDriver(p => ({ ...p, name: e.target.value }))}
                         className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/20"
                       />
                       <input
                         type="text"
-                        placeholder={t("merchant.new_driver_phone_optional")}
+                        placeholder={t(currentTransport.phonePlaceholder)}
                         value={newDriver.phone}
                         onChange={e => setNewDriver(p => ({ ...p, phone: e.target.value }))}
                         className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-500/20 font-mono"
                       />
                     </div>
+                    <p className="text-[10px] text-slate-500 font-medium">
+                      💡 {t(currentTransport.descKey)}
+                    </p>
                   </div>
                 )}
               </div>
