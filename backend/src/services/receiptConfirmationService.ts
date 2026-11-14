@@ -1061,5 +1061,30 @@ export async function handleSmsDeliveryWebhook(data: {
     },
   });
 
+  // Update PDF confirmation receipt SMS status if matched
+  if ((prisma as any).confirmationReceipt?.updateMany) {
+    await (prisma as any).confirmationReceipt.updateMany({
+      where: { sms_provider_message_id: messageId },
+      data: {
+        sms_status: status === 'DELIVERED' ? 'SMS_DELIVERED' : 'SMS_FAILED',
+        sms_delivered_at: status === 'DELIVERED' ? deliveredAt || new Date() : undefined,
+        sms_failed_at: status === 'FAILED' ? new Date() : undefined,
+        sms_failure_reason: failureReason || null,
+      },
+    });
+  }
+
+  // Update SmartTrack Store promotional SMS status if matched
+  if ((prisma as any).storeSmsDispatchLog?.updateMany) {
+    await (prisma as any).storeSmsDispatchLog.updateMany({
+      where: { provider_message_id: messageId },
+      data: {
+        status: status === 'DELIVERED' ? 'DELIVERED' : 'FAILED',
+        delivered_at: status === 'DELIVERED' ? deliveredAt || new Date() : undefined,
+        failure_reason: failureReason || null,
+      },
+    });
+  }
+
   return { success: true };
 }

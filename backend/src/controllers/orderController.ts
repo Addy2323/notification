@@ -12,13 +12,41 @@ import { smsManagementService } from '../services/smsManagementService';
 
 export async function createOrder(req: Request, res: Response) {
   try {
-    const { customerName, customerPhone, deliveryAddress, productName, imageUrl, amount, customerId, driverId, driverName, driverPhone, vehicleInfo, transportType } = req.body;
+    const {
+      customerName,
+      customerPhone,
+      deliveryAddress,
+      productName,
+      imageUrl,
+      amount,
+      customerId,
+      driverId,
+      driverName,
+      driverPhone,
+      vehicleInfo,
+      transportType,
+      deliveryFee,
+      discountAmount,
+      taxAmount,
+      amountPaid,
+      paymentStatus,
+      currency,
+      transactionReference,
+    } = req.body;
 
     if (!customerName || !customerPhone || !deliveryAddress || !productName) {
       return sendError(res, 'VALIDATION_ERROR', 'Customer name, phone, delivery address, and product name are required', 400);
     }
 
-    const parsed = z.object({ items: z.array(itemSchema).min(1).max(100).optional(), amount: z.preprocess(v => v === undefined || v === '' ? undefined : Number(v), money.optional()) }).safeParse(req.body);
+    const optMoney = z.preprocess(v => v === undefined || v === '' || v === null ? undefined : Number(v), money.optional());
+    const parsed = z.object({
+      items: z.array(itemSchema).min(1).max(100).optional(),
+      amount: optMoney,
+      deliveryFee: optMoney,
+      discountAmount: optMoney,
+      taxAmount: optMoney,
+      amountPaid: optMoney,
+    }).safeParse(req.body);
     if (!parsed.success) return sendError(res, 'VALIDATION_ERROR', parsed.error.issues[0].message, 400);
     const result = await orderService.createOrder({
       merchantId: req.user!.merchant_id,
@@ -31,6 +59,13 @@ export async function createOrder(req: Request, res: Response) {
       imageUrl,
       amount: parsed.data.amount,
       items: parsed.data.items,
+      deliveryFee: parsed.data.deliveryFee ?? (deliveryFee !== undefined ? Number(deliveryFee) : undefined),
+      discountAmount: parsed.data.discountAmount ?? (discountAmount !== undefined ? Number(discountAmount) : undefined),
+      taxAmount: parsed.data.taxAmount ?? (taxAmount !== undefined ? Number(taxAmount) : undefined),
+      amountPaid: parsed.data.amountPaid ?? (amountPaid !== undefined ? Number(amountPaid) : undefined),
+      paymentStatus,
+      currency,
+      transactionReference,
       driverId,
       driverName,
       driverPhone,
@@ -84,12 +119,44 @@ export async function updateOrderStatus(req: Request, res: Response) {
       req.user!.id,
       req.params.id,
       status,
+      { isAdmin: req.user!.role === 'ADMIN' },
     );
 
     return sendSuccess(res, result);
   } catch (err: any) {
-    const status = err.message.includes('Cannot transition') ? 400 : 500;
+    const status = err.message.includes('Cannot transition') ? 400 : err.message === 'Order not found' ? 404 : 500;
     return sendError(res, 'STATUS_UPDATE_ERROR', err.message, status);
+  }
+}
+
+export async function updateOrderPaymentStatus(req: Request, res: Response) {
+  try {
+    const optMoney = z.preprocess(v => v === undefined || v === '' || v === null ? undefined : Number(v), money.optional());
+    const parsed = z.object({
+      paymentStatus: z.enum(['UNPAID', 'PARTIALLY_PAID', 'PARTIALLY PAID', 'PAID', 'REFUNDED']).optional(),
+      amountPaid: optMoney,
+      transactionReference: z.string().trim().max(120).nullable().optional(),
+      deliveryFee: optMoney,
+      discountAmount: optMoney,
+      taxAmount: optMoney,
+    }).safeParse(req.body);
+
+    if (!parsed.success) {
+      return sendError(res, 'VALIDATION_ERROR', parsed.error.issues[0].message, 400);
+    }
+
+    const result = await orderService.updateOrderPaymentStatus(
+      req.user!.merchant_id,
+      req.user!.id,
+      req.params.id,
+      parsed.data,
+      { isAdmin: req.user!.role === 'ADMIN' },
+    );
+
+    return sendSuccess(res, result);
+  } catch (err: any) {
+    const status = err.message === 'Order not found' ? 404 : 400;
+    return sendError(res, 'PAYMENT_UPDATE_ERROR', err.message, status);
   }
 }
 

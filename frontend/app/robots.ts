@@ -21,6 +21,8 @@ export default function robots(): MetadataRoute.Robots {
           '/driver/*',
           '/track',
           '/track/*',
+          '/receipt',
+          '/receipt/*',
           '/api',
           '/api/*',
           '/login',

@@ -4,9 +4,10 @@ import { getPlatformAnalytics } from '../services/adminAnalyticsService';
 import * as adminDeliveryService from '../services/adminDeliveryService';
 import { z } from 'zod';
 import * as adminOrderService from '../services/adminOrderService';
+import * as orderService from '../services/orderService';
 const globalOrderFilters = z.object({
   search: z.string().max(200).optional(), merchantId: z.string().optional(),
-  status: z.enum(['ALL', 'PENDING', 'CONFIRMED', 'DRIVER_ASSIGNED', 'OUT_FOR_DELIVERY', 'ON_THE_WAY', 'ARRIVED', 'DELIVERED', 'FAILED', 'CANCELLED', 'REFUNDED']).optional(),
+  status: z.enum(['ALL', 'PENDING', 'CONFIRMED', 'DRIVER_ASSIGNED', 'OUT_FOR_DELIVERY', 'ON_THE_WAY', 'ARRIVED', 'DELIVERED', 'COMPLETED', 'FAILED', 'CANCELLED', 'REFUNDED']).optional(),
   page: z.coerce.number().int().min(1).default(1), limit: z.coerce.number().int().min(1).max(100).default(25)
 });
 import { Request, Response } from 'express';
@@ -310,6 +311,28 @@ export async function getGlobalOrder(req: Request, res: Response) {
     if (!order) return sendError(res, 'NOT_FOUND', 'Order not found', 404);
     return sendSuccess(res, order);
   } catch (err: any) { return sendError(res, 'SERVER_ERROR', err.message, 500); }
+}
+
+export async function updateGlobalOrderStatus(req: Request, res: Response) {
+  try {
+    const parsed = z.object({
+      status: z.enum(['CONFIRMED', 'DRIVER_ASSIGNED', 'OUT_FOR_DELIVERY', 'ARRIVED', 'DELIVERED', 'COMPLETED', 'CANCELLED']),
+    }).safeParse(req.body);
+    if (!parsed.success) {
+      return sendError(res, 'VALIDATION_ERROR', 'Valid order status is required', 400);
+    }
+    const result = await orderService.updateOrderStatus(
+      req.user!.merchant_id,
+      req.user!.id,
+      req.params.id,
+      parsed.data.status,
+      { isAdmin: true },
+    );
+    return sendSuccess(res, result);
+  } catch (err: any) {
+    const status = err.message === 'Order not found' ? 404 : err.message.includes('Cannot transition') ? 400 : 500;
+    return sendError(res, 'ADMIN_STATUS_UPDATE_ERROR', err.message, status);
+  }
 }
 
 const deliveryFilters = z.object({

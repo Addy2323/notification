@@ -18,8 +18,11 @@ import {
   AlertCircle,
   Truck,
   RefreshCw,
+  FileText,
+  Download,
+  Send,
 } from 'lucide-react';
-import { fetchApi } from '@/lib/api';
+import { fetchApi, API_BASE } from '@/lib/api';
 
 export default function GlobalOrdersPage() {
   const { t, label: uiLabel, locale } = useLanguage();
@@ -34,9 +37,70 @@ export default function GlobalOrdersPage() {
   const [pagination, setPagination] = useState<any>({ total: 0, totalPages: 0 });
   const [error, setError] = useState('');
   const [detailLoading, setDetailLoading] = useState(false);
+  const [orderActionBusy, setOrderActionBusy] = useState(false);
   const listRequest = useRef(0);
   const detailRequest = useRef(0);
   const money = (value: any) => value === null || value === undefined ? t("common.not_recorded") : `TZS ${Number(value).toLocaleString(locale)}`;
+  const handleCompleteAdminOrder = async (orderId: string) => {
+    setOrderActionBusy(true);
+    try {
+      await fetchApi(`/admin/orders/${encodeURIComponent(orderId)}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: 'COMPLETED' }),
+      });
+      await openOrder(orderId);
+      await loadOrders();
+      Swal.fire({ icon: 'success', title: 'Order Completed', text: 'Confirmation receipt & SMS workflow triggered.' });
+    } catch (err: any) {
+      Swal.fire({ icon: 'error', title: 'Action Failed', text: err.message || 'Could not complete order' });
+    } finally {
+      setOrderActionBusy(false);
+    }
+  };
+  const handleResendAdminReceiptSms = async (orderId: string) => {
+    setOrderActionBusy(true);
+    try {
+      const res = await fetchApi(`/orders/${encodeURIComponent(orderId)}/receipt/resend-sms`, {
+        method: 'POST',
+      });
+      await openOrder(orderId);
+      Swal.fire({
+        icon: res?.smsSent ? 'success' : 'warning',
+        title: res?.smsSent ? 'SMS Resent' : 'SMS Failed',
+        text: res?.message || 'Receipt SMS request processed.',
+      });
+    } catch (err: any) {
+      Swal.fire({ icon: 'error', title: 'Resend Failed', text: err.message || 'Failed to resend receipt SMS' });
+    } finally {
+      setOrderActionBusy(false);
+    }
+  };
+  const handleOpenAdminReceiptPdf = async (orderId: string, receiptNumber?: string, inline = true) => {
+    setOrderActionBusy(true);
+    try {
+      const res = await fetch(`${API_BASE}/orders/${encodeURIComponent(orderId)}/receipt/pdf${inline ? '?inline=1' : ''}`, {
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error('Failed to load receipt PDF');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      if (inline) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } else {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Confirmation-Receipt-${receiptNumber || orderId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    } catch (err: any) {
+      Swal.fire({ icon: 'error', title: 'PDF Unavailable', text: err.message || 'Failed to load PDF receipt' });
+    } finally {
+      setOrderActionBusy(false);
+    }
+  };
   const loadOrders = async () => {
     const id = ++listRequest.current;
     setLoading(true); setError('');
@@ -79,7 +143,7 @@ export default function GlobalOrdersPage() {
       {/* Filters & Search */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-900/90 p-4 rounded-2xl border border-slate-800">
         <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800 overflow-x-auto max-w-full">
-          {['ALL', 'PENDING', 'CONFIRMED', 'DRIVER_ASSIGNED', 'OUT_FOR_DELIVERY', 'ARRIVED', 'DELIVERED', 'FAILED', 'CANCELLED', 'REFUNDED'].map((st) => (
+          {['ALL', 'PENDING', 'CONFIRMED', 'DRIVER_ASSIGNED', 'OUT_FOR_DELIVERY', 'ARRIVED', 'DELIVERED', 'COMPLETED', 'FAILED', 'CANCELLED', 'REFUNDED'].map((st) => (
             <button
               key={st}
               onClick={() => { setPage(1); setStatusFilter(st); }}
@@ -147,7 +211,7 @@ export default function GlobalOrdersPage() {
                     <td className="p-4 font-bold">
                       <span
                         className={`px-2.5 py-1 rounded-full text-[10px] ${
-                          o.status === 'DELIVERED'
+                          o.status === 'DELIVERED' || o.status === 'COMPLETED'
                             ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                             : o.status === 'PENDING'
                             ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
@@ -225,6 +289,109 @@ export default function GlobalOrdersPage() {
                 <p className="text-slate-300 mt-1"><T k="common.driver_2" />{' '}{selectedOrder.driver_name || t("common.unassigned")} {selectedOrder.driver_phone}</p>
                 <p className="text-slate-300 mt-1"><T k="admin.created" />{' '}{new Date(selectedOrder.created_at).toLocaleString(locale)} ? {uiLabel(selectedOrder.status)}
                 </p>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2.5">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-[10px] text-slate-400 font-bold uppercase flex items-center gap-1.5">
+                    <FileText className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Confirmation Receipt & PDF Operations</span>
+                  </p>
+                  {selectedOrder.confirmation_receipt && (
+                    <span className="text-[10px] font-mono font-bold text-amber-400">
+                      {selectedOrder.confirmation_receipt.receipt_number}
+                    </span>
+                  )}
+                </div>
+
+                {selectedOrder.confirmation_receipt ? (
+                  <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-300">
+                    <div>
+                      <span className="text-slate-500">Receipt Status: </span>
+                      <strong className="text-white">{selectedOrder.confirmation_receipt.status}</strong>
+                    </div>
+                    <div>
+                      <span className="text-slate-500">SMS Status: </span>
+                      <strong className="text-white">{selectedOrder.confirmation_receipt.sms_status}</strong>
+                    </div>
+                    <div>
+                      <span className="text-slate-500">Generated: </span>
+                      <span>{selectedOrder.confirmation_receipt.generated_at ? new Date(selectedOrder.confirmation_receipt.generated_at).toLocaleString(locale) : '—'}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-500">SMS Sent / Delivered: </span>
+                      <span>
+                        {selectedOrder.confirmation_receipt.sms_delivered_at
+                          ? `Delivered ${new Date(selectedOrder.confirmation_receipt.sms_delivered_at).toLocaleString(locale)}`
+                          : selectedOrder.confirmation_receipt.sms_sent_at
+                          ? `Sent ${new Date(selectedOrder.confirmation_receipt.sms_sent_at).toLocaleString(locale)}`
+                          : '—'}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-[11px] text-slate-400">
+                    No confirmation receipt generated yet.
+                  </p>
+                )}
+
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {selectedOrder.status !== 'COMPLETED' && selectedOrder.status !== 'CANCELLED' && (
+                    <button
+                      type="button"
+                      disabled={orderActionBusy}
+                      onClick={() => handleCompleteAdminOrder(selectedOrder.id)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-[11px] disabled:opacity-50"
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>Complete Order</span>
+                    </button>
+                  )}
+
+                  {(selectedOrder.status === 'COMPLETED' || selectedOrder.status === 'DELIVERED') && (
+                    <>
+                      <button
+                        type="button"
+                        disabled={orderActionBusy}
+                        onClick={() =>
+                          handleOpenAdminReceiptPdf(
+                            selectedOrder.id,
+                            selectedOrder.confirmation_receipt?.receipt_number,
+                            true
+                          )
+                        }
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-[11px] disabled:opacity-50"
+                      >
+                        <Eye className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Preview Receipt PDF</span>
+                      </button>
+                      <button
+                        type="button"
+                        disabled={orderActionBusy}
+                        onClick={() =>
+                          handleOpenAdminReceiptPdf(
+                            selectedOrder.id,
+                            selectedOrder.confirmation_receipt?.receipt_number,
+                            false
+                          )
+                        }
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-[11px] disabled:opacity-50"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download PDF</span>
+                      </button>
+                      <button
+                        type="button"
+                        disabled={orderActionBusy || selectedOrder.confirmation_receipt?.status === 'REVOKED'}
+                        onClick={() => handleResendAdminReceiptSms(selectedOrder.id)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[11px] disabled:opacity-50"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Resend Receipt SMS</span>
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>

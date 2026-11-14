@@ -44,6 +44,7 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; 
   OUT_FOR_DELIVERY: { label: 'Out for Delivery', color: 'text-teal-700', bg: 'bg-teal-50 border-teal-200', icon: Truck },
   ARRIVED: { label: 'Arrived', color: 'text-purple-700', bg: 'bg-purple-50 border-purple-200', icon: MapPin },
   DELIVERED: { label: 'Delivered', color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200', icon: CheckCircle2 },
+  COMPLETED: { label: 'Completed', color: 'text-teal-700', bg: 'bg-teal-50 border-teal-200', icon: CheckCircle2 },
   CANCELLED: { label: 'Cancelled', color: 'text-rose-700', bg: 'bg-rose-50 border-rose-200', icon: XCircle },
 };
 

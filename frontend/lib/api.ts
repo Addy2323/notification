@@ -2,7 +2,7 @@ import { browserLanguage, validLanguage, storeLanguage } from './language';
 import en from '@/locales/en.json';
 import sw from '@/locales/sw.json';
 import keys from '@/locales/source-keys.json';
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 function errorMessage(message: string, code: string, status: number, translationKey?: string) {
   const language = browserLanguage();
   if (translationKey) {

@@ -14,6 +14,7 @@ model Merchant {
   business_name   String
   business_phone  String
   email           String?
+  website         String?
   location        String?
   logo_url        String?
   brand_color     String?        @default("#1E40AF")
@@ -34,9 +35,15 @@ model Merchant {
   analytics_events AnalyticsEvent[]
   ratings          CustomerRating[]
   receipt_confirmations OrderReceiptConfirmation[]
+  confirmation_receipts ConfirmationReceipt[]
   sms_account           MerchantSmsAccount?
   sms_ledgers           SmsCreditLedger[]
   sms_topups            SmsTopupTransaction[]
+  store                 MerchantStore?
+  store_categories      StoreCategory[]
+  store_analytics       StoreAnalyticsEvent[]
+  store_enquiries       StoreProductEnquiry[]
+  store_sms_logs        StoreSmsDispatchLog[]
 
   @@map("merchants")
 }
@@ -64,36 +71,60 @@ model MerchantUser {
 }
 
 model Product {
-  id           String      @id @default(uuid())
-  merchant_id  String
-  name         String
-  description  String?
-  sku          String?
-  category     String?
-  unit_price   Decimal     @db.Decimal(12, 2)
-  cost_price   Decimal?    @db.Decimal(12, 2)
-  status       String      @default("ACTIVE")
-  created_at   DateTime    @default(now())
+  id                  String      @id @default(uuid())
+  merchant_id         String
+  name                String
+  slug                String?
+  description         String?
+  sku                 String?
+  category            String?
+  brand               String?
+  currency            String      @default("TZS")
+  unit_price          Decimal     @db.Decimal(12, 2)
+  cost_price          Decimal?    @db.Decimal(12, 2)
+  promotional_price   Decimal?    @db.Decimal(12, 2)
+  promotion_start_at  DateTime?
+  promotion_end_at    DateTime?
+  available_quantity  Int         @default(0)
+  track_inventory     Boolean     @default(false)
+  stock_status        String      @default("IN_STOCK")
+  low_stock_threshold Int         @default(5)
+  publication_status  String      @default("DRAFT")
+  is_featured         Boolean     @default(false)
+  primary_image_url   String?
+  images_json         String?
+  variants_json       String?
+  status              String      @default("ACTIVE")
+  created_at          DateTime    @default(now())
+  updated_at          DateTime    @default(now()) @updatedAt
 
-  merchant     Merchant    @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
-  order_items  OrderItem[]
+  merchant            Merchant    @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  order_items         OrderItem[]
+  store_analytics     StoreAnalyticsEvent[]
+  store_enquiries     StoreProductEnquiry[]
 
   @@index([merchant_id])
+  @@index([merchant_id, publication_status])
   @@map("products")
 }
 
 model Customer {
-  id               String    @id @default(uuid())
-  merchant_id      String
-  name             String
-  phone            String
-  email            String?
-  delivery_address String?
-  notes            String?
-  created_at       DateTime  @default(now())
+  id                       String    @id @default(uuid())
+  merchant_id              String
+  name                     String
+  phone                    String
+  email                    String?
+  delivery_address         String?
+  notes                    String?
+  marketing_opt_in         Boolean   @default(false)
+  marketing_opt_in_at      DateTime?
+  marketing_opt_out_at     DateTime?
+  marketing_consent_source String?
+  created_at               DateTime  @default(now())
 
-  merchant         Merchant  @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
-  orders           Order[]
+  merchant                 Merchant  @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  orders                   Order[]
+  store_sms_logs           StoreSmsDispatchLog[]
 
   @@unique([merchant_id, phone])
   @@index([merchant_id])
@@ -132,6 +163,12 @@ model Order {
   total_revenue       Decimal?        @db.Decimal(12, 2)
   total_cost          Decimal?        @db.Decimal(12, 2)
   gross_profit        Decimal?        @db.Decimal(12, 2)
+  delivery_fee        Decimal?        @default(0) @db.Decimal(12, 2)
+  discount_amount     Decimal?        @default(0) @db.Decimal(12, 2)
+  tax_amount          Decimal?        @default(0) @db.Decimal(12, 2)
+  amount_paid         Decimal?        @default(0) @db.Decimal(12, 2)
+  currency            String          @default("TZS")
+  transaction_reference String?
   payment_status      String          @default("UNPAID")
   driver_id           String?
   driver_name         String?
@@ -151,6 +188,7 @@ model Order {
   out_for_delivery_at DateTime?
   arrived_at          DateTime?
   delivered_at        DateTime?
+  completed_at        DateTime?
   cancelled_at        DateTime?
 
   merchant            Merchant        @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
@@ -162,6 +200,7 @@ model Order {
   notifications       OrderNotification[]
   rating              CustomerRating?
   receipt_confirmation OrderReceiptConfirmation?
+  confirmation_receipt ConfirmationReceipt?
 
   @@index([merchant_id])
   @@index([status])
@@ -614,5 +653,191 @@ model SmsProviderMessageRecord {
   @@index([sent_at])
   @@map("sms_provider_message_records")
 }
+
+model ConfirmationReceipt {
+  id                      String    @id @default(uuid())
+  receipt_number          String    @unique
+  order_id                String    @unique
+  merchant_id             String
+  customer_id             String?
+  access_token_hash       String    @unique
+  public_token            String    @unique
+  status                  String    @default("GENERATED") // PENDING, GENERATED, FAILED, REVOKED
+  payment_status_snapshot String    @default("UNPAID") // PAID, PARTIALLY PAID, UNPAID, REFUNDED
+  currency                String    @default("TZS")
+  subtotal                Decimal   @db.Decimal(12, 2)
+  discount_total          Decimal   @default(0) @db.Decimal(12, 2)
+  delivery_charges        Decimal   @default(0) @db.Decimal(12, 2)
+  tax_total               Decimal   @default(0) @db.Decimal(12, 2)
+  grand_total             Decimal   @db.Decimal(12, 2)
+  amount_paid             Decimal   @default(0) @db.Decimal(12, 2)
+  outstanding_balance     Decimal   @db.Decimal(12, 2)
+  transaction_reference   String?
+  pdf_storage_path        String?
+  pdf_size_bytes          Int?
+  generated_at            DateTime  @default(now())
+  order_completed_at      DateTime  @default(now())
+  expires_at              DateTime?
+  revoked_at              DateTime?
+  revoked_by              String?
+  revocation_reason       String?
+  sms_status              String    @default("SMS_PENDING") // SMS_PENDING, SMS_SENT, SMS_DELIVERED, SMS_FAILED
+  sms_recipient_phone     String
+  sms_message_body        String?
+  sms_provider_message_id String?
+  sms_provider_response   String?
+  sms_sent_at             DateTime?
+  sms_delivered_at        DateTime?
+  sms_failed_at           DateTime?
+  sms_failure_reason      String?
+  sms_retry_count         Int       @default(0)
+  sms_retry_history       String?
+  generation_error        String?
+  created_at              DateTime  @default(now())
+  updated_at              DateTime  @updatedAt
+
+  order                   Order     @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  merchant                Merchant  @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+
+  @@index([merchant_id])
+  @@index([status])
+  @@index([sms_status])
+  @@index([created_at])
+  @@map("confirmation_receipts")
+}
+
+model MerchantStore {
+  id                               String    @id @default(uuid())
+  merchant_id                      String    @unique
+  store_name                       String
+  slug                             String    @unique
+  previous_slugs                   String?   // JSON string array of previously published slugs for redirects
+  description                      String?
+  logo_url                         String?
+  cover_image_url                  String?
+  primary_color                    String    @default("#0F172A")
+  secondary_color                  String    @default("#FF5500")
+  contact_phone                    String?
+  whatsapp_number                  String?
+  contact_email                    String?
+  location                         String?
+  social_links_json                String?
+  promotional_banner_text          String?
+  show_sold_out_badges             Boolean   @default(true)
+  show_on_tracking_page            Boolean   @default(true)
+  include_link_in_transactional_sms Boolean  @default(false)
+  store_sms_template               String    @default("Hello [Customer Name], explore more products from [Business Name]. View our available products here: [Store Link]. Thank you for shopping with us!")
+  publication_status               String    @default("DRAFT") // DRAFT, PUBLISHED, SUSPENDED
+  suspension_reason                String?
+  suspended_at                     DateTime?
+  suspended_by                     String?
+  published_at                     DateTime?
+  created_at                       DateTime  @default(now())
+  updated_at                       DateTime  @updatedAt
+
+  merchant                         Merchant  @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  categories                       StoreCategory[]
+  analytics_events                 StoreAnalyticsEvent[]
+  enquiries                        StoreProductEnquiry[]
+  sms_logs                         StoreSmsDispatchLog[]
+
+  @@index([publication_status])
+  @@map("merchant_stores")
+}
+
+model StoreCategory {
+  id            String        @id @default(uuid())
+  store_id      String
+  merchant_id   String
+  name          String
+  slug          String
+  description   String?
+  display_order Int           @default(0)
+  status        String        @default("ACTIVE")
+  created_at    DateTime      @default(now())
+
+  store         MerchantStore @relation(fields: [store_id], references: [id], onDelete: Cascade)
+  merchant      Merchant      @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+
+  @@unique([store_id, slug])
+  @@index([merchant_id])
+  @@map("store_categories")
+}
+
+model StoreAnalyticsEvent {
+  id          String        @id @default(uuid())
+  store_id    String
+  merchant_id String
+  product_id  String?
+  order_id    String?
+  event_type  String        // STORE_VIEW, PRODUCT_VIEW, STORE_LINK_CLICK, WHATSAPP_CLICK, CALL_CLICK, PRODUCT_ENQUIRY, STOREFRONT_ORDER_REQUEST, BUY_AGAIN_ORDER_REQUEST, TRACKING_RECOMMENDATION_CLICK
+  visitor_id  String?
+  referrer    String?
+  metadata    String?
+  created_at  DateTime      @default(now())
+
+  store       MerchantStore @relation(fields: [store_id], references: [id], onDelete: Cascade)
+  merchant    Merchant      @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  product     Product?      @relation(fields: [product_id], references: [id], onDelete: SetNull)
+
+  @@index([store_id, event_type])
+  @@index([merchant_id, created_at])
+  @@index([product_id])
+  @@map("store_analytics_events")
+}
+
+model StoreProductEnquiry {
+  id               String        @id @default(uuid())
+  store_id         String
+  merchant_id      String
+  product_id       String?
+  order_id         String?
+  customer_name    String
+  customer_phone   String
+  delivery_address String?
+  quantity         Int           @default(1)
+  selected_variant String?
+  message          String?
+  enquiry_type     String        @default("ORDER_REQUEST") // ORDER_REQUEST, ENQUIRY, BUY_AGAIN
+  status           String        @default("NEW") // NEW, CONTACTED, CONVERTED_TO_ORDER, CLOSED
+  created_at       DateTime      @default(now())
+
+  store            MerchantStore @relation(fields: [store_id], references: [id], onDelete: Cascade)
+  merchant         Merchant      @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  product          Product?      @relation(fields: [product_id], references: [id], onDelete: SetNull)
+
+  @@index([store_id, status])
+  @@index([merchant_id, created_at])
+  @@map("store_product_enquiries")
+}
+
+model StoreSmsDispatchLog {
+  id                  String        @id @default(uuid())
+  store_id            String
+  merchant_id         String
+  customer_id         String?
+  recipient_name      String?
+  recipient_phone     String
+  store_url           String
+  message_body        String
+  status              String        @default("QUEUED") // QUEUED, SENT, DELIVERED, FAILED
+  units_billed        Int           @default(1)
+  provider_message_id String?
+  provider_response   String?
+  failure_reason      String?
+  sent_at             DateTime?
+  delivered_at        DateTime?
+  created_at          DateTime      @default(now())
+
+  store               MerchantStore @relation(fields: [store_id], references: [id], onDelete: Cascade)
+  merchant            Merchant      @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  customer            Customer?     @relation(fields: [customer_id], references: [id], onDelete: SetNull)
+
+  @@index([merchant_id, created_at])
+  @@index([provider_message_id])
+  @@map("store_sms_dispatch_logs")
+}
+
+
 
 

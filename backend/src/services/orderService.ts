@@ -2,6 +2,12 @@ import { prisma } from '../database/prisma';
 import { generateDriverToken, generateTrackingToken } from '../utils/token';
 import { dispatchOrderEvent } from '../notifications/orderNotificationEngine';
 import { triggerOrderReceiptConfirmation } from './receiptConfirmationService';
+import {
+  triggerConfirmationReceipt,
+  syncReceiptFinancialSnapshot,
+  formatReceiptSummary,
+  normalizePaymentStatus,
+} from './confirmationReceiptService';
 import { config } from '../config';
 import crypto from 'crypto';
 
@@ -39,6 +45,13 @@ export interface CreateOrderDTO {
   vehicleInfo?: string;
   transportType?: string;
   items?: OrderItemInput[];
+  deliveryFee?: number;
+  discountAmount?: number;
+  taxAmount?: number;
+  amountPaid?: number;
+  paymentStatus?: string;
+  currency?: string;
+  transactionReference?: string;
 }
 
 export async function createOrder(data: CreateOrderDTO) {
@@ -119,7 +132,15 @@ export async function createOrder(data: CreateOrderDTO) {
     };
   });
 
-  const finalAmount = totalRevenue;
+  const deliveryFee = Math.max(0, Number(data.deliveryFee || 0));
+  const discountAmount = Math.max(0, Number(data.discountAmount || 0));
+  const taxAmount = Math.max(0, Number(data.taxAmount || 0));
+  const finalAmount = Math.max(0, totalRevenue - discountAmount + deliveryFee + taxAmount);
+  const normalizedPayStatus = normalizePaymentStatus(data.paymentStatus, data.amountPaid, finalAmount).replace(/ /g, '_');
+  const amountPaid = normalizedPayStatus === 'PAID' && data.amountPaid === undefined
+    ? finalAmount
+    : Math.max(0, Number(data.amountPaid || 0));
+  const orderCurrency = (data.currency || (merchant as any).currency || 'TZS').trim().toUpperCase();
 
   const order = await prisma.$transaction(async (tx: any) => {
     const newOrder = await tx.order.create({
@@ -134,6 +155,13 @@ export async function createOrder(data: CreateOrderDTO) {
         image_url: data.imageUrl || null,
         amount: finalAmount,
         total_revenue: totalRevenue,
+        delivery_fee: deliveryFee,
+        discount_amount: discountAmount,
+        tax_amount: taxAmount,
+        amount_paid: amountPaid,
+        payment_status: normalizedPayStatus,
+        currency: orderCurrency,
+        transaction_reference: data.transactionReference || null,
         total_cost: preparedItems.every(it => it.unit_cost_price !== null) ? totalCost : null,
         gross_profit: preparedItems.every(it => it.unit_cost_price !== null) ? grossProfit : null,
         driver_id: data.driverId || null,
@@ -254,7 +282,18 @@ export async function getOrderDetail(merchantId: string, orderId: string) {
       items: true,
       events: { orderBy: { timestamp: 'asc' } },
       notifications: { orderBy: { created_at: 'desc' } },
-      merchant: { select: { business_name: true, logo_url: true, brand_color: true } },
+      confirmation_receipt: true,
+      merchant: {
+        select: {
+          business_name: true,
+          logo_url: true,
+          brand_color: true,
+          business_phone: true,
+          email: true,
+          location: true,
+          website: true,
+        },
+      },
     },
   });
 
@@ -264,6 +303,9 @@ export async function getOrderDetail(merchantId: string, orderId: string) {
     ...order,
     tracking_url: order.tracking_token ? `${config.frontendUrl}/track/${order.tracking_token}` : null,
     driver_url: order.driver_token ? `${config.frontendUrl}/driver/${order.driver_token}` : null,
+    confirmation_receipt: (order as any).confirmation_receipt
+      ? formatReceiptSummary((order as any).confirmation_receipt)
+      : null,
   };
 }
 
@@ -272,21 +314,39 @@ export async function updateOrderStatus(
   userId: string,
   orderId: string,
   newStatus: string,
+  options?: { isAdmin?: boolean }
 ) {
   const order = await prisma.order.findFirst({
-    where: { id: orderId, merchant_id: merchantId },
-    include: { merchant: true, driver: true },
+    where: options?.isAdmin ? { id: orderId } : { id: orderId, merchant_id: merchantId },
+    include: { merchant: true, driver: true, confirmation_receipt: true },
   });
 
   if (!order) throw new Error('Order not found');
 
+  // Idempotent repeat completion check: never duplicate receipt or automatic SMS
+  if (order.status === 'COMPLETED' && newStatus === 'COMPLETED') {
+    let receipt = (order as any).confirmation_receipt;
+    if (!receipt || receipt.status !== 'GENERATED') {
+      try {
+        receipt = await triggerConfirmationReceipt(order.id, { triggeredBy: userId, syncSms: true });
+      } catch (err) {
+        console.error('[ORDER COMPLETED RECEIPT IDEMPOTENT ERROR]', err);
+      }
+    }
+    return {
+      ...order,
+      confirmation_receipt: receipt ? formatReceiptSummary(receipt) : null,
+    };
+  }
+
   // Validate transitions
   const validTransitions: Record<string, string[]> = {
-    PENDING: ['CONFIRMED', 'DRIVER_ASSIGNED', 'OUT_FOR_DELIVERY', 'CANCELLED'],
-    CONFIRMED: ['DRIVER_ASSIGNED', 'OUT_FOR_DELIVERY', 'ARRIVED', 'DELIVERED', 'CANCELLED'],
-    DRIVER_ASSIGNED: ['OUT_FOR_DELIVERY', 'ARRIVED', 'DELIVERED', 'CANCELLED'],
-    OUT_FOR_DELIVERY: ['ARRIVED', 'DELIVERED', 'CANCELLED'],
-    ARRIVED: ['DELIVERED', 'CANCELLED'],
+    PENDING: ['CONFIRMED', 'DRIVER_ASSIGNED', 'OUT_FOR_DELIVERY', 'DELIVERED', 'COMPLETED', 'CANCELLED'],
+    CONFIRMED: ['DRIVER_ASSIGNED', 'OUT_FOR_DELIVERY', 'ARRIVED', 'DELIVERED', 'COMPLETED', 'CANCELLED'],
+    DRIVER_ASSIGNED: ['OUT_FOR_DELIVERY', 'ARRIVED', 'DELIVERED', 'COMPLETED', 'CANCELLED'],
+    OUT_FOR_DELIVERY: ['ARRIVED', 'DELIVERED', 'COMPLETED', 'CANCELLED'],
+    ARRIVED: ['DELIVERED', 'COMPLETED', 'CANCELLED'],
+    DELIVERED: ['COMPLETED'],
   };
 
   const allowed = validTransitions[order.status];
@@ -308,6 +368,13 @@ export async function updateOrderStatus(
       updateData.rating_token = ratingToken;
     }
   }
+  if (newStatus === 'COMPLETED') {
+    updateData.completed_at = order.completed_at || now;
+    if (!ratingToken) {
+      ratingToken = crypto.randomBytes(16).toString('hex');
+      updateData.rating_token = ratingToken;
+    }
+  }
   if (newStatus === 'CANCELLED') updateData.cancelled_at = now;
 
   // Map status to event type
@@ -317,6 +384,7 @@ export async function updateOrderStatus(
     OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
     ARRIVED: 'DRIVER_ARRIVED',
     DELIVERED: 'ORDER_DELIVERED',
+    COMPLETED: 'ORDER_COMPLETED',
     CANCELLED: 'ORDER_CANCELLED',
   };
 
@@ -332,13 +400,13 @@ export async function updateOrderStatus(
       data: {
         order_id: order.id,
         event_type: eventType,
-        actor_type: 'MERCHANT',
+        actor_type: options?.isAdmin ? 'ADMIN' : 'MERCHANT',
         actor_reference: userId,
       },
     });
 
-    // If delivered, update driver status to AVAILABLE
-    if (newStatus === 'DELIVERED' && order.driver_id) {
+    // If delivered or completed, update driver status to AVAILABLE
+    if ((newStatus === 'DELIVERED' || newStatus === 'COMPLETED') && order.driver_id) {
       await tx.driver.update({
         where: { id: order.driver_id },
         data: { status: 'AVAILABLE' },
@@ -348,41 +416,64 @@ export async function updateOrderStatus(
     return updated;
   });
 
-  // Dispatch notifications
-  const merchantName = order.merchant.business_name || 'LUMO';
-  const trackingUrl = order.tracking_token ? `${config.frontendUrl}/track/${order.tracking_token}` : '';
-  const driverUrl = order.driver_token ? `${config.frontendUrl}/driver/${order.driver_token}` : '';
-  const ratingUrl = ratingToken ? `${config.frontendUrl}/rate/${ratingToken}` : '';
+  // For standard statuses other than COMPLETED, dispatch order tracking SMS.
+  // For COMPLETED, ONLY the approved confirmation receipt SMS is sent.
+  if (newStatus !== 'COMPLETED') {
+    const merchantName = order.merchant.business_name || 'LUMO';
+    const trackingUrl = order.tracking_token ? `${config.frontendUrl}/track/${order.tracking_token}` : '';
+    const driverUrl = order.driver_token ? `${config.frontendUrl}/driver/${order.driver_token}` : '';
+    const ratingUrl = ratingToken ? `${config.frontendUrl}/rate/${ratingToken}` : '';
 
-  await dispatchOrderEvent({
-    orderId: order.id,
-    eventType,
-    customerPhone: order.customer_phone,
-    driverPhone: order.driver_phone || undefined,
-    vars: {
-      merchantName,
-      customerName: order.customer_name,
+    await dispatchOrderEvent({
+      orderId: order.id,
+      eventType,
       customerPhone: order.customer_phone,
-      orderNumber: order.order_number,
-      orderStatus: newStatus,
-      driverName: order.driver_name || '',
-      driverPhone: order.driver_phone || '',
-      deliveryAddress: order.delivery_address,
-      trackingUrl,
-      driverUrl,
-      ratingUrl,
-      vehicleInfo: order.vehicle_info || order.driver?.vehicle_info || 'BODA',
-    },
-  });
+      driverPhone: order.driver_phone || undefined,
+      vars: {
+        merchantName,
+        customerName: order.customer_name,
+        customerPhone: order.customer_phone,
+        orderNumber: order.order_number,
+        orderStatus: newStatus,
+        driverName: order.driver_name || '',
+        driverPhone: order.driver_phone || '',
+        deliveryAddress: order.delivery_address,
+        trackingUrl,
+        driverUrl,
+        ratingUrl,
+        vehicleInfo: order.vehicle_info || order.driver?.vehicle_info || 'BODA',
+      },
+    });
+  }
 
-  // Automatically trigger customer order receipt confirmation SMS workflow
+  // Automatically trigger interactive confirmation request if delivered
   if (newStatus === 'DELIVERED') {
     triggerOrderReceiptConfirmation(order.id).catch((err) => {
       console.error('[ORDER DELIVERED RECEIPT CONFIRMATION ERROR]', err);
     });
   }
 
-  return result;
+  // Automatically generate PDF Confirmation Receipt & send approved SMS on COMPLETED or DELIVERED
+  let generatedReceipt: any = null;
+  if (newStatus === 'COMPLETED') {
+    try {
+      generatedReceipt = await triggerConfirmationReceipt(order.id, {
+        triggeredBy: userId,
+        syncSms: true,
+      });
+    } catch (err) {
+      console.error('[ORDER COMPLETED CONFIRMATION RECEIPT ERROR]', err);
+    }
+  } else if (newStatus === 'DELIVERED') {
+    triggerConfirmationReceipt(order.id, { triggeredBy: userId }).catch((err) => {
+      console.error('[ORDER DELIVERED CONFIRMATION RECEIPT ERROR]', err);
+    });
+  }
+
+  return {
+    ...result,
+    confirmation_receipt: generatedReceipt ? formatReceiptSummary(generatedReceipt) : null,
+  };
 }
 
 export async function assignDriver(
@@ -490,14 +581,116 @@ export async function getOrderMetrics(merchantId: string) {
 
 // A conditional update ensures concurrent/repeated requests cannot refund twice.
 export async function refundOrder(merchantId: string, userId: string, orderId: string, input: { reason: string; restocked: boolean; updatedAt?: string }) {
-  return prisma.$transaction(async tx => {
+  const updatedOrder = await prisma.$transaction(async tx => {
     const order = await tx.order.findFirst({ where: { id: orderId, merchant_id: merchantId } });
     if (!order) throw new Error('Order not found');
-    if (order.status !== 'DELIVERED') throw new Error('Only delivered orders can be refunded');
+    if (order.status !== 'DELIVERED' && order.status !== 'COMPLETED') throw new Error('Only delivered or completed orders can be refunded');
     if (input.updatedAt && new Date(input.updatedAt).getTime() !== order.updated_at.getTime()) throw new Error('This order changed. Close and reopen the refund form to review it.');
-    const changed = await tx.order.updateMany({ where: { id: orderId, merchant_id: merchantId, status: 'DELIVERED', updated_at: order.updated_at, payment_status: { not: 'REFUNDED' } }, data: { payment_status: 'REFUNDED' } });
+    const changed = await tx.order.updateMany({ where: { id: orderId, merchant_id: merchantId, status: order.status, updated_at: order.updated_at, payment_status: { not: 'REFUNDED' } }, data: { payment_status: 'REFUNDED' } });
     if (changed.count !== 1) throw new Error('This order has already been refunded or changed. Refresh and review it.');
     await tx.orderEvent.create({ data: { order_id: orderId, event_type: 'ORDER_REFUNDED', actor_type: 'MERCHANT', actor_reference: userId, metadata: JSON.stringify({ reason: input.reason, restocked: input.restocked, amount: Number(order.total_revenue ?? order.amount ?? 0) }) } });
     return tx.order.findUnique({ where: { id: orderId } });
   });
+  Promise.resolve(syncReceiptFinancialSnapshot(orderId)).catch(() => {});
+  return updatedOrder;
+}
+
+export async function updateOrderPaymentStatus(
+  merchantId: string,
+  userId: string,
+  orderId: string,
+  input: {
+    paymentStatus?: string;
+    amountPaid?: number;
+    transactionReference?: string | null;
+    deliveryFee?: number;
+    discountAmount?: number;
+    taxAmount?: number;
+  },
+  options?: { isAdmin?: boolean }
+) {
+  const updatedOrder = await prisma.$transaction(async (tx: any) => {
+    const order = await tx.order.findFirst({
+      where: options?.isAdmin ? { id: orderId } : { id: orderId, merchant_id: merchantId },
+      include: { items: true },
+    });
+    if (!order) throw new Error('Order not found');
+
+    const deliveryFee =
+      input.deliveryFee !== undefined ? Math.max(0, Number(input.deliveryFee)) : Number(order.delivery_fee ?? 0);
+    const discountAmount =
+      input.discountAmount !== undefined ? Math.max(0, Number(input.discountAmount)) : Number(order.discount_amount ?? 0);
+    const taxAmount =
+      input.taxAmount !== undefined ? Math.max(0, Number(input.taxAmount)) : Number(order.tax_amount ?? 0);
+
+    const itemsSubtotal =
+      order.total_revenue !== null && order.total_revenue !== undefined
+        ? Number(order.total_revenue)
+        : order.items && order.items.length > 0
+          ? order.items.reduce((acc: number, it: any) => acc + Number(it.subtotal || 0), 0)
+          : Number(order.amount || 0);
+
+    const feesEdited =
+      input.deliveryFee !== undefined || input.discountAmount !== undefined || input.taxAmount !== undefined;
+    const grandTotal = feesEdited
+      ? Math.max(0, itemsSubtotal - discountAmount + deliveryFee + taxAmount)
+      : Number(order.amount || itemsSubtotal);
+
+    let nextAmountPaid =
+      input.amountPaid !== undefined ? Math.max(0, Number(input.amountPaid)) : Number(order.amount_paid ?? 0);
+
+    const requested = input.paymentStatus
+      ? String(input.paymentStatus).toUpperCase().trim().replace(/\s+/g, '_')
+      : undefined;
+
+    if (requested === 'PAID' && input.amountPaid === undefined) {
+      nextAmountPaid = grandTotal;
+    } else if (requested === 'UNPAID' && input.amountPaid === undefined) {
+      nextAmountPaid = 0;
+    }
+
+    const dbPaymentStatus =
+      requested === 'REFUNDED' || requested === 'PAID' || requested === 'PARTIALLY_PAID' || requested === 'UNPAID'
+        ? requested
+        : normalizePaymentStatus(requested, nextAmountPaid, grandTotal).replace(/ /g, '_');
+
+    const updated = await tx.order.update({
+      where: { id: order.id },
+      data: {
+        amount: grandTotal,
+        delivery_fee: deliveryFee,
+        discount_amount: discountAmount,
+        tax_amount: taxAmount,
+        amount_paid: nextAmountPaid,
+        payment_status: dbPaymentStatus,
+        transaction_reference:
+          input.transactionReference !== undefined
+            ? input.transactionReference || null
+            : order.transaction_reference,
+      },
+    });
+
+    await tx.orderEvent.create({
+      data: {
+        order_id: order.id,
+        event_type: 'ORDER_PAYMENT_UPDATED',
+        actor_type: options?.isAdmin ? 'ADMIN' : 'MERCHANT',
+        actor_reference: userId,
+        metadata: JSON.stringify({
+          payment_status: dbPaymentStatus,
+          amount_paid: nextAmountPaid,
+          grand_total: grandTotal,
+          transaction_reference: updated.transaction_reference,
+        }),
+      },
+    });
+
+    return updated;
+  });
+
+  const receipt = await syncReceiptFinancialSnapshot(orderId).catch(() => null);
+  return {
+    ...updatedOrder,
+    confirmation_receipt: receipt ? formatReceiptSummary(receipt) : null,
+  };
 }

@@ -24,9 +24,11 @@ import {
   Sparkles,
   Save,
   Check,
+  Download,
+  Ban,
 } from 'lucide-react';
 import { useLanguage, T } from '@/components/LanguageProvider';
-import { fetchApi } from '@/lib/api';
+import { fetchApi, API_BASE } from '@/lib/api';
 
 interface ReceiptConfirmationItem {
   id: string;
@@ -70,10 +72,45 @@ export default function AdminReceiptConfirmationsPage() {
   const { t, locale } = useLanguage();
   const isSwahili = locale === 'sw';
 
-  const [activeTab, setActiveTab] = useState<'records' | 'settings'>('records');
+  const [activeTab, setActiveTab] = useState<'records' | 'pdf_receipts' | 'settings'>('records');
   const [loading, setLoading] = useState(true);
   const [confirmations, setConfirmations] = useState<ReceiptConfirmationItem[]>([]);
   const [pagination, setPagination] = useState({ total: 0, page: 1, limit: 25, totalPages: 1 });
+
+  // PDF Confirmation Receipts state
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfActionBusy, setPdfActionBusy] = useState<string | null>(null);
+  const [pdfSearch, setPdfSearch] = useState('');
+  const [pdfStatusFilter, setPdfStatusFilter] = useState('ALL');
+  const [pdfSmsFilter, setPdfSmsFilter] = useState('ALL');
+  const [pdfPage, setPdfPage] = useState(1);
+  const [pdfOverview, setPdfOverview] = useState<{
+    kpis: {
+      totalReceiptsGenerated: number;
+      smsNotificationsSent: number;
+      smsNotificationsDelivered: number;
+      failedSmsNotifications: number;
+      pendingReceiptJobs: number;
+      receiptGenerationFailures: number;
+      revokedReceipts: number;
+    };
+    receipts: any[];
+    notificationHistory: any[];
+    pagination: { total: number; page: number; limit: number; totalPages: number };
+  }>({
+    kpis: {
+      totalReceiptsGenerated: 0,
+      smsNotificationsSent: 0,
+      smsNotificationsDelivered: 0,
+      failedSmsNotifications: 0,
+      pendingReceiptJobs: 0,
+      receiptGenerationFailures: 0,
+      revokedReceipts: 0,
+    },
+    receipts: [],
+    notificationHistory: [],
+    pagination: { total: 0, page: 1, limit: 25, totalPages: 1 },
+  });
 
   // KPIs
   const [kpis, setKpis] = useState({
@@ -153,6 +190,83 @@ export default function AdminReceiptConfirmationsPage() {
     }
   };
 
+  const loadPdfReceipts = async () => {
+    setPdfLoading(true);
+    try {
+      const qp = new URLSearchParams({
+        page: String(pdfPage),
+        limit: '25',
+      });
+      if (pdfSearch.trim()) qp.set('search', pdfSearch.trim());
+      if (pdfStatusFilter !== 'ALL') qp.set('status', pdfStatusFilter);
+      if (pdfSmsFilter !== 'ALL') qp.set('smsStatus', pdfSmsFilter);
+
+      const data = await fetchApi(`/receipts/admin/overview?${qp.toString()}`);
+      if (data) setPdfOverview(data);
+    } catch (err) {
+      console.error('Failed to load PDF confirmation receipts:', err);
+    } finally {
+      setPdfLoading(false);
+    }
+  };
+
+  const handleDownloadAdminPdfReceipt = async (orderId: string, receiptNumber: string, inline = false) => {
+    setPdfActionBusy(orderId);
+    try {
+      const res = await fetch(`${API_BASE}/orders/${encodeURIComponent(orderId)}/receipt/pdf${inline ? '?inline=1' : ''}`, {
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error('Failed to load PDF receipt');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      if (inline) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } else {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Confirmation-Receipt-${receiptNumber}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    } catch (err: any) {
+      alert(err.message || 'Failed to download PDF');
+    } finally {
+      setPdfActionBusy(null);
+    }
+  };
+
+  const handleResendAdminPdfSms = async (orderId: string, receiptNumber: string) => {
+    if (!confirm(`Resend confirmation receipt SMS for ${receiptNumber}?`)) return;
+    setPdfActionBusy(orderId);
+    try {
+      const res = await fetchApi(`/orders/${encodeURIComponent(orderId)}/receipt/resend-sms`, { method: 'POST' });
+      alert(res?.message || 'Receipt SMS request processed.');
+      loadPdfReceipts();
+    } catch (err: any) {
+      alert(err.message || 'Failed to resend receipt SMS');
+    } finally {
+      setPdfActionBusy(null);
+    }
+  };
+
+  const handleRevokeAdminPdfReceipt = async (orderId: string, receiptNumber: string) => {
+    if (!confirm(`Revoke public link for receipt ${receiptNumber}? Customers will be blocked from opening it.`)) return;
+    setPdfActionBusy(orderId);
+    try {
+      await fetchApi(`/orders/${encodeURIComponent(orderId)}/receipt/revoke`, {
+        method: 'POST',
+        body: JSON.stringify({ reason: 'Revoked by administrator' }),
+      });
+      loadPdfReceipts();
+    } catch (err: any) {
+      alert(err.message || 'Failed to revoke receipt link');
+    } finally {
+      setPdfActionBusy(null);
+    }
+  };
+
   useEffect(() => {
     loadData();
   }, [pagination.page, responseFilter, caseFilter, smsStatusFilter, startDate, endDate]);
@@ -160,8 +274,10 @@ export default function AdminReceiptConfirmationsPage() {
   useEffect(() => {
     if (activeTab === 'settings') {
       loadSettings();
+    } else if (activeTab === 'pdf_receipts') {
+      loadPdfReceipts();
     }
-  }, [activeTab]);
+  }, [activeTab, pdfPage, pdfStatusFilter, pdfSmsFilter]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -272,6 +388,19 @@ export default function AdminReceiptConfirmationsPage() {
               {isSwahili ? 'Marekodi & Kesi' : 'Records & Cases'}
             </button>
             <button
+              onClick={() => setActiveTab('pdf_receipts')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                activeTab === 'pdf_receipts'
+                  ? 'bg-amber-500 text-slate-950 shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <span className="flex items-center gap-1.5">
+                <FileText className="w-3.5 h-3.5" />
+                {isSwahili ? 'Risiti za PDF' : 'PDF Confirmation Receipts'}
+              </span>
+            </button>
+            <button
               onClick={() => setActiveTab('settings')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 activeTab === 'settings'
@@ -287,17 +416,329 @@ export default function AdminReceiptConfirmationsPage() {
           </div>
 
           <button
-            onClick={loadData}
-            disabled={loading}
+            onClick={() => (activeTab === 'pdf_receipts' ? loadPdfReceipts() : loadData())}
+            disabled={activeTab === 'pdf_receipts' ? pdfLoading : loading}
             className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-colors"
             title="Refresh"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-amber-400' : ''}`} />
+            <RefreshCw className={`w-4 h-4 ${(activeTab === 'pdf_receipts' ? pdfLoading : loading) ? 'animate-spin text-amber-400' : ''}`} />
           </button>
         </div>
       </div>
 
-      {/* KPI Stats Grid */}
+      {activeTab === 'pdf_receipts' ? (
+        <div className="space-y-6">
+          {/* PDF Confirmation Receipt KPIs */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block truncate">
+                Total Receipts Generated
+              </span>
+              <p className="text-2xl font-black text-white mt-1 font-mono">{pdfOverview.kpis.totalReceiptsGenerated}</p>
+            </div>
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block truncate">
+                SMS Sent
+              </span>
+              <p className="text-2xl font-black text-blue-400 mt-1 font-mono">{pdfOverview.kpis.smsNotificationsSent}</p>
+            </div>
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block truncate">
+                SMS Delivered
+              </span>
+              <p className="text-2xl font-black text-emerald-400 mt-1 font-mono">{pdfOverview.kpis.smsNotificationsDelivered}</p>
+            </div>
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block truncate">
+                Failed SMS
+              </span>
+              <p className="text-2xl font-black text-rose-400 mt-1 font-mono">{pdfOverview.kpis.failedSmsNotifications}</p>
+            </div>
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block truncate">
+                Pending Jobs
+              </span>
+              <p className="text-2xl font-black text-amber-400 mt-1 font-mono">{pdfOverview.kpis.pendingReceiptJobs}</p>
+            </div>
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block truncate">
+                Generation Failures
+              </span>
+              <p className="text-2xl font-black text-rose-300 mt-1 font-mono">{pdfOverview.kpis.receiptGenerationFailures}</p>
+            </div>
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block truncate">
+                Revoked Receipts
+              </span>
+              <p className="text-2xl font-black text-slate-300 mt-1 font-mono">{pdfOverview.kpis.revokedReceipts}</p>
+            </div>
+          </div>
+
+          {/* Search & Filter Bar */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setPdfPage(1);
+              loadPdfReceipts();
+            }}
+            className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 flex flex-col md:flex-row gap-3"
+          >
+            <div className="relative flex-1">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={pdfSearch}
+                onChange={(e) => setPdfSearch(e.target.value)}
+                placeholder="Search receipt #, order #, customer, phone, or merchant..."
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+            <select
+              value={pdfStatusFilter}
+              onChange={(e) => { setPdfPage(1); setPdfStatusFilter(e.target.value); }}
+              className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+            >
+              <option value="ALL">All Receipt Statuses</option>
+              <option value="GENERATED">RECEIPT GENERATED</option>
+              <option value="PENDING">PENDING</option>
+              <option value="FAILED">FAILED</option>
+              <option value="REVOKED">RECEIPT REVOKED</option>
+            </select>
+            <select
+              value={pdfSmsFilter}
+              onChange={(e) => { setPdfPage(1); setPdfSmsFilter(e.target.value); }}
+              className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+            >
+              <option value="ALL">All SMS Statuses</option>
+              <option value="SMS_PENDING">SMS PENDING</option>
+              <option value="SMS_SENT">SMS SENT</option>
+              <option value="SMS_DELIVERED">SMS DELIVERED</option>
+              <option value="SMS_FAILED">SMS FAILED</option>
+            </select>
+            <button
+              type="submit"
+              className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs"
+            >
+              Search
+            </button>
+          </form>
+
+          {/* PDF Receipts Table */}
+          <div className="bg-slate-900/90 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs text-slate-300">
+                <thead className="bg-slate-950 text-slate-400 font-bold uppercase text-[10px] border-b border-slate-800">
+                  <tr>
+                    <th className="p-4">Receipt #</th>
+                    <th className="p-4">Order / Merchant</th>
+                    <th className="p-4">Customer</th>
+                    <th className="p-4">Receipt Status</th>
+                    <th className="p-4">SMS Status</th>
+                    <th className="p-4">Timestamps</th>
+                    <th className="p-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800">
+                  {pdfLoading ? (
+                    <tr>
+                      <td colSpan={7} className="text-center py-12 text-slate-500">
+                        <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-amber-400" />
+                        Loading confirmation receipts...
+                      </td>
+                    </tr>
+                  ) : pdfOverview.receipts.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="text-center py-12 text-slate-500">
+                        No confirmation receipts match your filters.
+                      </td>
+                    </tr>
+                  ) : (
+                    pdfOverview.receipts.map((r: any) => (
+                      <tr key={r.id} className="hover:bg-slate-800/40 transition-colors">
+                        <td className="p-4 font-mono font-bold text-white">{r.receipt_number}</td>
+                        <td className="p-4">
+                          <div className="font-mono font-bold text-amber-400">#{r.order?.order_number}</div>
+                          <div className="text-[11px] text-slate-400">{r.merchant?.business_name}</div>
+                        </td>
+                        <td className="p-4">
+                          <div className="font-bold text-white">{r.order?.customer_name}</div>
+                          <div className="text-[10px] font-mono text-slate-400">{r.order?.customer_phone}</div>
+                        </td>
+                        <td className="p-4">
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                              r.status === 'GENERATED'
+                                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                                : r.status === 'REVOKED' || r.status === 'FAILED'
+                                ? 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+                                : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                            }`}
+                          >
+                            {r.receipt_status_label || r.status}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                              r.sms_status === 'SMS_DELIVERED'
+                                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                                : r.sms_status === 'SMS_SENT'
+                                ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
+                                : r.sms_status === 'SMS_FAILED'
+                                ? 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+                                : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                            }`}
+                          >
+                            {r.sms_status_label || r.sms_status}
+                          </span>
+                          {r.sms_failure_reason && (
+                            <p className="text-[10px] text-rose-400 mt-1 max-w-[180px] truncate" title={r.sms_failure_reason}>
+                              {r.sms_failure_reason}
+                            </p>
+                          )}
+                        </td>
+                        <td className="p-4 text-[10px] text-slate-400 space-y-0.5">
+                          <div>Gen: {r.generated_at ? new Date(r.generated_at).toLocaleString(locale) : '—'}</div>
+                          <div>Sent: {r.sms_sent_at ? new Date(r.sms_sent_at).toLocaleString(locale) : '—'}</div>
+                          {r.sms_delivered_at && (
+                            <div className="text-emerald-400">
+                              Del: {new Date(r.sms_delivered_at).toLocaleString(locale)}
+                            </div>
+                          )}
+                        </td>
+                        <td className="p-4 text-right">
+                          <div className="inline-flex items-center gap-1.5">
+                            {r.public_token && r.status !== 'REVOKED' ? (
+                              <a
+                                href={`/receipt/${r.public_token}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Preview public receipt page"
+                                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400"
+                              >
+                                <Eye className="w-3.5 h-3.5" />
+                              </a>
+                            ) : (
+                              <button
+                                type="button"
+                                disabled={pdfActionBusy === r.order_id}
+                                onClick={() => handleDownloadAdminPdfReceipt(r.order_id, r.receipt_number, true)}
+                                title="Preview PDF"
+                                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400"
+                              >
+                                <Eye className="w-3.5 h-3.5" />
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              disabled={pdfActionBusy === r.order_id}
+                              onClick={() => handleDownloadAdminPdfReceipt(r.order_id, r.receipt_number, false)}
+                              title="Download PDF"
+                              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white"
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                            </button>
+                            {r.status !== 'REVOKED' && (
+                              <>
+                                <button
+                                  type="button"
+                                  disabled={pdfActionBusy === r.order_id}
+                                  onClick={() => handleResendAdminPdfSms(r.order_id, r.receipt_number)}
+                                  title="Resend Receipt SMS"
+                                  className="p-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300"
+                                >
+                                  <Send className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={pdfActionBusy === r.order_id}
+                                  onClick={() => handleRevokeAdminPdfReceipt(r.order_id, r.receipt_number)}
+                                  title="Revoke Public Link"
+                                  className="p-1.5 rounded-lg bg-rose-600/20 hover:bg-rose-600/40 text-rose-300"
+                                >
+                                  <Ban className="w-3.5 h-3.5" />
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+            {pdfOverview.pagination.totalPages > 1 && (
+              <div className="px-4 py-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                <span>
+                  Page {pdfPage} of {pdfOverview.pagination.totalPages} ({pdfOverview.pagination.total} total)
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    disabled={pdfPage <= 1}
+                    onClick={() => setPdfPage((p) => Math.max(1, p - 1))}
+                    className="px-3 py-1 rounded-lg bg-slate-800 disabled:opacity-40"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    disabled={pdfPage >= pdfOverview.pagination.totalPages}
+                    onClick={() => setPdfPage((p) => p + 1)}
+                    className="px-3 py-1 rounded-lg bg-slate-800 disabled:opacity-40"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Recent Confirmation Receipt Notification History */}
+          {pdfOverview.notificationHistory?.length > 0 && (
+            <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 space-y-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                Recent Confirmation Receipt SMS Notification History
+              </h3>
+              <div className="space-y-2 max-h-64 overflow-y-auto">
+                {pdfOverview.notificationHistory.map((n: any) => (
+                  <div
+                    key={n.id}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs"
+                  >
+                    <div className="min-w-0">
+                      <div className="font-bold text-white">
+                        #{n.order?.order_number} • {n.recipient_phone}{' '}
+                        <span className="text-slate-400 font-normal">({n.order?.merchant?.business_name})</span>
+                      </div>
+                      <p className="text-[11px] text-slate-400 truncate">{n.message_body}</p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                          n.status === 'DELIVERED' || n.status === 'SENT'
+                            ? 'bg-emerald-500/10 text-emerald-400'
+                            : n.status === 'FAILED'
+                            ? 'bg-rose-500/10 text-rose-400'
+                            : 'bg-amber-500/10 text-amber-400'
+                        }`}
+                      >
+                        {n.status}
+                      </span>
+                      <span className="text-[10px] text-slate-500">
+                        {new Date(n.created_at).toLocaleString(locale)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <>
+          {/* KPI Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
           <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block truncate">
@@ -788,6 +1229,8 @@ export default function AdminReceiptConfirmationsPage() {
             </form>
           ) : null}
         </div>
+      )}
+        </>
       )}
 
       {/* Investigation & Case Workflow Modal */}

@@ -38,6 +38,7 @@ import {
   Moon,
   Star,
   MessageSquare,
+  Store,
 } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
 import LanguageSelector from '@/components/LanguageSelector';
@@ -53,6 +54,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: 'Overview', href: '/admin', icon: LayoutDashboard },
   { label: 'Merchants', href: '/admin/merchants', icon: Users },
+  { label: 'SmartTrack Stores', href: '/admin/stores', icon: Store },
   { label: 'Orders', href: '/admin/orders', icon: ShoppingBag },
   { label: 'Sales', href: '/admin/sales', icon: DollarSign },
   { label: 'Drivers', href: '/admin/drivers', icon: Truck },
@@ -78,6 +80,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const getItemLabel = (name: string) => {
     if (name === 'Receipt Confirmations') return locale === 'sw' ? 'Uthibitisho wa Kupokea' : 'Receipt Confirmations';
     if (name === 'SMS Management') return locale === 'sw' ? 'Usimamizi wa SMS' : 'SMS Management';
+    if (name === 'SmartTrack Stores') return locale === 'sw' ? 'Maduka ya SmartTrack' : 'SmartTrack Stores';
     return uiLabel(name);
   };
 

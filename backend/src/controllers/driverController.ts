@@ -3,6 +3,7 @@ import { sendSuccess, sendError } from '../utils/response';
 import { prisma } from '../database/prisma';
 import { dispatchOrderEvent } from '../notifications/orderNotificationEngine';
 import { triggerOrderReceiptConfirmation } from '../services/receiptConfirmationService';
+import { triggerConfirmationReceipt } from '../services/confirmationReceiptService';
 import { config } from '../config';
 import crypto from 'crypto';
 
@@ -173,10 +174,13 @@ async function handleOrderDriverAction(token: string, action: 'accept' | 'start'
     },
   });
 
-  // Automatically trigger receipt confirmation workflow if delivered
+  // Automatically trigger receipt confirmation and confirmation receipt PDF + SMS workflows if delivered
   if (action === 'delivered') {
     triggerOrderReceiptConfirmation(order.id).catch((err) => {
       console.error('[DRIVER ACTION DELIVERED RECEIPT CONFIRMATION ERROR]', err);
+    });
+    triggerConfirmationReceipt(order.id, { triggeredBy: 'DRIVER_DELIVERY' }).catch((err) => {
+      console.error('[DRIVER ACTION DELIVERED CONFIRMATION RECEIPT ERROR]', err);
     });
   }
 

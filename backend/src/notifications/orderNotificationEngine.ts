@@ -21,11 +21,11 @@ const CUSTOMER_TEMPLATES: Record<string, string> = {
   OUT_FOR_DELIVERY:
     'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} is now out for delivery via {{transportMethod}} with {{driverName}}. Please be ready to receive your order. Thank you for shopping with us!',
   DRIVER_ARRIVED:
-    '🚚 Your delivery is almost here! Your driver {{driverName}} is nearby. Please be ready to receive your order for {{merchantName}} (Order #{{orderNumber}}).',
+    'Your delivery is almost here! Your driver {{driverName}} is nearby. Please be ready to receive your order for {{merchantName}} (Order #{{orderNumber}}).',
   DRIVER_NEARBY:
-    '🚚 Your delivery is almost here! Your driver {{driverName}} is nearby. Please be ready to receive your order for {{merchantName}} (Order #{{orderNumber}}).',
+    'Your delivery is almost here! Your driver {{driverName}} is nearby. Please be ready to receive your order for {{merchantName}} (Order #{{orderNumber}}).',
   ORDER_DELIVERED:
-    '📦 Your order {{orderNumber}} has been successfully delivered. Thank you for shopping with {{merchantName}}. ⭐ Please rate your delivery experience: {{ratingUrl}}',
+    'Your order {{orderNumber}} has been successfully delivered. Thank you for shopping with {{merchantName}}. ⭐ Please rate your delivery experience: {{ratingUrl}}',
   ORDER_CANCELLED:
     'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} has been cancelled. Please contact us for more details.',
 };
@@ -33,7 +33,7 @@ const CUSTOMER_TEMPLATES: Record<string, string> = {
 // Driver SMS Templates (per event type)
 const DRIVER_TEMPLATES: Record<string, string> = {
   DRIVER_ASSIGNED:
-    'New Delivery Assigned 🚚\n\nOrder: #{{orderNumber}}\nCustomer: {{customerName}}\nDelivery: {{deliveryAddress}}\n\nOpen Delivery: {{driverUrl}}',
+    'New Delivery Assigned \n\nOrder: #{{orderNumber}}\nCustomer: {{customerName}}\nDelivery: {{deliveryAddress}}\n\nOpen Delivery: {{driverUrl}}',
   OUT_FOR_DELIVERY:
     'Hello {{driverName}}, please confirm you are on the way with {{merchantName}} order #{{orderNumber}} to {{deliveryAddress}}.',
   ORDER_DELIVERED:
@@ -150,7 +150,56 @@ export async function dispatchOrderNotification(params: {
       return;
     }
 
-    const messageBody = replaceVariables(template, vars, params.language || 'en');
+    let messageBody = replaceVariables(template, vars, params.language || 'en');
+
+    // Optionally append storefront link on eligible ORDER_DELIVERED customer SMS with explicit marketing opt-in
+    if (
+      recipientType === 'CUSTOMER' &&
+      eventType === 'ORDER_DELIVERED' &&
+      (prisma as any).order?.findUnique &&
+      (prisma as any).merchantStore?.findUnique &&
+      (prisma as any).customer?.findFirst
+    ) {
+      try {
+        const orderRecord = await prisma.order.findUnique({
+          where: { id: orderId },
+          select: { merchant_id: true, customer_phone: true },
+        });
+        if (orderRecord?.merchant_id && orderRecord.customer_phone) {
+          const store = await (prisma as any).merchantStore.findUnique({
+            where: { merchant_id: orderRecord.merchant_id },
+            select: {
+              slug: true,
+              store_name: true,
+              publication_status: true,
+              include_link_in_transactional_sms: true,
+            },
+          });
+          if (store?.include_link_in_transactional_sms && store.publication_status === 'PUBLISHED') {
+            const digits = orderRecord.customer_phone.replace(/\D/g, '');
+            const tail9 = digits.length >= 9 ? digits.slice(-9) : digits;
+            const phoneCandidates = Array.from(
+              new Set([orderRecord.customer_phone.trim(), digits, `+255${tail9}`, `255${tail9}`, `0${tail9}`])
+            );
+            const optedInCustomer = await (prisma as any).customer.findFirst({
+              where: {
+                merchant_id: orderRecord.merchant_id,
+                phone: { in: phoneCandidates },
+                marketing_opt_in: true,
+              },
+              select: { id: true },
+            });
+            if (optedInCustomer) {
+              const { getPublicStoreUrl } = await import('../services/storeService');
+              const businessLabel = vars.merchantName || store.store_name;
+              messageBody = `${messageBody}\nExplore more products from ${businessLabel}: ${getPublicStoreUrl(store.slug)}`;
+            }
+          }
+        }
+      } catch {
+        // Non-blocking: transactional SMS must never fail if storefront lookup fails
+      }
+    }
 
     // Create notification record
     const notification = await prisma.orderNotification.create({

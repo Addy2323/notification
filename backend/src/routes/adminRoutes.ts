@@ -23,6 +23,7 @@ router.patch('/merchants/:id/status', adminController.toggleMerchantStatus);
 // Platform orders (protected by ADMIN role above)
 router.get('/orders', adminController.listGlobalOrders);
 router.get('/orders/:id', adminController.getGlobalOrder);
+router.patch('/orders/:id/status', adminController.updateGlobalOrderStatus);
 
 // Unified deliveries
 router.get('/deliveries', adminController.listAdminDeliveries);

@@ -66,6 +66,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const navItems = [
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Orders', href: '/dashboard/orders', icon: ShoppingBag },
+    { name: 'MY STORE', href: '/dashboard/store', icon: Store },
     { name: 'Sales Ledger', href: '/dashboard/sales', icon: DollarSign },
     { name: 'Customers', href: '/dashboard/customers', icon: Contact },
     { name: 'Deliveries', href: '/dashboard/deliveries', icon: Truck },

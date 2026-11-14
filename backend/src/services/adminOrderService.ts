@@ -1,11 +1,29 @@
 import { prisma } from '../database/prisma';
 import { ledgerFinancials } from './salesService';
 
+const receiptSafeSelect = {
+  select: {
+    receipt_number: true,
+    status: true,
+    sms_status: true,
+    generated_at: true,
+    sms_sent_at: true,
+    sms_delivered_at: true,
+    sms_failed_at: true,
+    sms_failure_reason: true,
+    sms_retry_count: true,
+    revoked_at: true,
+    expires_at: true,
+  },
+} as const;
+
 const summaryFields = {
   id: true, order_number: true, merchant_id: true, customer_name: true, customer_phone: true,
   product_name: true, amount: true, total_revenue: true, total_cost: true, gross_profit: true,
-  status: true, payment_status: true, created_at: true, driver_name: true,
+  delivery_fee: true, discount_amount: true, tax_amount: true, amount_paid: true, currency: true,
+  status: true, payment_status: true, created_at: true, completed_at: true, driver_name: true,
   merchant: { select: { id: true, business_name: true } },
+  confirmation_receipt: receiptSafeSelect,
   events: { where: { event_type: 'ORDER_REFUNDED' }, select: { id: true, event_type: true, metadata: true, timestamp: true } }
 } as const;
 
