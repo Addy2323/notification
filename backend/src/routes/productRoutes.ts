@@ -10,5 +10,8 @@ router.get('/', ProductController.list);
 router.post('/', ProductController.create);
 router.get('/top', ProductController.getTopProducts);
 router.get('/:id', ProductController.getById);
+router.put('/:id', ProductController.update);
+router.patch('/:id', ProductController.update);
+router.delete('/:id', ProductController.remove);
 
 export default router;

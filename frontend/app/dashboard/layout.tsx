@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, Truck, Palette, Settings, LogOut, Plus, Shield, Menu, X, 
   Bell, ShoppingBag, Users, DollarSign, Contact, BarChart3, FileText, Search, 
-  RefreshCw, Store, Star, CheckCircle2, MessageSquare 
+  RefreshCw, Store, Package, Star, CheckCircle2, MessageSquare 
 } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
 import LanguageSelector from '@/components/LanguageSelector';
@@ -67,6 +67,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Orders', href: '/dashboard/orders', icon: ShoppingBag },
     { name: 'MY STORE', href: '/dashboard/store', icon: Store },
+    { name: 'Products', href: '/dashboard/products', icon: Package },
     { name: 'Sales Ledger', href: '/dashboard/sales', icon: DollarSign },
     { name: 'Customers', href: '/dashboard/customers', icon: Contact },
     { name: 'Deliveries', href: '/dashboard/deliveries', icon: Truck },

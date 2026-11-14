@@ -31,6 +31,7 @@ jest.mock('../database/prisma', () => ({
       findFirst: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
+      delete: jest.fn(),
     },
     customer: {
       findMany: jest.fn(),
@@ -101,6 +102,7 @@ import {
   serializePublicProduct,
   createStoreProduct,
   updateStoreProduct,
+  deleteStoreProduct,
   deleteStoreCategory,
   getPublicStoreBySlug,
   submitPublicStoreOrderOrEnquiry,
@@ -535,5 +537,76 @@ describe('LUMO SmartTrack Store System', () => {
     });
     const suspendedView = await getPublicStoreBySlug('abc-fashion');
     expect(suspendedView.status).toBe('SUSPENDED');
+  });
+
+  test('9. Product deletion enforces ownership/audit logging and dashboard returns qrSvg', async () => {
+    pAny.product.findFirst.mockResolvedValue(null);
+    await expect(
+      deleteStoreProduct('merchant-B', 'user-B', 'prod-belongs-to-A')
+    ).rejects.toThrow(/not found/i);
+    expect(pAny.product.delete).not.toHaveBeenCalled();
+
+    pAny.product.findFirst.mockResolvedValue({
+      id: 'prod-1',
+      merchant_id: 'merchant-1',
+      name: 'Canvas Tote Bag',
+    });
+    pAny.product.delete.mockResolvedValue({ id: 'prod-1' });
+
+    const delResult = await deleteStoreProduct('merchant-1', 'user-1', 'prod-1');
+    expect(delResult).toEqual({ id: 'prod-1', deleted: true });
+    expect(pAny.product.delete).toHaveBeenCalledWith({ where: { id: 'prod-1' } });
+    expect(pAny.auditLog.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          merchant_id: 'merchant-1',
+          user_id: 'user-1',
+          action: 'PRODUCT_DELETED',
+          object_type: 'PRODUCT',
+          object_id: 'prod-1',
+        }),
+      })
+    );
+
+    pAny.merchant.findUnique.mockResolvedValue({
+      id: 'merchant-1',
+      business_name: 'ABC Fashion TZ',
+      business_phone: '+255711111111',
+      whatsapp_number: '+255711111111',
+      email: 'sales@abcfashion.co.tz',
+      location: 'Kariakoo, Dar es Salaam',
+      logo_url: null,
+      brand_color: '#0F172A',
+      website: null,
+      status: 'ACTIVE',
+      store: {
+        id: 'store-1',
+        merchant_id: 'merchant-1',
+        store_name: 'ABC Fashion TZ',
+        slug: 'abc-fashion-tz',
+        publication_status: 'PUBLISHED',
+        social_links: {},
+      },
+    });
+    pAny.merchantStore.findFirst.mockResolvedValue({
+      id: 'store-1',
+      merchant_id: 'merchant-1',
+      store_name: 'ABC Fashion TZ',
+      slug: 'abc-fashion-tz',
+      publication_status: 'PUBLISHED',
+      social_links: {},
+    });
+    pAny.product.findMany.mockResolvedValue([]);
+    pAny.storeAnalyticsEvent.count.mockResolvedValue(0);
+    pAny.storeAnalyticsEvent.findMany.mockResolvedValue([]);
+    pAny.storeAnalyticsEvent.groupBy.mockResolvedValue([]);
+    pAny.storeProductEnquiry.count.mockResolvedValue(0);
+    pAny.storeProductEnquiry.findMany.mockResolvedValue([]);
+    pAny.storeCategory.findMany.mockResolvedValue([]);
+    pAny.storeSmsDispatchLog.findMany.mockResolvedValue([]);
+
+    const dash = await getMerchantStoreDashboard('merchant-1');
+    expect(dash.store).not.toBeNull();
+    expect(dash.store?.qrSvg).toContain('<svg');
   });
 });

@@ -86,6 +86,7 @@ router.post('/my/upload-image', ...merchantAccess, handleImageUpload, controller
 router.get('/my/products', ...merchantAccess, controller.listMyProducts);
 router.post('/my/products', ...merchantAccess, controller.createMyProduct);
 router.patch('/my/products/:id', ...merchantAccess, controller.updateMyProduct);
+router.delete('/my/products/:id', ...merchantAccess, controller.deleteMyProduct);
 
 router.get('/my/categories', ...merchantAccess, controller.listMyCategories);
 router.post('/my/categories', ...merchantAccess, controller.saveMyCategory);

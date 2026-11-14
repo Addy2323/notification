@@ -64,4 +64,37 @@ export class ProductController {
       return sendError(res, 'INTERNAL_ERROR', err.message, 500);
     }
   }
+
+  static async update(req: Request, res: Response) {
+    try {
+      const merchantId = req.user!.merchant_id;
+      const { name, description, sku, category, unit_price, cost_price, status } = req.body;
+      const updateData: any = {};
+      if (name !== undefined) updateData.name = name;
+      if (description !== undefined) updateData.description = description;
+      if (sku !== undefined) updateData.sku = sku;
+      if (category !== undefined) updateData.category = category;
+      if (unit_price !== undefined) updateData.unit_price = Number(unit_price);
+      if (cost_price !== undefined) updateData.cost_price = cost_price !== null ? Number(cost_price) : null;
+      if (status !== undefined) updateData.status = status;
+
+      const updated = await ProductService.updateProduct(merchantId, req.params.id, updateData);
+      if (updated.count === 0) return sendError(res, 'NOT_FOUND', 'Product not found', 404);
+      const product = await ProductService.getProductById(merchantId, req.params.id);
+      return sendSuccess(res, product);
+    } catch (err: any) {
+      return sendError(res, 'INTERNAL_ERROR', err.message, 500);
+    }
+  }
+
+  static async remove(req: Request, res: Response) {
+    try {
+      const merchantId = req.user!.merchant_id;
+      const result = await ProductService.deleteProduct(merchantId, req.params.id);
+      if (!result) return sendError(res, 'NOT_FOUND', 'Product not found', 404);
+      return sendSuccess(res, result);
+    } catch (err: any) {
+      return sendError(res, 'INTERNAL_ERROR', err.message, 500);
+    }
+  }
 }

@@ -49,7 +49,7 @@ export default function AdminSmartTrackStoresPage() {
       if (statusFilter !== 'ALL') qs.set('status', statusFilter);
 
       const res = await fetchApi(`/store/admin/stores?${qs.toString()}`);
-      const d = res?.data;
+      const d = res?.data || res;
       if (d?.kpis) setKpis(d.kpis);
       setStores(d?.stores || []);
     } catch (err: any) {

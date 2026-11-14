@@ -4,7 +4,7 @@ import { TLabel } from '@/components/LanguageProvider';
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, ShoppingBag, Truck, Settings, Users, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Truck, Settings, Users, BarChart3, Store } from 'lucide-react';
 
 interface MobileBottomNavProps {
   type?: 'merchant' | 'admin';
@@ -24,8 +24,8 @@ export function MobileBottomNav({ type = 'merchant', unreadCount = 0 }: MobileBo
   const merchantItems: NavItem[] = [
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Orders', href: '/dashboard/orders', icon: ShoppingBag },
+    { name: 'My Store', href: '/dashboard/store', icon: Store },
     { name: 'Deliveries', href: '/dashboard/deliveries', icon: Truck },
-    { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
     { name: 'More', href: '/dashboard/settings', icon: Settings },
   ];
 

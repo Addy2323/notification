@@ -38,6 +38,9 @@ import {
   Star,
   Tag,
   ShieldCheck,
+  LayoutGrid,
+  List,
+  Maximize2,
   X,
 } from 'lucide-react';
 import { fetchApi, API_BASE } from '@/lib/api';
@@ -129,11 +132,15 @@ export default function MerchantMyStorePage() {
   const [savingStore, setSavingStore] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [copiedUrl, setCopiedUrl] = useState(false);
+  const [qrModalOpen, setQrModalOpen] = useState(false);
 
-  // Product list filters
+  // Product list filters & CRUD states
   const [prodSearch, setProdSearch] = useState('');
   const [prodStatusFilter, setProdStatusFilter] = useState('ALL');
   const [prodCategoryFilter, setProdCategoryFilter] = useState('ALL');
+  const [prodViewMode, setProdViewMode] = useState<'grid' | 'table'>('grid');
+  const [deleteTargetProduct, setDeleteTargetProduct] = useState<any>(null);
+  const [deletingProduct, setDeletingProduct] = useState(false);
 
   // Add/Edit Product Modal
   const [productModalOpen, setProductModalOpen] = useState(false);
@@ -192,11 +199,16 @@ export default function MerchantMyStorePage() {
       ]);
 
       const dashData = dashRes?.data || dashRes;
+      const prodData = prodRes?.data || prodRes;
+      const custData = custRes?.data || custRes;
       setDashboard(dashData);
-      setProducts(prodRes?.data?.products || []);
-      setCustomers(custRes?.data?.customers || []);
+      setProducts(prodData?.products || []);
+      setCustomers(custData?.customers || []);
 
       const s = dashData?.store;
+      if (s?.qrSvg) {
+        setQrSvg(s.qrSvg);
+      }
       const prefill = dashData?.prefill;
       if (s) {
         setStoreForm({
@@ -227,9 +239,12 @@ export default function MerchantMyStorePage() {
         setSmsTemplateDraft(s.storeSmsTemplate || DEFAULT_TEMPLATE);
 
         try {
-          const qrRes = await fetchApi('/store/my/qr');
-          if (qrRes?.data?.svg) {
-            setQrSvg(qrRes.data.svg);
+          if (!s?.qrSvg) {
+            const qrRes = await fetchApi('/store/my/qr');
+            const qrData = qrRes?.data || qrRes;
+            if (qrData?.svg) {
+              setQrSvg(qrData.svg);
+            }
           }
         } catch {
           // Non-fatal
@@ -275,7 +290,8 @@ export default function MerchantMyStorePage() {
           method: 'POST',
           body: JSON.stringify({ template: smsTemplateDraft, customerName: 'Amina' }),
         });
-        setSmsPreviewText(res?.data || '');
+        const previewVal = typeof res === 'string' ? res : res?.data ?? res?.preview ?? '';
+        setSmsPreviewText(typeof previewVal === 'string' ? previewVal : '');
       } catch {
         // Fallback local preview
       }
@@ -288,11 +304,12 @@ export default function MerchantMyStorePage() {
     setSlugStatus({ checking: true });
     try {
       const res = await fetchApi(`/store/my/slug-check?slug=${encodeURIComponent(slugToCheck.trim())}`);
+      const slugData = res?.data || res;
       setSlugStatus({
         checking: false,
-        available: res?.data?.available,
-        slug: res?.data?.slug,
-        error: res?.data?.error,
+        available: slugData?.available,
+        slug: slugData?.slug,
+        error: slugData?.error,
       });
     } catch (err: any) {
       setSlugStatus({ checking: false, available: false, error: err.message });
@@ -389,7 +406,8 @@ export default function MerchantMyStorePage() {
       const slug = dashboard?.store?.slug || 'smarttrack-store';
       if (!svgContent) {
         const res = await fetchApi('/store/my/qr');
-        svgContent = res?.data?.svg || '';
+        const qrData = res?.data || res;
+        svgContent = qrData?.svg || '';
       }
       if (!svgContent) throw new Error('QR SVG not available yet');
       const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
@@ -401,9 +419,59 @@ export default function MerchantMyStorePage() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(blobUrl);
-      showToast('success', 'Store QR code downloaded');
+      showToast('success', 'Store QR SVG downloaded');
     } catch (err: any) {
       showToast('error', err.message || 'Unable to download QR code');
+    }
+  };
+
+  const handleDownloadQrPng = async () => {
+    try {
+      let svgContent = qrSvg;
+      const slug = dashboard?.store?.slug || 'smarttrack-store';
+      if (!svgContent) {
+        const res = await fetchApi('/store/my/qr');
+        const qrData = res?.data || res;
+        svgContent = qrData?.svg || '';
+      }
+      if (!svgContent) throw new Error('QR SVG not available yet');
+
+      const svgBlob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+      const svgUrl = URL.createObjectURL(svgBlob);
+      const img = new Image();
+      img.onload = () => {
+        const size = 600;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, size, size);
+          ctx.drawImage(img, 24, 24, size - 48, size - 48);
+          canvas.toBlob((pngBlob) => {
+            if (pngBlob) {
+              const pngUrl = URL.createObjectURL(pngBlob);
+              const a = document.createElement('a');
+              a.href = pngUrl;
+              a.download = `${slug}-qr.png`;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(pngUrl);
+              showToast('success', 'Store QR PNG downloaded');
+            }
+          }, 'image/png');
+        }
+        URL.revokeObjectURL(svgUrl);
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(svgUrl);
+        showToast('error', 'Unable to render PNG QR code');
+      };
+      img.src = svgUrl;
+    } catch (err: any) {
+      showToast('error', err.message || 'Unable to download PNG QR code');
     }
   };
 
@@ -545,6 +613,23 @@ export default function MerchantMyStorePage() {
     }
   };
 
+  const handleDeleteProduct = async () => {
+    if (!deleteTargetProduct) return;
+    setDeletingProduct(true);
+    try {
+      await fetchApi(`/store/my/products/${deleteTargetProduct.id}`, {
+        method: 'DELETE',
+      });
+      showToast('success', `"${deleteTargetProduct.name}" deleted`);
+      setDeleteTargetProduct(null);
+      await loadAll();
+    } catch (err: any) {
+      showToast('error', err.message || 'Failed to delete product');
+    } finally {
+      setDeletingProduct(false);
+    }
+  };
+
   const handleSaveCategory = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCategoryName.trim()) return;
@@ -608,7 +693,7 @@ export default function MerchantMyStorePage() {
           customTemplate: smsTemplateDraft,
         }),
       });
-      const r = res?.data;
+      const r = res?.data || res;
       showToast(
         'success',
         `SMS complete: ${r?.sentCount || 0} sent, ${r?.skippedCount || 0} skipped (24h dedup), ${r?.failedCount || 0} failed`
@@ -636,7 +721,7 @@ export default function MerchantMyStorePage() {
           explicitConsentConfirmed: manualConsentConfirmed,
         }),
       });
-      const r = res?.data;
+      const r = res?.data || res;
       showToast(
         r?.failedCount ? 'error' : 'success',
         r?.failedCount
@@ -1240,71 +1325,79 @@ export default function MerchantMyStorePage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full lg:w-auto">
             <button
               type="button"
               onClick={openAddProductModal}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#FF5500] text-white text-xs font-bold hover:bg-orange-600 shadow-sm"
+              className="col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 sm:py-2 rounded-xl bg-[#FF5500] text-white text-xs font-bold hover:bg-orange-600 shadow-sm min-h-[42px]"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-4 h-4 shrink-0" />
               ADD PRODUCT
             </button>
             <button
               type="button"
               onClick={() => setActiveTab('products')}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 sm:py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50 min-h-[42px]"
             >
-              <Package className="w-4 h-4" />
-              MANAGE PRODUCTS
+              <Package className="w-4 h-4 shrink-0" />
+              <span className="truncate">MANAGE PRODUCTS</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setQrModalOpen(true)}
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 sm:py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50 min-h-[42px]"
+            >
+              <QrCode className="w-4 h-4 shrink-0" />
+              <span className="truncate">SHOW QR</span>
             </button>
             <button
               type="button"
               onClick={() => setActiveTab('settings')}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 sm:py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50 min-h-[42px]"
             >
-              <Palette className="w-4 h-4" />
-              CUSTOMISE STORE
+              <Palette className="w-4 h-4 shrink-0" />
+              <span className="truncate">CUSTOMISE</span>
             </button>
             <a
               href={`/store/${store.slug}`}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 sm:py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50 min-h-[42px]"
             >
-              <Eye className="w-4 h-4" />
-              PREVIEW STORE
-              <ExternalLink className="w-3 h-3" />
+              <Eye className="w-4 h-4 shrink-0" />
+              <span className="truncate">PREVIEW STORE</span>
+              <ExternalLink className="w-3 h-3 shrink-0" />
             </a>
             <button
               type="button"
               onClick={() => setActiveTab('share')}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#0F172A] text-white text-xs font-semibold hover:bg-slate-800"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 sm:py-2 rounded-xl bg-[#0F172A] text-white text-xs font-semibold hover:bg-slate-800 min-h-[42px]"
             >
-              <Share2 className="w-4 h-4" />
-              SHARE STORE LINK
+              <Share2 className="w-4 h-4 shrink-0" />
+              <span className="truncate">SHARE SMS</span>
             </button>
             <button
               type="button"
               onClick={handleDownloadQrSvg}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 sm:py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50 min-h-[42px]"
             >
-              <QrCode className="w-4 h-4" />
-              DOWNLOAD STORE QR CODE
+              <Download className="w-4 h-4 shrink-0" />
+              <span className="truncate">QR SVG</span>
             </button>
             <button
               type="button"
               onClick={() => setActiveTab('settings')}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 sm:py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold hover:bg-slate-50 min-h-[42px]"
             >
-              <Settings className="w-4 h-4" />
-              STORE SETTINGS
+              <Settings className="w-4 h-4 shrink-0" />
+              <span className="truncate">SETTINGS</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-3">
+      <div className="flex overflow-x-auto sm:flex-wrap gap-2 border-b border-slate-200 pb-3 -mx-1 px-1">
         {[
           { id: 'overview', label: 'Overview', icon: Store },
           { id: 'products', label: `Products (${products.length})`, icon: Package },
@@ -1319,7 +1412,7 @@ export default function MerchantMyStorePage() {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id as ActiveTab)}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition ${
+              className={`shrink-0 whitespace-nowrap inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition ${
                 activeTab === tab.id
                   ? 'bg-[#0F172A] text-white shadow-sm'
                   : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
@@ -1397,27 +1490,191 @@ export default function MerchantMyStorePage() {
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col items-center text-center space-y-3">
-              <h2 className="text-sm font-bold text-slate-900">Your Store QR Code</h2>
+              <div className="w-full flex items-center justify-between gap-2">
+                <h2 className="text-sm font-bold text-slate-900">Your Store QR Code</h2>
+                <button
+                  type="button"
+                  onClick={() => setQrModalOpen(true)}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#FF5500] hover:underline"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                  Enlarge
+                </button>
+              </div>
               <p className="text-xs text-slate-500">Print on receipts, packaging, counter tents & delivery bags.</p>
               {qrSvg ? (
                 <div
-                  className="w-44 h-44 p-2 rounded-xl border border-slate-200 bg-white flex items-center justify-center"
+                  onClick={() => setQrModalOpen(true)}
+                  title="Tap to enlarge QR code"
+                  className="w-48 h-48 p-3 rounded-2xl border border-slate-200 bg-white flex items-center justify-center cursor-pointer hover:border-[#FF5500] transition [&_svg]:w-full [&_svg]:h-full [&_svg]:block"
                   dangerouslySetInnerHTML={{ __html: qrSvg }}
                 />
               ) : (
-                <div className="w-44 h-44 rounded-xl bg-slate-100 flex items-center justify-center text-xs text-slate-400">
+                <div className="w-48 h-48 rounded-2xl bg-slate-100 flex items-center justify-center text-xs text-slate-400">
                   QR Preview Loading...
                 </div>
               )}
-              <button
-                type="button"
-                onClick={handleDownloadQrSvg}
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#0F172A] text-white text-xs font-semibold hover:bg-slate-800"
-              >
-                <Download className="w-4 h-4" />
-                DOWNLOAD STORE QR CODE (SVG)
-              </button>
+              <div className="grid grid-cols-2 gap-2 w-full">
+                <button
+                  type="button"
+                  onClick={handleDownloadQrSvg}
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-[#0F172A] text-white text-xs font-semibold hover:bg-slate-800"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  SVG
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDownloadQrPng}
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-800 text-xs font-semibold hover:bg-slate-50"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  PNG
+                </button>
+              </div>
             </div>
+          </div>
+
+          {/* All Store Products Quick CRUD */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 className="text-sm font-bold text-slate-900">All Store Products ({products.length})</h2>
+                <p className="text-xs text-slate-500">Create, edit, publish/draft or delete products visible in your store.</p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  href="/dashboard/products"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                >
+                  <Package className="w-3.5 h-3.5" />
+                  Full Catalogue
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('products')}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                >
+                  Filters & Table
+                </button>
+                <button
+                  type="button"
+                  onClick={openAddProductModal}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#FF5500] text-white text-xs font-bold hover:bg-orange-600"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Add Product
+                </button>
+              </div>
+            </div>
+
+            {products.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-slate-300 py-8 px-4 text-center space-y-2">
+                <Package className="w-8 h-8 text-slate-300 mx-auto" />
+                <p className="text-xs font-semibold text-slate-700">No products in your store yet</p>
+                <p className="text-xs text-slate-500">Add your first product so customers visiting your link or QR code can browse and order.</p>
+                <button
+                  type="button"
+                  onClick={openAddProductModal}
+                  className="mt-1 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FF5500] text-white text-xs font-bold hover:bg-orange-600"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Add First Product
+                </button>
+              </div>
+            ) : (
+              <div className="divide-y divide-slate-100">
+                {products.map((prod) => (
+                  <div
+                    key={prod.id}
+                    className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
+                        {prod.primaryImageUrl ? (
+                          <img
+                            src={resolveAssetUrl(prod.primaryImageUrl)}
+                            alt={prod.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <Package className="w-5 h-5 text-slate-400" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <h3 className="text-sm font-bold text-slate-900 truncate max-w-[200px] sm:max-w-xs">
+                            {prod.name}
+                          </h3>
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                              prod.publicationStatus === 'PUBLISHED'
+                                ? 'bg-emerald-100 text-emerald-700'
+                                : prod.publicationStatus === 'ARCHIVED'
+                                ? 'bg-slate-200 text-slate-700'
+                                : 'bg-amber-100 text-amber-800'
+                            }`}
+                          >
+                            {prod.publicationStatus}
+                          </span>
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                              prod.stockStatus === 'OUT_OF_STOCK'
+                                ? 'bg-rose-100 text-rose-700'
+                                : prod.stockStatus === 'LOW_STOCK'
+                                ? 'bg-amber-100 text-amber-800'
+                                : 'bg-slate-100 text-slate-700'
+                            }`}
+                          >
+                            {prod.stockStatus}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          <span className="font-semibold text-slate-800">{formatTzs(prod.effectivePrice, prod.currency)}</span>
+                          {prod.category ? ` • ${prod.category}` : ''}
+                          {prod.sku ? ` • SKU: ${prod.sku}` : ''}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-end gap-2 shrink-0">
+                      <select
+                        value={prod.publicationStatus}
+                        onChange={(e) =>
+                          handleQuickProductStatus(
+                            prod.id,
+                            e.target.value as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+                          )
+                        }
+                        aria-label={`Change status for ${prod.name}`}
+                        className="px-2.5 py-2 rounded-lg border border-slate-200 text-xs font-medium bg-white"
+                      >
+                        <option value="PUBLISHED">Publish</option>
+                        <option value="DRAFT">Draft</option>
+                        <option value="ARCHIVED">Archive</option>
+                      </select>
+                      <button
+                        type="button"
+                        onClick={() => openEditProductModal(prod)}
+                        className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-800"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDeleteTargetProduct(prod)}
+                        aria-label={`Delete ${prod.name}`}
+                        className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-rose-50 hover:bg-rose-100 text-xs font-semibold text-rose-700"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -1474,9 +1731,9 @@ export default function MerchantMyStorePage() {
           </div>
 
           {/* Product Filters & Header */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-2 flex-1">
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2 flex-1">
                 <div className="relative flex-1 min-w-[200px]">
                   <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                   <input
@@ -1487,16 +1744,6 @@ export default function MerchantMyStorePage() {
                     className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 text-xs"
                   />
                 </div>
-                <select
-                  value={prodStatusFilter}
-                  onChange={(e) => setProdStatusFilter(e.target.value)}
-                  className="px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white"
-                >
-                  <option value="ALL">All Statuses</option>
-                  <option value="PUBLISHED">Published</option>
-                  <option value="DRAFT">Draft</option>
-                  <option value="ARCHIVED">Archived</option>
-                </select>
                 <select
                   value={prodCategoryFilter}
                   onChange={(e) => setProdCategoryFilter(e.target.value)}
@@ -1509,15 +1756,64 @@ export default function MerchantMyStorePage() {
                     </option>
                   ))}
                 </select>
+                <div className="inline-flex rounded-xl border border-slate-200 p-0.5 bg-slate-50 self-start sm:self-auto">
+                  <button
+                    type="button"
+                    onClick={() => setProdViewMode('grid')}
+                    className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                      prodViewMode === 'grid'
+                        ? 'bg-white text-slate-900 shadow-sm'
+                        : 'text-slate-500 hover:text-slate-800'
+                    }`}
+                  >
+                    <LayoutGrid className="w-3.5 h-3.5" />
+                    Grid
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setProdViewMode('table')}
+                    className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                      prodViewMode === 'table'
+                        ? 'bg-white text-slate-900 shadow-sm'
+                        : 'text-slate-500 hover:text-slate-800'
+                    }`}
+                  >
+                    <List className="w-3.5 h-3.5" />
+                    Table
+                  </button>
+                </div>
               </div>
               <button
                 type="button"
                 onClick={openAddProductModal}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FF5500] text-white text-xs font-bold hover:bg-orange-600"
+                className="w-full lg:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 lg:py-2 rounded-xl bg-[#FF5500] text-white text-xs font-bold hover:bg-orange-600"
               >
                 <Plus className="w-4 h-4" />
                 ADD PRODUCT
               </button>
+            </div>
+
+            {/* Mobile-scrollable status filter pills */}
+            <div className="flex overflow-x-auto gap-1.5 pb-1">
+              {[
+                { key: 'ALL', label: `All (${products.length})` },
+                { key: 'PUBLISHED', label: 'Published' },
+                { key: 'DRAFT', label: 'Draft' },
+                { key: 'ARCHIVED', label: 'Archived' },
+              ].map((st) => (
+                <button
+                  key={st.key}
+                  type="button"
+                  onClick={() => setProdStatusFilter(st.key)}
+                  className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition ${
+                    prodStatusFilter === st.key
+                      ? 'bg-[#0F172A] text-white'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  {st.label}
+                </button>
+              ))}
             </div>
 
             {filteredProducts.length === 0 ? (
@@ -1526,8 +1822,102 @@ export default function MerchantMyStorePage() {
                 <p className="text-sm font-semibold text-slate-700">No products match this view</p>
                 <p className="text-xs text-slate-500">Add a product with photos, prices and availability to start selling.</p>
               </div>
+            ) : prodViewMode === 'table' ? (
+              <div className="overflow-x-auto rounded-xl border border-slate-200">
+                <table className="min-w-full divide-y divide-slate-200 text-left">
+                  <thead className="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                    <tr>
+                      <th className="px-4 py-3">Product</th>
+                      <th className="px-4 py-3">Category / SKU</th>
+                      <th className="px-4 py-3">Price</th>
+                      <th className="px-4 py-3">Stock</th>
+                      <th className="px-4 py-3">Status</th>
+                      <th className="px-4 py-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 bg-white text-xs">
+                    {filteredProducts.map((prod) => (
+                      <tr key={prod.id} className="hover:bg-slate-50">
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-3 min-w-[180px]">
+                            <div className="w-10 h-10 rounded-lg bg-slate-100 overflow-hidden shrink-0 flex items-center justify-center">
+                              {prod.primaryImageUrl ? (
+                                <img
+                                  src={resolveAssetUrl(prod.primaryImageUrl)}
+                                  alt={prod.name}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <Package className="w-4 h-4 text-slate-400" />
+                              )}
+                            </div>
+                            <span className="font-bold text-slate-900 line-clamp-1">{prod.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-slate-600 whitespace-nowrap">
+                          {prod.category || 'General'}
+                          {prod.sku ? ` • ${prod.sku}` : ''}
+                        </td>
+                        <td className="px-4 py-3 font-bold text-[#0F172A] whitespace-nowrap">
+                          {formatTzs(prod.effectivePrice, prod.currency)}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <span
+                            className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
+                              prod.stockStatus === 'OUT_OF_STOCK'
+                                ? 'bg-rose-100 text-rose-700'
+                                : prod.stockStatus === 'LOW_STOCK'
+                                ? 'bg-amber-100 text-amber-800'
+                                : 'bg-emerald-100 text-emerald-700'
+                            }`}
+                          >
+                            {prod.stockStatus}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <select
+                            value={prod.publicationStatus}
+                            onChange={(e) =>
+                              handleQuickProductStatus(
+                                prod.id,
+                                e.target.value as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+                              )
+                            }
+                            className="px-2 py-1 rounded-lg border border-slate-200 text-xs bg-white"
+                          >
+                            <option value="PUBLISHED">Published</option>
+                            <option value="DRAFT">Draft</option>
+                            <option value="ARCHIVED">Archived</option>
+                          </select>
+                        </td>
+                        <td className="px-4 py-3 text-right whitespace-nowrap">
+                          <div className="inline-flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => openEditProductModal(prod)}
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-800"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setDeleteTargetProduct(prod)}
+                              aria-label={`Delete ${prod.name}`}
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-xs font-semibold text-rose-700"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {filteredProducts.map((prod) => (
                   <div key={prod.id} className="rounded-2xl border border-slate-200 overflow-hidden flex flex-col bg-white">
                     <div className="h-44 bg-slate-100 relative">
@@ -1600,15 +1990,26 @@ export default function MerchantMyStorePage() {
                         )}
                       </div>
 
-                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                        <button
-                          type="button"
-                          onClick={() => openEditProductModal(prod)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-800"
-                        >
-                          <Edit3 className="w-3.5 h-3.5" />
-                          Edit
-                        </button>
+                      <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => openEditProductModal(prod)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-800"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDeleteTargetProduct(prod)}
+                            aria-label={`Delete ${prod.name}`}
+                            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-xs font-semibold text-rose-700"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            Delete
+                          </button>
+                        </div>
                         <select
                           value={prod.publicationStatus}
                           onChange={(e) =>
@@ -1636,6 +2037,67 @@ export default function MerchantMyStorePage() {
       {/* TAB 3: SHARE & SMS */}
       {activeTab === 'share' && (
         <div className="space-y-6">
+          {/* Storefront Share & QR Code Banner */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-center gap-5">
+            {qrSvg ? (
+              <div
+                onClick={() => setQrModalOpen(true)}
+                title="Tap to enlarge QR code"
+                className="w-32 h-32 p-2.5 rounded-2xl border border-slate-200 bg-white flex items-center justify-center shrink-0 cursor-pointer hover:border-[#FF5500] transition [&_svg]:w-full [&_svg]:h-full [&_svg]:block"
+                dangerouslySetInnerHTML={{ __html: qrSvg }}
+              />
+            ) : (
+              <div className="w-32 h-32 rounded-2xl bg-slate-100 flex items-center justify-center text-xs text-slate-400 shrink-0 text-center px-2">
+                QR Code Generating...
+              </div>
+            )}
+            <div className="flex-1 text-center sm:text-left space-y-2.5 min-w-0 w-full">
+              <div>
+                <h2 className="text-sm font-bold text-slate-900">Store Link & Printable QR Code</h2>
+                <p className="text-xs text-slate-500">Share your direct link on WhatsApp/SMS or print your QR code on flyers and delivery bags.</p>
+              </div>
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                <span className="text-xs font-mono text-slate-700 bg-slate-100 px-3 py-1.5 rounded-xl truncate max-w-full">
+                  {store.publicUrl}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleCopyStoreLink}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800"
+                >
+                  {copiedUrl ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copiedUrl ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setQrModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                  View Full QR
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDownloadQrSvg}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Download SVG
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDownloadQrPng}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Download PNG
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Template Composer */}
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
@@ -2292,22 +2754,22 @@ export default function MerchantMyStorePage() {
 
       {/* ADD / EDIT PRODUCT MODAL */}
       {productModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200">
-            <div className="sticky top-0 bg-white px-6 py-4 border-b border-slate-200 flex items-center justify-between z-10">
+        <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="bg-white rounded-t-3xl sm:rounded-2xl max-w-3xl w-full max-h-[92dvh] overflow-y-auto shadow-2xl border border-slate-200">
+            <div className="sticky top-0 bg-white px-5 sm:px-6 py-4 border-b border-slate-200 flex items-center justify-between z-10">
               <h2 className="text-base font-bold text-slate-900">
                 {editingProductId ? 'Edit Product' : 'Add Product to Your Store'}
               </h2>
               <button
                 type="button"
                 onClick={() => setProductModalOpen(false)}
-                className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500"
+                className="p-2 rounded-lg hover:bg-slate-100 text-slate-500"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSaveProduct} className="p-6 space-y-5">
+            <form onSubmit={handleSaveProduct} className="p-5 sm:p-6 space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Product Name *</label>
@@ -2630,11 +3092,11 @@ export default function MerchantMyStorePage() {
                 ))}
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-200">
+              <div className="sticky bottom-0 bg-white/95 backdrop-blur py-3 px-5 sm:px-6 -mx-5 sm:-mx-6 -mb-5 sm:-mb-6 border-t border-slate-200 flex items-center justify-end gap-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
                 <button
                   type="button"
                   onClick={() => setProductModalOpen(false)}
-                  className="px-4 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                  className="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                 >
                   Cancel
                 </button>
@@ -2647,6 +3109,107 @@ export default function MerchantMyStorePage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* STORE QR CODE LIGHTBOX MODAL */}
+      {qrModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 space-y-4 text-center">
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-bold text-slate-900">Store QR Code</h2>
+              <button
+                type="button"
+                onClick={() => setQrModalOpen(false)}
+                aria-label="Close QR preview"
+                className="p-2 rounded-lg hover:bg-slate-100 text-slate-500"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <p className="text-xs text-slate-500">
+              Customers scan this QR code to open <strong>{store.storeName}</strong> without registering.
+            </p>
+            <div className="flex justify-center">
+              {qrSvg ? (
+                <div
+                  className="w-64 h-64 p-4 rounded-2xl border border-slate-200 bg-white flex items-center justify-center [&_svg]:w-full [&_svg]:h-full [&_svg]:block"
+                  dangerouslySetInnerHTML={{ __html: qrSvg }}
+                />
+              ) : (
+                <div className="w-64 h-64 rounded-2xl bg-slate-100 flex items-center justify-center text-xs text-slate-400">
+                  QR Preview Unavailable
+                </div>
+              )}
+            </div>
+            <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2">
+              <span className="text-xs font-mono text-slate-700 truncate">{store.publicUrl}</span>
+              <button
+                type="button"
+                onClick={handleCopyStoreLink}
+                className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[11px] font-semibold"
+              >
+                {copiedUrl ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                {copiedUrl ? 'Copied' : 'Copy'}
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={handleDownloadQrSvg}
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#0F172A] text-white text-xs font-semibold hover:bg-slate-800"
+              >
+                <Download className="w-4 h-4" />
+                Download SVG
+              </button>
+              <button
+                type="button"
+                onClick={handleDownloadQrPng}
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-800 text-xs font-semibold hover:bg-slate-50"
+              >
+                <Download className="w-4 h-4" />
+                Download PNG
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* DELETE PRODUCT CONFIRMATION MODAL */}
+      {deleteTargetProduct && (
+        <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+            <div className="flex items-start gap-3">
+              <div className="p-2.5 rounded-xl bg-rose-100 text-rose-700 shrink-0">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <h2 className="text-base font-bold text-slate-900">Delete product?</h2>
+                <p className="text-xs text-slate-600">
+                  Are you sure you want to permanently remove <strong>{deleteTargetProduct.name}</strong> from your store catalogue? Existing customer order records will remain safe.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-2 pt-2">
+              <button
+                type="button"
+                disabled={deletingProduct}
+                onClick={() => setDeleteTargetProduct(null)}
+                className="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={deletingProduct}
+                onClick={handleDeleteProduct}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-rose-600 text-white text-xs font-bold hover:bg-rose-700 disabled:opacity-50"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                {deletingProduct ? 'Deleting...' : 'Delete Product'}
+              </button>
+            </div>
           </div>
         </div>
       )}

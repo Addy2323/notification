@@ -14,6 +14,7 @@ import {
   listMerchantStoreProducts,
   createStoreProduct,
   updateStoreProduct,
+  deleteStoreProduct,
   getPublicStoreBySlug,
   getPublicStoreProduct,
   recordPublicStoreEvent,
@@ -504,6 +505,20 @@ export async function updateMyProduct(req: Request, res: Response) {
   } catch (error: any) {
     const status = error.message?.includes('not found') ? 404 : 400;
     return sendError(res, 'PRODUCT_UPDATE_ERROR', error.message || 'Failed to update product', status);
+  }
+}
+
+export async function deleteMyProduct(req: Request, res: Response) {
+  try {
+    const result = await deleteStoreProduct(
+      getUserMerchantId(req),
+      getUserId(req),
+      String(req.params.id)
+    );
+    return sendSuccess(res, result);
+  } catch (error: any) {
+    const status = error.message?.includes('not found') ? 404 : 400;
+    return sendError(res, 'PRODUCT_DELETE_ERROR', error.message || 'Failed to delete product', status);
   }
 }
 

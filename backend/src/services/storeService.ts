@@ -452,6 +452,10 @@ export async function getMerchantStoreDashboard(merchantId: string) {
     smsLogs = smsRows || [];
   }
 
+  const qrSvg = store
+    ? await generateStoreQrSvg(getPublicStoreUrl(store.slug)).catch(() => '')
+    : '';
+
   return {
     store: store
       ? {
@@ -479,6 +483,7 @@ export async function getMerchantStoreDashboard(merchantId: string) {
           suspensionReason: store.suspension_reason || null,
           publishedAt: store.published_at || null,
           publicUrl: getPublicStoreUrl(store.slug),
+          qrSvg,
         }
       : null,
     prefill,
@@ -983,6 +988,34 @@ export async function updateStoreProduct(
   });
 
   return serializeMerchantProduct(updated);
+}
+
+export async function deleteStoreProduct(
+  merchantId: string,
+  userId: string,
+  productId: string
+) {
+  const existing = await (prisma as any).product.findFirst({
+    where: { id: productId, merchant_id: merchantId },
+  });
+  if (!existing) throw new Error('Product not found');
+
+  await (prisma as any).product.delete({
+    where: { id: existing.id },
+  });
+
+  await prisma.auditLog.create({
+    data: {
+      merchant_id: merchantId,
+      user_id: userId,
+      action: 'PRODUCT_DELETED',
+      object_type: 'PRODUCT',
+      object_id: existing.id,
+      metadata: JSON.stringify({ name: existing.name, sku: existing.sku || null }),
+    },
+  });
+
+  return { deleted: true, id: existing.id };
 }
 
 async function resolvePublishedStoreBySlugOrRedirect(rawSlug: string) {

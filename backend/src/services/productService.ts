@@ -76,6 +76,16 @@ export class ProductService {
     });
   }
 
+  static async deleteProduct(merchantId: string, id: string) {
+    const existing = await prisma.product.findFirst({
+      where: { id, merchant_id: merchantId },
+      select: { id: true },
+    });
+    if (!existing) return null;
+    await prisma.product.delete({ where: { id: existing.id } });
+    return { deleted: true, id: existing.id };
+  }
+
   static async getTopProducts(merchantId: string, options?: { limit?: number; sortBy?: 'quantity' | 'revenue' | 'profit'; startDate?: Date; endDate?: Date }) {
     const limit = options?.limit || 5;
     const sortBy = options?.sortBy || 'revenue';
