@@ -1423,13 +1423,13 @@ export async function getTrackingStoreRecommendations(merchantId: string) {
       publication_status: 'PUBLISHED',
     },
     orderBy: [{ is_featured: 'desc' }, { created_at: 'desc' }],
-    take: 8,
+    take: 16,
   });
 
   const products = (productsRaw || [])
     .map((p: any) => serializePublicProduct(p, store.show_sold_out_badges))
     .filter((p: any) => p.isAvailable)
-    .slice(0, 4);
+    .slice(0, 12);
 
   if (products.length === 0) return null;
 

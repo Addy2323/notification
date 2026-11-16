@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   Package, MapPin, Truck, Phone, MessageSquare, CheckCircle2, Clock,
   Globe, ShieldCheck, RefreshCw, AlertCircle, Share2, Copy, Check, ExternalLink, Sparkles,
-  Store, ShoppingBag, ArrowRight, X
+  Store, ShoppingBag, ArrowRight, ChevronLeft, ChevronRight, X
 } from 'lucide-react';
 import { fetchApi, API_BASE } from '@/lib/api';
 import { useLanguage, T, TLabel } from '@/components/LanguageProvider';
@@ -33,6 +33,9 @@ export default function PublicCustomerTrackingPortal() {
   const { language: lang, setLanguage: setLang } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [splashDone, setSplashDone] = useState(false);
+  const productSliderRef = useRef<HTMLDivElement>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [sliderPaused, setSliderPaused] = useState(false);
 
   // SmartTrack Store Buy Again state
   const [buyAgainOpen, setBuyAgainOpen] = useState(false);
@@ -161,6 +164,41 @@ export default function PublicCustomerTrackingPortal() {
     return () => clearTimeout(timer);
   }, []);
 
+  const recommendedProducts: any[] = delivery?.store_recommendations?.products || [];
+
+  const scrollToSlide = (index: number) => {
+    const container = productSliderRef.current;
+    if (!container || recommendedProducts.length === 0) return;
+    const clamped = ((index % recommendedProducts.length) + recommendedProducts.length) % recommendedProducts.length;
+    const child = container.children[clamped] as HTMLElement | undefined;
+    if (child) {
+      container.scrollTo({
+        left: child.offsetLeft - container.offsetLeft,
+        behavior: 'smooth',
+      });
+    }
+    setActiveSlide(clamped);
+  };
+
+  useEffect(() => {
+    if (recommendedProducts.length <= 1 || sliderPaused) return;
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => {
+        const next = (prev + 1) % recommendedProducts.length;
+        const container = productSliderRef.current;
+        const child = container?.children[next] as HTMLElement | undefined;
+        if (container && child) {
+          container.scrollTo({
+            left: child.offsetLeft - container.offsetLeft,
+            behavior: 'smooth',
+          });
+        }
+        return next;
+      });
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [recommendedProducts.length, sliderPaused]);
+
   const handleCopyLink = () => {
     const link = window.location.href;
     navigator.clipboard.writeText(link);
@@ -230,6 +268,8 @@ export default function PublicCustomerTrackingPortal() {
         return { title: 'Driver is Nearby 📍', desc: 'Your delivery is almost here! Please be ready to receive your order.' };
       case 'DELIVERED':
         return { title: 'Delivered 🎉', desc: 'Your order has been successfully delivered. Enjoy!' };
+      case 'COMPLETED':
+        return { title: 'Order Completed 🎉', desc: 'Your order is completed. Thank you for shopping with us!' };
       case 'CANCELLED':
         return { title: 'Order Cancelled', desc: 'Please contact merchant support for assistance.' };
       default:
@@ -262,6 +302,7 @@ export default function PublicCustomerTrackingPortal() {
     if (st === 'CREATED') return 0;
     if (st === 'ON_THE_WAY') return 3;
     if (st === 'DRIVER_NEARBY') return 4;
+    if (st === 'COMPLETED') return 5;
     return order.indexOf(st);
   };
 
@@ -677,32 +718,70 @@ export default function PublicCustomerTrackingPortal() {
               )}
             </div>
 
-            {/* Discover More From Merchant Store */}
-            {delivery.store_recommendations.products?.length > 0 && (
-              <div className="bg-white rounded-3xl border border-slate-200 p-4 shadow-sm space-y-3">
+            {/* Available Products Sliding Carousel From Merchant Store */}
+            {recommendedProducts.length > 0 && (
+              <div
+                className="bg-white rounded-3xl border border-slate-200 p-4 shadow-sm space-y-3"
+                onMouseEnter={() => setSliderPaused(true)}
+                onMouseLeave={() => setSliderPaused(false)}
+                onTouchStart={() => setSliderPaused(true)}
+                onTouchEnd={() => setSliderPaused(false)}
+              >
                 <div className="flex items-center justify-between gap-2">
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#FF5500]">
-                      LUMO SmartTrack Store
+                      {delivery.store_recommendations.store.storeName}
                     </p>
-                    <h3 className="text-sm font-extrabold text-slate-900">
-                      DISCOVER MORE FROM {delivery.store_recommendations.store.storeName.toUpperCase()}
+                    <h3 className="text-sm font-extrabold text-slate-900 truncate">
+                      Available Products
                     </h3>
                   </div>
-                  <Store className="w-5 h-5 text-slate-400 shrink-0" />
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    {recommendedProducts.length > 1 && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => scrollToSlide(activeSlide - 1)}
+                          aria-label="Previous product"
+                          className="w-7 h-7 rounded-full border border-slate-200 bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-700 transition"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => scrollToSlide(activeSlide + 1)}
+                          aria-label="Next product"
+                          className="w-7 h-7 rounded-full border border-slate-200 bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-700 transition"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </>
+                    )}
+                    <Link
+                      href={`/store/${delivery.store_recommendations.store.slug}`}
+                      onClick={() => recordTrackingStoreClick(delivery.store_recommendations.store.slug)}
+                      className="text-[11px] font-bold text-[#FF5500] hover:underline ml-1 inline-flex items-center gap-0.5"
+                    >
+                      View More
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2.5">
-                  {delivery.store_recommendations.products.slice(0, 4).map((prod: any) => (
+                <div
+                  ref={productSliderRef}
+                  className="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                >
+                  {recommendedProducts.map((prod: any) => (
                     <Link
                       key={prod.id}
                       href={`/store/${delivery.store_recommendations.store.slug}?product=${encodeURIComponent(prod.id)}`}
                       onClick={() =>
                         recordTrackingStoreClick(delivery.store_recommendations.store.slug, prod.id)
                       }
-                      className="rounded-2xl border border-slate-200 overflow-hidden bg-slate-50 hover:bg-white hover:border-slate-300 transition flex flex-col"
+                      className="snap-start shrink-0 w-[68%] sm:w-[48%] rounded-2xl border border-slate-200 overflow-hidden bg-slate-50 hover:bg-white hover:border-slate-300 transition flex flex-col shadow-xs"
                     >
-                      <div className="h-24 bg-slate-200 relative">
+                      <div className="h-28 bg-slate-200 relative">
                         {prod.primaryImageUrl ? (
                           <img
                             src={resolveStoreAssetUrl(prod.primaryImageUrl)}
@@ -719,8 +798,11 @@ export default function PublicCustomerTrackingPortal() {
                             Offer
                           </span>
                         )}
+                        <span className="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-600/90 text-white">
+                          Available
+                        </span>
                       </div>
-                      <div className="p-2.5">
+                      <div className="p-2.5 flex-1 flex flex-col justify-between">
                         <p className="text-xs font-bold text-slate-900 line-clamp-1">{prod.name}</p>
                         <div className="flex items-baseline gap-1.5 mt-1">
                           <span className="text-xs font-extrabold text-[#0F172A]">
@@ -738,13 +820,31 @@ export default function PublicCustomerTrackingPortal() {
                   ))}
                 </div>
 
+                {recommendedProducts.length > 1 && (
+                  <div className="flex items-center justify-center gap-1.5 pt-0.5">
+                    {recommendedProducts.map((_: any, idx: number) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => scrollToSlide(idx)}
+                        aria-label={`Slide ${idx + 1}`}
+                        className={`h-1.5 rounded-full transition-all ${
+                          idx === activeSlide
+                            ? 'w-5 bg-[#FF5500]'
+                            : 'w-1.5 bg-slate-300 hover:bg-slate-400'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+
                 <Link
                   href={`/store/${delivery.store_recommendations.store.slug}`}
                   onClick={() => recordTrackingStoreClick(delivery.store_recommendations.store.slug)}
                   className="w-full py-2.5 px-4 rounded-xl bg-[#0F172A] text-white text-xs font-bold hover:bg-slate-800 flex items-center justify-center gap-2 transition"
                 >
                   <Store className="w-4 h-4 text-[#FF5500]" />
-                  VISIT OUR STORE
+                  VIEW MORE PRODUCTS
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>

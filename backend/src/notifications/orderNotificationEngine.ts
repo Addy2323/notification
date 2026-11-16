@@ -13,17 +13,17 @@ import { smsManagementService } from '../services/smsManagementService';
 // Customer SMS Templates (per event type)
 const CUSTOMER_TEMPLATES: Record<string, string> = {
   ORDER_CREATED:
-    'Hello {{customerName}}, thank you for shopping with {{merchantName}}! Order {{orderNumber}} has been received and is Pending. We will keep you updated.',
+    'Hello {{customerName}}, thank you for shopping with {{merchantName}}! Order {{orderNumber}} has been received and is Pending. Track your order: {{trackingUrl}}',
   ORDER_CONFIRMED:
-    'Hello {{customerName}}, {{merchantName}} has confirmed order {{orderNumber}}. We will let you know when it is ready for delivery.',
+    'Hello {{customerName}}, {{merchantName}} has confirmed order {{orderNumber}}. We will let you know when it is ready for delivery. Track your order: {{trackingUrl}}',
   DRIVER_ASSIGNED:
-    'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} will be delivered via {{transportMethod}} by {{driverName}}, {{driverPhone}}. Delivery: {{deliveryAddress}}. Thank you for shopping with us!',
+    'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} will be delivered via {{transportMethod}} by {{driverName}}, {{driverPhone}}. Delivery: {{deliveryAddress}}. Track your order: {{trackingUrl}}',
   OUT_FOR_DELIVERY:
-    'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} is now out for delivery via {{transportMethod}} with {{driverName}}. Please be ready to receive your order. Thank you for shopping with us!',
+    'Hello {{customerName}}, your {{merchantName}} order {{orderNumber}} is now out for delivery via {{transportMethod}} with {{driverName}}. Please be ready to receive your order. Track live: {{trackingUrl}}',
   DRIVER_ARRIVED:
-    'Your delivery is almost here! Your driver {{driverName}} is nearby. Please be ready to receive your order for {{merchantName}} (Order #{{orderNumber}}).',
+    'Your delivery is almost here! Your driver {{driverName}} is nearby. Please be ready to receive your order for {{merchantName}} (Order #{{orderNumber}}). Track: {{trackingUrl}}',
   DRIVER_NEARBY:
-    'Your delivery is almost here! Your driver {{driverName}} is nearby. Please be ready to receive your order for {{merchantName}} (Order #{{orderNumber}}).',
+    'Your delivery is almost here! Your driver {{driverName}} is nearby. Please be ready to receive your order for {{merchantName}} (Order #{{orderNumber}}). Track: {{trackingUrl}}',
   ORDER_DELIVERED:
     'Your order {{orderNumber}} has been successfully delivered. Thank you for shopping with {{merchantName}}. ⭐ Please rate your delivery experience: {{ratingUrl}}',
   ORDER_CANCELLED:
@@ -43,12 +43,12 @@ const DRIVER_TEMPLATES: Record<string, string> = {
 };
 
 export const SW_CUSTOMER_TEMPLATES: Record<string, string> = {
-  ORDER_CREATED: 'Habari {{customerName}}, asante kwa kununua kutoka {{merchantName}}! Oda {{orderNumber}} imepokelewa na inasubiri. Tutakupa taarifa zaidi.',
-  ORDER_CONFIRMED: 'Habari {{customerName}}, {{merchantName}} amethibitisha oda {{orderNumber}}. Tutakujulisha ikiwa tayari kusafirishwa.',
-  DRIVER_ASSIGNED: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} italetwa kwa {{transportMethod}} na {{driverName}}, {{driverPhone}}. Anwani: {{deliveryAddress}}. Asante kwa kununua kwetu!',
-  OUT_FOR_DELIVERY: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} iko njiani kwa {{transportMethod}} na {{driverName}}. Tafadhali jiandae kuipokea. Asante kwa kununua kwetu!',
-  DRIVER_ARRIVED: 'Mzigo wako unakaribia kufika! Dereva {{driverName}} yuko karibu. Jiandae kupokea oda {{orderNumber}} kutoka {{merchantName}}.',
-  DRIVER_NEARBY: 'Mzigo wako unakaribia kufika! Dereva {{driverName}} yuko karibu. Jiandae kupokea oda {{orderNumber}} kutoka {{merchantName}}.',
+  ORDER_CREATED: 'Habari {{customerName}}, asante kwa kununua kutoka {{merchantName}}! Oda {{orderNumber}} imepokelewa na inasubiri. Fuatilia oda yako: {{trackingUrl}}',
+  ORDER_CONFIRMED: 'Habari {{customerName}}, {{merchantName}} amethibitisha oda {{orderNumber}}. Tutakujulisha ikiwa tayari kusafirishwa. Fuatilia oda yako: {{trackingUrl}}',
+  DRIVER_ASSIGNED: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} italetwa kwa {{transportMethod}} na {{driverName}}, {{driverPhone}}. Anwani: {{deliveryAddress}}. Fuatilia oda yako: {{trackingUrl}}',
+  OUT_FOR_DELIVERY: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} iko njiani kwa {{transportMethod}} na {{driverName}}. Tafadhali jiandae kuipokea. Fuatilia moja kwa moja: {{trackingUrl}}',
+  DRIVER_ARRIVED: 'Mzigo wako unakaribia kufika! Dereva {{driverName}} yuko karibu. Jiandae kupokea oda {{orderNumber}} kutoka {{merchantName}}. Fuatilia: {{trackingUrl}}',
+  DRIVER_NEARBY: 'Mzigo wako unakaribia kufika! Dereva {{driverName}} yuko karibu. Jiandae kupokea oda {{orderNumber}} kutoka {{merchantName}}. Fuatilia: {{trackingUrl}}',
   ORDER_DELIVERED: 'Oda yako {{orderNumber}} imefikishwa. Asante kwa kununua kutoka {{merchantName}}. Tafadhali tathmini huduma: {{ratingUrl}}',
   ORDER_CANCELLED: 'Habari {{customerName}}, oda yako {{orderNumber}} kutoka {{merchantName}} imeghairiwa. Wasiliana nasi kwa taarifa zaidi.'
 };

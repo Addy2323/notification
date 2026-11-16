@@ -101,6 +101,8 @@ export async function getCustomerTracking(req: Request, res: Response) {
     }
 
     const maskedDriverPhone = delivery.driver_phone ? delivery.driver_phone.slice(0, 7) + '****' : null;
+    const { getTrackingStoreRecommendations } = await import('../services/storeService');
+    const storeRecommendations = await getTrackingStoreRecommendations(delivery.merchant_id).catch(() => null);
 
     return sendSuccess(res, {
       id: delivery.id,
@@ -123,6 +125,7 @@ export async function getCustomerTracking(req: Request, res: Response) {
       vehicle_info: 'BODA',
       transport_type: 'BODA',
       merchant: delivery.merchant,
+      store_recommendations: storeRecommendations,
       timeline: delivery.events.map((e: any) => ({
         event_type: e.event_type,
         timestamp: e.timestamp,
