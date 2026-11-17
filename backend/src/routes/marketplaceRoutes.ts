@@ -10,7 +10,7 @@ const adminAccess = [requireAuth, requireRole(['ADMIN'])];
 router.get('/categories', controller.listPublicCategories);
 router.get('/merchants', controller.listPublicMerchants);
 router.get('/merchants/:slug', controller.getPublicMerchantProfile);
-router.post('/merchants/:slug/follow', requireAuth, controller.toggleFollowMerchant);
+router.post('/merchants/:slug/follow', controller.toggleFollowMerchant);
 
 // Merchant Marketplace Profile & Category Management
 router.get('/my/categories', ...merchantAccess, controller.getMyCategories);

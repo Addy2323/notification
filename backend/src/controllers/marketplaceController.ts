@@ -1,21 +1,63 @@
+import crypto from 'crypto';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { config } from '../config';
 import { sendSuccess, sendError } from '../utils/response';
 import * as marketplaceService from '../services/marketplaceService';
 
-function getOptionalAuthUser(req: Request): { userId: string; merchantId?: string } | null {
+function getOptionalAuthUser(req: Request): { userId: string; merchantId?: string; name?: string } | null {
   try {
     const token =
       req.cookies?.token ||
       (req.headers.authorization?.startsWith('Bearer ') ? req.headers.authorization.slice(7) : null);
     if (!token) return null;
     const decoded = jwt.verify(token, config.jwtSecret) as any;
-    if (decoded?.userId) return { userId: decoded.userId, merchantId: decoded.merchantId };
+    if (decoded?.userId) return { userId: decoded.userId, merchantId: decoded.merchantId, name: decoded.name };
   } catch {
     // Ignore invalid/expired optional token
   }
   return null;
+}
+
+function resolveFollowerIdentity(req: Request, createIfMissing = false): {
+  followerKey: string | null;
+  userId: string | null;
+  followerName: string | null;
+  newCookieVisitorId?: string;
+} {
+  const authUser = getOptionalAuthUser(req);
+  if (authUser?.userId) {
+    return {
+      followerKey: `user:${authUser.userId}`,
+      userId: authUser.userId,
+      followerName: authUser.name || null,
+    };
+  }
+
+  const rawVisitor =
+    (req.headers['x-visitor-id'] as string | undefined)?.trim() ||
+    (req.body?.visitorId as string | undefined)?.trim() ||
+    req.cookies?.lumo_follower_id?.trim();
+
+  if (rawVisitor && rawVisitor.length >= 6 && rawVisitor.length <= 128) {
+    return {
+      followerKey: `guest:${rawVisitor}`,
+      userId: null,
+      followerName: 'Visitor',
+    };
+  }
+
+  if (createIfMissing) {
+    const generated = crypto.randomUUID();
+    return {
+      followerKey: `guest:${generated}`,
+      userId: null,
+      followerName: 'Visitor',
+      newCookieVisitorId: generated,
+    };
+  }
+
+  return { followerKey: null, userId: null, followerName: null };
 }
 
 export async function listPublicCategories(req: Request, res: Response) {
@@ -47,8 +89,7 @@ export async function listPublicMerchants(req: Request, res: Response) {
 
 export async function getPublicMerchantProfile(req: Request, res: Response) {
   try {
-    const authUser = getOptionalAuthUser(req);
-    const followerKey = authUser?.userId ? `user:${authUser.userId}` : null;
+    const { followerKey } = resolveFollowerIdentity(req, false);
     const profile = await marketplaceService.getPublicMerchantProfile(req.params.slug, followerKey);
     if (!profile) {
       return sendError(res, 'NOT_FOUND', 'Merchant profile not found or unpublished', 404);
@@ -61,18 +102,31 @@ export async function getPublicMerchantProfile(req: Request, res: Response) {
 
 export async function toggleFollowMerchant(req: Request, res: Response) {
   try {
-    const user = (req as any).user;
-    if (!user?.id) {
-      return sendError(res, 'UNAUTHORIZED', 'Please sign in to follow merchants', 401);
+    const identity = resolveFollowerIdentity(req, true);
+    if (!identity.followerKey) {
+      return sendError(res, 'FOLLOW_ERROR', 'Unable to resolve follower identity', 400);
     }
-    const followerKey = `user:${user.id}`;
+
+    if (identity.newCookieVisitorId) {
+      res.cookie('lumo_follower_id', identity.newCookieVisitorId, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 365 * 24 * 3600 * 1000,
+      });
+    }
+
     const result = await marketplaceService.toggleFollowMerchant(
       req.params.slug,
-      followerKey,
-      user.id,
-      user.name || null
+      identity.followerKey,
+      identity.userId,
+      identity.followerName
     );
-    return sendSuccess(res, result);
+    return sendSuccess(res, {
+      ...result,
+      ...(identity.newCookieVisitorId ? { visitorId: identity.newCookieVisitorId } : {}),
+    });
   } catch (err: any) {
     return sendError(res, 'FOLLOW_ERROR', err.message || 'Unable to update follow status', 400);
   }

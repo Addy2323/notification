@@ -52,13 +52,27 @@ export default function PublicMerchantProfilePage() {
   const [followersCount, setFollowersCount] = useState(0);
   const [followLoading, setFollowLoading] = useState(false);
 
+  const getOrCreateVisitorId = () => {
+    if (typeof window === 'undefined') return '';
+    let id = localStorage.getItem('lumo_visitor_id') || '';
+    if (!id) {
+      id = typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `v_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+      localStorage.setItem('lumo_visitor_id', id);
+    }
+    return id;
+  };
+
   const loadProfile = useCallback(async () => {
     setLoading(true);
     setNotFound(false);
     try {
+      const visitorId = typeof window !== 'undefined' ? localStorage.getItem('lumo_visitor_id') || '' : '';
       const res = await fetch(`${API_BASE}/marketplace/merchants/${encodeURIComponent(slug)}`, {
         credentials: 'include',
         cache: 'no-store',
+        headers: visitorId ? { 'x-visitor-id': visitorId } : undefined,
       });
       const json = await res.json();
       if (!res.ok || !json?.success || !json.data) {
@@ -83,16 +97,21 @@ export default function PublicMerchantProfilePage() {
     if (followLoading) return;
     setFollowLoading(true);
     try {
+      const visitorId = getOrCreateVisitorId();
       const res = await fetch(`${API_BASE}/marketplace/merchants/${encodeURIComponent(slug)}/follow`, {
         method: 'POST',
         credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(visitorId ? { 'x-visitor-id': visitorId } : {}),
+        },
+        body: JSON.stringify({ visitorId }),
       });
-      if (res.status === 401) {
-        router.push(`/login?next=${encodeURIComponent(`/merchants/${slug}`)}`);
-        return;
-      }
       const json = await res.json();
       if (res.ok && json?.success && json.data) {
+        if (json.data.visitorId && typeof window !== 'undefined') {
+          localStorage.setItem('lumo_visitor_id', json.data.visitorId);
+        }
         setIsFollowing(Boolean(json.data.following));
         setFollowersCount(Number(json.data.followersCount || 0));
       }
