@@ -3,7 +3,7 @@
 import { T, useLanguage } from '@/components/LanguageProvider';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, Store } from 'lucide-react';
 import { LumoLogo } from './LumoLogo';
 import LanguageSelector from '@/components/LanguageSelector';
 import { PWAInstallButton } from '@/app/components/pwa/PWAInstallButton';
@@ -34,9 +34,14 @@ export function Header() {
 
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-6 xl:gap-8 font-semibold text-[#A0B8D0]">
+          <Link href="/" className="hover:text-white transition-colors py-2">Home</Link>
           <Link href="/features" className="hover:text-white transition-colors py-2"><T k="common.features" /></Link>
-          <Link href="/contact" className="hover:text-white transition-colors py-2"><T k="public.contact_us" /></Link>
+          <Link href="/merchants" className="inline-flex items-center gap-1.5 text-white hover:text-[#FF5500] transition-colors py-2">
+            <Store className="w-4 h-4 text-[#FF5500]" />
+            <span>Merchants</span>
+          </Link>
           <Link href="/about" className="hover:text-white transition-colors py-2"><T k="common.about_us" /></Link>
+          <Link href="/contact" className="hover:text-white transition-colors py-2"><T k="public.contact_us" /></Link>
         </nav>
 
         {/* Right Desktop Action Buttons */}
@@ -93,6 +98,14 @@ export function Header() {
           </div>
 
           <nav className="flex flex-col space-y-1 font-semibold text-base text-[#A0B8D0]">
+            <Link 
+              href="/merchants" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-3 px-2 rounded-lg border-b border-[#162A45]/60 text-white hover:bg-white/5 hover:text-[#FF5500] transition-colors flex items-center gap-2"
+            >
+              <Store className="w-4 h-4 text-[#FF5500]" />
+              <span>Merchants</span>
+            </Link>
             <Link 
               href="/#features" 
               onClick={() => setMobileMenuOpen(false)}

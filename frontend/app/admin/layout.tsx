@@ -39,6 +39,9 @@ import {
   Star,
   MessageSquare,
   Store,
+  BadgeCheck,
+  Layers,
+  Megaphone,
 } from 'lucide-react';
 import { fetchApi } from '@/lib/api';
 import LanguageSelector from '@/components/LanguageSelector';
@@ -54,7 +57,10 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: 'Overview', href: '/admin', icon: LayoutDashboard },
   { label: 'Merchants', href: '/admin/merchants', icon: Users },
+  { label: 'Verified Merchants', href: '/admin/verified-merchants', icon: BadgeCheck },
+  { label: 'Merchant Categories', href: '/admin/categories', icon: Layers },
   { label: 'SmartTrack Stores', href: '/admin/stores', icon: Store },
+  { label: 'Marketing & SMS', href: '/admin/promotions', icon: Megaphone },
   { label: 'Orders', href: '/admin/orders', icon: ShoppingBag },
   { label: 'Sales', href: '/admin/sales', icon: DollarSign },
   { label: 'Drivers', href: '/admin/drivers', icon: Truck },

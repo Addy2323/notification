@@ -210,7 +210,7 @@ function serializeMerchantProduct(product: any) {
   };
 }
 
-function serializePublicStore(store: any) {
+export function serializePublicStore(store: any) {
   return {
     storeName: store.store_name,
     slug: store.slug,
@@ -223,6 +223,12 @@ function serializePublicStore(store: any) {
     whatsappNumber: store.whatsapp_number || store.merchant?.whatsapp_number || store.contact_phone || null,
     contactEmail: store.contact_email || store.merchant?.email || null,
     location: store.location || store.merchant?.location || null,
+    isVerified: Boolean(
+      store.merchant?.is_verified &&
+      store.merchant?.verification_status === 'VERIFIED' &&
+      (!store.merchant?.verification_expires_at ||
+        new Date(store.merchant.verification_expires_at).getTime() > Date.now())
+    ),
     socialLinks: safeJsonParse<StoreSocialLinks>(store.social_links_json, {}),
     promotionalBannerText: store.promotional_banner_text || null,
     showSoldOutBadges: Boolean(store.show_sold_out_badges),

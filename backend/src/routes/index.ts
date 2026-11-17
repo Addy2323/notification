@@ -17,6 +17,9 @@ import receiptConfirmationRoutes from './receiptConfirmationRoutes';
 import confirmationReceiptRoutes from './confirmationReceiptRoutes';
 import smsManagementRoutes from './smsManagementRoutes';
 import storeRoutes from './storeRoutes';
+import marketplaceRoutes from './marketplaceRoutes';
+import verificationRoutes from './verificationRoutes';
+import promotionRoutes from './promotionRoutes';
 
 const router = Router();
 
@@ -39,5 +42,8 @@ router.use('/receipt-confirmations', receiptConfirmationRoutes);
 router.use('/receipts', confirmationReceiptRoutes);
 router.use('/sms', smsManagementRoutes);
 router.use('/store', storeRoutes);
+router.use('/marketplace', marketplaceRoutes);
+router.use('/verification', verificationRoutes);
+router.use('/promotions', promotionRoutes);
 
 export default router;

@@ -293,11 +293,19 @@ export class SmsManagementController {
         const reference = metadata.reference || metadata.order_id || data.reference;
 
         if (reference) {
-          console.log(`[SNIPPE WEBHOOK] Allocating credits for transaction: ${reference}`);
-          await smsManagementService.allocateTopupCredits({
-            reference,
-            gatewayReference: data.reference || data.external_reference,
-          });
+          if (metadata.payment_purpose === 'MERCHANT_VERIFICATION' || String(reference).startsWith('VER_')) {
+            const { confirmVerificationPaymentIdempotent } = await import('../services/verificationService');
+            await confirmVerificationPaymentIdempotent(
+              reference,
+              data.reference || data.external_reference
+            );
+          } else {
+            console.log(`[SNIPPE WEBHOOK] Allocating credits for transaction: ${reference}`);
+            await smsManagementService.allocateTopupCredits({
+              reference,
+              gatewayReference: data.reference || data.external_reference,
+            });
+          }
         }
       }
 

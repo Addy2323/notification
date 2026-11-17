@@ -23,6 +23,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { API_BASE } from '@/lib/api';
+import { VerifiedBadge } from '@/components/common/VerifiedBadge';
 
 const ASSET_ORIGIN = API_BASE.replace(/\/api\/?$/, '');
 
@@ -345,7 +346,10 @@ export default function PublicMerchantStorefrontPage() {
                 </div>
               )}
               <div className="pt-8">
-                <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{store?.storeName}</h1>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{store?.storeName}</h1>
+                  {store?.isVerified && <VerifiedBadge size="md" />}
+                </div>
                 {store?.description && (
                   <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">{store.description}</p>
                 )}

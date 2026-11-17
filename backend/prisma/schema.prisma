@@ -20,6 +20,10 @@ model Merchant {
   brand_color     String?        @default("#1E40AF")
   whatsapp_number String?
   status          String         @default("ACTIVE")
+  verification_status     String   @default("NOT_VERIFIED") // NOT_VERIFIED, PAYMENT_PENDING, PAID_PENDING_REVIEW, VERIFIED, REJECTED, EXPIRED, SUSPENDED
+  is_verified             Boolean  @default(false)
+  verified_at             DateTime?
+  verification_expires_at DateTime?
   created_at      DateTime       @default(now())
 
   users           MerchantUser[]
@@ -44,7 +48,16 @@ model Merchant {
   store_analytics       StoreAnalyticsEvent[]
   store_enquiries       StoreProductEnquiry[]
   store_sms_logs        StoreSmsDispatchLog[]
+  category_mappings     MerchantCategoryMapping[]
+  followers             MerchantFollower[]
+  posts                 MerchantPost[]
+  verification_applications VerificationApplication[]
+  sms_templates         SmsTemplate[]
+  sms_campaigns         SmsCampaign[]
+  sms_campaign_recipients SmsCampaignRecipient[]
 
+  @@index([is_verified])
+  @@index([verification_status])
   @@map("merchants")
 }
 
@@ -836,6 +849,199 @@ model StoreSmsDispatchLog {
   @@index([merchant_id, created_at])
   @@index([provider_message_id])
   @@map("store_sms_dispatch_logs")
+}
+
+// ================= MERCHANT MARKETPLACE, VERIFICATION & BULK SMS =================
+
+model MerchantCategory {
+  id            String                    @id @default(uuid())
+  name          String
+  slug          String                    @unique
+  description   String?
+  image_url     String?
+  icon_name     String?
+  parent_id     String?
+  display_order Int                       @default(0)
+  is_active     Boolean                   @default(true)
+  created_at    DateTime                  @default(now())
+  updated_at    DateTime                  @updatedAt
+
+  parent        MerchantCategory?         @relation("CategoryHierarchy", fields: [parent_id], references: [id], onDelete: Cascade)
+  subcategories MerchantCategory[]        @relation("CategoryHierarchy")
+  merchants     MerchantCategoryMapping[]
+
+  @@index([parent_id])
+  @@index([is_active, display_order])
+  @@map("merchant_categories")
+}
+
+model MerchantCategoryMapping {
+  id          String           @id @default(uuid())
+  merchant_id String
+  category_id String
+  is_primary  Boolean          @default(false)
+  created_at  DateTime         @default(now())
+
+  merchant    Merchant         @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  category    MerchantCategory @relation(fields: [category_id], references: [id], onDelete: Cascade)
+
+  @@unique([merchant_id, category_id])
+  @@index([category_id])
+  @@map("merchant_category_mappings")
+}
+
+model MerchantFollower {
+  id            String   @id @default(uuid())
+  merchant_id   String
+  follower_key  String
+  user_id       String?
+  follower_name String?
+  created_at    DateTime @default(now())
+
+  merchant      Merchant @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+
+  @@unique([merchant_id, follower_key])
+  @@index([merchant_id])
+  @@map("merchant_followers")
+}
+
+model MerchantPost {
+  id           String   @id @default(uuid())
+  merchant_id  String
+  title        String?
+  caption      String
+  image_url    String?
+  product_id   String?
+  is_published Boolean  @default(true)
+  likes_count  Int      @default(0)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  merchant     Merchant @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+
+  @@index([merchant_id, is_published, created_at])
+  @@map("merchant_posts")
+}
+
+model VerificationPlan {
+  id                 String                    @id @default(uuid())
+  code               String                    @unique // MONTHLY, SEMI_ANNUAL, ANNUAL, etc.
+  name               String
+  description        String?
+  duration_days      Int                       // 30, 180, 365
+  price_tzs          Int
+  is_active          Boolean                   @default(true)
+  auto_renew_enabled Boolean                   @default(false)
+  display_order      Int                       @default(0)
+  created_at         DateTime                  @default(now())
+  updated_at         DateTime                  @updatedAt
+
+  applications       VerificationApplication[]
+
+  @@index([is_active, display_order])
+  @@map("verification_plans")
+}
+
+model VerificationApplication {
+  id                    String            @id @default(uuid())
+  merchant_id           String
+  plan_id               String?
+  method                String            @default("PAID") // PAID, ADMIN_GRANTED
+  status                String            @default("PAYMENT_PENDING") // NOT_VERIFIED, PAYMENT_PENDING, PAID_PENDING_REVIEW, VERIFIED, REJECTED, EXPIRED, SUSPENDED
+  payment_status        String            @default("PENDING") // PENDING, SUCCESSFUL, FAILED, CANCELLED, EXPIRED, REFUNDED
+  payment_amount_tzs    Int               @default(0)
+  transaction_reference String            @unique
+  gateway_session_id    String?
+  gateway_reference     String?
+  checkout_url          String?
+  payment_link_url      String?
+  customer_phone        String?
+  paid_at               DateTime?
+  reviewed_by           String?
+  reviewed_at           DateTime?
+  review_notes          String?
+  activated_at          DateTime?
+  expires_at            DateTime?
+  created_at            DateTime          @default(now())
+  updated_at            DateTime          @updatedAt
+
+  merchant              Merchant          @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  plan                  VerificationPlan? @relation(fields: [plan_id], references: [id], onDelete: SetNull)
+
+  @@index([merchant_id, status])
+  @@index([payment_status])
+  @@index([expires_at])
+  @@map("verification_applications")
+}
+
+model SmsTemplate {
+  id             String    @id @default(uuid())
+  merchant_id    String?
+  name           String
+  promotion_type String    @default("GENERAL_ANNOUNCEMENT")
+  body           String
+  is_system      Boolean   @default(false)
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+
+  merchant       Merchant? @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+
+  @@index([merchant_id])
+  @@index([is_system])
+  @@map("sms_templates")
+}
+
+model SmsCampaign {
+  id                 String                 @id @default(uuid())
+  merchant_id        String
+  name               String
+  promotion_type     String
+  message_body       String
+  status             String                 @default("DRAFT") // DRAFT, QUEUED, PROCESSING, SENT, PARTIALLY_DELIVERED, COMPLETED, FAILED, CANCELLED
+  total_recipients   Int                    @default(0)
+  estimated_units    Int                    @default(0)
+  estimated_cost_tzs Int                    @default(0)
+  total_units_used   Int                    @default(0)
+  total_cost_tzs     Int                    @default(0)
+  sent_count         Int                    @default(0)
+  failed_count       Int                    @default(0)
+  created_by         String?
+  confirmed_at       DateTime?
+  started_at         DateTime?
+  completed_at       DateTime?
+  created_at         DateTime               @default(now())
+  updated_at         DateTime               @updatedAt
+
+  merchant           Merchant               @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  recipients         SmsCampaignRecipient[]
+
+  @@index([merchant_id, created_at])
+  @@index([status])
+  @@map("sms_campaigns")
+}
+
+model SmsCampaignRecipient {
+  id                  String      @id @default(uuid())
+  campaign_id         String
+  merchant_id         String
+  customer_id         String
+  customer_name       String
+  recipient_phone     String
+  rendered_message    String
+  units               Int         @default(1)
+  status              String      @default("PENDING") // PENDING, SENT, FAILED, SKIPPED
+  provider_message_id String?
+  failure_reason      String?
+  sent_at             DateTime?
+  created_at          DateTime    @default(now())
+
+  campaign            SmsCampaign @relation(fields: [campaign_id], references: [id], onDelete: Cascade)
+  merchant            Merchant    @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+
+  @@unique([campaign_id, customer_id])
+  @@index([campaign_id, status])
+  @@index([merchant_id, created_at])
+  @@map("sms_campaign_recipients")
 }
 
 
