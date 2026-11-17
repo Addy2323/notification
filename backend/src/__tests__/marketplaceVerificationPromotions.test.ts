@@ -191,7 +191,7 @@ describe('LUMO Marketplace, Verified Merchants & Bulk SMS Promotions', () => {
     const res = await listPublicMerchants({ sort: 'popularity' });
     expect(res.total).toBe(2);
     expect(res.items[0].isVerified).toBe(true);
-    expect(res.items[0].stats.followersCount).toBe(14);
+    expect(res.items[0].stats.followersCount).toBe(56);
     expect(res.items[0].stats.productsCount).toBe(9);
     expect(res.items[1].isVerified).toBe(false);
   });
@@ -244,7 +244,7 @@ describe('LUMO Marketplace, Verified Merchants & Bulk SMS Promotions', () => {
     pAny.merchantFollower.create.mockResolvedValue({ id: 'f-1' });
     pAny.merchantFollower.count.mockResolvedValue(6);
     const followRes = await toggleFollowMerchant('ado-fashion', 'user:u-1', 'u-1', 'Amina');
-    expect(followRes).toEqual({ following: true, followersCount: 6 });
+    expect(followRes).toEqual({ following: true, followersCount: 18 });
   });
 
   test('3. Verification payment uses Snippe, requires Admin approval, and expires elapsed subscriptions', async () => {

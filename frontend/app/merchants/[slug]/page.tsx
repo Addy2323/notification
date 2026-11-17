@@ -187,24 +187,89 @@ export default function PublicMerchantProfilePage() {
     : null;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
-      <Header />
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col pb-20 md:pb-0">
+      <div className="hidden md:block">
+        <Header />
+      </div>
 
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+      {/* Mobile Native-App Top Bar */}
+      <div className="md:hidden sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3 h-14 flex items-center justify-between gap-2">
         <Link
           href="/merchants"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900"
+          aria-label="Back to marketplace"
+          className="p-2 -ml-1 rounded-full hover:bg-slate-100 text-slate-800 active:scale-95 transition"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
+        <div className="flex items-center gap-1.5 min-w-0">
+          <span className="text-sm font-black text-slate-900 truncate">{merchant.businessName}</span>
+          {merchant.isVerified && <VerifiedBadge size="xs" />}
+        </div>
+        <button
+          type="button"
+          onClick={handleShare}
+          aria-label="Share store"
+          className="p-2 -mr-1 rounded-full hover:bg-slate-100 text-slate-800 active:scale-95 transition"
+        >
+          {copiedShare ? <Check className="w-5 h-5 text-emerald-600" /> : <Share2 className="w-5 h-5" />}
+        </button>
+      </div>
+
+      <main className="flex-1 max-w-5xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-6">
+        <Link
+          href="/merchants"
+          className="hidden md:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           Back to Marketplace
         </Link>
 
         {/* Instagram-Inspired Business Profile Header */}
-        <section className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-8 shadow-sm">
-          <div className="flex flex-col md:flex-row md:items-start gap-6 sm:gap-8">
-            {/* Circular Profile Image */}
-            <div className="flex justify-center md:justify-start shrink-0">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full p-1 bg-gradient-to-tr from-[#FF5500] via-[#0095F6] to-[#0F172A] shadow-md">
+        <section className="bg-white rounded-3xl border border-slate-200 p-4 sm:p-8 shadow-sm">
+          {/* Mobile Compact Top Row: Avatar + 3 Stats (Posts | Followers | Products) */}
+          <div className="flex items-center gap-4 sm:hidden">
+            <div className="w-20 h-20 rounded-full p-0.5 bg-gradient-to-tr from-[#FF5500] via-[#0095F6] to-[#0F172A] shadow-sm shrink-0">
+              <div className="w-full h-full rounded-full bg-white p-0.5 overflow-hidden flex items-center justify-center">
+                {merchant.logoUrl ? (
+                  <img
+                    src={resolveAssetUrl(merchant.logoUrl)}
+                    alt={merchant.businessName}
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full rounded-full bg-[#0F172A] text-white flex items-center justify-center">
+                    <Store className="w-8 h-8" />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex-1 grid grid-cols-3 text-center gap-1">
+              <div>
+                <p className="text-base font-black text-slate-900">
+                  {Number(stats?.postsCount ?? products.length).toLocaleString('en-US')}
+                </p>
+                <p className="text-[11px] text-slate-500 font-medium">Posts</p>
+              </div>
+              <div>
+                <p className="text-base font-black text-slate-900">
+                  {followersCount.toLocaleString('en-US')}
+                </p>
+                <p className="text-[11px] text-slate-500 font-medium">Followers</p>
+              </div>
+              <div>
+                <p className="text-base font-black text-slate-900">
+                  {Number(stats?.productsCount ?? products.length).toLocaleString('en-US')}
+                </p>
+                <p className="text-[11px] text-slate-500 font-medium">Products</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:items-start gap-4 sm:gap-8 mt-3 sm:mt-0">
+            {/* Desktop Circular Profile Image */}
+            <div className="hidden sm:flex justify-center md:justify-start shrink-0">
+              <div className="w-28 h-28 md:w-32 md:h-32 rounded-full p-1 bg-gradient-to-tr from-[#FF5500] via-[#0095F6] to-[#0F172A] shadow-md">
                 <div className="w-full h-full rounded-full bg-white p-0.5 overflow-hidden flex items-center justify-center">
                   {merchant.logoUrl ? (
                     <img
@@ -222,16 +287,16 @@ export default function PublicMerchantProfilePage() {
             </div>
 
             {/* Profile Info & Stats */}
-            <div className="flex-1 space-y-4 text-center md:text-left min-w-0">
+            <div className="flex-1 space-y-3 sm:space-y-4 text-left min-w-0">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="space-y-1">
-                  <div className="flex items-center justify-center md:justify-start gap-1.5 flex-wrap">
-                    <h1 className="text-xl sm:text-2xl font-black text-slate-900">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <h1 className="text-lg sm:text-2xl font-black text-slate-900">
                       {merchant.businessName}
                     </h1>
                     {merchant.isVerified && <VerifiedBadge size="md" />}
                   </div>
-                  <div className="flex items-center justify-center md:justify-start gap-2 flex-wrap text-xs text-slate-500">
+                  <div className="flex items-center gap-2 flex-wrap text-xs text-slate-500">
                     <span className="font-mono font-semibold text-slate-600">{merchant.username}</span>
                     {merchant.primaryCategory && (
                       <span className="px-2.5 py-0.5 rounded-full bg-orange-50 text-[#FF5500] font-bold border border-orange-100">
@@ -247,8 +312,8 @@ export default function PublicMerchantProfilePage() {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-wrap items-center justify-center md:justify-end gap-2">
+                {/* Desktop Action Buttons */}
+                <div className="hidden sm:flex flex-wrap items-center justify-end gap-2">
                   <button
                     type="button"
                     disabled={followLoading}
@@ -292,29 +357,23 @@ export default function PublicMerchantProfilePage() {
                 </div>
               </div>
 
-              {/* Real Engagement Statistics */}
-              <div className="grid grid-cols-4 gap-2 sm:gap-4 max-w-lg mx-auto md:mx-0 py-3 border-y border-slate-100">
+              {/* Desktop 3 Unified Stats: Posts | Followers | Products */}
+              <div className="hidden sm:grid grid-cols-3 gap-4 max-w-md py-3 border-y border-slate-100">
                 <div>
-                  <p className="text-base sm:text-lg font-black text-slate-900">
-                    {Number(stats?.postsCount || 0).toLocaleString('en-US')}
+                  <p className="text-lg font-black text-slate-900">
+                    {Number(stats?.postsCount ?? products.length).toLocaleString('en-US')}
                   </p>
                   <p className="text-[11px] text-slate-500 font-medium">Posts</p>
                 </div>
                 <div>
-                  <p className="text-base sm:text-lg font-black text-slate-900">
+                  <p className="text-lg font-black text-slate-900">
                     {followersCount.toLocaleString('en-US')}
                   </p>
                   <p className="text-[11px] text-slate-500 font-medium">Followers</p>
                 </div>
                 <div>
-                  <p className="text-base sm:text-lg font-black text-slate-900">
-                    {Number(stats?.customersCount || 0).toLocaleString('en-US')}
-                  </p>
-                  <p className="text-[11px] text-slate-500 font-medium">Customers</p>
-                </div>
-                <div>
-                  <p className="text-base sm:text-lg font-black text-slate-900">
-                    {Number(stats?.productsCount || 0).toLocaleString('en-US')}
+                  <p className="text-lg font-black text-slate-900">
+                    {Number(stats?.productsCount ?? products.length).toLocaleString('en-US')}
                   </p>
                   <p className="text-[11px] text-slate-500 font-medium">Products</p>
                 </div>
@@ -339,35 +398,83 @@ export default function PublicMerchantProfilePage() {
                   </a>
                 )}
               </div>
+
+              {/* Mobile App Action Row */}
+              <div className="grid grid-cols-3 gap-2 pt-1 sm:hidden">
+                <button
+                  type="button"
+                  disabled={followLoading}
+                  onClick={handleToggleFollow}
+                  className={`inline-flex items-center justify-center gap-1 px-3 py-2.5 rounded-xl text-xs font-bold transition active:scale-95 ${
+                    isFollowing
+                      ? 'bg-slate-100 text-slate-800 border border-slate-300'
+                      : 'bg-[#0095F6] text-white shadow-sm'
+                  }`}
+                >
+                  {isFollowing ? <UserCheck className="w-3.5 h-3.5" /> : <UserPlus className="w-3.5 h-3.5" />}
+                  {isFollowing ? 'Following' : 'Follow'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('products')}
+                  className="inline-flex items-center justify-center gap-1 px-3 py-2.5 rounded-xl bg-[#0F172A] text-white text-xs font-bold active:scale-95"
+                >
+                  <Package className="w-3.5 h-3.5 text-[#FF5500]" />
+                  Products
+                </button>
+                {whatsappLink ? (
+                  <a
+                    href={whatsappLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-1 px-3 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold active:scale-95"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5" />
+                    Chat
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    className="inline-flex items-center justify-center gap-1 px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-semibold active:scale-95"
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    Share
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Instagram-Style Navigation Tabs */}
-        <div className="flex overflow-x-auto border-b border-slate-200 gap-2 pb-3">
-          {[
-            { id: 'store', label: 'Store', icon: Store },
-            { id: 'products', label: `Products (${products.length})`, icon: ShoppingBag },
-            { id: 'posts', label: `Posts (${posts.length})`, icon: Grid },
-            { id: 'about', label: 'About', icon: Info },
-          ].map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition ${
-                  activeTab === tab.id
-                    ? 'bg-[#0F172A] text-white shadow-sm'
-                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                {tab.label}
-              </button>
-            );
-          })}
+        {/* Instagram-Style Sticky Navigation Tabs */}
+        <div className="sticky top-14 md:top-20 z-30 bg-slate-50/95 backdrop-blur-sm pt-1">
+          <div className="grid grid-cols-4 sm:flex border-b border-slate-200 gap-1 sm:gap-2 pb-2 sm:pb-3">
+            {[
+              { id: 'store', label: 'Store', icon: Store },
+              { id: 'products', label: 'Products', icon: ShoppingBag },
+              { id: 'posts', label: 'Posts', icon: Grid },
+              { id: 'about', label: 'About', icon: Info },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`inline-flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition ${
+                    isActive
+                      ? 'bg-[#0F172A] text-white shadow-sm'
+                      : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* TAB 1: STORE */}
@@ -527,36 +634,69 @@ export default function PublicMerchantProfilePage() {
           </div>
         )}
 
-        {/* TAB 3: POSTS */}
+        {/* TAB 3: POSTS (Instagram-Style Square Grid of Posted Products & Showcases) */}
         {activeTab === 'posts' && (
           <div className="space-y-4">
-            {posts.length === 0 ? (
+            {posts.length === 0 && products.length === 0 ? (
               <div className="bg-white rounded-2xl border border-slate-200 p-10 text-center space-y-2">
                 <Grid className="w-10 h-10 text-slate-300 mx-auto" />
-                <p className="text-sm font-bold text-slate-700">No showcase posts yet</p>
-                <p className="text-xs text-slate-500">Explore available products directly in the Products tab.</p>
+                <p className="text-sm font-bold text-slate-700">No posts yet</p>
+                <p className="text-xs text-slate-500">Products posted by this merchant will appear here.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-1 sm:gap-3">
                 {posts.map((post: any) => (
-                  <div key={post.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                    {post.imageUrl && (
-                      <div className="h-56 bg-slate-100">
-                        <img
-                          src={resolveAssetUrl(post.imageUrl)}
-                          alt={post.title || 'Merchant post'}
-                          className="w-full h-full object-cover"
-                        />
+                  <div
+                    key={`post-${post.id}`}
+                    className="aspect-square bg-slate-100 rounded-lg sm:rounded-2xl overflow-hidden relative group border border-slate-200"
+                  >
+                    {post.imageUrl ? (
+                      <img
+                        src={resolveAssetUrl(post.imageUrl)}
+                        alt={post.title || 'Merchant post'}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center p-2 text-center bg-slate-900 text-white text-[11px] font-semibold">
+                        {post.title || post.caption}
                       </div>
                     )}
-                    <div className="p-4 space-y-1.5">
-                      {post.title && <h3 className="text-sm font-bold text-slate-900">{post.title}</h3>}
-                      <p className="text-xs text-slate-600 leading-relaxed">{post.caption}</p>
-                      <p className="text-[10px] text-slate-400">
-                        {new Date(post.createdAt).toLocaleDateString()}
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent p-2 text-white">
+                      <p className="text-[10px] sm:text-xs font-bold line-clamp-1">
+                        {post.title || post.caption}
                       </p>
                     </div>
                   </div>
+                ))}
+                {products.map((prod: any) => (
+                  <Link
+                    key={`prod-post-${prod.id}`}
+                    href={`/store/${store.slug}?product=${encodeURIComponent(prod.id)}`}
+                    className="aspect-square bg-slate-100 rounded-lg sm:rounded-2xl overflow-hidden relative group border border-slate-200 active:scale-[0.98] transition"
+                  >
+                    {prod.primaryImageUrl ? (
+                      <img
+                        src={resolveAssetUrl(prod.primaryImageUrl)}
+                        alt={prod.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-400">
+                        <Package className="w-7 h-7" />
+                      </div>
+                    )}
+                    {prod.isPromotionActive && (
+                      <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-[#FF5500] text-white">
+                        Offer
+                      </span>
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-1.5 sm:p-2.5 text-white">
+                      <p className="text-[10px] sm:text-xs font-bold line-clamp-1">{prod.name}</p>
+                      <p className="text-[9px] sm:text-[11px] font-extrabold text-orange-300">
+                        {prod.currency || 'TZS'} {Number(prod.effectivePrice || 0).toLocaleString('en-US')}
+                      </p>
+                    </div>
+                  </Link>
                 ))}
               </div>
             )}
@@ -612,7 +752,31 @@ export default function PublicMerchantProfilePage() {
         )}
       </main>
 
-      <Footer />
+      <div className="hidden md:block">
+        <Footer />
+      </div>
+
+      {/* Mobile Sticky Bottom App Action Bar */}
+      <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] flex items-center gap-2 shadow-[0_-4px_20px_rgba(15,23,42,0.08)]">
+        <Link
+          href={`/store/${store.slug}`}
+          className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#FF5500] text-white text-xs font-bold shadow-sm active:scale-95 transition"
+        >
+          <Store className="w-4 h-4" />
+          Open Store & Order
+        </Link>
+        {whatsappLink && (
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-emerald-600 text-white text-xs font-bold active:scale-95 transition"
+          >
+            <MessageSquare className="w-4 h-4" />
+            WhatsApp
+          </a>
+        )}
+      </div>
     </div>
   );
 }

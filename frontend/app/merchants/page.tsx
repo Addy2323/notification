@@ -180,7 +180,7 @@ export default function PublicMerchantMarketplacePage() {
             )}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          <div className="flex overflow-x-auto gap-2.5 pb-2 sm:pb-0 sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <button
               type="button"
               onClick={() => {
@@ -188,7 +188,7 @@ export default function PublicMerchantMarketplacePage() {
                 setSelectedSubcategory('');
                 setPage(1);
               }}
-              className={`p-3.5 rounded-2xl border text-left transition ${
+              className={`shrink-0 w-36 sm:w-auto p-3.5 rounded-2xl border text-left transition active:scale-[0.98] ${
                 !selectedCategory
                   ? 'bg-[#0F172A] text-white border-[#0F172A] shadow-md'
                   : 'bg-white text-slate-800 border-slate-200 hover:border-slate-300'
@@ -214,7 +214,7 @@ export default function PublicMerchantMarketplacePage() {
                     setSelectedSubcategory('');
                     setPage(1);
                   }}
-                  className={`p-3.5 rounded-2xl border text-left transition ${
+                  className={`shrink-0 w-40 sm:w-auto p-3.5 rounded-2xl border text-left transition active:scale-[0.98] ${
                     active
                       ? 'bg-[#0F172A] text-white border-[#0F172A] shadow-md'
                       : 'bg-white text-slate-800 border-slate-200 hover:border-slate-300'

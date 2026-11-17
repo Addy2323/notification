@@ -452,10 +452,10 @@ export async function listPublicMerchants(filters: {
     const verified = isMerchantCurrentlyVerified(m);
     const primaryMapping = m.category_mappings?.find((cm: any) => cm.is_primary) || m.category_mappings?.[0];
     const primaryCategory = primaryMapping?.category || null;
-    const followersCount = Number(m._count?.followers || 0);
     const productsCount = Number(m._count?.products || 0);
     const customersCount = Number(m._count?.customers || 0);
-    const postsCount = Number(m._count?.posts || 0);
+    const followersCount = customersCount + Number(m._count?.followers || 0);
+    const postsCount = productsCount + Number(m._count?.posts || 0);
 
     return {
       id: m.id,
@@ -637,9 +637,8 @@ export async function getPublicMerchantProfile(slugOrId: string, followerKey?: s
     },
     store: serializePublicStore(store),
     stats: {
-      postsCount: posts.length,
-      followersCount,
-      customersCount,
+      postsCount: products.length + posts.length,
+      followersCount: customersCount + followersCount,
       productsCount: products.length,
     },
     isFollowing: Boolean(existingFollow),
@@ -710,8 +709,11 @@ export async function toggleFollowMerchant(
     following = true;
   }
 
-  const followersCount = await pAny.merchantFollower.count({ where: { merchant_id: merchantId } });
-  return { following, followersCount };
+  const [followCount, customersCount] = await Promise.all([
+    pAny.merchantFollower.count({ where: { merchant_id: merchantId } }),
+    pAny.customer.count({ where: { merchant_id: merchantId } }),
+  ]);
+  return { following, followersCount: customersCount + followCount };
 }
 
 export async function getMerchantCategoriesSelection(merchantId: string) {
