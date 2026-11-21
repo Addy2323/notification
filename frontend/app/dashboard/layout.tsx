@@ -13,6 +13,7 @@ import { fetchApi } from '@/lib/api';
 import LanguageSelector from '@/components/LanguageSelector';
 import { LumoLogo } from '@/components/landing/LumoLogo';
 import { MobileBottomNav } from '@/app/components/MobileBottomNav';
+import { MerchantNotificationBell } from '@/app/components/MerchantNotificationBell';
 import { PWAInstallButton } from '@/app/components/pwa/PWAInstallButton';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -188,9 +189,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </Link>
           </div>
 
-          {/* Right: Compact Language + Refresh + User Avatar */}
+          {/* Right: Compact Language + Notification Bell + Refresh + User Avatar */}
           <div className="flex items-center gap-1.5 sm:gap-2">
             <LanguageSelector compact={true} />
+            <MerchantNotificationBell />
             
             <button
               onClick={() => window.location.reload()}
@@ -286,7 +288,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Main Content Area (Scrollable with ample padding-bottom pb-28 on mobile so bottom nav never covers content) */}
       <main className="flex-1 h-screen overflow-y-auto p-3.5 sm:p-6 md:p-8 pb-28 md:pb-8 max-w-7xl mx-auto w-full bg-white">
-        <div className="hidden md:flex justify-end mb-4">
+        <div className="hidden md:flex items-center justify-end gap-3 mb-4">
+          <MerchantNotificationBell />
           <LanguageSelector />
         </div>
         {children}

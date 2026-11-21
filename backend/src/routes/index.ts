@@ -20,6 +20,7 @@ import storeRoutes from './storeRoutes';
 import marketplaceRoutes from './marketplaceRoutes';
 import verificationRoutes from './verificationRoutes';
 import promotionRoutes from './promotionRoutes';
+import merchantNotificationRoutes from './merchantNotificationRoutes';
 
 const router = Router();
 
@@ -45,5 +46,6 @@ router.use('/store', storeRoutes);
 router.use('/marketplace', marketplaceRoutes);
 router.use('/verification', verificationRoutes);
 router.use('/promotions', promotionRoutes);
+router.use('/merchant-notifications', merchantNotificationRoutes);
 
 export default router;

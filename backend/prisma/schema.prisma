@@ -55,6 +55,7 @@ model Merchant {
   sms_templates         SmsTemplate[]
   sms_campaigns         SmsCampaign[]
   sms_campaign_recipients SmsCampaignRecipient[]
+  merchant_notifications MerchantNotification[]
 
   @@index([is_verified])
   @@index([verification_status])
@@ -211,6 +212,7 @@ model Order {
   items               OrderItem[]
   events              OrderEvent[]
   notifications       OrderNotification[]
+  merchant_notifications MerchantNotification[]
   rating              CustomerRating?
   receipt_confirmation OrderReceiptConfirmation?
   confirmation_receipt ConfirmationReceipt?
@@ -1042,6 +1044,31 @@ model SmsCampaignRecipient {
   @@index([campaign_id, status])
   @@index([merchant_id, created_at])
   @@map("sms_campaign_recipients")
+}
+
+model MerchantNotification {
+  id                String    @id @default(uuid())
+  merchant_id       String
+  order_id          String?
+  notification_type String    @default("NEW_ORDER") // NEW_ORDER, ORDER_UPDATE, SYSTEM
+  title             String
+  message           String
+  product_summary   String?
+  action_url        String?
+  read_at           DateTime?
+  sms_status        String    @default("PENDING") // PENDING, PROCESSING, SENT, DELIVERED, FAILED
+  delivery_attempts Int       @default(0)
+  provider_response String?
+  idempotency_key   String    @unique
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+
+  merchant          Merchant  @relation(fields: [merchant_id], references: [id], onDelete: Cascade)
+  order             Order?    @relation(fields: [order_id], references: [id], onDelete: Cascade)
+
+  @@index([merchant_id, read_at, created_at])
+  @@index([order_id])
+  @@map("merchant_notifications")
 }
 
 

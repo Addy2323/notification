@@ -1,6 +1,7 @@
 import { prisma } from '../database/prisma';
 import { generateDriverToken, generateTrackingToken } from '../utils/token';
 import { dispatchOrderEvent } from '../notifications/orderNotificationEngine';
+import { notifyMerchantsForNewOrder } from './merchantNotificationService';
 import { triggerOrderReceiptConfirmation } from './receiptConfirmationService';
 import {
   triggerConfirmationReceipt,
@@ -43,6 +44,7 @@ export interface CreateOrderDTO {
   driverName?: string;
   driverPhone?: string;
   vehicleInfo?: string;
+  notifyMerchant?: boolean;
   transportType?: string;
   items?: OrderItemInput[];
   deliveryFee?: number;
@@ -213,6 +215,12 @@ export async function createOrder(data: CreateOrderDTO) {
       vehicleInfo: data.vehicleInfo || data.transportType || 'BODA',
     },
   });
+
+  if (data.notifyMerchant) {
+    notifyMerchantsForNewOrder(order.id).catch((err) => {
+      console.error('[MERCHANT ORDER NOTIFICATION ERROR]', err);
+    });
+  }
 
   return {
     order,

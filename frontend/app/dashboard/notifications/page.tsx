@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Bell, RefreshCw, CheckCircle2, Clock, AlertCircle, MessageSquare, Smartphone, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
+import { Bell, RefreshCw, CheckCircle2, Clock, AlertCircle, MessageSquare, Smartphone, ShieldCheck, Package, CheckCheck, ExternalLink } from 'lucide-react';
 import { useLanguage, T } from '@/components/LanguageProvider';
 import { fetchApi } from '@/lib/api';
 
@@ -22,6 +23,9 @@ export default function MerchantNotificationsPage() {
   const isSwahili = locale === 'sw';
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [orderAlerts, setOrderAlerts] = useState<any[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [retryingId, setRetryingId] = useState<string | null>(null);
   const [metrics, setMetrics] = useState({
     total: 0,
     delivered: 0,
@@ -32,8 +36,16 @@ export default function MerchantNotificationsPage() {
   const loadData = async () => {
     setLoading(true);
     try {
-      // Load recent orders and extract notifications
-      const res = await fetchApi('/orders?limit=50');
+      // Load merchant new-order alerts and recent order SMS notifications
+      const [res, alertsRes] = await Promise.all([
+        fetchApi('/orders?limit=50'),
+        fetchApi('/merchant-notifications?limit=50').catch(() => null),
+      ]);
+      const alertsData = alertsRes?.data || alertsRes;
+      if (alertsData) {
+        setOrderAlerts(alertsData.notifications || []);
+        setUnreadCount(Number(alertsData.unreadCount || 0));
+      }
       const orders = res?.orders || [];
       const notifs: NotificationItem[] = [];
 
@@ -73,6 +85,38 @@ export default function MerchantNotificationsPage() {
   useEffect(() => {
     loadData();
   }, []);
+
+  const handleMarkRead = async (id: string) => {
+    try {
+      await fetchApi(`/merchant-notifications/${id}/read`, { method: 'PATCH' });
+      setOrderAlerts((prev) =>
+        prev.map((a) => (a.id === id ? { ...a, read_at: a.read_at || new Date().toISOString() } : a))
+      );
+      setUnreadCount((c) => Math.max(0, c - 1));
+    } catch {
+      // Non-fatal
+    }
+  };
+
+  const handleMarkAllRead = async () => {
+    try {
+      await fetchApi('/merchant-notifications/read-all', { method: 'POST' });
+      setOrderAlerts((prev) => prev.map((a) => ({ ...a, read_at: a.read_at || new Date().toISOString() })));
+      setUnreadCount(0);
+    } catch {
+      // Non-fatal
+    }
+  };
+
+  const handleRetrySms = async (id: string) => {
+    setRetryingId(id);
+    try {
+      await fetchApi(`/merchant-notifications/${id}/retry-sms`, { method: 'POST' });
+      await loadData();
+    } finally {
+      setRetryingId(null);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -130,6 +174,119 @@ export default function MerchantNotificationsPage() {
           </div>
           <p className="text-2xl font-black text-rose-600 font-mono">{metrics.failed}</p>
         </div>
+      </div>
+
+      {/* Merchant New Order Alerts */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-700">
+              New Order Alerts
+            </h2>
+            {unreadCount > 0 && (
+              <span className="px-2 py-0.5 rounded-full bg-[#FF5500] text-white text-[10px] font-bold">
+                {unreadCount} Unread
+              </span>
+            )}
+          </div>
+          {unreadCount > 0 && (
+            <button
+              type="button"
+              onClick={handleMarkAllRead}
+              className="inline-flex items-center gap-1 text-xs font-bold text-slate-600 hover:text-slate-900"
+            >
+              <CheckCheck className="w-3.5 h-3.5" />
+              Mark all as read
+            </button>
+          )}
+        </div>
+
+        {orderAlerts.length === 0 ? (
+          <p className="text-xs text-slate-400 py-4 text-center">
+            No new storefront order alerts yet.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {orderAlerts.map((alert) => {
+              const isUnread = !alert.read_at;
+              return (
+                <div
+                  key={alert.id}
+                  className={`p-3.5 rounded-xl border transition flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                    isUnread ? 'border-orange-200 bg-orange-50/50' : 'border-slate-100 bg-slate-50/60'
+                  }`}
+                >
+                  <div className="flex items-start gap-3 min-w-0">
+                    <div
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                        isUnread ? 'bg-[#FF5500] text-white' : 'bg-slate-200 text-slate-600'
+                      }`}
+                    >
+                      <Package className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0 space-y-0.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs font-extrabold text-slate-900">{alert.title}</span>
+                        {isUnread && (
+                          <span className="px-1.5 py-0.5 rounded-full bg-[#FF5500] text-white text-[9px] font-bold">
+                            NEW
+                          </span>
+                        )}
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                            alert.sms_status === 'SENT' || alert.sms_status === 'DELIVERED'
+                              ? 'bg-emerald-100 text-emerald-700'
+                              : alert.sms_status === 'FAILED'
+                              ? 'bg-rose-100 text-rose-700'
+                              : 'bg-amber-100 text-amber-800'
+                          }`}
+                        >
+                          SMS: {alert.sms_status}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-700">{alert.message}</p>
+                      <p className="text-[11px] text-slate-400 font-mono">
+                        {new Date(alert.created_at).toLocaleString()} • Attempts: {alert.delivery_attempts || 0}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 shrink-0">
+                    {alert.sms_status === 'FAILED' && (
+                      <button
+                        type="button"
+                        disabled={retryingId === alert.id}
+                        onClick={() => handleRetrySms(alert.id)}
+                        className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold disabled:opacity-50"
+                      >
+                        {retryingId === alert.id ? 'Retrying...' : 'Retry SMS'}
+                      </button>
+                    )}
+                    {isUnread && (
+                      <button
+                        type="button"
+                        onClick={() => handleMarkRead(alert.id)}
+                        className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                      >
+                        Mark Read
+                      </button>
+                    )}
+                    <Link
+                      href={alert.action_url || `/dashboard/orders/${alert.order_id}`}
+                      onClick={() => {
+                        if (isUnread) handleMarkRead(alert.id);
+                      }}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#0F172A] text-white text-xs font-bold hover:bg-slate-800"
+                    >
+                      View Order
+                      <ExternalLink className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Feed List */}

@@ -1329,6 +1329,7 @@ export async function submitPublicStoreOrderOrEnquiry(
     imageUrl: serialized.primaryImageUrl || undefined,
     currency: serialized.currency,
     paymentStatus: 'UNPAID',
+    notifyMerchant: true,
     items: [
       {
         productId: product.id,
@@ -1633,6 +1634,7 @@ export async function submitBuyAgainOrder(
     productName: summaryNames.join(', ').slice(0, 180),
     currency: preparedItems.length > 0 ? origOrder.currency || 'TZS' : 'TZS',
     paymentStatus: 'UNPAID',
+    notifyMerchant: true,
     items: preparedItems,
   });
 
